@@ -11,9 +11,9 @@ export function SmartImage({
   className,
   imgClassName,
   label,
-  // Accepted for call-site ergonomics (Next/Image-like API). The component
-  // always fills its relative parent, so these are advisory only.
-  fill: _fill,
+  // When `fill` is set, the component absolutely fills its nearest relative
+  // ancestor (Next/Image semantics). Otherwise it lays out in normal flow.
+  fill,
   priority,
 }: {
   src: string
@@ -27,7 +27,13 @@ export function SmartImage({
   const [failed, setFailed] = useState(false)
 
   return (
-    <div className={cn('relative overflow-hidden bg-secondary', className)}>
+    <div
+      className={cn(
+        'overflow-hidden bg-secondary',
+        fill ? 'absolute inset-0 h-full w-full' : 'relative',
+        className,
+      )}
+    >
       {!failed ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
