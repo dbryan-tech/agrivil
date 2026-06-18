@@ -101,7 +101,7 @@ const ORGANIC_FARMERS = new Set(['f3', 'f4', 'f8'])
 
 const FARMER_SLUGS: Record<string, string> = {
   f1: 'auntie-ama', f2: 'kwame-mensah', f3: 'esi-boateng', f4: 'yaw-darko',
-  f5: 'adwoa-sarpong', f6: 'kojo-asante', f7: 'mahama-sulemana', f8: 'hawa-issah',
+  f5: 'adwoa-sarpong', f6: 'kojo-asante', f7: 'mahama-sulemana', f8: 'hawa-azumah',
   f9: 'fati-abukari', f10: 'adzaho-brothers',
 }
 

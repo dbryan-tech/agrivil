@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { ShoppingCart, Check, Heart, Star } from 'lucide-react'
+import { ShoppingCart, Check, Heart, Star, Users } from 'lucide-react'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { useSession } from '@/components/golden-acres/auth/session-context'
@@ -10,10 +10,18 @@ import { formatGHS, freshnessLabel, weight } from '@/lib/golden-acres/format'
 import { productFarmer, productEstimate } from '@/lib/golden-acres/data'
 import type { Product } from '@/lib/golden-acres/types'
 
-export function ProduceCard({ product }: { product: Product }) {
+export function ProduceCard({
+  product,
+  offerCount = 1,
+}: {
+  product: Product
+  /** when > 1, this card represents a group of competing farmer offers */
+  offerCount?: number
+}) {
   const { add } = useCart()
   const { account, isSaved, toggleWishlist } = useSession()
   const [added, setAdded] = useState(false)
+  const multi = offerCount > 1
 
   const canSave = account?.role === 'customer'
   const saved = canSave && isSaved(product.id)
@@ -65,6 +73,13 @@ export function ProduceCard({ product }: { product: Product }) {
         >
           {fresh.label}
         </span>
+
+        {multi && (
+          <span className="pointer-events-none absolute bottom-2.5 left-2.5 inline-flex items-center gap-1 rounded-md bg-[var(--ga-copper-deep)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[var(--ga-copper-foreground)] shadow-sm">
+            <Users className="h-3 w-3" />
+            {offerCount} farmers
+          </span>
+        )}
 
         {canSave && (
           <button
@@ -119,11 +134,18 @@ export function ProduceCard({ product }: { product: Product }) {
 
         {/* price */}
         <div className="mt-2.5 flex items-baseline gap-1.5">
+          {multi && <span className="text-xs font-medium text-muted-foreground">from</span>}
           <span className="ga-price text-xl text-foreground">{formatGHS(estimate)}</span>
           <span className="text-xs text-muted-foreground">/ {unitLabel}</span>
         </div>
-        {product.variableWeight && (
-          <span className="text-[11px] text-muted-foreground">Est. weight, priced after picking</span>
+        {multi ? (
+          <span className="text-[11px] font-medium text-[var(--ga-copper)]">
+            Compare {offerCount} farmer prices
+          </span>
+        ) : (
+          product.variableWeight && (
+            <span className="text-[11px] text-muted-foreground">Est. weight, priced after picking</span>
+          )
         )}
 
         <button

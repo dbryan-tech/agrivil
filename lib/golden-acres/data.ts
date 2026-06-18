@@ -17,6 +17,7 @@ import type {
   GhanaRegion,
   SupportTicket,
 } from './types'
+import { generateOffers } from './catalog-gen'
 
 export const regions: GhanaRegion[] = [
   'Greater Accra',
@@ -283,7 +284,8 @@ function inDays(n: number): string {
   return d.toISOString().slice(0, 10)
 }
 
-export const products: Product[] = [
+// Hand-authored anchor listings — each canonical product's flagship offer.
+const baseProducts: Product[] = [
   {
     id: 'p1', slug: 'roma-tomatoes', name: 'Roma Tomatoes', category: 'Vegetables',
     farmerId: 'f1', image: '/golden-acres/produce/roma-tomatoes.png', unit: 'kg',
@@ -429,6 +431,11 @@ export const products: Product[] = [
     tags: [], description: 'Knobbly, aromatic ginger root for teas, marinades and shito.',
   },
 ]
+
+// Full catalog = hand-authored anchors + deterministically generated farmer
+// offers (the same product sold by several farmers competing on price/freshness).
+// ~45 canonical items × multiple sellers ≈ 200+ live listings.
+export const products: Product[] = [...baseProducts, ...generateOffers()]
 
 export const bundles: Bundle[] = [
   {
