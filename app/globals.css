@@ -32,6 +32,12 @@
   /* electric-blue brand accent (company site) */
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
+  /* marketplace chrome tokens */
+  --color-header: var(--ga-header);
+  --color-header-foreground: var(--ga-header-foreground);
+  --color-deal: var(--ga-deal);
+  --color-deal-foreground: var(--ga-deal-foreground);
+  --color-star: var(--ga-star);
   /* Paperfolio flat accents (founder page) */
   --color-coral: #ff6b7a;
   --color-cobalt: #2f81f7;
@@ -199,61 +205,68 @@
 .ga-root {
   color-scheme: light;
   font-family: var(--font-jakarta);
-  letter-spacing: -0.012em;
-  /* AgriVil — "Editorial Farm-Luxe": warm paper, forest ink, terracotta accent */
-  --background: #f4f0e6;
-  --foreground: #1a2b20;
-  --card: #fbf8f0;
-  --card-foreground: #1a2b20;
-  --popover: #fbf8f0;
-  --popover-foreground: #1a2b20;
-  --primary: #14613c;
-  --primary-foreground: #f6f3e9;
-  --secondary: #e9e3d2;
-  --secondary-foreground: #243a2b;
-  --muted: #ebe5d6;
-  --muted-foreground: #6b6a55;
-  --accent: #c4512c;
-  --accent-foreground: #fbf3ea;
-  --destructive: #b23a2a;
-  --border: #ddd4bf;
-  --input: #ddd4bf;
-  --ring: #14613c;
-  --brand: #14613c;
-  --brand-foreground: #f6f3e9;
+  letter-spacing: -0.011em;
+  /* AgriVil — "Fresh Market": bright page, white cards, deep-green brand chrome */
+  --background: #f2f4ee;
+  --foreground: #16241b;
+  --card: #ffffff;
+  --card-foreground: #16241b;
+  --popover: #ffffff;
+  --popover-foreground: #16241b;
+  --primary: #0f7a43;
+  --primary-foreground: #ffffff;
+  --secondary: #e8f1e8;
+  --secondary-foreground: #14422a;
+  --muted: #eef1ea;
+  --muted-foreground: #5d6b5d;
+  --accent: #f0a01e;
+  --accent-foreground: #2a1c02;
+  --destructive: #d33b2a;
+  --border: #e1e5db;
+  --input: #e1e5db;
+  --ring: #0f7a43;
+  --brand: #0f7a43;
+  --brand-foreground: #ffffff;
   --radius: 0.625rem;
 
-  /* warm ochre/gold — used sparingly for ratings + highlights */
+  /* marketplace chrome */
+  --ga-header: #0b3b25;          /* deep-green top brand band */
+  --ga-header-foreground: #eaf3ea;
+  --ga-deal: #d6402c;            /* sale / flash-deal red */
+  --ga-deal-foreground: #ffffff;
+  --ga-star: #f5a623;            /* rating star gold */
+
+  /* warm ochre/gold — ratings + highlights */
   --ga-gold: #9a6b15;
-  --ga-gold-soft: #d99a2b;
+  --ga-gold-soft: #f0a01e;
   /* green brand core */
-  --ga-field: #14613c;
-  --ga-field-deep: #0c4127;
-  /* terracotta — the editorial accent (eyebrows, italic words, index) */
+  --ga-field: #0f7a43;
+  --ga-field-deep: #0b3b25;
+  /* terracotta accent (retained for occasional warmth) */
   --ga-terracotta: #c4512c;
-  --ga-cream: #f4f0e6;
-  --ga-paper: #f4f0e6;
+  --ga-cream: #f2f4ee;
+  --ga-paper: #f2f4ee;
   --ga-clay: #8a5a3a;
   --ga-leaf: #3f8a4f;
   /* cinematic dark-section ink + fresh pop */
-  --ga-ink-deep: #0c1c13;
-  --ga-ink-soft: #122a1c;
+  --ga-ink-deep: #0b1c13;
+  --ga-ink-soft: #112a1c;
   --ga-lime: #d6e85a;
 
-  --chart-1: #14613c;
-  --chart-2: #d99a2b;
+  --chart-1: #0f7a43;
+  --chart-2: #f0a01e;
   --chart-3: #3f8a4f;
   --chart-4: #c4512c;
-  --chart-5: #0c4127;
+  --chart-5: #0b3b25;
 
-  --sidebar: #fbf8f0;
-  --sidebar-foreground: #1a2b20;
-  --sidebar-primary: #14613c;
-  --sidebar-primary-foreground: #f6f3e9;
-  --sidebar-accent: #e9e3d2;
-  --sidebar-accent-foreground: #243a2b;
-  --sidebar-border: #ddd4bf;
-  --sidebar-ring: #14613c;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #16241b;
+  --sidebar-primary: #0f7a43;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e8f1e8;
+  --sidebar-accent-foreground: #14422a;
+  --sidebar-border: #e1e5db;
+  --sidebar-ring: #0f7a43;
 }
 
 .ga-display {
@@ -270,45 +283,60 @@
   font-weight: 500;
 }
 
-/* ---- Editorial Farm-Luxe typography ---- */
+/* ---- Marketplace typography ---- */
 
-/* primary magazine display face: optical Fraunces, tight + refined.
-   This is the signature headline voice across the storefront. */
+/* primary heading voice: confident grotesque, tight + bold. */
 .ga-headline {
-  font-family: var(--font-fraunces);
-  font-optical-sizing: auto;
-  font-weight: 540;
+  font-family: var(--font-display);
+  font-weight: 800;
   letter-spacing: -0.022em;
-  line-height: 0.98;
+  line-height: 1.04;
 }
 .ga-headline em,
 .ga-headline .em {
-  font-style: italic;
-  font-weight: 480;
-  color: var(--ga-terracotta);
+  font-style: normal;
+  font-weight: 800;
+  color: var(--primary);
 }
 
-/* hairline rule used to separate editorial sections */
+/* hairline rule */
 .ga-rule {
   height: 1px;
   width: 100%;
   background: var(--border);
 }
 
-/* monospaced index numeral (01 / 02 …) for section indexing */
+/* tabular numeral for counts / prices */
 .ga-index {
-  font-family: var(--font-mono-display);
+  font-family: var(--font-jakarta);
   font-feature-settings: 'tnum' 1;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
 }
 
-/* editorial kicker tag: thin pill with terracotta type */
+/* small uppercase section label */
 .ga-kicker {
-  font-family: var(--font-mono-display);
+  font-family: var(--font-display);
   text-transform: uppercase;
-  letter-spacing: 0.24em;
-  font-weight: 500;
-  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  font-size: 0.72rem;
+}
+
+/* tabular price — used on cards + cart */
+.ga-price {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-feature-settings: 'tnum' 1;
+  letter-spacing: -0.02em;
+}
+
+/* horizontal scroll rail (product carousels) */
+.ga-rail {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.ga-rail::-webkit-scrollbar {
+  display: none;
 }
 
 /* gentle entrance used across Golden Acres surfaces */

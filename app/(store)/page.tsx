@@ -1,6 +1,6 @@
-import { HomeHero } from '@/components/golden-acres/home/home-hero'
-import { MarketHero } from '@/components/golden-acres/home/market-hero'
-import { FarmerField } from '@/components/golden-acres/home/farmer-field'
+import { HeroPromo, TrustStrip } from '@/components/golden-acres/home/hero-promo'
+import { CategoryTiles } from '@/components/golden-acres/home/category-tiles'
+import { DealsRail } from '@/components/golden-acres/home/deals-rail'
 import { FeaturedProduce } from '@/components/golden-acres/home/featured-produce'
 import { FreshnessStory } from '@/components/golden-acres/home/freshness-story'
 import { MatchTeaser } from '@/components/golden-acres/home/match-teaser'
@@ -12,13 +12,10 @@ import { Reveal } from '@/components/golden-acres/reveal'
 export default function HomePage() {
   return (
     <>
-      <HomeHero />
-      <Reveal>
-        <MarketHero />
-      </Reveal>
-      <Reveal>
-        <FarmerField />
-      </Reveal>
+      <HeroPromo />
+      <TrustStrip />
+      <CategoryTiles />
+      <DealsRail />
       <Reveal>
         <FeaturedProduce />
       </Reveal>

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { Plus, Check, Heart } from 'lucide-react'
+import { ShoppingCart, Check, Heart, Star } from 'lucide-react'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { useSession } from '@/components/golden-acres/auth/session-context'
@@ -21,6 +21,8 @@ export function ProduceCard({ product }: { product: Product }) {
   const farmer = productFarmer(product)
   const fresh = freshnessLabel(product.expiryDate)
   const estimate = productEstimate(product)
+  const unitLabel = product.variableWeight ? weight(product.estWeightKg) : product.unit
+  const rounded = Math.round(farmer.rating)
 
   function handleAdd() {
     add(product, 1)
@@ -29,91 +31,122 @@ export function ProduceCard({ product }: { product: Product }) {
   }
 
   return (
-    <div className="ga-card-hover group flex flex-col overflow-hidden rounded-2xl border border-border bg-card">
-      <Link
-        href={`/shop/${product.slug}`}
-        className="ga-zoom relative block aspect-[4/5] overflow-hidden"
-      >
-        <SmartImage src={product.image} alt={product.name} fill className="object-cover" />
+    <div className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_12px_30px_-14px_rgba(11,59,37,0.35)]">
+      <div className="relative">
+        <Link
+          href={`/shop/${product.slug}`}
+          className="relative block aspect-square overflow-hidden bg-secondary/40"
+        >
+          <SmartImage
+            src={product.image}
+            alt={product.name}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </Link>
 
-        {/* top badges row */}
-        <div className="absolute inset-x-3 top-3 flex items-start justify-between">
-          {product.organic ? (
-            <span className="ga-kicker rounded-full bg-card/90 px-2.5 py-1 text-[9px] text-primary backdrop-blur">
+        {/* badges */}
+        <div className="pointer-events-none absolute left-2.5 top-2.5 flex flex-col gap-1.5">
+          {product.organic && (
+            <span className="rounded-md bg-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary-foreground shadow-sm">
               Organic
             </span>
-          ) : (
-            <span />
           )}
-          <span
-            className="ga-kicker rounded-full px-2.5 py-1 text-[9px] text-white backdrop-blur"
-            style={{ backgroundColor: fresh.color }}
-          >
-            {fresh.label}
-          </span>
+          {product.status === 'low' && (
+            <span className="rounded-md bg-deal px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-deal-foreground shadow-sm">
+              Low stock
+            </span>
+          )}
         </div>
 
-        {product.status === 'low' && (
-          <span className="ga-kicker absolute bottom-3 left-3 rounded-full bg-[var(--ga-terracotta)] px-2.5 py-1 text-[9px] text-white">
-            Low stock
-          </span>
-        )}
+        <span
+          className="absolute right-2.5 top-2.5 rounded-md px-2 py-0.5 text-[10px] font-bold text-white shadow-sm"
+          style={{ backgroundColor: fresh.color }}
+        >
+          {fresh.label}
+        </span>
+
         {canSave && (
           <button
             type="button"
-            onClick={(e) => {
-              e.preventDefault()
-              toggleWishlist(product.id)
-            }}
+            onClick={() => toggleWishlist(product.id)}
             aria-label={saved ? `Remove ${product.name} from favorites` : `Save ${product.name} to favorites`}
             aria-pressed={saved}
-            className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-card/90 text-foreground shadow-sm backdrop-blur transition-transform hover:-translate-y-0.5 active:translate-y-0"
+            className="absolute bottom-2.5 right-2.5 flex h-9 w-9 items-center justify-center rounded-full bg-card/90 text-foreground shadow-sm backdrop-blur transition-transform hover:-translate-y-0.5 active:translate-y-0"
           >
             <Heart
-              className="h-5 w-5 transition-colors"
+              className="h-[18px] w-[18px] transition-colors"
               style={{
-                fill: saved ? 'var(--ga-terracotta)' : 'transparent',
-                color: saved ? 'var(--ga-terracotta)' : 'currentColor',
+                fill: saved ? 'var(--ga-deal)' : 'transparent',
+                color: saved ? 'var(--ga-deal)' : 'currentColor',
               }}
             />
           </button>
         )}
-      </Link>
+      </div>
 
-      <div className="flex flex-1 flex-col p-4">
+      <div className="flex flex-1 flex-col p-3">
         <Link
           href={`/farmers/${farmer.slug}`}
-          className="ga-kicker text-[10px] text-[var(--ga-clay)] transition-colors hover:text-[var(--ga-terracotta)]"
+          className="truncate text-xs font-medium text-muted-foreground transition-colors hover:text-primary"
         >
           {farmer.farmName}
         </Link>
-        <Link href={`/shop/${product.slug}`}>
-          <h3 className="ga-headline mt-2 text-xl leading-tight text-foreground">
+
+        <Link href={`/shop/${product.slug}`} className="mt-1">
+          <h3 className="line-clamp-2 min-h-[2.5rem] text-sm font-semibold leading-tight text-foreground transition-colors group-hover:text-primary">
             {product.name}
           </h3>
         </Link>
-        <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
-          {product.description}
-        </p>
 
-        <div className="mt-4 flex items-end justify-between border-t border-border pt-3.5">
-          <div className="flex flex-col">
-            <span className="ga-headline text-2xl text-foreground">
-              {formatGHS(estimate)}
-            </span>
-            <span className="ga-index text-[11px] text-muted-foreground">
-              / {product.variableWeight ? weight(product.estWeightKg) : product.unit}
-            </span>
+        {/* rating */}
+        <div className="mt-1.5 flex items-center gap-1">
+          <div className="flex items-center">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star
+                key={i}
+                className="h-3.5 w-3.5"
+                style={{
+                  fill: i < rounded ? 'var(--ga-star)' : 'transparent',
+                  color: i < rounded ? 'var(--ga-star)' : 'var(--border)',
+                }}
+              />
+            ))}
           </div>
-          <button
-            type="button"
-            onClick={handleAdd}
-            aria-label={`Add ${product.name} to cart`}
-            className="ga-press flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm shadow-primary/30"
-          >
-            {added ? <Check className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
-          </button>
+          <span className="text-xs font-semibold text-foreground">{farmer.rating.toFixed(1)}</span>
+          <span className="text-xs text-muted-foreground">({farmer.reviewCount})</span>
         </div>
+
+        {/* price */}
+        <div className="mt-2.5 flex items-baseline gap-1.5">
+          <span className="ga-price text-xl text-foreground">{formatGHS(estimate)}</span>
+          <span className="text-xs text-muted-foreground">/ {unitLabel}</span>
+        </div>
+        {product.variableWeight && (
+          <span className="text-[11px] text-muted-foreground">Est. weight, priced after picking</span>
+        )}
+
+        <button
+          type="button"
+          onClick={handleAdd}
+          aria-label={`Add ${product.name} to cart`}
+          className={[
+            'ga-press mt-3 flex h-10 w-full items-center justify-center gap-2 rounded-full text-sm font-bold transition-colors',
+            added
+              ? 'bg-secondary text-primary'
+              : 'bg-primary text-primary-foreground hover:bg-field-deep',
+          ].join(' ')}
+        >
+          {added ? (
+            <>
+              <Check className="h-4 w-4" /> Added
+            </>
+          ) : (
+            <>
+              <ShoppingCart className="h-4 w-4" /> Add to cart
+            </>
+          )}
+        </button>
       </div>
     </div>
   )

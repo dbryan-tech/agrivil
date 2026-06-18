@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { NotificationBell } from '@/components/golden-acres/notifications/notification-bell'
 import {
   ShoppingBasket,
@@ -15,121 +15,204 @@ import {
   LogOut,
   LayoutDashboard,
   LifeBuoy,
+  Search,
+  Heart,
+  ChevronDown,
+  Headphones,
+  Store,
+  Truck,
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { useCart } from './cart-context'
 import { useSession } from './auth/session-context'
 
-const NAV = [
-  { href: '/shop', label: 'Shop' },
-  { href: '/bundles', label: 'Boxes' },
+const CATEGORIES = [
+  'Vegetables',
+  'Fruits',
+  'Roots & Tubers',
+  'Leafy Greens',
+  'Grains & Legumes',
+  'Herbs & Spices',
+] as const
+
+const PRIMARY_NAV = [
+  { href: '/shop', label: 'All Produce' },
+  { href: '/bundles', label: 'Boxes & Subscriptions' },
   { href: '/farmers', label: 'Our Farmers' },
   { href: '/local', label: 'Shop Local' },
 ]
 
 export function GaHeader() {
   const pathname = usePathname()
+  const router = useRouter()
   const { count } = useCart()
   const [open, setOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+  const [query, setQuery] = useState('')
+  const [cat, setCat] = useState('All')
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  function submitSearch(e: React.FormEvent) {
+    e.preventDefault()
+    const params = new URLSearchParams()
+    if (query.trim()) params.set('q', query.trim())
+    if (cat !== 'All') params.set('category', cat)
+    router.push(`/shop${params.toString() ? `?${params}` : ''}`)
+    setOpen(false)
+  }
 
   return (
-    <header
-      className={cn(
-        'ga-header-blur sticky top-0 z-50 border-b',
-        scrolled
-          ? 'border-border bg-background/80 shadow-[0_8px_30px_-18px_rgba(8,22,15,0.5)] backdrop-blur-xl'
-          : 'border-transparent bg-background/40 backdrop-blur-md',
-      )}
-    >
-      <div
-        className={cn(
-          'mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 transition-all duration-300 sm:px-6',
-          scrolled ? 'h-14' : 'h-[4.5rem]',
-        )}
-      >
-        <Link href="/" className="group flex items-center gap-2.5" aria-label="AgriVil home">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm transition-transform duration-300 group-hover:rotate-[-8deg]">
-            <Wheat className="h-5 w-5" strokeWidth={2.2} />
-          </span>
-          <span className="flex flex-col leading-none">
-            <span className="ga-display text-xl leading-none text-foreground">AgriVil</span>
-            <span className="ga-eyebrow mt-1 text-[9px] text-muted-foreground">
-              by Golden Acres
-            </span>
-          </span>
-        </Link>
+    <header className="sticky top-0 z-50">
+      {/* Utility bar */}
+      <div className="bg-header text-header-foreground">
+        <div className="mx-auto flex h-9 max-w-7xl items-center justify-between gap-4 px-4 text-xs sm:px-6">
+          <Link href="/local" className="flex items-center gap-1.5 transition-opacity hover:opacity-80">
+            <MapPin className="h-3.5 w-3.5" />
+            <span className="font-medium">Deliver to</span>
+            <span className="font-semibold underline-offset-2 hover:underline">Accra Pilot · GA-183</span>
+          </Link>
+          <nav className="flex items-center gap-4 font-medium">
+            <Link href="/farmer" className="hidden items-center gap-1.5 hover:opacity-80 sm:flex">
+              <Store className="h-3.5 w-3.5" /> Sell on AgriVil
+            </Link>
+            <Link href="/account" className="hidden items-center gap-1.5 hover:opacity-80 sm:flex">
+              <Truck className="h-3.5 w-3.5" /> Track order
+            </Link>
+            <Link href="/help" className="flex items-center gap-1.5 hover:opacity-80">
+              <Headphones className="h-3.5 w-3.5" /> Help
+            </Link>
+          </nav>
+        </div>
+      </div>
 
-        <nav className="hidden items-center gap-1 md:flex">
-          {NAV.map((item) => {
+      {/* Main bar */}
+      <div className="border-b border-border bg-card">
+        <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:gap-6">
+          <Link href="/" className="group flex shrink-0 items-center gap-2.5" aria-label="AgriVil home">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm transition-transform duration-300 group-hover:rotate-[-8deg]">
+              <Wheat className="h-5 w-5" strokeWidth={2.2} />
+            </span>
+            <span className="flex flex-col leading-none">
+              <span className="ga-headline text-xl leading-none text-foreground">AgriVil</span>
+              <span className="ga-kicker mt-1 text-[8px] tracking-[0.16em] text-muted-foreground">
+                by Golden Acres
+              </span>
+            </span>
+          </Link>
+
+          {/* Search */}
+          <form
+            onSubmit={submitSearch}
+            className="hidden h-11 flex-1 items-center overflow-hidden rounded-full border-2 border-primary/80 bg-card md:flex"
+          >
+            <div className="relative flex h-full items-center border-r border-border">
+              <select
+                value={cat}
+                onChange={(e) => setCat(e.target.value)}
+                aria-label="Search category"
+                className="h-full cursor-pointer appearance-none bg-secondary/60 pl-4 pr-9 text-sm font-semibold text-secondary-foreground outline-none"
+              >
+                <option value="All">All</option>
+                {CATEGORIES.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-3 h-4 w-4 text-muted-foreground" />
+            </div>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search fresh tomatoes, plantain, pepper, yam…"
+              className="h-full flex-1 bg-transparent px-4 text-sm text-foreground outline-none placeholder:text-muted-foreground"
+            />
+            <button
+              type="submit"
+              aria-label="Search"
+              className="flex h-full items-center justify-center bg-primary px-5 text-primary-foreground transition-colors hover:bg-field-deep"
+            >
+              <Search className="h-5 w-5" />
+            </button>
+          </form>
+
+          <div className="flex flex-1 items-center justify-end gap-1 md:flex-none">
+            <NotificationBell />
+            <WishlistLink />
+            <AccountControl />
+            <Link
+              href="/checkout"
+              className="ga-press relative ml-1 flex h-11 items-center gap-2 rounded-full bg-primary px-4 text-sm font-bold text-primary-foreground transition-colors hover:bg-field-deep"
+            >
+              <ShoppingBasket className="h-5 w-5" />
+              <span className="hidden lg:inline">Basket</span>
+              {count > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[0.7rem] font-bold text-accent-foreground">
+                  {count}
+                </span>
+              )}
+            </Link>
+            <button
+              type="button"
+              onClick={() => setOpen((o) => !o)}
+              className="flex h-11 w-11 items-center justify-center rounded-full text-foreground md:hidden"
+              aria-label="Toggle menu"
+            >
+              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile search */}
+        <form onSubmit={submitSearch} className="px-4 pb-3 md:hidden">
+          <div className="flex h-11 items-center overflow-hidden rounded-full border-2 border-primary/80 bg-card">
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search fresh produce…"
+              className="h-full flex-1 bg-transparent px-4 text-sm text-foreground outline-none placeholder:text-muted-foreground"
+            />
+            <button type="submit" aria-label="Search" className="flex h-full items-center bg-primary px-4 text-primary-foreground">
+              <Search className="h-5 w-5" />
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* Category nav strip */}
+      <div className="border-b border-border bg-card/95 backdrop-blur">
+        <div className="ga-rail mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 sm:px-6">
+          {PRIMARY_NAV.map((item) => {
             const active = pathname === item.href
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'relative rounded-full px-4 py-2 text-sm font-semibold transition-colors',
-                  active
-                    ? 'text-primary'
-                    : 'text-foreground/70 hover:text-foreground',
+                  'relative whitespace-nowrap px-3 py-2.5 text-sm font-semibold transition-colors',
+                  active ? 'text-primary' : 'text-foreground/70 hover:text-foreground',
                 )}
               >
                 {item.label}
-                <span
-                  className={cn(
-                    'absolute inset-x-4 -bottom-0.5 h-0.5 rounded-full bg-primary transition-all duration-300',
-                    active ? 'opacity-100' : 'opacity-0',
-                  )}
-                />
+                {active && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-primary" />}
               </Link>
             )
           })}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          <span className="hidden items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground lg:inline-flex">
-            <MapPin className="h-3.5 w-3.5 text-primary" />
-            Accra pilot
-          </span>
-
-          <NotificationBell />
-
-          <AccountControl />
-
-          <Link
-            href="/checkout"
-            className="ga-sheen ga-press relative flex h-10 items-center gap-2 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground"
-          >
-            <ShoppingBasket className="h-5 w-5" />
-            <span className="hidden sm:inline">Basket</span>
-            {count > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[0.7rem] font-bold text-accent-foreground">
-                {count}
-              </span>
-            )}
-          </Link>
-          <button
-            type="button"
-            onClick={() => setOpen((o) => !o)}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-foreground md:hidden"
-            aria-label="Toggle menu"
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          <span className="mx-1 h-4 w-px shrink-0 bg-border" />
+          {CATEGORIES.map((c) => (
+            <Link
+              key={c}
+              href={`/shop?category=${encodeURIComponent(c)}`}
+              className="whitespace-nowrap px-3 py-2.5 text-sm font-medium text-foreground/60 transition-colors hover:text-primary"
+            >
+              {c}
+            </Link>
+          ))}
         </div>
       </div>
 
       {open && (
-        <nav className="border-t border-border bg-background px-4 py-3 md:hidden">
-          {NAV.map((item) => (
+        <nav className="border-b border-border bg-card px-4 py-3 md:hidden">
+          {PRIMARY_NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -146,6 +229,20 @@ export function GaHeader() {
   )
 }
 
+function WishlistLink() {
+  const { account } = useSession()
+  if (account?.role !== 'customer') return null
+  return (
+    <Link
+      href="/account"
+      aria-label="Saved items"
+      className="hidden h-11 w-11 items-center justify-center rounded-full text-foreground transition-colors hover:bg-secondary sm:flex"
+    >
+      <Heart className="h-5 w-5" />
+    </Link>
+  )
+}
+
 function AccountControl() {
   const { account, hydrated, signOut } = useSession()
   const [menu, setMenu] = useState(false)
@@ -159,16 +256,19 @@ function AccountControl() {
     return () => document.removeEventListener('mousedown', onClick)
   }, [])
 
-  if (!hydrated) return <span className="hidden h-10 w-20 rounded-full bg-secondary sm:block" />
+  if (!hydrated) return <span className="hidden h-11 w-24 rounded-full bg-secondary sm:block" />
 
   if (!account) {
     return (
       <Link
         href="/login"
-        className="hidden h-10 items-center gap-1.5 rounded-full border border-field/30 px-4 text-sm font-semibold text-field transition-colors hover:bg-secondary sm:inline-flex"
+        className="hidden h-11 items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-foreground transition-colors hover:bg-secondary sm:inline-flex"
       >
-        <User className="h-4 w-4" />
-        Sign in
+        <User className="h-5 w-5" />
+        <span className="flex flex-col items-start leading-none">
+          <span className="text-[10px] font-medium text-muted-foreground">Hello, sign in</span>
+          <span className="text-sm font-bold">Account</span>
+        </span>
       </Link>
     )
   }
@@ -180,7 +280,7 @@ function AccountControl() {
       <div className="relative" ref={ref}>
         <button
           onClick={() => setMenu((m) => !m)}
-          className="flex h-10 items-center gap-2 rounded-full border border-border px-2 pr-3 text-sm font-semibold text-foreground hover:bg-secondary"
+          className="flex h-11 items-center gap-2 rounded-full px-2 pr-3 text-sm font-semibold text-foreground hover:bg-secondary"
         >
           <Monogram account={account} />
           <span className="hidden sm:inline">{account.name.split(' ')[0]}</span>
@@ -202,7 +302,7 @@ function AccountControl() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setMenu((m) => !m)}
-        className="flex h-10 items-center gap-2 rounded-full border border-border px-2 pr-3 text-sm font-semibold text-foreground hover:bg-secondary"
+        className="flex h-11 items-center gap-2 rounded-full px-2 pr-3 text-sm font-semibold text-foreground hover:bg-secondary"
         aria-label="Account menu"
       >
         <Monogram account={account} />
@@ -227,7 +327,7 @@ function AccountControl() {
 function Monogram({ account }: { account: { name: string; avatarColor: string } }) {
   return (
     <span
-      className="flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-cream"
+      className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-cream"
       style={{ background: account.avatarColor }}
     >
       {account.name.charAt(0)}
