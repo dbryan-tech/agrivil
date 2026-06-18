@@ -198,58 +198,62 @@
    ============================================================ */
 .ga-root {
   color-scheme: light;
-  font-family: var(--font-onest);
-  letter-spacing: -0.011em;
-  /* AgriVil — "Modern Harvest": emerald + gold + lime, crisp white cards */
-  --background: #f7f8f3;
-  --foreground: #0d2117;
-  --card: #ffffff;
-  --card-foreground: #0d2117;
-  --popover: #ffffff;
-  --popover-foreground: #0d2117;
-  --primary: #0f7a47;
-  --primary-foreground: #f4fbf4;
-  --secondary: #eef3e7;
-  --secondary-foreground: #14301f;
-  --muted: #e8efdd;
-  --muted-foreground: #51664f;
-  --accent: #f6c544;
-  --accent-foreground: #3a2c06;
-  --destructive: #c0392b;
-  --border: #dde5d2;
-  --input: #dde5d2;
-  --ring: #0f7a47;
-  --radius: 1rem;
+  font-family: var(--font-jakarta);
+  letter-spacing: -0.012em;
+  /* AgriVil — "Editorial Farm-Luxe": warm paper, forest ink, terracotta accent */
+  --background: #f4f0e6;
+  --foreground: #1a2b20;
+  --card: #fbf8f0;
+  --card-foreground: #1a2b20;
+  --popover: #fbf8f0;
+  --popover-foreground: #1a2b20;
+  --primary: #14613c;
+  --primary-foreground: #f6f3e9;
+  --secondary: #e9e3d2;
+  --secondary-foreground: #243a2b;
+  --muted: #ebe5d6;
+  --muted-foreground: #6b6a55;
+  --accent: #c4512c;
+  --accent-foreground: #fbf3ea;
+  --destructive: #b23a2a;
+  --border: #ddd4bf;
+  --input: #ddd4bf;
+  --ring: #14613c;
+  --brand: #14613c;
+  --brand-foreground: #f6f3e9;
+  --radius: 0.625rem;
 
-  /* yellow/gold brand accent (badges, highlights, ratings) */
-  --ga-gold: #9a7400;
-  --ga-gold-soft: #f6c544;
+  /* warm ochre/gold — used sparingly for ratings + highlights */
+  --ga-gold: #9a6b15;
+  --ga-gold-soft: #d99a2b;
   /* green brand core */
-  --ga-field: #0f7a47;
-  --ga-field-deep: #0a4d2c;
-  --ga-terracotta: #c0492e;
-  --ga-cream: #f7f8f3;
-  --ga-clay: #7d6a3a;
-  --ga-leaf: #3fa64f;
-  /* cinematic dark-section ink + electric fresh pop */
-  --ga-ink-deep: #08160f;
-  --ga-ink-soft: #0f2419;
-  --ga-lime: #c8f24a;
+  --ga-field: #14613c;
+  --ga-field-deep: #0c4127;
+  /* terracotta — the editorial accent (eyebrows, italic words, index) */
+  --ga-terracotta: #c4512c;
+  --ga-cream: #f4f0e6;
+  --ga-paper: #f4f0e6;
+  --ga-clay: #8a5a3a;
+  --ga-leaf: #3f8a4f;
+  /* cinematic dark-section ink + fresh pop */
+  --ga-ink-deep: #0c1c13;
+  --ga-ink-soft: #122a1c;
+  --ga-lime: #d6e85a;
 
-  --chart-1: #0f7a47;
-  --chart-2: #f6c544;
-  --chart-3: #3fa64f;
-  --chart-4: #9a7400;
-  --chart-5: #0a4d2c;
+  --chart-1: #14613c;
+  --chart-2: #d99a2b;
+  --chart-3: #3f8a4f;
+  --chart-4: #c4512c;
+  --chart-5: #0c4127;
 
-  --sidebar: #ffffff;
-  --sidebar-foreground: #0d2117;
-  --sidebar-primary: #0f7a47;
-  --sidebar-primary-foreground: #f4fbf4;
-  --sidebar-accent: #eef3e7;
-  --sidebar-accent-foreground: #14301f;
-  --sidebar-border: #dde5d2;
-  --sidebar-ring: #0f7a47;
+  --sidebar: #fbf8f0;
+  --sidebar-foreground: #1a2b20;
+  --sidebar-primary: #14613c;
+  --sidebar-primary-foreground: #f6f3e9;
+  --sidebar-accent: #e9e3d2;
+  --sidebar-accent-foreground: #243a2b;
+  --sidebar-border: #ddd4bf;
+  --sidebar-ring: #14613c;
 }
 
 .ga-display {
@@ -264,6 +268,47 @@
   font-optical-sizing: auto;
   font-style: italic;
   font-weight: 500;
+}
+
+/* ---- Editorial Farm-Luxe typography ---- */
+
+/* primary magazine display face: optical Fraunces, tight + refined.
+   This is the signature headline voice across the storefront. */
+.ga-headline {
+  font-family: var(--font-fraunces);
+  font-optical-sizing: auto;
+  font-weight: 540;
+  letter-spacing: -0.022em;
+  line-height: 0.98;
+}
+.ga-headline em,
+.ga-headline .em {
+  font-style: italic;
+  font-weight: 480;
+  color: var(--ga-terracotta);
+}
+
+/* hairline rule used to separate editorial sections */
+.ga-rule {
+  height: 1px;
+  width: 100%;
+  background: var(--border);
+}
+
+/* monospaced index numeral (01 / 02 …) for section indexing */
+.ga-index {
+  font-family: var(--font-mono-display);
+  font-feature-settings: 'tnum' 1;
+  letter-spacing: 0.04em;
+}
+
+/* editorial kicker tag: thin pill with terracotta type */
+.ga-kicker {
+  font-family: var(--font-mono-display);
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-weight: 500;
+  font-size: 0.68rem;
 }
 
 /* gentle entrance used across Golden Acres surfaces */

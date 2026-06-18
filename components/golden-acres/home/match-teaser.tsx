@@ -50,8 +50,12 @@ export function MatchTeaser() {
       />
       <div className="relative z-[2] mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-14 lg:px-8 lg:py-20">
         <div>
-          <p className="ga-eyebrow text-[var(--ga-lime)]">MarketPlace Match</p>
-          <h2 className="ga-display mt-3 text-balance text-4xl sm:text-5xl">
+          <div className="flex items-center gap-4">
+            <span className="ga-index text-sm text-[var(--ga-lime)]">05</span>
+            <div className="h-px flex-1 bg-white/15" />
+            <span className="ga-kicker shrink-0 text-[var(--ga-cream)]/60">MarketPlace Match</span>
+          </div>
+          <h2 className="ga-headline mt-6 text-balance text-5xl sm:text-6xl">
             We find the farms{' '}
             <span className="ga-serif font-normal text-[var(--ga-lime)]">closest</span> to you
           </h2>

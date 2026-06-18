@@ -23,10 +23,10 @@ export function FarmerField() {
           </div>
           {/* Quote chip floating over the visible image */}
           <div className="absolute -bottom-4 left-3 max-w-[13rem] rounded-xl border border-border bg-card/95 p-3 shadow-xl shadow-black/10 backdrop-blur-sm">
-            <p className="ga-display text-sm font-semibold leading-snug text-foreground">
+            <p className="ga-serif text-base leading-snug text-foreground">
               &ldquo;You taste the difference when it&apos;s picked this morning.&rdquo;
             </p>
-            <p className="mt-1 text-[0.7rem] font-bold uppercase tracking-wide text-[var(--ga-gold)]">
+            <p className="ga-kicker mt-2 text-[9px] text-[var(--ga-terracotta)]">
               Kwame · Maize farmer, Eastern Region
             </p>
           </div>
@@ -34,13 +34,12 @@ export function FarmerField() {
 
         {/* Copy that fills the side space */}
         <div className="ga-rise" style={{ animationDelay: '120ms' }}>
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3.5 py-1.5 text-secondary-foreground">
-            <Leaf className="h-4 w-4 text-[var(--ga-leaf)]" />
-            <span className="ga-eyebrow text-primary">Grown with care, close to home</span>
+          <span className="ga-kicker inline-flex items-center gap-2 text-[var(--ga-terracotta)]">
+            <Leaf className="h-3.5 w-3.5" />
+            Grown with care, close to home
           </span>
-          <h2 className="ga-display mt-5 text-balance text-4xl leading-[1.02] text-foreground sm:text-5xl">
-            Real farmers. Real fields. Real{' '}
-            <span className="ga-serif font-normal text-primary">flavour</span>.
+          <h2 className="ga-headline mt-5 text-balance text-5xl leading-[0.98] text-foreground sm:text-6xl">
+            Real farmers. Real fields. Real <em>flavour</em>.
           </h2>
           <p className="mt-5 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
             Behind every basket is a Ghanaian grower who planted, tended and hand-picked your

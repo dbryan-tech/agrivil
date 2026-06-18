@@ -29,25 +29,32 @@ export function ProduceCard({ product }: { product: Product }) {
   }
 
   return (
-    <div className="ga-card-hover group flex flex-col overflow-hidden rounded-3xl border border-border bg-card">
+    <div className="ga-card-hover group flex flex-col overflow-hidden rounded-2xl border border-border bg-card">
       <Link
         href={`/shop/${product.slug}`}
-        className="ga-zoom relative block aspect-square overflow-hidden rounded-b-[1.75rem]"
+        className="ga-zoom relative block aspect-[4/5] overflow-hidden"
       >
         <SmartImage src={product.image} alt={product.name} fill className="object-cover" />
-        {product.organic && (
-          <span className="absolute left-3 top-3 rounded-full bg-[var(--ga-lime)] px-2.5 py-1 text-xs font-bold text-[var(--ga-ink-deep)]">
-            Organic
+
+        {/* top badges row */}
+        <div className="absolute inset-x-3 top-3 flex items-start justify-between">
+          {product.organic ? (
+            <span className="ga-kicker rounded-full bg-card/90 px-2.5 py-1 text-[9px] text-primary backdrop-blur">
+              Organic
+            </span>
+          ) : (
+            <span />
+          )}
+          <span
+            className="ga-kicker rounded-full px-2.5 py-1 text-[9px] text-white backdrop-blur"
+            style={{ backgroundColor: fresh.color }}
+          >
+            {fresh.label}
           </span>
-        )}
-        <span
-          className="absolute right-3 top-3 rounded-full px-2.5 py-1 text-xs font-bold text-white"
-          style={{ backgroundColor: fresh.color }}
-        >
-          {fresh.label}
-        </span>
+        </div>
+
         {product.status === 'low' && (
-          <span className="absolute bottom-3 left-3 rounded-full bg-[var(--ga-terracotta)] px-2.5 py-1 text-xs font-bold text-white">
+          <span className="ga-kicker absolute bottom-3 left-3 rounded-full bg-[var(--ga-terracotta)] px-2.5 py-1 text-[9px] text-white">
             Low stock
           </span>
         )}
@@ -76,26 +83,25 @@ export function ProduceCard({ product }: { product: Product }) {
       <div className="flex flex-1 flex-col p-4">
         <Link
           href={`/farmers/${farmer.slug}`}
-          className="text-xs font-semibold text-[var(--ga-clay)] hover:underline"
+          className="ga-kicker text-[10px] text-[var(--ga-clay)] transition-colors hover:text-[var(--ga-terracotta)]"
         >
           {farmer.farmName}
         </Link>
         <Link href={`/shop/${product.slug}`}>
-          <h3 className="mt-1 text-base font-bold leading-snug text-foreground">
+          <h3 className="ga-headline mt-2 text-xl leading-tight text-foreground">
             {product.name}
           </h3>
         </Link>
-        <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+        <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
           {product.description}
         </p>
 
-        <div className="mt-3 flex items-end justify-between">
-          <div>
-            <span className="text-lg font-extrabold text-foreground">
+        <div className="mt-4 flex items-end justify-between border-t border-border pt-3.5">
+          <div className="flex flex-col">
+            <span className="ga-headline text-2xl text-foreground">
               {formatGHS(estimate)}
             </span>
-            <span className="text-sm text-muted-foreground">
-              {' '}
+            <span className="ga-index text-[11px] text-muted-foreground">
               / {product.variableWeight ? weight(product.estWeightKg) : product.unit}
             </span>
           </div>

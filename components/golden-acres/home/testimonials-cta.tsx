@@ -5,11 +5,10 @@ import { Quote, ArrowRight } from 'lucide-react'
 export function TestimonialsCta() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-      <div className="text-center">
-        <p className="ga-eyebrow text-primary">Loved across Ghana</p>
-        <h2 className="ga-display mx-auto mt-3 max-w-2xl text-balance text-4xl text-foreground sm:text-5xl">
-          Families and chefs who switched to{' '}
-          <span className="ga-serif font-normal text-primary">fresh</span>
+      <div className="mx-auto max-w-2xl text-center">
+        <span className="ga-kicker text-[var(--ga-terracotta)]">Loved across Ghana</span>
+        <h2 className="ga-headline mx-auto mt-4 max-w-2xl text-balance text-5xl text-foreground sm:text-6xl">
+          Families and chefs who switched to <em>fresh</em>
         </h2>
       </div>
 
@@ -17,10 +16,10 @@ export function TestimonialsCta() {
         {testimonials.map((t) => (
           <figure
             key={t.id}
-            className="flex flex-col rounded-2xl border border-border bg-card p-6"
+            className="flex flex-col rounded-2xl border border-border bg-card p-7"
           >
-            <Quote className="h-7 w-7 text-[var(--ga-gold-soft)]" />
-            <blockquote className="mt-4 flex-1 text-base leading-relaxed text-foreground">
+            <Quote className="h-7 w-7 text-[var(--ga-terracotta)]" />
+            <blockquote className="ga-serif mt-4 flex-1 text-lg not-italic leading-relaxed text-foreground">
               {t.quote}
             </blockquote>
             <figcaption className="mt-5 flex items-center gap-3">
@@ -44,8 +43,8 @@ export function TestimonialsCta() {
             'radial-gradient(120% 90% at 50% -10%, color-mix(in oklab, var(--ga-field) 45%, transparent), transparent 60%)',
         }}
       >
-        <p className="ga-eyebrow relative z-[2] text-[var(--ga-lime)]">Fresh, on your schedule</p>
-        <h2 className="ga-display relative z-[2] mx-auto mt-3 max-w-2xl text-balance text-3xl sm:text-5xl">
+        <p className="ga-kicker relative z-[2] text-[var(--ga-lime)]">Fresh, on your schedule</p>
+        <h2 className="ga-headline relative z-[2] mx-auto mt-4 max-w-2xl text-balance text-4xl sm:text-6xl">
           Taste the difference{' '}
           <span className="ga-serif font-normal text-[var(--ga-lime)]">fresh</span> makes
         </h2>

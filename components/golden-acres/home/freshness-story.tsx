@@ -39,12 +39,15 @@ export function FreshnessStory() {
             />
           </div>
           <div>
-            <p className="ga-eyebrow text-primary">How it works</p>
-            <h2 className="ga-display mt-3 text-balance text-4xl text-foreground sm:text-5xl">
-              From their soil to your{' '}
-              <span className="ga-serif font-normal text-primary">kitchen</span>
+            <div className="flex items-center gap-4">
+              <span className="ga-index text-sm text-[var(--ga-terracotta)]">04</span>
+              <div className="ga-rule" />
+              <span className="ga-kicker shrink-0 text-muted-foreground">How It Works</span>
+            </div>
+            <h2 className="ga-headline mt-6 text-balance text-5xl text-foreground sm:text-6xl">
+              From their soil to your <em>kitchen</em>
             </h2>
-            <p className="mt-3 max-w-xl leading-relaxed text-muted-foreground">
+            <p className="mt-4 max-w-xl leading-relaxed text-muted-foreground">
               No middlemen, no warehouses sitting on produce for days. Just a short, cold
               path from the farm that grew it to the table that needs it.
             </p>

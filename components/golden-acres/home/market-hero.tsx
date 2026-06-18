@@ -1,53 +1,60 @@
 import Link from 'next/link'
-import { ArrowRight, ShoppingBasket } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 export function MarketHero() {
   return (
-    <section className="relative isolate overflow-hidden">
-      {/* Full-bleed market-stall photograph with a legibility scrim */}
-      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
-        <img
-          src="/golden-acres/new-hero.png"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-black/30" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+    <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      {/* section index header */}
+      <div className="flex items-center gap-4">
+        <span className="ga-index text-sm text-[var(--ga-terracotta)]">01</span>
+        <div className="ga-rule" />
+        <span className="ga-kicker shrink-0 text-muted-foreground">The Market</span>
       </div>
 
-      <div className="mx-auto flex min-h-[26rem] max-w-7xl items-center px-4 py-14 sm:px-6 lg:min-h-[32rem] lg:py-20 lg:px-8">
+      <div className="relative mt-8 overflow-hidden rounded-[1.75rem] border border-border">
+        {/* wide cinematic photograph */}
+        <img
+          src="/golden-acres/new-hero.png"
+          alt="A vibrant Ghanaian market stall stacked with fresh produce"
+          className="h-[24rem] w-full object-cover object-center sm:h-[30rem] lg:h-[34rem]"
+        />
         <div
-          className="ga-rise max-w-xl"
-          style={{ textShadow: '0 1px 2px rgba(0,0,0,0.55), 0 2px 14px rgba(0,0,0,0.45)' }}
-        >
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-white backdrop-blur-sm">
-            <ShoppingBasket className="h-4 w-4 text-[var(--ga-lime)]" />
-            <span className="ga-eyebrow text-[var(--ga-lime)]">A market that comes to you</span>
-          </span>
-          <h2 className="ga-display mt-5 text-balance text-4xl leading-[1.02] text-white sm:text-5xl lg:text-6xl">
-            Every stall, every harvest — in{' '}
-            <span className="ga-serif font-normal text-[var(--ga-lime)]">one basket</span>.
-          </h2>
-          <p className="mt-5 max-w-lg text-pretty text-lg leading-relaxed text-white/85">
-            Tomatoes, peppers, leafy greens, yam and more — sourced from market gardens
-            across Ghana and bundled into a single, fresh delivery. Shop the whole stall
-            without ever leaving home.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link
-              href="/shop"
-              className="ga-sheen ga-press inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-base font-bold text-primary-foreground shadow-lg shadow-black/20"
-            >
-              Browse the market
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-            <Link
-              href="/bundles"
-              className="ga-press inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3.5 text-base font-bold text-white backdrop-blur-sm transition-colors hover:border-[var(--ga-lime)] hover:text-[var(--ga-lime)]"
-            >
-              Shop fresh bundles
-            </Link>
+          className="absolute inset-0"
+          aria-hidden="true"
+          style={{
+            background:
+              'linear-gradient(90deg, rgba(12,28,19,0.55) 0%, rgba(12,28,19,0.12) 45%, transparent 70%)',
+          }}
+        />
+
+        {/* floating paper copy card — magazine feature style */}
+        <div className="absolute inset-y-0 left-0 flex items-center p-5 sm:p-8 lg:p-12">
+          <div className="max-w-md rounded-2xl border border-border bg-card/95 p-7 shadow-2xl backdrop-blur-sm sm:p-9">
+            <span className="ga-kicker text-[var(--ga-terracotta)]">
+              A market that comes to you
+            </span>
+            <h2 className="ga-headline mt-4 text-balance text-4xl text-foreground sm:text-5xl">
+              Every stall, every harvest — in <em>one basket</em>.
+            </h2>
+            <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
+              Tomatoes, peppers, leafy greens, yam and more — sourced from market gardens
+              across Ghana and bundled into a single, fresh delivery.
+            </p>
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <Link
+                href="/shop"
+                className="ga-press group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground"
+              >
+                Browse the market
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href="/bundles"
+                className="ga-press inline-flex items-center gap-2 rounded-full border border-foreground/20 px-6 py-3.5 text-base font-semibold text-foreground transition-colors hover:border-foreground/40"
+              >
+                Fresh bundles
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -7,21 +7,22 @@ export function FarmerSpotlight() {
   const spotlight = farmers.slice(0, 3)
 
   return (
-    <section className="bg-[var(--ga-cream)] py-20">
+    <section className="bg-secondary/50 py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div className="max-w-xl">
-            <p className="ga-eyebrow text-primary">Meet the growers</p>
-            <h2 className="ga-display mt-3 text-balance text-4xl text-foreground sm:text-5xl">
-              Every order has a <span className="ga-serif font-normal text-primary">face</span>{' '}
-              behind it
-            </h2>
-          </div>
+        <div className="flex items-center gap-4">
+          <span className="ga-index text-sm text-[var(--ga-terracotta)]">07</span>
+          <div className="ga-rule" />
+          <span className="ga-kicker shrink-0 text-muted-foreground">Meet The Growers</span>
+        </div>
+        <div className="mt-8 flex flex-wrap items-end justify-between gap-4">
+          <h2 className="ga-headline max-w-xl text-balance text-5xl text-foreground sm:text-6xl">
+            Every order has a <em>face</em> behind it
+          </h2>
           <Link
             href="/farmers"
-            className="group inline-flex items-center gap-2 text-base font-bold text-primary hover:underline"
+            className="group inline-flex items-center gap-2 pb-2 text-base font-semibold text-primary"
           >
-            Meet all farmers
+            <span className="link-underline">Meet all farmers</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
@@ -31,7 +32,7 @@ export function FarmerSpotlight() {
             <Link
               key={farmer.id}
               href={`/farmers/${farmer.slug}`}
-              className="ga-card-hover group relative block overflow-hidden rounded-3xl"
+              className="ga-card-hover group relative block overflow-hidden rounded-2xl"
             >
               <div className="ga-zoom relative aspect-[4/5]">
                 <SmartImage src={farmer.photo} alt={farmer.name} fill className="object-cover" />
@@ -42,7 +43,7 @@ export function FarmerSpotlight() {
                   <MapPin className="h-4 w-4" />
                   {farmer.region}
                 </div>
-                <h3 className="ga-display mt-1 text-2xl font-semibold">{farmer.name}</h3>
+                <h3 className="ga-headline mt-1 text-3xl">{farmer.name}</h3>
                 <p className="text-sm text-[var(--ga-cream)]/80">{farmer.farmName}</p>
                 <div className="mt-2 flex items-center gap-1 text-sm">
                   <Star className="h-4 w-4 fill-[var(--ga-gold-soft)] text-[var(--ga-gold-soft)]" />

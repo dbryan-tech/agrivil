@@ -54,11 +54,15 @@ export function ShopCatalog() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <header className="ga-rise">
-        <p className="ga-eyebrow text-primary">The Market</p>
-        <h1 className="ga-display mt-3 text-4xl text-foreground sm:text-5xl">
-          Today&apos;s <span className="ga-serif font-normal text-primary">harvest</span>
+        <div className="flex items-center gap-4">
+          <span className="ga-index text-sm text-[var(--ga-terracotta)]">The Market</span>
+          <div className="ga-rule" />
+          <span className="ga-kicker shrink-0 text-muted-foreground">Accra Pilot</span>
+        </div>
+        <h1 className="ga-headline mt-6 text-balance text-6xl text-foreground sm:text-7xl">
+          Today&apos;s <em>harvest</em>
         </h1>
-        <p className="mt-3 max-w-2xl text-pretty leading-relaxed text-muted-foreground">
+        <p className="mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground">
           Every item is picked to order and priced by weight. The freshness badge shows
           how soon to enjoy it — we route your basket to the nearest farm first.
         </p>
@@ -104,17 +108,17 @@ export function ShopCatalog() {
         </div>
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-2">
+      <div className="mt-6 flex flex-wrap gap-2 border-t border-border pt-6">
         {CATEGORIES.map((c) => (
           <button
             key={c}
             type="button"
             onClick={() => setCategory(c)}
             className={[
-              'rounded-full px-4 py-2 text-sm font-semibold transition-colors',
+              'rounded-full border px-4 py-2 text-sm font-medium transition-colors',
               category === c
-                ? 'bg-primary text-primary-foreground'
-                : 'bg-secondary text-secondary-foreground hover:bg-accent',
+                ? 'border-primary bg-primary text-primary-foreground'
+                : 'border-border bg-transparent text-foreground/70 hover:border-foreground/40 hover:text-foreground',
             ].join(' ')}
           >
             {c}
@@ -122,14 +126,14 @@ export function ShopCatalog() {
         ))}
       </div>
 
-      <p className="mt-6 text-sm text-muted-foreground">
+      <p className="ga-kicker mt-6 text-muted-foreground">
         {visible.length} {visible.length === 1 ? 'item' : 'items'} available
       </p>
 
       {visible.length > 0 ? (
         <div
           key={`${category}-${query}-${organicOnly}-${sort}`}
-          className="ga-stagger mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4"
+          className="ga-stagger mt-5 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4"
         >
           {visible.map((p) => (
             <ProduceCard key={p.id} product={p} />

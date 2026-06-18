@@ -7,19 +7,22 @@ export function FeaturedProduce() {
   const featured = featuredProducts.slice(0, 4)
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="ga-eyebrow text-primary">Today&apos;s harvest</p>
-          <h2 className="ga-display mt-3 text-4xl text-foreground sm:text-5xl">
-            Picked this <span className="ga-serif font-normal text-primary">morning</span>
-          </h2>
-        </div>
+    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <div className="flex items-center gap-4">
+        <span className="ga-index text-sm text-[var(--ga-terracotta)]">02</span>
+        <div className="ga-rule" />
+        <span className="ga-kicker shrink-0 text-muted-foreground">Today&apos;s Harvest</span>
+      </div>
+
+      <div className="mt-8 flex flex-wrap items-end justify-between gap-4">
+        <h2 className="ga-headline max-w-xl text-balance text-5xl text-foreground sm:text-6xl">
+          Picked this <em>morning</em>
+        </h2>
         <Link
           href="/shop"
-          className="group inline-flex items-center gap-2 text-base font-bold text-primary hover:underline"
+          className="group inline-flex items-center gap-2 pb-2 text-base font-semibold text-primary"
         >
-          Browse all produce
+          <span className="link-underline">Browse all produce</span>
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </Link>
       </div>
