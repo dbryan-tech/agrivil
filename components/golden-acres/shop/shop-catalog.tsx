@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { Search, Leaf, Sprout, SlidersHorizontal, X, Check } from 'lucide-react'
 import { ProduceCard } from '@/components/golden-acres/produce-card'
 import { useDataStore } from '@/components/golden-acres/store/data-store'
@@ -30,21 +30,36 @@ type SortKey = 'fresh' | 'price-low' | 'price-high'
 export function ShopCatalog() {
   const { liveProducts } = useDataStore()
   const params = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
 
-  const [category, setCategory] = useState<ProduceCategory | 'All'>('All')
-  const [query, setQuery] = useState('')
+  // Category is fully URL-driven — the single source of truth shared by the
+  // header search select, the header category strip, and the sidebar radios.
+  const category = useMemo<ProduceCategory | 'All'>(() => {
+    const c = params.get('category')
+    return c && CATEGORIES.includes(c as ProduceCategory) ? (c as ProduceCategory) : 'All'
+  }, [params])
+
+  const [query, setQuery] = useState(params.get('q') ?? '')
   const [organicOnly, setOrganicOnly] = useState(false)
   const [band, setBand] = useState<string>('all')
   const [sort, setSort] = useState<SortKey>('fresh')
   const [mobileFilters, setMobileFilters] = useState(false)
 
-  // Hydrate filters from the header search / category links.
+  // Keep the search box in sync when the URL query changes (header search,
+  // back/forward). In-page typing updates local state only.
   useEffect(() => {
-    const c = params.get('category')
-    const q = params.get('q')
-    if (c && CATEGORIES.includes(c as ProduceCategory)) setCategory(c as ProduceCategory)
-    if (q) setQuery(q)
+    setQuery(params.get('q') ?? '')
   }, [params])
+
+  // Update the category by writing to the URL so every entry point agrees.
+  function setCategory(next: ProduceCategory | 'All') {
+    const sp = new URLSearchParams(Array.from(params.entries()))
+    if (next === 'All') sp.delete('category')
+    else sp.set('category', String(next))
+    const qs = sp.toString()
+    router.push(qs ? `${pathname}?${qs}` : pathname, { scroll: false })
+  }
 
   const visible = useMemo(() => {
     let list = liveProducts.filter((p) => p.status !== 'delisted')
@@ -67,11 +82,12 @@ export function ShopCatalog() {
   }, [liveProducts, category, query, organicOnly, band, sort])
 
   function resetFilters() {
-    setCategory('All')
     setQuery('')
     setOrganicOnly(false)
     setBand('all')
     setSort('fresh')
+    // Clear category + query from the URL in one go.
+    router.push(pathname, { scroll: false })
   }
 
   const FiltersPanel = (

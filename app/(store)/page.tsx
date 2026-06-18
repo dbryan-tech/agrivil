@@ -1,3 +1,4 @@
+import { VideoHero } from '@/components/golden-acres/home/video-hero'
 import { HeroPromo, TrustStrip } from '@/components/golden-acres/home/hero-promo'
 import { CategoryTiles } from '@/components/golden-acres/home/category-tiles'
 import { DealsRail } from '@/components/golden-acres/home/deals-rail'
@@ -12,6 +13,7 @@ import { Reveal } from '@/components/golden-acres/reveal'
 export default function HomePage() {
   return (
     <>
+      <VideoHero />
       <HeroPromo />
       <TrustStrip />
       <CategoryTiles />

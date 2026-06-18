@@ -38,6 +38,11 @@
   --color-deal: var(--ga-deal);
   --color-deal-foreground: var(--ga-deal-foreground);
   --color-star: var(--ga-star);
+  /* copper brand chrome (header band, footer, premium accents) */
+  --color-copper: var(--ga-copper);
+  --color-copper-deep: var(--ga-copper-deep);
+  --color-copper-soft: var(--ga-copper-soft);
+  --color-copper-foreground: var(--ga-copper-foreground);
   /* Paperfolio flat accents (founder page) */
   --color-coral: #ff6b7a;
   --color-cobalt: #2f81f7;
@@ -206,58 +211,64 @@
   color-scheme: light;
   font-family: var(--font-jakarta);
   letter-spacing: -0.011em;
-  /* AgriVil — "Fresh Market": bright page, white cards, deep-green brand chrome */
-  --background: #f2f4ee;
-  --foreground: #16241b;
+  /* AgriVil — "Harvest Market": copper chrome + green actions + yellow accents */
+  --background: #f5f1e8;
+  --foreground: #1c2118;
   --card: #ffffff;
-  --card-foreground: #16241b;
+  --card-foreground: #1c2118;
   --popover: #ffffff;
-  --popover-foreground: #16241b;
+  --popover-foreground: #1c2118;
   --primary: #0f7a43;
   --primary-foreground: #ffffff;
-  --secondary: #e8f1e8;
+  --secondary: #ecefe4;
   --secondary-foreground: #14422a;
-  --muted: #eef1ea;
-  --muted-foreground: #5d6b5d;
-  --accent: #f0a01e;
+  --muted: #efece1;
+  --muted-foreground: #6a6450;
+  --accent: #f0a81e;
   --accent-foreground: #2a1c02;
   --destructive: #d33b2a;
-  --border: #e1e5db;
-  --input: #e1e5db;
+  --border: #e3ddcd;
+  --input: #e3ddcd;
   --ring: #0f7a43;
   --brand: #0f7a43;
   --brand-foreground: #ffffff;
   --radius: 0.625rem;
 
-  /* marketplace chrome */
-  --ga-header: #0b3b25;          /* deep-green top brand band */
-  --ga-header-foreground: #eaf3ea;
+  /* marketplace chrome — copper brand band */
+  --ga-header: #7a3f1c;          /* deep copper top brand band */
+  --ga-header-foreground: #f7ead9;
   --ga-deal: #d6402c;            /* sale / flash-deal red */
   --ga-deal-foreground: #ffffff;
-  --ga-star: #f5a623;            /* rating star gold */
+  --ga-star: #f0a81e;            /* rating star yellow */
 
-  /* warm ochre/gold — ratings + highlights */
-  --ga-gold: #9a6b15;
-  --ga-gold-soft: #f0a01e;
+  /* copper brand chrome */
+  --ga-copper: #b5642e;
+  --ga-copper-deep: #7a3f1c;
+  --ga-copper-soft: #d98a4e;
+  --ga-copper-foreground: #f7ead9;
+
+  /* warm yellow — ratings + highlights */
+  --ga-gold: #a8740f;
+  --ga-gold-soft: #f0a81e;
   /* green brand core */
   --ga-field: #0f7a43;
   --ga-field-deep: #0b3b25;
-  /* terracotta accent (retained for occasional warmth) */
-  --ga-terracotta: #c4512c;
-  --ga-cream: #f2f4ee;
-  --ga-paper: #f2f4ee;
+  /* copper accent (warmth) */
+  --ga-terracotta: #b5642e;
+  --ga-cream: #f5f1e8;
+  --ga-paper: #f5f1e8;
   --ga-clay: #8a5a3a;
   --ga-leaf: #3f8a4f;
   /* cinematic dark-section ink + fresh pop */
-  --ga-ink-deep: #0b1c13;
-  --ga-ink-soft: #112a1c;
-  --ga-lime: #d6e85a;
+  --ga-ink-deep: #1a0f06;
+  --ga-ink-soft: #2a1a0d;
+  --ga-lime: #f0c84a;
 
   --chart-1: #0f7a43;
-  --chart-2: #f0a01e;
-  --chart-3: #3f8a4f;
-  --chart-4: #c4512c;
-  --chart-5: #0b3b25;
+  --chart-2: #f0a81e;
+  --chart-3: #b5642e;
+  --chart-4: #3f8a4f;
+  --chart-5: #7a3f1c;
 
   --sidebar: #ffffff;
   --sidebar-foreground: #16241b;
@@ -337,6 +348,23 @@
 }
 .ga-rail::-webkit-scrollbar {
   display: none;
+}
+
+/* copper brand chrome gradient (header band, footer, premium bands) */
+.ga-copper-band {
+  background:
+    radial-gradient(120% 140% at 12% 0%, rgba(217, 138, 78, 0.45) 0%, transparent 55%),
+    linear-gradient(115deg, var(--ga-copper-deep) 0%, var(--ga-copper) 58%, #8a4a22 100%);
+  color: var(--ga-copper-foreground);
+}
+
+/* dark overlay scrim for image-backed section headers */
+.ga-media-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(26, 15, 6, 0.25) 0%, rgba(26, 15, 6, 0.78) 100%),
+    linear-gradient(100deg, rgba(122, 63, 28, 0.55) 0%, rgba(11, 59, 37, 0.35) 100%);
 }
 
 /* gentle entrance used across Golden Acres surfaces */

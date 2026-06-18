@@ -51,13 +51,23 @@ export function GaHeader() {
   const [query, setQuery] = useState('')
   const [cat, setCat] = useState('All')
 
-  function submitSearch(e: React.FormEvent) {
-    e.preventDefault()
+  function goToShop(nextQuery: string, nextCat: string) {
     const params = new URLSearchParams()
-    if (query.trim()) params.set('q', query.trim())
-    if (cat !== 'All') params.set('category', cat)
+    if (nextQuery.trim()) params.set('q', nextQuery.trim())
+    if (nextCat !== 'All') params.set('category', nextCat)
     router.push(`/shop${params.toString() ? `?${params}` : ''}`)
     setOpen(false)
+  }
+
+  function submitSearch(e: React.FormEvent) {
+    e.preventDefault()
+    goToShop(query, cat)
+  }
+
+  // Selecting a category in the search bar applies immediately — no extra click.
+  function onCategoryChange(value: string) {
+    setCat(value)
+    goToShop(query, value)
   }
 
   return (
@@ -107,7 +117,7 @@ export function GaHeader() {
             <div className="relative flex h-full items-center border-r border-border">
               <select
                 value={cat}
-                onChange={(e) => setCat(e.target.value)}
+                onChange={(e) => onCategoryChange(e.target.value)}
                 aria-label="Search category"
                 className="h-full cursor-pointer appearance-none bg-secondary/60 pl-4 pr-9 text-sm font-semibold text-secondary-foreground outline-none"
               >
