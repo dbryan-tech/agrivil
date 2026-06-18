@@ -63,7 +63,7 @@ export function VideoHero() {
           muted
           loop
           playsInline
-          poster="/golden-acres/hero-horizontal.png"
+          preload="auto"
         >
           <source src="/golden-acres/video/farm-hero.mp4" type="video/mp4" />
         </video>

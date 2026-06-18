@@ -60,6 +60,9 @@ export function ShopCatalog() {
     else sp.set('category', String(next))
     const qs = sp.toString()
     router.push(qs ? `${pathname}?${qs}` : pathname, { scroll: false })
+    // On mobile the filters live in a slide-in drawer that covers the grid —
+    // close it on selection so the shopper immediately sees the filtered results.
+    setMobileFilters(false)
   }
 
   const visible = useMemo(() => {
