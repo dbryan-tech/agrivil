@@ -380,9 +380,14 @@ export function DataStoreProvider({ children }: { children: ReactNode }) {
       const raw = localStorage.getItem(STORAGE_KEY)
       if (raw) {
         const saved = JSON.parse(raw) as Partial<Persisted>
+        // NOTE: products/farmers are intentionally NOT restored from localStorage.
+        // The catalog is authoritative from the DB (overlaid just below) and the
+        // in-memory seed is the complete fallback. Restoring a stale cached catalog
+        // (e.g. an older, smaller listing set) would make whole categories appear
+        // empty and the shop filters feel broken. Only session data is restored.
         setState((cur) => ({
-          products: saved.products ?? cur.products,
-          farmers: saved.farmers ?? cur.farmers,
+          products: cur.products,
+          farmers: cur.farmers,
           orders: saved.orders ?? cur.orders,
           ledger: saved.ledger ?? cur.ledger,
           tickets: saved.tickets ?? cur.tickets,

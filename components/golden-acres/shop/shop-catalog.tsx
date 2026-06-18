@@ -20,10 +20,10 @@ const CATEGORIES: (ProduceCategory | 'All')[] = [
 
 const PRICE_BANDS = [
   { id: 'all', label: 'Any price', min: 0, max: Infinity },
-  { id: 'u20', label: 'Under GH₵20', min: 0, max: 20 },
-  { id: '20-50', label: 'GH₵20 – GH₵50', min: 20, max: 50 },
-  { id: '50-100', label: 'GH₵50 – GH₵100', min: 50, max: 100 },
-  { id: '100', label: 'GH₵100 & above', min: 100, max: Infinity },
+  { id: 'u5', label: 'Under GH₵5', min: 0, max: 5 },
+  { id: '5-10', label: 'GH₵5 – GH₵10', min: 5, max: 10 },
+  { id: '10-20', label: 'GH₵10 – GH₵20', min: 10, max: 20 },
+  { id: '20', label: 'GH₵20 & above', min: 20, max: Infinity },
 ] as const
 
 type SortKey = 'fresh' | 'price-low' | 'price-high'
