@@ -6,6 +6,7 @@ import { Search, Leaf, Sprout, SlidersHorizontal, X, Check } from 'lucide-react'
 import { ProduceCard } from '@/components/golden-acres/produce-card'
 import { useDataStore } from '@/components/golden-acres/store/data-store'
 import type { ProduceCategory } from '@/lib/golden-acres/types'
+import { groupOffers } from '@/lib/golden-acres/grouping'
 
 const CATEGORIES: (ProduceCategory | 'All')[] = [
   'All',
@@ -75,11 +76,19 @@ export function ShopCatalog() {
           p.tags.some((t) => t.toLowerCase().includes(q)),
       )
     }
-    if (sort === 'price-low') list = [...list].sort((a, b) => a.priceMin - b.priceMin)
-    if (sort === 'price-high') list = [...list].sort((a, b) => b.priceMin - a.priceMin)
-    if (sort === 'fresh') list = [...list].sort((a, b) => a.shelfLifeDays - b.shelfLifeDays)
     return list
-  }, [liveProducts, category, query, organicOnly, band, sort])
+  }, [liveProducts, category, query, organicOnly, band])
+
+  // Collapse competing farmer offers into one card per product, then sort the
+  // groups by the selected key (using each group's representative/cheapest offer).
+  const groups = useMemo(() => {
+    const gs = groupOffers(visible)
+    if (sort === 'price-low') return [...gs].sort((a, b) => a.minPrice - b.minPrice)
+    if (sort === 'price-high') return [...gs].sort((a, b) => b.minPrice - a.minPrice)
+    return [...gs].sort((a, b) => a.lead.shelfLifeDays - b.lead.shelfLifeDays)
+  }, [visible, sort])
+
+  const totalListings = visible.length
 
   function resetFilters() {
     setQuery('')
@@ -207,9 +216,12 @@ export function ShopCatalog() {
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
             <p className="text-sm text-muted-foreground">
-              <span className="font-bold text-foreground">{visible.length}</span>{' '}
-              {visible.length === 1 ? 'item' : 'items'}
+              <span className="font-bold text-foreground">{groups.length}</span>{' '}
+              {groups.length === 1 ? 'product' : 'products'}
               {category !== 'All' && <> in {category}</>}
+              {totalListings > groups.length && (
+                <span className="text-muted-foreground"> · {totalListings} farmer listings</span>
+              )}
             </p>
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">Sort</span>
@@ -226,13 +238,13 @@ export function ShopCatalog() {
             </div>
           </div>
 
-          {visible.length > 0 ? (
+          {groups.length > 0 ? (
             <div
               key={`${category}-${query}-${organicOnly}-${band}-${sort}`}
               className="ga-stagger mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4"
             >
-              {visible.map((p) => (
-                <ProduceCard key={p.id} product={p} />
+              {groups.map((g) => (
+                <ProduceCard key={g.key} product={g.lead} offerCount={g.count} />
               ))}
             </div>
           ) : (
@@ -284,7 +296,7 @@ export function ShopCatalog() {
               onClick={() => setMobileFilters(false)}
               className="ga-press mt-6 w-full rounded-full bg-primary py-3 text-sm font-bold text-primary-foreground"
             >
-              Show {visible.length} {visible.length === 1 ? 'item' : 'items'}
+              Show {groups.length} {groups.length === 1 ? 'product' : 'products'}
             </button>
           </div>
         </div>

@@ -577,7 +577,7 @@
   --border: rgba(255, 255, 255, 0.1);
   background-image: radial-gradient(
     120% 80% at 50% -10%,
-    color-mix(in oklab, var(--ga-field) 30%, transparent),
+    color-mix(in oklab, var(--ga-copper) 32%, transparent),
     transparent 60%
   );
 }

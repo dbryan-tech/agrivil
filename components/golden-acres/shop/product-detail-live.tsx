@@ -42,6 +42,15 @@ export function ProductDetailLive({
     return (live.length > 0 ? live : seedRelated).slice(0, 4)
   }, [product, liveProducts, seedRelated])
 
+  // Competing farmer offers for the same canonical product (matched by name).
+  const offers = useMemo(() => {
+    if (!product) return []
+    const name = product.name.trim().toLowerCase()
+    return liveProducts.filter(
+      (p) => p.name.trim().toLowerCase() === name && p.status !== 'delisted',
+    )
+  }, [product, liveProducts])
+
   if (!product || !farmer) {
     return (
       <div className="mx-auto flex max-w-md flex-col items-center px-4 py-24 text-center">
@@ -65,5 +74,5 @@ export function ProductDetailLive({
     )
   }
 
-  return <ProductDetail product={product} farmer={farmer} related={related} />
+  return <ProductDetail product={product} farmer={farmer} related={related} offers={offers} />
 }

@@ -15,6 +15,7 @@ import {
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { ProduceCard } from '@/components/golden-acres/produce-card'
 import { ReviewList } from '@/components/golden-acres/reviews/review-list'
+import { CompareOffers } from '@/components/golden-acres/shop/compare-offers'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { formatGHS, freshnessLabel, weight } from '@/lib/golden-acres/format'
 import type { Product, Farmer } from '@/lib/golden-acres/types'
@@ -23,10 +24,12 @@ export function ProductDetail({
   product,
   farmer,
   related,
+  offers = [],
 }: {
   product: Product
   farmer: Farmer
   related: Product[]
+  offers?: Product[]
 }) {
   const { add } = useCart()
   const [qty, setQty] = useState(1)
@@ -195,6 +198,8 @@ export function ProductDetail({
           </Link>
         </div>
       </div>
+
+      <CompareOffers current={product} offers={offers} />
 
       <section className="mt-16">
         <ReviewList productId={product.id} title="Customer reviews" />

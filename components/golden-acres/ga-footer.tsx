@@ -40,7 +40,7 @@ export function GaFooter() {
           <div className="max-w-xl">
             <p className="ga-eyebrow text-[var(--ga-lime)]">Stay fresh</p>
             <h2 className="ga-display mt-3 text-pretty text-3xl leading-[1.05] sm:text-4xl">
-              Get the harvest list <span className="ga-serif text-[var(--ga-lime)]">before</span> it
+              Get the harvest list <span className="text-[var(--ga-lime)]">before</span> it
               sells out.
             </h2>
           </div>

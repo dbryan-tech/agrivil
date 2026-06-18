@@ -19,23 +19,27 @@ export function CategoryTiles() {
           View all
         </Link>
       </div>
-      <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         {TILES.map((t) => (
           <Link
             key={t.label}
             href={`/shop?category=${encodeURIComponent(t.label)}`}
-            className="group flex flex-col items-center gap-2.5 rounded-2xl border border-border bg-card p-3 text-center transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_10px_24px_-14px_rgba(11,59,37,0.4)]"
+            className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-2xl border border-border transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-16px_rgba(122,63,28,0.55)]"
           >
-            <span className="relative aspect-square w-full overflow-hidden rounded-xl bg-secondary/50">
-              <SmartImage
-                src={t.image}
-                alt={t.label}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-            </span>
-            <span className="text-xs font-bold leading-tight text-foreground sm:text-sm">
-              {t.label}
+            <SmartImage
+              src={t.image}
+              alt={t.label}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+            <span className="ga-media-scrim" aria-hidden />
+            <span className="relative z-[2] p-3 text-left">
+              <span className="block text-sm font-bold leading-tight text-white text-balance">
+                {t.label}
+              </span>
+              <span className="mt-0.5 inline-flex items-center gap-1 text-[11px] font-semibold text-[var(--ga-lime)]">
+                Shop now
+              </span>
             </span>
           </Link>
         ))}
