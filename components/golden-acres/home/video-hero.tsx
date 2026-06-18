@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Search, ChevronDown, ArrowRight, Play, Pause, MapPin, Truck, Leaf } from 'lucide-react'
+import { Search, ChevronDown, ArrowRight, MapPin, Truck, Leaf } from 'lucide-react'
 
 const CATEGORIES = [
   'Vegetables',
@@ -16,33 +16,8 @@ const CATEGORIES = [
 
 export function VideoHero() {
   const router = useRouter()
-  const videoRef = useRef<HTMLVideoElement>(null)
   const [query, setQuery] = useState('')
   const [cat, setCat] = useState('All')
-  const [playing, setPlaying] = useState(true)
-
-  // Respect reduced-motion: pause the loop and show the poster instead.
-  useEffect(() => {
-    const v = videoRef.current
-    if (!v) return
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReduced) {
-      v.pause()
-      setPlaying(false)
-    }
-  }, [])
-
-  function toggle() {
-    const v = videoRef.current
-    if (!v) return
-    if (v.paused) {
-      void v.play()
-      setPlaying(true)
-    } else {
-      v.pause()
-      setPlaying(false)
-    }
-  }
 
   function submit(e: React.FormEvent) {
     e.preventDefault()
@@ -57,7 +32,6 @@ export function VideoHero() {
       {/* Video layer */}
       <div className="absolute inset-0">
         <video
-          ref={videoRef}
           className="h-full w-full object-cover"
           autoPlay
           muted
@@ -155,15 +129,6 @@ export function VideoHero() {
         </div>
       </div>
 
-      {/* Play / pause control */}
-      <button
-        type="button"
-        onClick={toggle}
-        aria-label={playing ? 'Pause background video' : 'Play background video'}
-        className="absolute bottom-5 right-5 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-black/30 text-white backdrop-blur transition-colors hover:bg-black/50"
-      >
-        {playing ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-      </button>
     </section>
   )
 }
