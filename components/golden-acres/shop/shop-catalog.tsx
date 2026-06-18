@@ -126,24 +126,25 @@ export function ShopCatalog() {
       </FilterGroup>
 
       <FilterGroup title="Price">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col">
           {PRICE_BANDS.map((b) => (
-            <label
+            <button
               key={b.id}
-              className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm text-foreground/80 hover:bg-secondary/60"
+              type="button"
+              onClick={() => {
+                setBand(b.id)
+                setMobileFilters(false)
+              }}
+              className={[
+                'flex items-center justify-between rounded-lg px-2.5 py-2 text-left text-sm transition-colors',
+                band === b.id
+                  ? 'bg-secondary font-semibold text-primary'
+                  : 'text-foreground/75 hover:bg-secondary/60',
+              ].join(' ')}
             >
-              <input
-                type="radio"
-                name="price"
-                checked={band === b.id}
-                onChange={() => {
-                  setBand(b.id)
-                  setMobileFilters(false)
-                }}
-                className="h-4 w-4 accent-[var(--ga-field)]"
-              />
               {b.label}
-            </label>
+              {band === b.id && <Check className="h-4 w-4" />}
+            </button>
           ))}
         </div>
       </FilterGroup>
