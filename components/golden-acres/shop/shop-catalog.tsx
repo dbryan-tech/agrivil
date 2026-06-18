@@ -136,7 +136,10 @@ export function ShopCatalog() {
                 type="radio"
                 name="price"
                 checked={band === b.id}
-                onChange={() => setBand(b.id)}
+                onChange={() => {
+                  setBand(b.id)
+                  setMobileFilters(false)
+                }}
                 className="h-4 w-4 accent-[var(--ga-field)]"
               />
               {b.label}
@@ -148,7 +151,10 @@ export function ShopCatalog() {
       <FilterGroup title="Certification">
         <button
           type="button"
-          onClick={() => setOrganicOnly((v) => !v)}
+          onClick={() => {
+            setOrganicOnly((v) => !v)
+            setMobileFilters(false)
+          }}
           className={[
             'inline-flex w-full items-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-semibold transition-colors',
             organicOnly
@@ -207,6 +213,26 @@ export function ShopCatalog() {
         >
           <SlidersHorizontal className="h-4 w-4" /> Filters
         </button>
+      </div>
+
+      {/* Always-visible category tabs (mobile/tablet) — instant, like the top bar.
+          On desktop the same choices live in the sticky sidebar. */}
+      <div className="ga-rail mt-4 -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 lg:hidden">
+        {CATEGORIES.map((c) => (
+          <button
+            key={c}
+            type="button"
+            onClick={() => setCategory(c)}
+            className={[
+              'shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-colors',
+              category === c
+                ? 'border-primary bg-primary text-primary-foreground'
+                : 'border-border bg-card text-foreground/75 hover:border-primary/40',
+            ].join(' ')}
+          >
+            {c}
+          </button>
+        ))}
       </div>
 
       <div className="mt-5 flex gap-6">
