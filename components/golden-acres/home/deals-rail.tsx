@@ -20,29 +20,30 @@ export function DealsRail() {
   if (picks.length === 0) return null
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 transition-all duration-700">
-      <div className="ga-card-hover overflow-hidden rounded-2xl border border-border/50 bg-card transition-all duration-500 hover:border-primary/30">
-        <div className="ga-color-transition flex items-center justify-between gap-3 border-b border-border/50 bg-secondary/40 px-4 py-3 sm:px-5 transition-all duration-300">
-          <div className="ga-fade-in flex items-center gap-2.5 transition-all duration-500">
-            <span className="ga-scale-interactive flex h-9 w-9 items-center justify-center rounded-full bg-deal text-deal-foreground shadow-md transition-all duration-300 hover:shadow-lg">
-              <Zap className="h-5 w-5 animate-pulse" />
+    <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <div className="ga-elev-2 overflow-hidden rounded-2xl border border-border/60 bg-card">
+        <div className="flex items-center justify-between gap-3 border-b border-border/60 bg-gradient-to-r from-[var(--ga-deal)]/8 to-transparent px-4 py-3.5 sm:px-5">
+          <div className="flex items-center gap-3">
+            <span className="ga-elev-1 flex h-10 w-10 items-center justify-center rounded-full bg-deal text-deal-foreground">
+              <Zap className="h-5 w-5" />
             </span>
             <div className="leading-tight">
-              <h2 className="ga-headline text-lg text-foreground sm:text-xl transition-colors duration-300">Fresh today</h2>
-              <p className="text-xs text-muted-foreground transition-colors duration-300">Picked this morning — grab it before it&apos;s gone</p>
+              <h2 className="ga-headline text-lg text-foreground sm:text-xl">Fresh today</h2>
+              <p className="text-xs text-muted-foreground">Picked this morning — grab it before it&apos;s gone</p>
             </div>
           </div>
           <Link
             href="/shop"
-            className="ga-color-transition inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-primary transition-all duration-300 hover:gap-2 hover:underline"
+            className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-primary"
           >
-            See all <ArrowRight className="h-4 w-4 transition-transform duration-300" />
+            See all
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
 
-        <div className="ga-rail flex gap-3 overflow-x-auto p-4 sm:p-5 transition-all duration-500">
-          {picks.map((p, i) => (
-            <div key={p.id} className="ga-fade-in w-[170px] shrink-0 sm:w-[210px] transition-all duration-500" style={{ animationDelay: `${i * 0.05}s` }}>
+        <div className="ga-rail flex gap-3 overflow-x-auto p-4 sm:gap-4 sm:p-5">
+          {picks.map((p) => (
+            <div key={p.id} className="w-[170px] shrink-0 sm:w-[210px]">
               <ProduceCard product={p} />
             </div>
           ))}

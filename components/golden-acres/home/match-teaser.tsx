@@ -48,39 +48,39 @@ export function MatchTeaser() {
             'radial-gradient(120% 80% at 15% 0%, color-mix(in oklab, var(--ga-field) 40%, transparent), transparent 55%)',
         }}
       />
-      <div className="ga-page-in relative z-[2] mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-14 lg:px-8 lg:py-20 transition-all duration-700">
+      <div className="relative z-[2] mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-14 lg:px-8 lg:py-20">
         <div>
-          <div className="ga-fade-in flex items-center gap-4 transition-all duration-500">
-            <span className="ga-index text-sm text-[var(--ga-lime)] transition-colors duration-300">05</span>
-            <div className="h-px flex-1 bg-white/15 transition-all duration-300" />
-            <span className="ga-kicker shrink-0 text-[var(--ga-cream)]/60 transition-colors duration-300">MarketPlace Match</span>
+          <div className="flex items-center gap-4">
+            <span className="ga-index text-sm text-[var(--ga-lime)]">05</span>
+            <div className="h-px flex-1 bg-white/15" />
+            <span className="ga-kicker shrink-0 text-[var(--ga-cream)]/60">MarketPlace Match</span>
           </div>
-          <h2 className="ga-headline ga-fade-in mt-6 text-balance text-5xl sm:text-6xl transition-all duration-700" style={{ animationDelay: '0.1s' }}>
+          <h2 className="ga-headline mt-6 text-balance text-4xl sm:text-5xl">
             We find the farms{' '}
-            <span className="font-normal text-[var(--ga-lime)] transition-colors duration-300">closest</span> to you
+            <span className="font-normal text-[var(--ga-lime)]">closest</span> to you
           </h2>
-          <p className="ga-fade-in mt-4 max-w-xl leading-relaxed text-[var(--ga-cream)]/80 transition-all duration-700" style={{ animationDelay: '0.2s' }}>
+          <p className="mt-4 max-w-xl leading-relaxed text-[var(--ga-cream)]/80">
             Enter your GhanaPostGPS address and our proximity engine ranks nearby farms by
             distance and what they have in stock — so your produce travels the shortest
             possible path and arrives at its freshest.
           </p>
 
-          <div className="ga-fade-in mt-7 flex flex-col gap-3 sm:flex-row transition-all duration-700" style={{ animationDelay: '0.3s' }}>
-            <div className="relative flex-1 group">
-              <MapPin className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--ga-field-deep)] transition-transform duration-300 group-focus-within:text-[var(--ga-gold-soft)]" />
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <div className="group relative flex-1">
+              <MapPin className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--ga-field-deep)] transition-colors duration-300 group-focus-within:text-[var(--ga-field)]" />
               <input
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="e.g. GA-183-4250"
                 aria-label="GhanaPostGPS address"
-                className="ga-color-transition h-14 w-full rounded-full bg-[var(--ga-cream)] py-3.5 pl-11 pr-4 font-semibold text-[var(--ga-field-deep)] outline-none ring-2 ring-[var(--ga-gold-soft)]/20 transition-all duration-300 focus:ring-[var(--ga-gold-soft)] focus:shadow-lg hover:bg-[var(--ga-cream)]/90"
+                className="h-14 w-full rounded-full bg-[var(--ga-cream)] py-3.5 pl-11 pr-4 font-semibold text-[var(--ga-field-deep)] outline-none ring-2 ring-transparent transition-shadow duration-300 focus:ring-[var(--ga-gold-soft)]"
               />
             </div>
             <button
               type="button"
               onClick={check}
               disabled={state === 'loading'}
-              className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[var(--ga-gold-soft)] px-6 py-3.5 font-bold text-[var(--ga-field-deep)] transition-transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70"
+              className="ga-press ga-sheen inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[var(--ga-gold-soft)] px-6 py-3.5 font-bold text-[var(--ga-field-deep)] disabled:opacity-70"
             >
               {state === 'loading' ? (
                 <Loader2 className="h-5 w-5 animate-spin" />

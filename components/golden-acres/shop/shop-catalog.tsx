@@ -244,8 +244,8 @@ export function ShopCatalog() {
 
         {/* Results */}
         <div className="min-w-0 flex-1">
-          <div className="ga-color-transition flex flex-wrap items-center justify-between gap-3 border-b border-border/50 pb-4 transition-all duration-300">
-            <p className="text-sm text-muted-foreground transition-all duration-300">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/50 pb-4">
+            <p className="text-sm text-muted-foreground">
               <span className="font-bold text-foreground">{groups.length}</span>{' '}
               {groups.length === 1 ? 'product' : 'products'}
               {category !== 'All' && <> in <span className="text-primary font-semibold">{category}</span></>}
@@ -259,7 +259,7 @@ export function ShopCatalog() {
                 value={sort}
                 onChange={(e) => setSort(e.target.value as SortKey)}
                 aria-label="Sort produce"
-                className="ga-color-transition h-9 rounded-full border border-border/50 bg-card px-3 text-sm font-semibold text-foreground outline-none transition-all duration-300 focus:border-primary focus:shadow-md hover:border-border"
+                className="h-9 rounded-full border border-border/50 bg-card px-3 text-sm font-semibold text-foreground outline-none transition-[border-color] duration-200 hover:border-border focus:border-primary"
               >
                 <option value="fresh">Freshest first</option>
                 <option value="price-low">Price: low to high</option>
