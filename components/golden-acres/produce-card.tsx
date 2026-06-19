@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { ShoppingCart, Check, Heart, Star, Users, Leaf } from 'lucide-react'
+import { ShoppingCart, Check, Heart, Star, Users, Leaf, Eye } from 'lucide-react'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { useSession } from '@/components/golden-acres/auth/session-context'
@@ -13,10 +13,13 @@ import type { Product } from '@/lib/golden-acres/types'
 export function ProduceCard({
   product,
   offerCount = 1,
+  onQuickView,
 }: {
   product: Product
   /** when > 1, this card represents a group of competing farmer offers */
   offerCount?: number
+  /** when provided, a hover "Quick view" affordance opens a preview modal */
+  onQuickView?: (product: Product) => void
 }) {
   const { add } = useCart()
   const { account, isSaved, toggleWishlist } = useSession()
@@ -89,6 +92,18 @@ export function ProduceCard({
                 color: saved ? 'var(--ga-deal)' : 'currentColor',
               }}
             />
+          </button>
+        )}
+
+        {/* hover quick-view affordance */}
+        {onQuickView && (
+          <button
+            type="button"
+            onClick={() => onQuickView(product)}
+            className="ga-press absolute left-1/2 top-1/2 z-[3] flex -translate-x-1/2 -translate-y-1/2 items-center gap-1.5 rounded-full bg-card/95 px-4 py-2 text-xs font-bold text-foreground opacity-0 shadow-md ring-1 ring-black/5 backdrop-blur-md transition-opacity duration-200 focus-visible:opacity-100 group-hover:opacity-100"
+          >
+            <Eye className="h-4 w-4" />
+            Quick view
           </button>
         )}
 
