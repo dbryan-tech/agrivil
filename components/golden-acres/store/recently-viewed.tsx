@@ -48,20 +48,28 @@ export function RecentlyViewedProvider({ children }: { children: React.ReactNode
     }
   }, [])
 
-  const record = useCallback(
-    (productId: string) => {
-      setIds((prev) => {
-        const next = [productId, ...prev.filter((id) => id !== productId)].slice(0, MAX)
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-        } catch {
-          // ignore
-        }
-        return next
-      })
-    },
-    [],
-  )
+  const record = useCallback((productId: string) => {
+    // Read the freshest history straight from storage so we don't depend on
+    // effect ordering (a child's record effect can fire before our hydrate
+    // effect). localStorage is the single source of truth here.
+    let current: string[] = []
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY)
+      if (raw) {
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed)) current = parsed.filter((x) => typeof x === 'string')
+      }
+    } catch {
+      // ignore malformed storage
+    }
+    const next = [productId, ...current.filter((id) => id !== productId)].slice(0, MAX)
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+    } catch {
+      // storage may be unavailable (private mode) — keep in-memory only
+    }
+    setIds(next)
+  }, [])
 
   const clear = useCallback(() => persist([]), [persist])
 
