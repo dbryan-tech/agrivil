@@ -109,41 +109,29 @@ export function GaHeader() {
             </span>
           </Link>
 
-          {/* Search */}
-          <form
-            onSubmit={submitSearch}
-            className="hidden h-11 flex-1 items-center overflow-hidden rounded-full border border-primary/40 bg-secondary/40 transition-[border-color,box-shadow] duration-300 hover:border-primary/70 focus-within:border-primary/80 focus-within:ga-elev-1 md:flex"
-          >
-            <div className="relative flex h-full items-center border-r border-border/50">
-              <select
-                value={cat}
-                onChange={(e) => onCategoryChange(e.target.value)}
-                aria-label="Search category"
-                className="h-full cursor-pointer appearance-none bg-transparent pl-4 pr-9 text-sm font-semibold text-foreground outline-none"
-              >
-                <option value="All">All</option>
-                {CATEGORIES.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="pointer-events-none absolute right-3 h-4 w-4 text-muted-foreground" />
-            </div>
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search fresh tomatoes, plantain, pepper, yam…"
-              className="h-full flex-1 bg-transparent px-4 text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
-            />
-            <button
-              type="submit"
-              aria-label="Search"
-              className="ga-press flex h-full items-center justify-center bg-primary px-5 text-primary-foreground"
-            >
-              <Search className="h-5 w-5" />
-            </button>
-          </form>
+          {/* Search with typeahead */}
+          <SearchAutocomplete
+            className="hidden h-11 flex-1 md:block"
+            category={cat}
+            leadingSlot={
+              <div className="relative flex h-full items-center border-r border-border/50">
+                <select
+                  value={cat}
+                  onChange={(e) => setCat(e.target.value)}
+                  aria-label="Search category"
+                  className="h-full cursor-pointer appearance-none bg-transparent pl-4 pr-9 text-sm font-semibold text-foreground outline-none"
+                >
+                  <option value="All">All</option>
+                  {CATEGORIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 h-4 w-4 text-muted-foreground" />
+              </div>
+            }
+          />
 
           <div className="flex flex-1 items-center justify-end gap-1 md:flex-none">
             <NotificationBell />
@@ -175,19 +163,13 @@ export function GaHeader() {
         </div>
 
         {/* Mobile search */}
-        <form onSubmit={submitSearch} className="px-4 pb-3 md:hidden">
-          <div className="flex h-11 items-center overflow-hidden rounded-full border-2 border-primary/40 bg-card transition-[border-color] duration-300 focus-within:border-primary/80">
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search fresh produce…"
-              className="h-full flex-1 bg-transparent px-4 text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
-            />
-            <button type="submit" aria-label="Search" className="ga-press flex h-full items-center bg-primary px-4 text-primary-foreground">
-              <Search className="h-5 w-5" />
-            </button>
-          </div>
-        </form>
+        <div className="px-4 pb-3 md:hidden">
+          <SearchAutocomplete
+            className="h-11 w-full"
+            category={cat}
+            placeholder="Search fresh produce…"
+          />
+        </div>
       </div>
 
       {/* Category nav strip */}
