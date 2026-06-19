@@ -46,7 +46,7 @@ const PRIMARY_NAV = [
 export function GaHeader() {
   const pathname = usePathname()
   const router = useRouter()
-  const { count } = useCart()
+  const { count, openDrawer } = useCart()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [cat, setCat] = useState('All')
@@ -149,8 +149,10 @@ export function GaHeader() {
             <NotificationBell />
             <WishlistLink />
             <AccountControl />
-            <Link
-              href="/checkout"
+            <button
+              type="button"
+              onClick={openDrawer}
+              aria-label={`Open basket${count > 0 ? `, ${count} item${count === 1 ? '' : 's'}` : ''}`}
               className="ga-press relative ml-1 flex h-11 items-center gap-2 rounded-full bg-primary px-4 text-sm font-bold text-primary-foreground ga-elev-1"
             >
               <ShoppingBasket className="h-5 w-5" />
@@ -160,7 +162,7 @@ export function GaHeader() {
                   {count}
                 </span>
               )}
-            </Link>
+            </button>
             <button
               type="button"
               onClick={() => setOpen((o) => !o)}

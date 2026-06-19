@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { CartProvider } from '@/components/golden-acres/cart-context'
 import { RecentlyViewedProvider } from '@/components/golden-acres/store/recently-viewed'
+import { MiniCart } from '@/components/golden-acres/cart/mini-cart'
 import { GaHeader } from '@/components/golden-acres/ga-header'
 import { GaFooter } from '@/components/golden-acres/ga-footer'
 
@@ -12,6 +13,7 @@ export default function StoreLayout({ children }: { children: ReactNode }) {
           <GaHeader />
           <main>{children}</main>
           <GaFooter />
+          <MiniCart />
         </RecentlyViewedProvider>
       </CartProvider>
     </div>

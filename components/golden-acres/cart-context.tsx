@@ -27,6 +27,10 @@ interface CartCtx {
   remove: (productId: string) => void
   clear: () => void
   lastAdded: string | null
+  /** mini-cart drawer */
+  drawerOpen: boolean
+  openDrawer: () => void
+  closeDrawer: () => void
 }
 
 const Ctx = createContext<CartCtx | null>(null)
@@ -43,6 +47,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([])
   const [lastAdded, setLastAdded] = useState<string | null>(null)
   const [hydrated, setHydrated] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
+  const openDrawer = () => setDrawerOpen(true)
+  const closeDrawer = () => setDrawerOpen(false)
 
   // Rehydrate basket from localStorage (store ids + qty, resolve products).
   useEffect(() => {
@@ -82,6 +90,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return [...prev, { product, qty }]
     })
     setLastAdded(product.id)
+    setDrawerOpen(true)
     setTimeout(() => setLastAdded((id) => (id === product.id ? null : id)), 1600)
   }
 
@@ -104,8 +113,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
       (s, l) => s + unitEstimate(l.product) * l.qty,
       0,
     )
-    return { lines, count, subtotalEstimate, add, setQty, remove, clear, lastAdded }
-  }, [lines, lastAdded])
+    return {
+      lines,
+      count,
+      subtotalEstimate,
+      add,
+      setQty,
+      remove,
+      clear,
+      lastAdded,
+      drawerOpen,
+      openDrawer,
+      closeDrawer,
+    }
+  }, [lines, lastAdded, drawerOpen])
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }
