@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 
 const TILES = [
@@ -24,22 +25,31 @@ export function CategoryTiles() {
           <Link
             key={t.label}
             href={`/shop?category=${encodeURIComponent(t.label)}`}
-            className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-2xl border border-border/50 transition-all duration-500 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_20px_40px_-16px_rgba(11,59,37,0.25)]"
+            className="ga-card-hover group relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-2xl border border-border/50"
             style={{ animationDelay: `${i * 0.08}s` }}
           >
             <SmartImage
               src={t.image}
               alt={t.label}
               fill
-              className="object-cover transition-transform duration-700 group-hover:scale-125"
+              className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.1]"
             />
-            <span className="ga-media-scrim transition-all duration-500 group-hover:bg-black/50" aria-hidden style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 100%)' }} />
-            <span className="relative z-[2] p-3 text-left transition-transform duration-500 group-hover:translate-y-0">
-              <span className="block text-sm font-bold leading-tight text-white text-balance transition-all duration-300">
+            {/* legibility gradient — strong at the base, fades up */}
+            <span
+              aria-hidden
+              className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent transition-opacity duration-500 group-hover:from-black/80"
+            />
+            {/* arrow affordance */}
+            <span className="absolute right-3 top-3 z-[2] flex h-8 w-8 translate-y-1 items-center justify-center rounded-full bg-white/15 text-white opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+              <ArrowUpRight className="h-4 w-4" />
+            </span>
+            <span className="relative z-[2] p-3.5 text-left">
+              <span className="block text-pretty text-[15px] font-bold leading-tight text-white">
                 {t.label}
               </span>
-              <span className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-[var(--ga-lime)] transition-all duration-300 group-hover:gap-2">
-                Shop now →
+              <span className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-[var(--ga-star)] transition-all duration-300 group-hover:gap-1.5">
+                Shop now
+                <ArrowUpRight className="h-3 w-3" />
               </span>
             </span>
           </Link>

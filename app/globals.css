@@ -470,13 +470,40 @@
   transform: translateY(0) scale(0.98);
 }
 
-/* smooth card hover with depth and shadow lift */
+/* ---- Refined elevation scale (warm-tinted shadows) ---- */
+.ga-elev-1 {
+  box-shadow:
+    0 1px 2px -1px rgba(28, 33, 24, 0.08),
+    0 2px 6px -2px rgba(28, 33, 24, 0.06);
+}
+.ga-elev-2 {
+  box-shadow:
+    0 2px 4px -2px rgba(28, 33, 24, 0.1),
+    0 8px 20px -6px rgba(28, 33, 24, 0.1);
+}
+.ga-elev-3 {
+  box-shadow:
+    0 4px 10px -4px rgba(28, 33, 24, 0.12),
+    0 24px 48px -16px rgba(15, 122, 67, 0.22);
+}
+
+/* premium card hover: lift + two-layer shadow + border warm-up.
+   transitions only the properties that change (no `transition: all`). */
 .ga-card-hover {
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.32s ease;
+  box-shadow:
+    0 1px 2px -1px rgba(28, 33, 24, 0.07),
+    0 2px 8px -4px rgba(28, 33, 24, 0.06);
 }
 .ga-card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 50px -14px rgba(11, 59, 37, 0.25);
+  transform: translateY(-6px);
+  border-color: color-mix(in oklab, var(--primary) 32%, var(--border));
+  box-shadow:
+    0 6px 14px -6px rgba(28, 33, 24, 0.14),
+    0 26px 52px -18px rgba(15, 122, 67, 0.26);
 }
 
 /* smooth color transitions */
@@ -487,11 +514,64 @@
 }
 
 /* scale on interaction */
+.ga-scale-interactive {
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
 .ga-scale-interactive:hover {
-  transform: scale(1.02);
+  transform: scale(1.04);
 }
 .ga-scale-interactive:active {
-  transform: scale(0.98);
+  transform: scale(0.96);
+}
+
+/* cinematic scrim for full-bleed video/image heroes —
+   anchors legibility to the lower-left where copy lives, regardless of footage. */
+.ga-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(102deg, rgba(11, 33, 22, 0.92) 0%, rgba(11, 33, 22, 0.62) 34%, rgba(11, 33, 22, 0.12) 64%, transparent 100%),
+    linear-gradient(0deg, rgba(11, 33, 22, 0.78) 0%, rgba(11, 33, 22, 0.18) 30%, transparent 58%);
+}
+
+/* glossy sheen that sweeps across a CTA on hover */
+.ga-sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ga-sheen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-130%) skewX(-18deg);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 100%
+  );
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.ga-sheen:hover::after {
+  transform: translateX(130%) skewX(-18deg);
+}
+
+/* loading shimmer for images / skeletons */
+@keyframes ga-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.ga-shimmer {
+  background: linear-gradient(
+    100deg,
+    color-mix(in oklab, var(--secondary) 70%, transparent) 30%,
+    color-mix(in oklab, var(--card) 90%, var(--secondary)) 50%,
+    color-mix(in oklab, var(--secondary) 70%, transparent) 70%
+  );
+  background-size: 200% 100%;
+  animation: ga-shimmer 1.4s ease-in-out infinite;
 }
 
 /* smooth fade for conditionally rendered content */
@@ -542,11 +622,20 @@
   .ga-scale-in,
   .ga-stagger > *,
   .ga-reveal,
-  .ga-press {
+  .ga-press,
+  .ga-card-hover,
+  .ga-scale-interactive,
+  .ga-shimmer,
+  .ga-fade-in,
+  .ga-page-in,
+  .ga-bounce {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+  .ga-sheen::after {
+    display: none !important;
   }
 }
 
