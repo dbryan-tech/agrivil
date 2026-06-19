@@ -39,7 +39,7 @@ export function ProduceCard({
   }
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_12px_30px_-14px_rgba(11,59,37,0.35)]">
+    <div className="ga-card-hover group flex flex-col overflow-hidden rounded-xl border border-border bg-card">
       <div className="relative">
         <Link
           href={`/shop/${product.slug}`}
@@ -49,7 +49,7 @@ export function ProduceCard({
             src={product.image}
             alt={product.name}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         </Link>
 

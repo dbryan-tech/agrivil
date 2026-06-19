@@ -244,11 +244,11 @@ export function ShopCatalog() {
 
         {/* Results */}
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
-            <p className="text-sm text-muted-foreground">
+          <div className="ga-color-transition flex flex-wrap items-center justify-between gap-3 border-b border-border/50 pb-4 transition-all duration-300">
+            <p className="text-sm text-muted-foreground transition-all duration-300">
               <span className="font-bold text-foreground">{groups.length}</span>{' '}
               {groups.length === 1 ? 'product' : 'products'}
-              {category !== 'All' && <> in {category}</>}
+              {category !== 'All' && <> in <span className="text-primary font-semibold">{category}</span></>}
               {totalListings > groups.length && (
                 <span className="text-muted-foreground"> · {totalListings} farmer listings</span>
               )}
@@ -259,7 +259,7 @@ export function ShopCatalog() {
                 value={sort}
                 onChange={(e) => setSort(e.target.value as SortKey)}
                 aria-label="Sort produce"
-                className="h-9 rounded-full border border-border bg-card px-3 text-sm font-semibold text-foreground outline-none focus:border-primary"
+                className="ga-color-transition h-9 rounded-full border border-border/50 bg-card px-3 text-sm font-semibold text-foreground outline-none transition-all duration-300 focus:border-primary focus:shadow-md hover:border-border"
               >
                 <option value="fresh">Freshest first</option>
                 <option value="price-low">Price: low to high</option>
@@ -271,7 +271,7 @@ export function ShopCatalog() {
           {groups.length > 0 ? (
             <div
               key={`${category}-${query}-${organicOnly}-${band}-${sort}`}
-              className="ga-stagger mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4"
+              className="ga-stagger ga-page-in mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4"
             >
               {groups.map((g) => (
                 <ProduceCard key={g.key} product={g.lead} offerCount={g.count} />

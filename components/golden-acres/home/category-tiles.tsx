@@ -20,25 +20,26 @@ export function CategoryTiles() {
         </Link>
       </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        {TILES.map((t) => (
+        {TILES.map((t, i) => (
           <Link
             key={t.label}
             href={`/shop?category=${encodeURIComponent(t.label)}`}
-            className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-2xl border border-border transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-16px_rgba(122,63,28,0.55)]"
+            className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-2xl border border-border/50 transition-all duration-500 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_20px_40px_-16px_rgba(11,59,37,0.25)]"
+            style={{ animationDelay: `${i * 0.08}s` }}
           >
             <SmartImage
               src={t.image}
               alt={t.label}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
+              className="object-cover transition-transform duration-700 group-hover:scale-125"
             />
-            <span className="ga-media-scrim" aria-hidden />
-            <span className="relative z-[2] p-3 text-left">
-              <span className="block text-sm font-bold leading-tight text-white text-balance">
+            <span className="ga-media-scrim transition-all duration-500 group-hover:bg-black/50" aria-hidden style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 100%)' }} />
+            <span className="relative z-[2] p-3 text-left transition-transform duration-500 group-hover:translate-y-0">
+              <span className="block text-sm font-bold leading-tight text-white text-balance transition-all duration-300">
                 {t.label}
               </span>
-              <span className="mt-0.5 inline-flex items-center gap-1 text-[11px] font-semibold text-[var(--ga-lime)]">
-                Shop now
+              <span className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-[var(--ga-lime)] transition-all duration-300 group-hover:gap-2">
+                Shop now →
               </span>
             </span>
           </Link>

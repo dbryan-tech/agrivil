@@ -470,6 +470,71 @@
   transform: translateY(0) scale(0.98);
 }
 
+/* smooth card hover with depth and shadow lift */
+.ga-card-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ga-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px -14px rgba(11, 59, 37, 0.25);
+}
+
+/* smooth color transitions */
+.ga-color-transition {
+  transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* scale on interaction */
+.ga-scale-interactive:hover {
+  transform: scale(1.02);
+}
+.ga-scale-interactive:active {
+  transform: scale(0.98);
+}
+
+/* smooth fade for conditionally rendered content */
+@keyframes ga-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.ga-fade-in {
+  animation: ga-fade-in 0.3s ease-in-out;
+}
+
+/* page transition (for route changes) */
+@keyframes ga-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.ga-page-in {
+  animation: ga-page-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* parallax-aware scroll hint */
+@keyframes ga-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+.ga-bounce {
+  animation: ga-bounce 1.5s ease-in-out infinite;
+}
+
 /* respect users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .ga-rise,

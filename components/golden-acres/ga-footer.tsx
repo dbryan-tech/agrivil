@@ -33,30 +33,30 @@ const COLS = [
 
 export function GaFooter() {
   return (
-    <footer className="ga-dark grain relative overflow-hidden">
+    <footer className="ga-dark grain relative overflow-hidden transition-all duration-500">
       <div className="relative z-[2] mx-auto max-w-7xl px-4 pt-16 pb-10 sm:px-6">
         {/* Newsletter / CTA row */}
-        <div className="flex flex-col gap-6 border-b border-white/10 pb-12 lg:flex-row lg:items-end lg:justify-between">
+        <div className="ga-color-transition flex flex-col gap-6 border-b border-white/10 pb-12 transition-all duration-300 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-xl">
-            <p className="ga-eyebrow text-[var(--ga-lime)]">Stay fresh</p>
-            <h2 className="ga-display mt-3 text-pretty text-3xl leading-[1.05] sm:text-4xl">
-              Get the harvest list <span className="text-[var(--ga-lime)]">before</span> it
+            <p className="ga-eyebrow text-[var(--ga-lime)] transition-all duration-300">Stay fresh</p>
+            <h2 className="ga-display ga-reveal mt-3 text-pretty text-3xl leading-[1.05] sm:text-4xl transition-all duration-500">
+              Get the harvest list <span className="text-[var(--ga-lime)] transition-colors duration-300">before</span> it
               sells out.
             </h2>
           </div>
-          <form className="flex w-full max-w-md items-center gap-2">
+          <form className="flex w-full max-w-md items-center gap-2 transition-all duration-300">
             <input
               type="email"
               required
               placeholder="you@email.com"
               aria-label="Email address"
-              className="h-12 w-full rounded-full border border-white/15 bg-white/5 px-5 text-sm font-medium text-white outline-none placeholder:text-white/40 focus:border-[var(--ga-lime)]"
+              className="ga-color-transition h-12 w-full rounded-full border border-white/15 bg-white/5 px-5 text-sm font-medium text-white outline-none placeholder:text-white/40 transition-all duration-300 focus:border-[var(--ga-lime)] focus:bg-white/10 focus:shadow-lg"
             />
             <button
               type="submit"
-              className="ga-press flex h-12 shrink-0 items-center gap-1.5 rounded-full bg-[var(--ga-lime)] px-5 text-sm font-bold text-[var(--ga-ink-deep)]"
+              className="ga-press ga-scale-interactive flex h-12 shrink-0 items-center gap-1.5 rounded-full bg-[var(--ga-lime)] px-5 text-sm font-bold text-[var(--ga-ink-deep)] shadow-md transition-all duration-300 hover:shadow-lg"
             >
-              Join <ArrowRight className="h-4 w-4" />
+              Join <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
           </form>
         </div>
@@ -99,7 +99,7 @@ export function GaFooter() {
                   <li key={l.label}>
                     <Link
                       href={l.href}
-                      className="text-sm text-white/75 transition-colors hover:text-[var(--ga-lime)]"
+                      className="ga-color-transition inline-block text-sm text-white/75 transition-all duration-300 hover:text-[var(--ga-lime)] hover:translate-x-1"
                     >
                       {l.label}
                     </Link>

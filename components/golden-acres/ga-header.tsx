@@ -95,10 +95,10 @@ export function GaHeader() {
       </div>
 
       {/* Main bar */}
-      <div className="border-b border-border bg-card">
+      <div className="ga-color-transition border-b border-border/40 bg-card/95 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:gap-6">
-          <Link href="/" className="group flex shrink-0 items-center gap-2.5" aria-label="AgriVil home">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm transition-transform duration-300 group-hover:rotate-[-8deg]">
+          <Link href="/" className="group flex shrink-0 items-center gap-2.5 ga-color-transition" aria-label="AgriVil home">
+            <span className="ga-scale-interactive flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md transition-all duration-300 group-hover:shadow-lg">
               <Wheat className="h-5 w-5" strokeWidth={2.2} />
             </span>
             <span className="flex flex-col leading-none">
@@ -112,14 +112,14 @@ export function GaHeader() {
           {/* Search */}
           <form
             onSubmit={submitSearch}
-            className="hidden h-11 flex-1 items-center overflow-hidden rounded-full border-2 border-primary/80 bg-card md:flex"
+            className="hidden h-11 flex-1 items-center overflow-hidden rounded-full border border-primary/50 bg-secondary/40 shadow-sm transition-all duration-300 hover:border-primary/80 hover:shadow-md md:flex ga-color-transition"
           >
-            <div className="relative flex h-full items-center border-r border-border">
+            <div className="relative flex h-full items-center border-r border-border/50 ga-color-transition">
               <select
                 value={cat}
                 onChange={(e) => onCategoryChange(e.target.value)}
                 aria-label="Search category"
-                className="h-full cursor-pointer appearance-none bg-secondary/60 pl-4 pr-9 text-sm font-semibold text-secondary-foreground outline-none"
+                className="h-full cursor-pointer appearance-none bg-transparent pl-4 pr-9 text-sm font-semibold text-foreground outline-none ga-color-transition"
               >
                 <option value="All">All</option>
                 {CATEGORIES.map((c) => (
@@ -134,12 +134,12 @@ export function GaHeader() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search fresh tomatoes, plantain, pepper, yam…"
-              className="h-full flex-1 bg-transparent px-4 text-sm text-foreground outline-none placeholder:text-muted-foreground"
+              className="h-full flex-1 bg-transparent px-4 text-sm text-foreground outline-none placeholder:text-muted-foreground/60 ga-color-transition"
             />
             <button
               type="submit"
               aria-label="Search"
-              className="flex h-full items-center justify-center bg-primary px-5 text-primary-foreground transition-colors hover:bg-field-deep"
+              className="ga-press flex h-full items-center justify-center bg-primary px-5 text-primary-foreground"
             >
               <Search className="h-5 w-5" />
             </button>
@@ -151,12 +151,12 @@ export function GaHeader() {
             <AccountControl />
             <Link
               href="/checkout"
-              className="ga-press relative ml-1 flex h-11 items-center gap-2 rounded-full bg-primary px-4 text-sm font-bold text-primary-foreground transition-colors hover:bg-field-deep"
+              className="ga-press ga-color-transition relative ml-1 flex h-11 items-center gap-2 rounded-full bg-primary px-4 text-sm font-bold text-primary-foreground shadow-sm hover:shadow-md"
             >
               <ShoppingBasket className="h-5 w-5" />
               <span className="hidden lg:inline">Basket</span>
               {count > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[0.7rem] font-bold text-accent-foreground">
+                <span className="ga-scale-interactive absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[0.7rem] font-bold text-accent-foreground shadow-md">
                   {count}
                 </span>
               )}
@@ -164,7 +164,7 @@ export function GaHeader() {
             <button
               type="button"
               onClick={() => setOpen((o) => !o)}
-              className="flex h-11 w-11 items-center justify-center rounded-full text-foreground md:hidden"
+              className="ga-color-transition flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-transform duration-300 hover:bg-secondary/60 md:hidden"
               aria-label="Toggle menu"
             >
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -173,24 +173,24 @@ export function GaHeader() {
         </div>
 
         {/* Mobile search */}
-        <form onSubmit={submitSearch} className="px-4 pb-3 md:hidden">
-          <div className="flex h-11 items-center overflow-hidden rounded-full border-2 border-primary/80 bg-card">
+        <form onSubmit={submitSearch} className="px-4 pb-3 md:hidden transition-all duration-300">
+          <div className="ga-color-transition flex h-11 items-center overflow-hidden rounded-full border-2 border-primary/40 bg-card shadow-sm transition-all duration-300 focus-within:border-primary/80 focus-within:shadow-md hover:border-primary/60">
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search fresh produce…"
-              className="h-full flex-1 bg-transparent px-4 text-sm text-foreground outline-none placeholder:text-muted-foreground"
+              className="ga-color-transition h-full flex-1 bg-transparent px-4 text-sm text-foreground outline-none placeholder:text-muted-foreground/60 transition-all duration-300"
             />
-            <button type="submit" aria-label="Search" className="flex h-full items-center bg-primary px-4 text-primary-foreground">
-              <Search className="h-5 w-5" />
+            <button type="submit" aria-label="Search" className="ga-press flex h-full items-center bg-primary px-4 text-primary-foreground transition-all duration-300">
+              <Search className="h-5 w-5 transition-transform duration-300" />
             </button>
           </div>
         </form>
       </div>
 
       {/* Category nav strip */}
-      <div className="border-b border-border bg-card/95 backdrop-blur">
-        <div className="ga-rail mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 sm:px-6">
+      <div className="border-b border-border/50 bg-card/95 backdrop-blur transition-all duration-300">
+        <div className="ga-rail mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 sm:px-6 transition-all duration-300">
           {PRIMARY_NAV.map((item) => {
             const active = pathname === item.href
             return (
@@ -198,7 +198,7 @@ export function GaHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'relative whitespace-nowrap px-3 py-2.5 text-sm font-semibold transition-colors',
+                  'relative whitespace-nowrap px-3 py-2.5 text-sm font-semibold transition-all duration-300',
                   active ? 'text-primary' : 'text-foreground/70 hover:text-foreground',
                 )}
               >
