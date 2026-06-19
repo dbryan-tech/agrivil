@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { NotificationBell } from '@/components/golden-acres/notifications/notification-bell'
+import { SearchAutocomplete } from '@/components/golden-acres/search/search-autocomplete'
 import {
   ShoppingBasket,
   MapPin,
@@ -15,7 +16,6 @@ import {
   LogOut,
   LayoutDashboard,
   LifeBuoy,
-  Search,
   Heart,
   ChevronDown,
   Headphones,
@@ -48,26 +48,15 @@ export function GaHeader() {
   const router = useRouter()
   const { count, openDrawer } = useCart()
   const [open, setOpen] = useState(false)
-  const [query, setQuery] = useState('')
   const [cat, setCat] = useState('All')
-
-  function goToShop(nextQuery: string, nextCat: string) {
-    const params = new URLSearchParams()
-    if (nextQuery.trim()) params.set('q', nextQuery.trim())
-    if (nextCat !== 'All') params.set('category', nextCat)
-    router.push(`/shop${params.toString() ? `?${params}` : ''}`)
-    setOpen(false)
-  }
-
-  function submitSearch(e: React.FormEvent) {
-    e.preventDefault()
-    goToShop(query, cat)
-  }
 
   // Selecting a category in the search bar applies immediately — no extra click.
   function onCategoryChange(value: string) {
     setCat(value)
-    goToShop(query, value)
+    const params = new URLSearchParams()
+    if (value !== 'All') params.set('category', value)
+    router.push(`/shop${params.toString() ? `?${params}` : ''}`)
+    setOpen(false)
   }
 
   return (
@@ -117,7 +106,7 @@ export function GaHeader() {
               <div className="relative flex h-full items-center border-r border-border/50">
                 <select
                   value={cat}
-                  onChange={(e) => setCat(e.target.value)}
+                  onChange={(e) => onCategoryChange(e.target.value)}
                   aria-label="Search category"
                   className="h-full cursor-pointer appearance-none bg-transparent pl-4 pr-9 text-sm font-semibold text-foreground outline-none"
                 >
