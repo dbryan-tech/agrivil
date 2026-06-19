@@ -7,7 +7,8 @@
 // We persist only product IDs and resolve them against the live catalog so the
 // rail always reflects current price/stock.
 
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useDataStore } from '@/components/golden-acres/store/data-store'
 import type { Product } from '@/lib/golden-acres/types'
 
 const STORAGE_KEY = 'ga-recently-viewed-v1'
@@ -67,20 +68,39 @@ export function RecentlyViewedProvider({ children }: { children: React.ReactNode
   return <Ctx.Provider value={{ ids, record, clear }}>{children}</Ctx.Provider>
 }
 
-export function useRecentlyViewed(): RecentlyViewedCtx {
+/** Low-level access to the recently-viewed context (ids + record + clear). */
+export function useRecentlyViewedCtx(): RecentlyViewedCtx {
   const ctx = useContext(Ctx)
-  if (!ctx) throw new Error('useRecentlyViewed must be used within RecentlyViewedProvider')
+  if (!ctx) throw new Error('useRecentlyViewedCtx must be used within RecentlyViewedProvider')
   return ctx
 }
 
-/** Resolve the recorded IDs against a product list, preserving recency order. */
-export function resolveRecent(ids: string[], products: Product[], excludeId?: string): Product[] {
-  const byId = new Map(products.map((p) => [p.id, p]))
-  const out: Product[] = []
-  for (const id of ids) {
-    if (id === excludeId) continue
-    const p = byId.get(id)
-    if (p && p.status !== 'delisted') out.push(p)
-  }
-  return out
+/**
+ * Records a product view exactly once per mount (e.g. on a product page).
+ * Safe to call unconditionally at the top of a component.
+ */
+export function useRecordView(productId: string | undefined) {
+  const { record } = useRecentlyViewedCtx()
+  useEffect(() => {
+    if (productId) record(productId)
+  }, [productId, record])
+}
+
+/**
+ * Returns the recently-viewed products resolved against the live catalog,
+ * most-recent first. Pass an `excludeId` (e.g. the current product) to omit it.
+ */
+export function useRecentlyViewed(excludeId?: string): Product[] {
+  const { ids } = useRecentlyViewedCtx()
+  const { liveProducts } = useDataStore()
+  return useMemo(() => {
+    const byId = new Map(liveProducts.map((p) => [p.id, p]))
+    const out: Product[] = []
+    for (const id of ids) {
+      if (id === excludeId) continue
+      const p = byId.get(id)
+      if (p) out.push(p)
+    }
+    return out
+  }, [ids, liveProducts, excludeId])
 }

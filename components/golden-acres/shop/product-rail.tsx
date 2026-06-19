@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { ProduceCard } from '@/components/golden-acres/produce-card'
 import { groupOffers } from '@/lib/golden-acres/grouping'
+import { cn } from '@/lib/utils'
 import type { Product } from '@/lib/golden-acres/types'
 
 /**
@@ -18,6 +19,7 @@ export function ProductRail({
   icon,
   onQuickView,
   groupByName = true,
+  className,
 }: {
   title: string
   subtitle?: string
@@ -25,6 +27,7 @@ export function ProductRail({
   icon?: React.ReactNode
   onQuickView?: (p: Product) => void
   groupByName?: boolean
+  className?: string
 }) {
   const scroller = useRef<HTMLDivElement>(null)
 
@@ -41,7 +44,7 @@ export function ProductRail({
   }
 
   return (
-    <section className="mt-12">
+    <section className={cn('mt-12', className)}>
       <div className="flex items-end justify-between gap-4">
         <div>
           <h2 className="ga-headline flex items-center gap-2 text-2xl text-foreground">

@@ -13,10 +13,11 @@ import {
   Star,
 } from 'lucide-react'
 import { SmartImage } from '@/components/golden-acres/smart-image'
-import { ProduceCard } from '@/components/golden-acres/produce-card'
+import { ProductRail } from '@/components/golden-acres/shop/product-rail'
 import { ReviewList } from '@/components/golden-acres/reviews/review-list'
 import { CompareOffers } from '@/components/golden-acres/shop/compare-offers'
 import { useCart } from '@/components/golden-acres/cart-context'
+import { useRecordView, useRecentlyViewed } from '@/components/golden-acres/store/recently-viewed'
 import { formatGHS, freshnessLabel, weight } from '@/lib/golden-acres/format'
 import type { Product, Farmer } from '@/lib/golden-acres/types'
 
@@ -34,6 +35,10 @@ export function ProductDetail({
   const { add } = useCart()
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
+
+  // record this product into the browse history (excluded from its own rail)
+  useRecordView(product.id)
+  const recentlyViewed = useRecentlyViewed(product.id)
 
   const fresh = freshnessLabel(product.expiryDate)
   const estimateEach = product.variableWeight
@@ -206,16 +211,21 @@ export function ProductDetail({
       </section>
 
       {related.length > 0 && (
-        <section className="mt-16">
-          <h2 className="ga-display text-2xl font-semibold text-foreground">
-            More from the market
-          </h2>
-          <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {related.map((p) => (
-              <ProduceCard key={p.id} product={p} />
-            ))}
-          </div>
-        </section>
+        <ProductRail
+          className="mt-16"
+          title="More from the market"
+          subtitle="Fresh picks you might also like"
+          products={related}
+        />
+      )}
+
+      {recentlyViewed.length > 0 && (
+        <ProductRail
+          className="mt-14"
+          title="Recently viewed"
+          subtitle="Pick up where you left off"
+          products={recentlyViewed}
+        />
       )}
     </div>
   )
