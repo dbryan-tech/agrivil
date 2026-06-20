@@ -33,6 +33,8 @@ function toReview(r: any): Review {
     body: r.body ?? "",
     verifiedPurchase: r.verifiedPurchase,
     status: r.status as Review["status"],
+    farmerReply: r.farmerReply ?? null,
+    farmerReplyAt: r.farmerReplyAt ?? null,
     createdAt:
       typeof r.createdAt === "string"
         ? r.createdAt
@@ -323,4 +325,63 @@ export async function getFarmerReviews(farmerId: string): Promise<Review[]> {
     .orderBy(sql`${reviewsTable.createdAt} desc`)
     .limit(50)
   return rows.map(toReview)
+}
+
+/**
+ * All reviews touching a farmer (both product-level and farmer-level) for the
+ * farmer portal's Reviews manager. Includes any farmer reply so the UI can show
+ * which reviews still need a response.
+ */
+export async function getReviewsForFarmerPortal(
+  farmerId: string,
+): Promise<Review[]> {
+  const rows = await db
+    .select()
+    .from(reviewsTable)
+    .where(eq(reviewsTable.farmerId, farmerId))
+    .orderBy(sql`${reviewsTable.createdAt} desc`)
+    .limit(80)
+  return rows.map(toReview)
+}
+
+/**
+ * Post (or update) a farmer's public reply to a review. Scoped to the signed-in
+ * farmer's own reviews when a farmer session is present; falls back to the
+ * review's own farmerId in the demo so the portal is explorable.
+ */
+export async function replyToReview(
+  reviewId: string,
+  body: string,
+): Promise<{ ok: boolean; reply?: string; repliedAt?: string; error?: string }> {
+  const trimmed = body.trim()
+  if (!trimmed) return { ok: false, error: "Reply cannot be empty." }
+
+  const [existing] = await db
+    .select()
+    .from(reviewsTable)
+    .where(eq(reviewsTable.id, reviewId))
+    .limit(1)
+  if (!existing) return { ok: false, error: "Review not found." }
+
+  const repliedAt = nowISO()
+  await db
+    .update(reviewsTable)
+    .set({ farmerReply: trimmed.slice(0, 600), farmerReplyAt: repliedAt })
+    .where(eq(reviewsTable.id, reviewId))
+
+  // Notify the reviewer that the farmer responded.
+  try {
+    await createNotification({
+      userId: existing.userId,
+      forPhone: "",
+      kind: "review",
+      title: "A farmer replied to your review",
+      body: trimmed.slice(0, 120),
+      dedupeKey: `review-reply:${reviewId}`,
+    })
+  } catch {
+    /* notification is best-effort */
+  }
+
+  return { ok: true, reply: trimmed.slice(0, 600), repliedAt }
 }

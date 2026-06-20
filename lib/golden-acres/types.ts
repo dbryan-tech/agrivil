@@ -247,6 +247,9 @@ export interface Review {
   body: string
   verifiedPurchase: boolean
   status: 'live' | 'pending' | 'hidden'
+  /** Public reply from the farmer/seller, if any. */
+  farmerReply?: string | null
+  farmerReplyAt?: string | null
   createdAt: string
 }
 

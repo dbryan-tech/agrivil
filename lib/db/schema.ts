@@ -284,6 +284,9 @@ export const reviews = pgTable("reviews", {
   body: text("body").notNull().default(""),
   verifiedPurchase: boolean("verifiedPurchase").notNull().default(false),
   status: text("status").notNull().default("live"),
+  // Public reply from the farmer/seller to a review (additive — null until set).
+  farmerReply: text("farmerReply"),
+  farmerReplyAt: text("farmerReplyAt"),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
 })
 
