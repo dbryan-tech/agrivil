@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     return new Response("Unauthorized", { status: 401 })
   }
 
-  console.log(`[Stripe] Webhook: ${event.type}`, event.data.object?.id)
+  console.log(`[Stripe] Webhook: ${event.type}`)
 
   // Only process completed checkout sessions
   if (event.type === "checkout.session.completed") {
