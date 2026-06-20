@@ -8,6 +8,17 @@ import type { UserRole } from '@/lib/golden-acres/types'
 import { GoogleIcon, AppleIcon } from './brand-icons'
 import { Loader2 } from 'lucide-react'
 
+/**
+ * Returns the list of OAuth providers that actually have credentials configured.
+ * `undefined` while loading. Call sites use this to hide social-auth dividers
+ * when no provider is available (so we never show an empty "or with…" rule).
+ */
+export function useSocialProviders(): ('google' | 'apple')[] | undefined {
+  const { data: providers } = useSWR('auth-providers', getAuthProviders)
+  if (!providers) return undefined
+  return (['google', 'apple'] as const).filter((p) => providers[p])
+}
+
 export function SocialButtons({ role = 'customer' }: { role?: UserRole }) {
   const [busy, setBusy] = useState<'google' | 'apple' | null>(null)
   const [error, setError] = useState<string | null>(null)

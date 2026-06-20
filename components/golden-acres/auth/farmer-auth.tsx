@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useSession } from './session-context'
 import { AvatarUpload } from '@/components/golden-acres/image-upload-control'
-import { SocialButtons } from './social-buttons'
+import { SocialButtons, useSocialProviders } from './social-buttons'
 import {
   signInWithPhonePin,
   requestOtp,
@@ -36,6 +36,8 @@ export function FarmerAuth() {
   const params = useSearchParams()
   const next = params.get('next') || '/farmer'
   const { signIn } = useSession()
+  const socialProviders = useSocialProviders()
+  const hasSocial = (socialProviders?.length ?? 0) > 0
 
   const [screen, setScreen] = useState<'signin' | 'signup'>('signin')
   const [mode, setMode] = useState<Mode>('phone-pin')
@@ -111,9 +113,12 @@ export function FarmerAuth() {
     setError(null)
   }
 
+  // "SMS code" (phone-otp) is intentionally omitted until an SMS provider
+  // (Arkesel/Hubtel) is configured and the Better Auth phoneNumber sendOTP
+  // callback is wired. The dormant phone-otp UI block below is ready to
+  // re-enable by adding { id: 'phone-otp', label: 'SMS code' } here.
   const tabs: { id: Mode; label: string }[] = [
     { id: 'phone-pin', label: 'Phone + PIN' },
-    { id: 'phone-otp', label: 'SMS code' },
     { id: 'password', label: 'Email' },
   ]
 
@@ -137,7 +142,7 @@ export function FarmerAuth() {
       </p>
 
       {/* Method tabs */}
-      <div className="mt-6 grid grid-cols-3 gap-2 rounded-2xl bg-secondary p-1.5">
+      <div className="mt-6 grid grid-cols-2 gap-2 rounded-2xl bg-secondary p-1.5">
         {tabs.map((t) => {
           const active = mode === t.id
           return (
@@ -250,12 +255,16 @@ export function FarmerAuth() {
         </div>
       )}
 
-      <div className="my-6 flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-        <span className="h-px flex-1 bg-border" />
-        or continue with
-        <span className="h-px flex-1 bg-border" />
-      </div>
-      <SocialButtons role="farmer" />
+      {hasSocial && (
+        <>
+          <div className="my-6 flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            <span className="h-px flex-1 bg-border" />
+            or continue with
+            <span className="h-px flex-1 bg-border" />
+          </div>
+          <SocialButtons role="farmer" />
+        </>
+      )}
 
       <button
         type="button"

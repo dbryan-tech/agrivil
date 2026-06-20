@@ -12,13 +12,15 @@ import {
   DEMO,
 } from '@/lib/golden-acres/auth'
 import { useSession } from './session-context'
-import { SocialButtons } from './social-buttons'
+import { SocialButtons, useSocialProviders } from './social-buttons'
 
 export function CustomerAuth({ mode }: { mode: 'login' | 'signup' }) {
   const router = useRouter()
   const params = useSearchParams()
   const next = params.get('next') || '/account'
   const { signIn } = useSession()
+  const socialProviders = useSocialProviders()
+  const hasSocial = (socialProviders?.length ?? 0) > 0
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -80,15 +82,19 @@ export function CustomerAuth({ mode }: { mode: 'login' | 'signup' }) {
           : 'Sign in to track orders, manage boxes, and check out faster.'}
       </p>
 
-      <div className="mt-6">
-        <SocialButtons role="customer" />
-      </div>
+      {hasSocial && (
+        <>
+          <div className="mt-6">
+            <SocialButtons role="customer" />
+          </div>
 
-      <div className="my-6 flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-        <span className="h-px flex-1 bg-border" />
-        or with email
-        <span className="h-px flex-1 bg-border" />
-      </div>
+          <div className="my-6 flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            <span className="h-px flex-1 bg-border" />
+            or with email
+            <span className="h-px flex-1 bg-border" />
+          </div>
+        </>
+      )}
 
       <form onSubmit={submit} className="space-y-4">
         {mode === 'signup' && (
