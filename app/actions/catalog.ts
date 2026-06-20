@@ -180,9 +180,17 @@ export async function getCatalogSnapshot(): Promise<CatalogSnapshot> {
     db.select().from(recipesTable),
     db.select().from(ordersTable).orderBy(desc(ordersTable.createdAt)),
   ])
+  // Only verified sellers (and their produce) appear on the storefront.
+  // Pending/rejected KYC applicants live solely in the admin queue.
+  const verifiedFarmers = fRows.filter(
+    (f) => (f.kycStatus ?? "verified") === "verified",
+  )
+  const verifiedFarmerIds = new Set(verifiedFarmers.map((f) => f.id))
   return {
-    products: pRows.map(toProduct),
-    farmers: fRows.map(toFarmer),
+    products: pRows
+      .filter((p) => verifiedFarmerIds.has(p.farmerId))
+      .map(toProduct),
+    farmers: verifiedFarmers.map(toFarmer),
     bundles: bRows.map(toBundle),
     recipes: rRows.map(toRecipe),
     orders: oRows.map(toOrder),

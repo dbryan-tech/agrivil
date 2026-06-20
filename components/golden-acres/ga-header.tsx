@@ -70,7 +70,7 @@ export function GaHeader() {
             <span className="font-semibold underline-offset-2 hover:underline">Accra Pilot · GA-183</span>
           </Link>
           <nav className="flex items-center gap-4 font-medium">
-            <Link href="/farmer" className="hidden items-center gap-1.5 hover:opacity-80 sm:flex">
+            <Link href="/sell" className="hidden items-center gap-1.5 hover:opacity-80 sm:flex">
               <Store className="h-3.5 w-3.5" /> Sell on AgriVil
             </Link>
             <Link href="/account" className="hidden items-center gap-1.5 hover:opacity-80 sm:flex">

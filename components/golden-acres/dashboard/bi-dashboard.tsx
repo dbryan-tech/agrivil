@@ -30,6 +30,7 @@ import {
   ReceiptText,
   BadgePercent,
   Megaphone,
+  ShieldCheck,
 } from 'lucide-react'
 import {
   ChartContainer,
@@ -48,11 +49,13 @@ import { cedis, pct, formatGHS, shortDate } from '@/lib/golden-acres/format'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { PromotionsSection } from '@/components/golden-acres/dashboard/promotions-section'
 import { AnnouncementsSection } from '@/components/golden-acres/dashboard/announcements-section'
+import { KycSection } from '@/components/golden-acres/dashboard/kyc-section'
 
 type Section =
   | 'overview'
   | 'orders'
   | 'farmers'
+  | 'kyc'
   | 'products'
   | 'listings'
   | 'promotions'
@@ -62,6 +65,7 @@ const NAV: { id: Section; label: string; icon: typeof LayoutGrid }[] = [
   { id: 'overview', label: 'Overview', icon: LayoutGrid },
   { id: 'orders', label: 'Orders', icon: ReceiptText },
   { id: 'farmers', label: 'Farmers', icon: Sprout },
+  { id: 'kyc', label: 'Verification', icon: ShieldCheck },
   { id: 'products', label: 'Products', icon: Package },
   { id: 'listings', label: 'Listings', icon: ClipboardCheck },
   { id: 'promotions', label: 'Promotions', icon: BadgePercent },
@@ -151,6 +155,7 @@ export function BiDashboard() {
             {section === 'orders' && <OrdersSection data={data} />}
             {section === 'farmers' && <FarmersSection data={data} />}
             {section === 'products' && <ProductsSection data={data} />}
+            {section === 'kyc' && <KycSection />}
             {section === 'listings' && <ListingsSection />}
             {section === 'promotions' && <PromotionsSection />}
             {section === 'announcements' && <AnnouncementsSection />}
