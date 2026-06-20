@@ -2,8 +2,7 @@
 
 import { useCallback, useRef, useState, useEffect } from 'react'
 import { Loader2, AlertTriangle } from 'lucide-react'
-import { verifyPaystackTransaction } from '@/lib/paystack'
-import { startPaystackCheckout, type PlaceOrderInput } from '@/app/actions/orders'
+import { startPaystackCheckout, verifyPaystackOrder, type PlaceOrderInput } from '@/app/actions/orders'
 
 /**
  * Paystack Checkout for MoMo + GHS card payments.
@@ -58,10 +57,10 @@ export function PaystackCheckout({
 
     const poll = async () => {
       attempts++
-      const result = await verifyPaystackTransaction(ref)
+      const result = await verifyPaystackOrder(ref)
 
-      if (result.success && result.data) {
-        const { status } = result.data
+      if (result.ok && result.status) {
+        const { status } = result
 
         if (status === 'success') {
           clearInterval(pollIntervalRef.current)

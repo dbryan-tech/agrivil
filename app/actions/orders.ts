@@ -11,7 +11,7 @@ import {
 } from "@/lib/db/schema"
 import { auth } from "@/lib/auth"
 import { stripe } from "@/lib/stripe"
-import { initializePaystackTransaction } from "@/lib/paystack"
+import { initializePaystackTransaction, verifyPaystackTransaction } from "@/lib/paystack"
 import {
   maxRedeemablePoints,
   pointsToCedis,
@@ -583,6 +583,21 @@ export async function startPaystackCheckout(
       error: e instanceof Error ? e.message : "Could not start Paystack checkout.",
     }
   }
+}
+
+/**
+ * Verify a Paystack transaction by reference. This wraps the server-only
+ * Paystack lib so the client checkout component never imports secret-key code.
+ * Returns the normalized payment status for the polling UI.
+ */
+export async function verifyPaystackOrder(
+  reference: string,
+): Promise<{ ok: boolean; status?: "success" | "pending" | "failed" | "abandoned"; error?: string }> {
+  const result = await verifyPaystackTransaction(reference)
+  if (!result.success || !result.data) {
+    return { ok: false, error: result.error ?? "Verification failed." }
+  }
+  return { ok: true, status: result.data.status }
 }
 
 /**
