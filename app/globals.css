@@ -563,7 +563,8 @@
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
-.ga-shimmer {
+.ga-shimmer,
+.ga-skeleton {
   background: linear-gradient(
     100deg,
     color-mix(in oklab, var(--secondary) 70%, transparent) 30%,

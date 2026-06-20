@@ -1,8 +1,8 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import {
   Package,
   MapPin,
@@ -76,7 +76,28 @@ export function AccountDashboard() {
   const { account, signOut, updateAccount, wishlist } = useSession()
   const { ordersForCustomer } = useDataStore()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [tab, setTab] = useState<Tab>('overview')
+
+  // Deep-link support: /account?tab=favorites focuses a tab directly (used by
+  // the mobile tab bar, notifications and marketing links). "wishlist" is an
+  // accepted alias for the Favorites tab.
+  useEffect(() => {
+    const raw = searchParams.get('tab')
+    if (!raw) return
+    const normalized = raw === 'wishlist' ? 'favorites' : raw
+    const valid: Tab[] = [
+      'overview',
+      'orders',
+      'favorites',
+      'rewards',
+      'addresses',
+      'boxes',
+      'profile',
+      'security',
+    ]
+    if ((valid as string[]).includes(normalized)) setTab(normalized as Tab)
+  }, [searchParams])
 
   const customer = account as CustomerAccount
   const myOrders = useMemo(

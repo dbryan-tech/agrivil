@@ -2,9 +2,10 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { ShoppingCart, Check, Heart, Star, Users, Leaf, Eye } from 'lucide-react'
+import { ShoppingCart, Check, Heart, Star, Users, Leaf, Eye, GitCompareArrows } from 'lucide-react'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { useCart } from '@/components/golden-acres/cart-context'
+import { useCompare } from '@/components/golden-acres/compare/compare-context'
 import { useSession } from '@/components/golden-acres/auth/session-context'
 import { formatGHS, freshnessLabel, weight } from '@/lib/golden-acres/format'
 import { productFarmer, productEstimate } from '@/lib/golden-acres/data'
@@ -22,12 +23,14 @@ export function ProduceCard({
   onQuickView?: (product: Product) => void
 }) {
   const { add } = useCart()
+  const { isComparing, toggle: toggleCompare, full: compareFull } = useCompare()
   const { account, isSaved, toggleWishlist } = useSession()
   const [added, setAdded] = useState(false)
   const multi = offerCount > 1
 
   const canSave = account?.role === 'customer'
   const saved = canSave && isSaved(product.id)
+  const comparing = isComparing(product.id)
 
   const farmer = productFarmer(product)
   const fresh = freshnessLabel(product.expiryDate)
@@ -76,24 +79,42 @@ export function ProduceCard({
           )}
         </div>
 
-        {/* top-right: wishlist (refined frosted control) */}
-        {canSave && (
+        {/* top-right: wishlist + compare (refined frosted controls) */}
+        <div className="absolute right-2.5 top-2.5 flex flex-col gap-1.5">
+          {canSave && (
+            <button
+              type="button"
+              onClick={() => toggleWishlist(product.id)}
+              aria-label={saved ? `Remove ${product.name} from favorites` : `Save ${product.name} to favorites`}
+              aria-pressed={saved}
+              className="ga-scale-interactive flex h-8 w-8 items-center justify-center rounded-full bg-card/85 text-foreground shadow-sm ring-1 ring-black/5 backdrop-blur-md"
+            >
+              <Heart
+                className="h-[17px] w-[17px] transition-all duration-300"
+                style={{
+                  fill: saved ? 'var(--ga-deal)' : 'transparent',
+                  color: saved ? 'var(--ga-deal)' : 'currentColor',
+                }}
+              />
+            </button>
+          )}
           <button
             type="button"
-            onClick={() => toggleWishlist(product.id)}
-            aria-label={saved ? `Remove ${product.name} from favorites` : `Save ${product.name} to favorites`}
-            aria-pressed={saved}
-            className="ga-scale-interactive absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-card/85 text-foreground shadow-sm ring-1 ring-black/5 backdrop-blur-md"
+            onClick={() => toggleCompare(product.id)}
+            disabled={!comparing && compareFull}
+            aria-label={comparing ? `Remove ${product.name} from comparison` : `Add ${product.name} to comparison`}
+            aria-pressed={comparing}
+            title={!comparing && compareFull ? 'Compare list is full (max 4)' : 'Compare'}
+            className={[
+              'ga-scale-interactive flex h-8 w-8 items-center justify-center rounded-full shadow-sm ring-1 ring-black/5 backdrop-blur-md transition-colors disabled:opacity-40',
+              comparing
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-card/85 text-foreground',
+            ].join(' ')}
           >
-            <Heart
-              className="h-[17px] w-[17px] transition-all duration-300"
-              style={{
-                fill: saved ? 'var(--ga-deal)' : 'transparent',
-                color: saved ? 'var(--ga-deal)' : 'currentColor',
-              }}
-            />
+            <GitCompareArrows className="h-[16px] w-[16px]" />
           </button>
-        )}
+        </div>
 
         {/* hover quick-view affordance */}
         {onQuickView && (
