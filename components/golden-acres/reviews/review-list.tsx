@@ -1,7 +1,7 @@
 'use client'
 
 import useSWR from 'swr'
-import { Star, ShieldCheck, MessageSquare } from 'lucide-react'
+import { Star, ShieldCheck, MessageSquare, Sprout } from 'lucide-react'
 import { getProductReviews, getFarmerReviews } from '@/app/actions/reviews'
 import { shortDate } from '@/lib/golden-acres/format'
 import { cn } from '@/lib/utils'
@@ -111,6 +111,21 @@ export function ReviewList({
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 {r.body}
               </p>
+            )}
+            {r.farmerReply && (
+              <div className="mt-3 rounded-xl border border-leaf/20 bg-leaf/5 px-4 py-3">
+                <p className="flex items-center gap-1.5 text-xs font-bold text-leaf">
+                  <Sprout className="h-3.5 w-3.5" /> Response from the farmer
+                  {r.farmerReplyAt ? (
+                    <span className="font-normal text-muted-foreground">
+                      · {shortDate(r.farmerReplyAt)}
+                    </span>
+                  ) : null}
+                </p>
+                <p className="mt-1.5 text-sm leading-relaxed text-foreground">
+                  {r.farmerReply}
+                </p>
+              </div>
             )}
           </li>
         ))}

@@ -425,7 +425,15 @@ function Orders({ orders }: { orders: Order[] }) {
               Total <span className="font-bold text-foreground">{cedis(o.total)}</span>
             </span>
             <div className="flex items-center gap-2">
-              {o.status !== 'cancelled' && (
+              {o.status === 'delivered' && !o.feedbackAt ? (
+                <Link
+                  href={`/orders/${o.reference}#feedback`}
+                  className="flex items-center gap-1.5 rounded-full bg-clay px-4 py-2 text-sm font-bold text-cream transition-transform hover:-translate-y-0.5"
+                >
+                  <Star className="h-4 w-4 fill-cream" />
+                  Rate &amp; review
+                </Link>
+              ) : o.status !== 'cancelled' ? (
                 <Link
                   href={`/orders/${o.reference}`}
                   className="flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-bold text-foreground transition-colors hover:bg-secondary"
@@ -433,7 +441,7 @@ function Orders({ orders }: { orders: Order[] }) {
                   <MapPinned className="h-4 w-4 text-field" />
                   {o.status === 'delivered' ? 'View' : 'Track'}
                 </Link>
-              )}
+              ) : null}
               <button
                 onClick={() => reorder(o.reference, o.items.map((i) => i.productId))}
                 className="flex items-center gap-1.5 rounded-full bg-field px-4 py-2 text-sm font-bold text-cream transition-transform hover:-translate-y-0.5"

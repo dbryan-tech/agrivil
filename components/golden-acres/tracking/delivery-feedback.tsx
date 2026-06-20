@@ -132,13 +132,17 @@ function FeedbackSummary({ order }: { order: Order }) {
 const TIP_OPTIONS = [0, 5, 10, 20]
 
 export function DeliveryFeedback({ order }: { order: Order }) {
-  const { applyServerOrder } = useDataStore()
+  const { applyServerOrder, farmers } = useDataStore()
   const [orderRating, setOrderRating] = useState(0)
   const [riderRating, setRiderRating] = useState(0)
   const [tip, setTip] = useState(0)
   const [comment, setComment] = useState('')
-  // Per-product star ratings keyed by productId.
+  // Per-product star ratings + written reviews keyed by productId.
   const [productRatings, setProductRatings] = useState<Record<string, number>>({})
+  const [productNotes, setProductNotes] = useState<Record<string, string>>({})
+  // Per-farmer star ratings + written reviews keyed by farmerId.
+  const [farmerRatings, setFarmerRatings] = useState<Record<string, number>>({})
+  const [farmerNotes, setFarmerNotes] = useState<Record<string, string>>({})
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -149,6 +153,19 @@ export function DeliveryFeedback({ order }: { order: Order }) {
 
   const riderName = order.threePL.driverName
 
+  // Unique farmers represented in this order, so the customer can review the
+  // seller(s) behind their produce — not just the products themselves. Names
+  // are resolved from the catalog snapshot in the data store.
+  const orderFarmers = Array.from(
+    new Set(order.items.map((it) => it.farmerId).filter(Boolean)),
+  ).map((farmerId) => ({
+    farmerId,
+    farmerName:
+      farmers.find((f) => f.id === farmerId)?.name ??
+      farmers.find((f) => f.id === farmerId)?.farmName ??
+      'this farmer',
+  }))
+
   async function handleSubmit() {
     if (orderRating < 1) {
       setError('Please give your order a star rating first.')
@@ -158,7 +175,18 @@ export function DeliveryFeedback({ order }: { order: Order }) {
     setError(null)
     const productReviews = Object.entries(productRatings)
       .filter(([, r]) => r > 0)
-      .map(([productId, rating]) => ({ productId, rating }))
+      .map(([productId, rating]) => ({
+        productId,
+        rating,
+        body: productNotes[productId]?.trim() || undefined,
+      }))
+    const farmerReviews = Object.entries(farmerRatings)
+      .filter(([, r]) => r > 0)
+      .map(([farmerId, rating]) => ({
+        farmerId,
+        rating,
+        body: farmerNotes[farmerId]?.trim() || undefined,
+      }))
     const res = await submitDeliveryFeedback({
       reference: order.reference,
       orderRating,
@@ -166,6 +194,7 @@ export function DeliveryFeedback({ order }: { order: Order }) {
       tip,
       comment: comment.trim() || undefined,
       productReviews,
+      farmerReviews,
     })
     setSubmitting(false)
     if (!res.ok || !res.order) {
@@ -242,31 +271,108 @@ export function DeliveryFeedback({ order }: { order: Order }) {
         </div>
       )}
 
-      {/* Per-product reviews */}
+      {/* Per-product reviews — star rating + an optional written review that
+          appears once the customer rates the item. These post as verified
+          purchase reviews on the product page. */}
       {order.items.length > 0 && (
         <div className="mt-6 border-t border-border pt-5">
           <p className="text-sm font-bold text-foreground">
-            Rate the produce <span className="font-normal text-muted-foreground">(optional)</span>
+            Review the produce <span className="font-normal text-muted-foreground">(optional)</span>
+          </p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Your words appear as a verified-purchase review on each product.
           </p>
           <ul className="mt-3 space-y-3">
-            {order.items.map((it) => (
-              <li
-                key={it.productId}
-                className="flex flex-wrap items-center justify-between gap-2"
-              >
-                <span className="text-sm font-semibold text-foreground">
-                  {it.name}
-                </span>
-                <StarRating
-                  value={productRatings[it.productId] ?? 0}
-                  onChange={(n) =>
-                    setProductRatings((p) => ({ ...p, [it.productId]: n }))
-                  }
-                  size="h-5 w-5"
-                  label={`Rate ${it.name}`}
-                />
-              </li>
-            ))}
+            {order.items.map((it) => {
+              const rating = productRatings[it.productId] ?? 0
+              return (
+                <li
+                  key={it.productId}
+                  className="rounded-xl border border-border bg-background/60 p-3"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-sm font-semibold text-foreground">
+                      {it.name}
+                    </span>
+                    <StarRating
+                      value={rating}
+                      onChange={(n) =>
+                        setProductRatings((p) => ({ ...p, [it.productId]: n }))
+                      }
+                      size="h-5 w-5"
+                      label={`Rate ${it.name}`}
+                    />
+                  </div>
+                  {rating > 0 && (
+                    <textarea
+                      value={productNotes[it.productId] ?? ''}
+                      onChange={(e) =>
+                        setProductNotes((p) => ({
+                          ...p,
+                          [it.productId]: e.target.value,
+                        }))
+                      }
+                      rows={2}
+                      maxLength={500}
+                      placeholder={`Share what you thought about the ${it.name.toLowerCase()}…`}
+                      aria-label={`Write a review for ${it.name}`}
+                      className="mt-2 w-full resize-none rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground outline-none transition-colors focus:border-field"
+                    />
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
+
+      {/* Per-farmer reviews — rate and review the seller(s) behind the order. */}
+      {orderFarmers.length > 0 && (
+        <div className="mt-6 border-t border-border pt-5">
+          <p className="text-sm font-bold text-foreground">
+            Review your {orderFarmers.length > 1 ? 'farmers' : 'farmer'}{' '}
+            <span className="font-normal text-muted-foreground">(optional)</span>
+          </p>
+          <ul className="mt-3 space-y-3">
+            {orderFarmers.map((f) => {
+              const rating = farmerRatings[f.farmerId] ?? 0
+              return (
+                <li
+                  key={f.farmerId}
+                  className="rounded-xl border border-border bg-background/60 p-3"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+                      <Sprout className="h-4 w-4 text-leaf" /> {f.farmerName}
+                    </span>
+                    <StarRating
+                      value={rating}
+                      onChange={(n) =>
+                        setFarmerRatings((p) => ({ ...p, [f.farmerId]: n }))
+                      }
+                      size="h-5 w-5"
+                      label={`Rate ${f.farmerName}`}
+                    />
+                  </div>
+                  {rating > 0 && (
+                    <textarea
+                      value={farmerNotes[f.farmerId] ?? ''}
+                      onChange={(e) =>
+                        setFarmerNotes((p) => ({
+                          ...p,
+                          [f.farmerId]: e.target.value,
+                        }))
+                      }
+                      rows={2}
+                      maxLength={500}
+                      placeholder={`How was your experience with ${f.farmerName}?`}
+                      aria-label={`Write a review for ${f.farmerName}`}
+                      className="mt-2 w-full resize-none rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground outline-none transition-colors focus:border-field"
+                    />
+                  )}
+                </li>
+              )
+            })}
           </ul>
         </div>
       )}
