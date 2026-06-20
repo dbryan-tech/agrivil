@@ -49,8 +49,8 @@ export interface PlaceOrderResult {
   ok: boolean
   reference?: string
   error?: string
-  /** Present only for the card path (Stripe embedded checkout). */
-  clientSecret?: string
+  /** Present only for the card path (Stripe hosted checkout redirect URL). */
+  checkoutUrl?: string
   /** Present only for the Paystack path (MoMo / GHS card). */
   authorizationUrl?: string
   /** The persisted order, returned so the client store can ingest it. */
@@ -319,12 +319,19 @@ export async function placeMomoOrder(
 /* ------------------------------- Card path -------------------------------- */
 
 /**
- * Create a Stripe embedded Checkout session and persist the order in an
- * awaiting-payment state. The order is finalized (stock + loyalty) only after
- * Stripe confirms payment via confirmCardOrder.
+ * Create a Stripe HOSTED Checkout session and persist the order in an
+ * awaiting-payment state. We use hosted (redirect) checkout rather than the
+ * embedded form so the flow needs only the server-side secret key — no
+ * NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is required in the browser. The order is
+ * finalized (stock + loyalty) only after Stripe confirms payment, via the
+ * webhook or confirmCardOrder when the shopper returns to the success URL.
+ *
+ * `returnUrls` are built on the client (it knows the real origin) and Stripe
+ * appends the session id to successUrl via the {CHECKOUT_SESSION_ID} template.
  */
 export async function startCardCheckout(
   input: PlaceOrderInput,
+  returnUrls: { successUrl: string; cancelUrl: string },
 ): Promise<PlaceOrderResult> {
   try {
     const { orderItems, subtotal } = await priceOrder(input.items)
@@ -345,9 +352,9 @@ export async function startCardCheckout(
 
     // Single consolidated line item priced from server totals.
     const session = await stripe.checkout.sessions.create({
-      ui_mode: "embedded_page",
-      redirect_on_completion: "never",
       mode: "payment",
+      success_url: returnUrls.successUrl,
+      cancel_url: returnUrls.cancelUrl,
       line_items: [
         {
           price_data: {
@@ -377,7 +384,7 @@ export async function startCardCheckout(
     return {
       ok: true,
       reference,
-      clientSecret: session.client_secret ?? undefined,
+      checkoutUrl: session.url ?? undefined,
     }
   } catch (e) {
     console.log("[v0] startCardCheckout failed:", e)

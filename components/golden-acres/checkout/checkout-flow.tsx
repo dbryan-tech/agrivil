@@ -18,10 +18,10 @@ import {
 } from '@/lib/golden-acres/api'
 import {
   placeMomoOrder,
+  startCardCheckout,
   confirmCardOrder,
   type PlaceOrderInput,
 } from '@/app/actions/orders'
-import { CardCheckout } from '@/components/golden-acres/checkout/card-checkout'
 import type {
   DeliverySlot,
   DeliveryQuote,
@@ -95,13 +95,53 @@ export function CheckoutFlow() {
   const [reference, setReference] = useState<string | null>(null)
   const [redeem, setRedeem] = useState(false)
   const [payError, setPayError] = useState<string | null>(null)
-  // Card path: once the shopper continues, we render the embedded Stripe form
-  // which creates its own server-priced session via startCardCheckout.
-  const [showCard, setShowCard] = useState(false)
-  const [cardInput, setCardInput] = useState<PlaceOrderInput | null>(null)
 
   useEffect(() => {
     getDeliverySlots().then(setSlots)
+  }, [])
+
+  // Handle the return from Stripe hosted checkout. On success we confirm the
+  // order server-side (verifies the Stripe session is paid) and show the
+  // confirmation. We use the human reference stashed before redirecting.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const card = params.get('card')
+    if (!card) return
+
+    // Clean the query params so a refresh doesn't re-trigger this.
+    const clean = () =>
+      window.history.replaceState({}, '', window.location.pathname)
+
+    if (card === 'cancel') {
+      setStep('payment')
+      setMethod('card')
+      setPayError('Card payment was cancelled. You can try again or pick another method.')
+      clean()
+      return
+    }
+
+    if (card === 'success') {
+      const ref = sessionStorage.getItem('ga-card-ref')
+      sessionStorage.removeItem('ga-card-ref')
+      clean()
+      if (!ref) {
+        setPayError('We could not match your card payment. Please check your orders.')
+        return
+      }
+      setPaying(true)
+      confirmCardOrder(ref)
+        .then((res) => {
+          if (res.ok && res.reference) {
+            finalizeOrder(res.reference, res.order)
+          } else {
+            setStep('payment')
+            setMethod('card')
+            setPayError(res.error ?? 'We could not confirm your card payment.')
+          }
+        })
+        .finally(() => setPaying(false))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Prefill from the signed-in customer's default saved address so a logged-in
@@ -192,9 +232,29 @@ export function CheckoutFlow() {
     if (!input) return
     setPayError(null)
     if (method === 'card') {
-      // Reveal the embedded Stripe form; it creates the session + pending order.
-      setCardInput(input)
-      setShowCard(true)
+      // Stripe HOSTED checkout: create a session server-side (secret key only,
+      // no publishable key needed) and redirect the browser to Stripe's page.
+      // On return, Stripe sends the shopper back to /checkout?card=success&ref=…
+      setPaying(true)
+      try {
+        const origin = window.location.origin
+        const res = await startCardCheckout(input, {
+          successUrl: `${origin}/checkout?card=success&ref={CHECKOUT_SESSION_ID}`,
+          cancelUrl: `${origin}/checkout?card=cancel`,
+        })
+        if (res.ok && res.checkoutUrl && res.reference) {
+          // Stash the human reference so we can finalize on return; the URL
+          // carries the Stripe session id which confirmCardOrder maps back.
+          sessionStorage.setItem('ga-card-ref', res.reference)
+          window.location.href = res.checkoutUrl
+          return
+        }
+        setPayError(res.error ?? 'Could not start card checkout.')
+        setPaying(false)
+      } catch (e) {
+        setPayError(e instanceof Error ? e.message : 'Could not start card checkout.')
+        setPaying(false)
+      }
       return
     }
     setPaying(true)
@@ -210,17 +270,6 @@ export function CheckoutFlow() {
       setPayError(e instanceof Error ? e.message : 'Payment failed.')
     } finally {
       setPaying(false)
-    }
-  }
-
-  // Called by the embedded Stripe form after a successful card payment.
-  async function onCardComplete(ref: string) {
-    const res = await confirmCardOrder(ref)
-    if (res.ok && res.reference) {
-      setShowCard(false)
-      finalizeOrder(res.reference, res.order)
-    } else {
-      setPayError(res.error ?? 'We could not confirm your card payment.')
     }
   }
 
@@ -306,13 +355,6 @@ export function CheckoutFlow() {
               onBack={() => setStep('delivery')}
               onPay={handlePay}
               payError={payError}
-              showCard={showCard}
-              cardInput={cardInput}
-              onCardComplete={onCardComplete}
-              onCardCancel={() => {
-                setShowCard(false)
-                setCardInput(null)
-              }}
             />
           )}
 
@@ -675,10 +717,6 @@ function PaymentStep({
   onBack,
   onPay,
   payError,
-  showCard,
-  cardInput,
-  onCardComplete,
-  onCardCancel,
 }: {
   method: PaymentMethod
   setMethod: (m: PaymentMethod) => void
@@ -693,10 +731,6 @@ function PaymentStep({
   onBack: () => void
   onPay: () => void
   payError: string | null
-  showCard: boolean
-  cardInput: PlaceOrderInput | null
-  onCardComplete: (reference: string) => void
-  onCardCancel: () => void
 }) {
   return (
     <section>
@@ -791,45 +825,35 @@ function PaymentStep({
         </div>
       )}
 
-      {showCard && cardInput ? (
-        // Stripe embedded card form — creates its own server-priced session.
-        <div className="mt-8">
-          <CardCheckout
-            input={cardInput}
-            onComplete={onCardComplete}
-            onError={() => onCardCancel()}
-          />
-          <button
-            onClick={onCardCancel}
-            className="mt-4 text-sm font-bold text-muted-foreground hover:text-foreground"
-          >
-            ← Choose a different payment method
-          </button>
-        </div>
-      ) : (
-        <div className="mt-8 flex items-center justify-between">
-          <button
-            onClick={onBack}
-            className="text-sm font-bold text-muted-foreground hover:text-foreground"
-          >
-            ← Back to delivery
-          </button>
-          <button
-            onClick={onPay}
-            disabled={paying}
-            className="inline-flex items-center gap-2 rounded-full bg-[var(--ga-gold)] px-6 py-3.5 font-bold text-white transition-transform hover:-translate-y-0.5 disabled:opacity-70"
-          >
-            {paying ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" />{' '}
-                {method === 'card' ? 'Starting secure checkout…' : 'Processing…'}
-              </>
-            ) : (
-              <>{method === 'card' ? 'Continue to card payment' : `Pay ${formatGHS(total)}`}</>
-            )}
-          </button>
-        </div>
+      {method === 'card' && (
+        <p className="mt-4 text-sm text-muted-foreground">
+          You&apos;ll be redirected to our secure Stripe payment page to enter
+          your card details, then brought right back to confirm your order.
+        </p>
       )}
+
+      <div className="mt-8 flex items-center justify-between">
+        <button
+          onClick={onBack}
+          className="text-sm font-bold text-muted-foreground hover:text-foreground"
+        >
+          ← Back to delivery
+        </button>
+        <button
+          onClick={onPay}
+          disabled={paying}
+          className="inline-flex items-center gap-2 rounded-full bg-[var(--ga-gold)] px-6 py-3.5 font-bold text-white transition-transform hover:-translate-y-0.5 disabled:opacity-70"
+        >
+          {paying ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />{' '}
+              {method === 'card' ? 'Redirecting to secure checkout…' : 'Processing…'}
+            </>
+          ) : (
+            <>{method === 'card' ? 'Pay by card' : `Pay ${formatGHS(total)}`}</>
+          )}
+        </button>
+      </div>
     </section>
   )
 }

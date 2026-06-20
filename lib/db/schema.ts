@@ -6,7 +6,9 @@ import {
   real,
   timestamp,
   jsonb,
+  uniqueIndex,
 } from "drizzle-orm/pg-core"
+import { sql } from "drizzle-orm"
 
 // ---------------------------------------------------------------------------
 // Better Auth tables (camelCase column names match Better Auth defaults)
@@ -238,7 +240,14 @@ export const notifications = pgTable("notifications", {
   smsStatus: text("smsStatus"),
   smsTo: text("smsTo"),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
-})
+}, (table) => ({
+  // Partial unique index enforcing idempotency only for rows that carry a
+  // dedupeKey, so createNotification can safely ON CONFLICT DO NOTHING. NULL
+  // dedupeKeys (ad-hoc notifications) are exempt and never collide.
+  dedupeKeyUnique: uniqueIndex("notifications_dedupeKey_unique")
+    .on(table.dedupeKey)
+    .where(sql`${table.dedupeKey} IS NOT NULL`),
+}))
 
 export const supportTickets = pgTable("support_tickets", {
   id: text("id").primaryKey(),
