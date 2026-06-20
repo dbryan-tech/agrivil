@@ -1,7 +1,8 @@
 import { betterAuth } from "better-auth"
-import { emailOTP } from "better-auth/plugins"
+import { emailOTP, phoneNumber } from "better-auth/plugins"
 import { Pool } from "pg"
 import { getBaseURL } from "./base-url"
+import { sendSms } from "@/lib/golden-acres/sms"
 import {
   sendVerificationOtpEmail,
   sendResetPasswordOtpEmail,
@@ -104,6 +105,16 @@ export const auth = betterAuth({
         }
       },
     }),
+    // Real phone number OTP: customers can sign up / sign in via SMS.
+    // Uses our multi-provider SMS adapter (Arkesel → Hubtel fallback).
+    phoneNumber({
+      otpLength: 6,
+      expiresIn: 600, // 10 minutes
+      async sendOTP({ phone, otp, type }) {
+        // Use our SMS adapter which tries Arkesel first, then Hubtel
+        await sendSms(phone, `Your AgriVil ${type === "sign-up" ? "verification code" : "login code"} is: ${otp}`)
+      },
+    }),
   ],
   advanced:
     process.env.NODE_ENV === "development"
@@ -113,9 +124,14 @@ export const auth = betterAuth({
 
 // Helper for UI/server to know which providers are live without leaking secrets.
 export function configuredProviders() {
+  const hasSMS =
+    (process.env.ARKESEL_API_KEY && process.env.ARKESEL_SENDER_ID) ||
+    (process.env.HUBTEL_CLIENT_ID && process.env.HUBTEL_CLIENT_SECRET)
+
   return {
     google: !!socialProviders.google,
     apple: !!socialProviders.apple,
     email: !!process.env.RESEND_API_KEY,
+    phone: hasSMS, // phone OTP available if SMS provider is configured
   }
 }
