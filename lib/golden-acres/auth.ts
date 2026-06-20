@@ -231,51 +231,43 @@ export async function resetPassword(token: string, newPassword: string): Promise
 }
 
 // ---- Real phone OTP (via Better Auth phoneNumber plugin + SMS) ---------------
+// Note: The phoneNumber plugin uses sendOtp for both signup and signin.
+// We'll wire this into the customer auth UI later.
 
 export async function requestPhoneOtp(phone: string): Promise<AuthResult> {
   if (phone.replace(/\D/g, "").length < 9)
     return { ok: false, error: "Enter a valid mobile number." }
 
-  // Use the Better Auth phoneNumber plugin to send OTP via SMS
-  const { error } = await (
-    authClient.phoneNumber?.sendVerificationOtp as unknown as (opts: {
-      phone: string
-      type: "sign-up" | "sign-in"
-    }) => Promise<{ error?: { message?: string } | null }>
-  )?.({ phone, type: "sign-up" })
-
-  if (error) return { ok: false, error: mapError(error) }
-  return { ok: true }
+  // Request OTP via the phoneNumber plugin
+  // Returns nothing on success; errors are caught below
+  try {
+    await (authClient.phoneNumber?.sendOtp as unknown as (opts: {
+      phoneNumber: string
+    }) => Promise<unknown>)?.({ phoneNumber: phone })
+    return { ok: true }
+  } catch (err) {
+    return { ok: false, error: mapError(err) }
+  }
 }
 
 export async function verifyPhoneOtp(phone: string, code: string): Promise<AuthResult> {
   if (!code) return { ok: false, error: "Enter the verification code." }
 
-  // Verify the OTP with Better Auth
-  const { error } = await (
-    authClient.phoneNumber?.verifyPhoneNumberSignUp as unknown as (opts: {
-      phone: string
-      otp: string
-    }) => Promise<{ error?: { message?: string } | null }>
-  )?.({ phone, otp: code })
+  // Verify OTP: phoneNumber plugin unifies signup/signin under one method
+  try {
+    const result = await (authClient.phoneNumber?.verifyOtp as unknown as (opts: {
+      phoneNumber: string
+      code: string
+    }) => Promise<{ error?: { message?: string } | null }>)?.({
+      phoneNumber: phone,
+      code,
+    })
 
-  if (error) return { ok: false, error: mapError(error) }
-  return { ok: true }
-}
-
-export async function signInWithPhoneOtp(phone: string, code: string): Promise<AuthResult> {
-  if (!code) return { ok: false, error: "Enter the verification code." }
-
-  // Sign in with phone OTP
-  const { error } = await (
-    authClient.phoneNumber?.verifyPhoneNumberSignIn as unknown as (opts: {
-      phone: string
-      otp: string
-    }) => Promise<{ error?: { message?: string } | null }>
-  )?.({ phone, otp: code })
-
-  if (error) return { ok: false, error: mapError(error) }
-  return { ok: true }
+    if (result?.error) return { ok: false, error: mapError(result.error) }
+    return { ok: true }
+  } catch (err) {
+    return { ok: false, error: mapError(err) }
+  }
 }
 
 // Legacy stubs for backward compatibility (farmer PIN login still uses email+password)

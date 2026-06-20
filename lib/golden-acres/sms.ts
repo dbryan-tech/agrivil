@@ -9,8 +9,8 @@ import { sendSMS, sendSMSDev, type SendSMSResult as AdapterResult } from "@/lib/
  */
 
 export type SmsSendResult =
-  | { ok: true; status: "sent"; id: string; provider: string }
-  | { ok: false; status: "failed"; error: string; provider: string }
+  | { ok: true; status: "sent"; id: string; provider: string | undefined }
+  | { ok: false; status: "failed"; error: string; provider: string | undefined }
 
 /**
  * Normalise a Ghana phone number to E.164 format.

@@ -12,7 +12,7 @@ export interface SendSMSOptions {
 export interface SendSMSResult {
   success: boolean
   messageId?: string
-  provider?: "arkesel" | "hubtel"
+  provider?: "arkesel" | "hubtel" | "dev"
   error?: string
 }
 

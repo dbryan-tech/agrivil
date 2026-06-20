@@ -3,6 +3,7 @@
 import { headers } from "next/headers"
 import { eq, inArray } from "drizzle-orm"
 import { db } from "@/lib/db"
+import { getBaseURL } from "@/lib/base-url"
 import {
   orders as ordersTable,
   products as productsTable,
@@ -10,6 +11,7 @@ import {
 } from "@/lib/db/schema"
 import { auth } from "@/lib/auth"
 import { stripe } from "@/lib/stripe"
+import { initializePaystackTransaction } from "@/lib/paystack"
 import {
   maxRedeemablePoints,
   pointsToCedis,
@@ -49,6 +51,8 @@ export interface PlaceOrderResult {
   error?: string
   /** Present only for the card path (Stripe embedded checkout). */
   clientSecret?: string
+  /** Present only for the Paystack path (MoMo / GHS card). */
+  authorizationUrl?: string
   /** The persisted order, returned so the client store can ingest it. */
   order?: Order
 }
@@ -509,6 +513,129 @@ export async function persistOrderStatus(
   } catch (e) {
     console.log("[v0] persistOrderStatus failed:", e)
     return { ok: false, error: e instanceof Error ? e.message : "Persist failed" }
+  }
+}
+
+/** Initialize a Paystack MoMo / GHS card payment (real Ghana payments). */
+export async function startPaystackCheckout(
+  input: PlaceOrderInput,
+): Promise<PlaceOrderResult & { authorizationUrl?: string }> {
+  try {
+    const { orderItems, subtotal } = await priceOrder(input.items)
+    const preDiscountTotal = round2(subtotal + input.deliveryFee)
+    const { userId, pointsUsed } = await resolveLoyalty(
+      input.redeemPoints,
+      preDiscountTotal,
+    )
+    const discount = pointsToCedis(pointsUsed)
+    const total = Math.max(0, round2(preDiscountTotal - discount))
+
+    const reference = genReference()
+
+    // Paystack uses pesewas (GHS * 100) as the unit
+    const amountInPesewas = Math.round(total * 100)
+
+    // Initialize Paystack transaction
+    const paystackResult = await initializePaystackTransaction({
+      amount: amountInPesewas,
+      email: input.method.includes("momo")
+        ? `customer-${Date.now()}@agrivil.local` // Paystack requires email even for MoMo
+        : "customer@agrivil.local",
+      currency: "GHS",
+      reference,
+      metadata: {
+        orderReference: reference,
+        items: String(orderItems.length),
+        total: String(total),
+      },
+      channels: input.method.includes("momo") ? ["mobile_money", "card"] : ["card"],
+      callback_url: `${getBaseURL()}/checkout?reference=${reference}`,
+    })
+
+    if (!paystackResult.success || !paystackResult.data?.authorization_url) {
+      return {
+        ok: false,
+        error: paystackResult.error || "Could not initialize Paystack payment.",
+      }
+    }
+
+    // Create the order in pending state
+    const order = buildOrder({
+      reference,
+      input,
+      orderItems,
+      subtotal,
+      total,
+      paymentStatus: "pending",
+    })
+
+    await persistOrder(order, userId, null) // No stripeSessionId for Paystack
+
+    return {
+      ok: true,
+      reference,
+      authorizationUrl: paystackResult.data.authorization_url,
+      order,
+    }
+  } catch (e) {
+    console.log("[v0] startPaystackCheckout failed:", e)
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "Could not start Paystack checkout.",
+    }
+  }
+}
+
+/**
+ * Update an order's payment and status.
+ * Called by the Paystack webhook after payment succeeds.
+ */
+export async function updateOrderStatus(
+  reference: string,
+  paymentStatus: "paid" | "failed" | "pending",
+  metadata?: Record<string, unknown>,
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const [row] = await db
+      .select()
+      .from(ordersTable)
+      .where(eq(ordersTable.reference, reference))
+
+    if (!row) return { ok: false, error: "Order not found" }
+
+    // Update payment status
+    const updatedPayment = {
+      ...row.payment,
+      status: paymentStatus,
+      ...metadata,
+    }
+
+    await db
+      .update(ordersTable)
+      .set({
+        payment: updatedPayment,
+        updatedAt: new Date(),
+      })
+      .where(eq(ordersTable.reference, reference))
+
+    // Send notification if paid
+    if (paymentStatus === "paid") {
+      await createNotification({
+        forPhone: row.customerPhone,
+        userId: row.userId ?? undefined,
+        kind: "order",
+        title: `${reference} · Payment received`,
+        body: "Your payment was successful. Preparing your order for delivery.",
+        href: `/orders/${reference}`,
+        dedupeKey: `${reference}:paid`,
+        sms: true,
+      })
+    }
+
+    return { ok: true }
+  } catch (e) {
+    console.log("[v0] updateOrderStatus failed:", e)
+    return { ok: false, error: e instanceof Error ? e.message : "Update failed" }
   }
 }
 
