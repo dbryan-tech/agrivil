@@ -323,3 +323,34 @@ export const payoutBatches = pgTable("payout_batches", {
   totalPaid: real("totalPaid").notNull().default(0),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
 })
+
+// Marketing promotions / discount codes managed from the Admin console and
+// redeemed at checkout. Discount is either a percentage of the order subtotal
+// or a flat cedi amount, optionally gated by a minimum spend and a usage cap.
+export const promotions = pgTable(
+  "promotions",
+  {
+    id: text("id").primaryKey(),
+    // Stored uppercased; the checkout normalises user input before matching.
+    code: text("code").notNull(),
+    description: text("description").notNull().default(""),
+    // 'percent' => value is 0-100; 'flat' => value is a cedi amount.
+    kind: text("kind").notNull().default("percent"),
+    value: real("value").notNull().default(0),
+    // Minimum order subtotal (GH₵) required for the code to apply.
+    minSubtotal: real("minSubtotal").notNull().default(0),
+    // Optional ceiling on the discount granted by a percentage code (GH₵).
+    maxDiscount: real("maxDiscount"),
+    // Optional total redemption cap; null = unlimited. usedCount tracks usage.
+    usageLimit: integer("usageLimit"),
+    usedCount: integer("usedCount").notNull().default(0),
+    active: boolean("active").notNull().default(true),
+    // Optional ISO expiry date (yyyy-mm-dd); null = never expires.
+    expiresAt: text("expiresAt"),
+    createdBy: text("createdBy"),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+  },
+  (t) => ({
+    codeUnique: uniqueIndex("promotions_code_unique").on(t.code),
+  }),
+)

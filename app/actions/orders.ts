@@ -18,6 +18,10 @@ import {
   pointsForSpend,
 } from "@/lib/golden-acres/loyalty"
 import { createNotification } from "@/app/actions/notifications"
+import {
+  resolvePromoDiscount,
+  recordPromoRedemption,
+} from "@/app/actions/promotions"
 import type { GhanaRegion, Order, OrderItem, PaymentMethod } from "@/lib/golden-acres/types"
 
 /* ----------------------------- input contract ----------------------------- */
@@ -43,6 +47,8 @@ export interface PlaceOrderInput {
   deliveryFee: number
   /** Whether the customer chose to redeem loyalty points. */
   redeemPoints?: boolean
+  /** Optional discount code applied at checkout (re-validated server-side). */
+  promoCode?: string
 }
 
 export interface PlaceOrderResult {
@@ -290,7 +296,9 @@ export async function placeMomoOrder(
       preDiscountTotal,
     )
     const discount = pointsToCedis(pointsUsed)
-    const total = Math.max(0, round2(preDiscountTotal - discount))
+    const promo = await resolvePromoDiscount(input.promoCode, subtotal)
+    const promoDiscount = promo?.discount ?? 0
+    const total = Math.max(0, round2(preDiscountTotal - discount - promoDiscount))
 
     const reference = genReference()
     const order = buildOrder({
@@ -305,6 +313,8 @@ export async function placeMomoOrder(
     await persistOrder(order, userId, null)
     await decrementStock(orderItems, rows)
     if (userId) await applyLoyalty(userId, balance, pointsUsed, total)
+    // MoMo settles immediately, so the code is redeemed now.
+    if (promo) await recordPromoRedemption(promo.code)
 
     return { ok: true, reference, order }
   } catch (e) {
@@ -341,7 +351,8 @@ export async function startCardCheckout(
       preDiscountTotal,
     )
     const discount = pointsToCedis(pointsUsed)
-    const total = Math.max(0, round2(preDiscountTotal - discount))
+    const promo = await resolvePromoDiscount(input.promoCode, subtotal)
+    const total = Math.max(0, round2(preDiscountTotal - discount - (promo?.discount ?? 0)))
 
     const reference = genReference()
 
@@ -535,7 +546,8 @@ export async function startPaystackCheckout(
       preDiscountTotal,
     )
     const discount = pointsToCedis(pointsUsed)
-    const total = Math.max(0, round2(preDiscountTotal - discount))
+    const promo = await resolvePromoDiscount(input.promoCode, subtotal)
+    const total = Math.max(0, round2(preDiscountTotal - discount - (promo?.discount ?? 0)))
 
     const reference = genReference()
 
