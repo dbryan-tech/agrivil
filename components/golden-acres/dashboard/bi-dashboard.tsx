@@ -29,6 +29,7 @@ import {
   Loader2,
   ReceiptText,
   BadgePercent,
+  Megaphone,
 } from 'lucide-react'
 import {
   ChartContainer,
@@ -46,6 +47,7 @@ import {
 import { cedis, pct, formatGHS, shortDate } from '@/lib/golden-acres/format'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { PromotionsSection } from '@/components/golden-acres/dashboard/promotions-section'
+import { AnnouncementsSection } from '@/components/golden-acres/dashboard/announcements-section'
 
 type Section =
   | 'overview'
@@ -54,6 +56,7 @@ type Section =
   | 'products'
   | 'listings'
   | 'promotions'
+  | 'announcements'
 
 const NAV: { id: Section; label: string; icon: typeof LayoutGrid }[] = [
   { id: 'overview', label: 'Overview', icon: LayoutGrid },
@@ -62,6 +65,7 @@ const NAV: { id: Section; label: string; icon: typeof LayoutGrid }[] = [
   { id: 'products', label: 'Products', icon: Package },
   { id: 'listings', label: 'Listings', icon: ClipboardCheck },
   { id: 'promotions', label: 'Promotions', icon: BadgePercent },
+  { id: 'announcements', label: 'Announcements', icon: Megaphone },
 ]
 
 const STATUS_COLORS: Record<string, string> = {
@@ -148,7 +152,8 @@ export function BiDashboard() {
             {section === 'farmers' && <FarmersSection data={data} />}
             {section === 'products' && <ProductsSection data={data} />}
             {section === 'listings' && <ListingsSection />}
-        {section === 'promotions' && <PromotionsSection />}
+            {section === 'promotions' && <PromotionsSection />}
+            {section === 'announcements' && <AnnouncementsSection />}
           </>
         )}
       </main>

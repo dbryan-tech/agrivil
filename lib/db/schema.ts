@@ -354,3 +354,19 @@ export const promotions = pgTable(
     codeUnique: uniqueIndex("promotions_code_unique").on(t.code),
   }),
 )
+
+// Site-wide announcement banners shown across the storefront, managed from the
+// Admin console. The most recent active banner is rendered at the top of the
+// storefront (customers can dismiss it for their session).
+export const announcements = pgTable("announcements", {
+  id: text("id").primaryKey(),
+  message: text("message").notNull(),
+  // Optional call-to-action rendered as a link at the end of the banner.
+  ctaLabel: text("ctaLabel"),
+  ctaHref: text("ctaHref"),
+  // Visual tone: 'info' | 'promo' | 'warning'.
+  tone: text("tone").notNull().default("info"),
+  active: boolean("active").notNull().default(true),
+  createdBy: text("createdBy"),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+})

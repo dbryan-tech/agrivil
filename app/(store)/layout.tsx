@@ -6,6 +6,7 @@ import { MiniCart } from '@/components/golden-acres/cart/mini-cart'
 import { CompareTray } from '@/components/golden-acres/compare/compare-tray'
 import { CommandPalette } from '@/components/golden-acres/command-palette'
 import { MobileTabBar } from '@/components/golden-acres/mobile-tab-bar'
+import { AnnouncementBar } from '@/components/golden-acres/announcement-bar'
 import { GaHeader } from '@/components/golden-acres/ga-header'
 import { GaFooter } from '@/components/golden-acres/ga-footer'
 
@@ -15,6 +16,7 @@ export default function StoreLayout({ children }: { children: ReactNode }) {
       <CartProvider>
         <CompareProvider>
           <RecentlyViewedProvider>
+            <AnnouncementBar />
             <GaHeader />
             <main className="pb-16 lg:pb-0">{children}</main>
             <GaFooter />
