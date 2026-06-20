@@ -19,7 +19,6 @@ import {
   ClipboardList,
   X,
   PackageCheck,
-  CircleDot,
   ArrowRightCircle,
   Ban,
 } from 'lucide-react'
@@ -41,7 +40,19 @@ import type {
   TicketStatus,
   TicketAttachment,
 } from '@/lib/golden-acres/types'
-import { MessageSquare, Headphones, Send, Inbox, Wallet, Loader2, Smartphone, Navigation, Paperclip } from 'lucide-react'
+import {
+  MessageSquare,
+  Headphones,
+  Send,
+  Inbox,
+  Wallet,
+  Loader2,
+  Smartphone,
+  Navigation,
+  Paperclip,
+  User,
+  Tag,
+} from 'lucide-react'
 import useSWR, { mutate as globalMutate } from 'swr'
 import {
   getPayoutQueue,
@@ -75,14 +86,25 @@ const FAULT_META: Record<FaultParty, { color: string; bg: string }> = {
   Hub: { color: '#8a5a3b', bg: '#f0e4d2' },
 }
 
-function StatusPill({ status }: { status: OrderStatus | 'tracking-assigned' }) {
+function StatusPill({
+  status,
+  size = 'sm',
+}: {
+  status: OrderStatus | 'tracking-assigned'
+  size?: 'sm' | 'md'
+}) {
   const m = STATUS_META[status]
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold"
+      className={`inline-flex items-center gap-1.5 rounded-full font-semibold ${
+        size === 'md' ? 'px-3 py-1 text-xs' : 'px-2.5 py-0.5 text-[11px]'
+      }`}
       style={{ color: m.color, background: m.bg }}
     >
-      <CircleDot className="h-3 w-3" />
+      <span
+        className="h-1.5 w-1.5 rounded-full"
+        style={{ background: m.color }}
+      />
       {m.label}
     </span>
   )
@@ -96,16 +118,33 @@ const FILTERS = [
 ] as const
 type FilterKey = (typeof FILTERS)[number]['key']
 
+type Section = 'orders' | 'support' | 'payouts' | 'fleet'
+
+const NAV_ITEMS: { key: Section; label: string; icon: typeof Package }[] = [
+  { key: 'orders', label: 'Orders', icon: Package },
+  { key: 'support', label: 'Customer support', icon: Headphones },
+  { key: 'payouts', label: 'Farmer payouts', icon: Wallet },
+  { key: 'fleet', label: 'Fleet map', icon: Navigation },
+]
+
 export function OpsConsole() {
   const { orders, addRefund } = useDataStore()
   const [selectedRef, setSelectedRef] = useState<string | null>(null)
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<FilterKey>('all')
-  // Top-level console section: order fulfilment vs. customer support.
-  const [section, setSection] = useState<'orders' | 'support' | 'payouts' | 'fleet'>('orders')
+  const [section, setSection] = useState<Section>('orders')
   // On mobile this is a master-detail: 'queue' shows the list, 'detail' the order.
   // On lg+ both panes are always visible and this is ignored.
   const [mobileView, setMobileView] = useState<'queue' | 'detail'>('queue')
+
+  // Shared SWR keys keep the sidebar badges in sync with each section without
+  // triggering a second fetch (SWR dedupes by key).
+  const { data: ticketData } = useSWR<SupportTicket[]>(
+    'ops-tickets',
+    () => listAllTickets(),
+    { refreshInterval: 4000 },
+  )
+  const { data: payoutData } = useSWR('payout-queue', () => getPayoutQueue())
 
   const filtered = useMemo(() => {
     return orders.filter((o) => {
@@ -141,96 +180,296 @@ export function OpsConsole() {
   const activeCount = orders.filter((o) =>
     ['placed', 'picking', 'packed', 'out-for-delivery'].includes(o.status),
   ).length
+  const openTickets = (ticketData ?? []).filter((t) => t.status !== 'resolved').length
+  const payoutsDue = payoutData?.dueCount ?? 0
+
+  const badges: Record<Section, number> = {
+    orders: activeCount,
+    support: openTickets,
+    payouts: payoutsDue,
+    fleet: 0,
+  }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      {/* Top bar */}
-      <header className="flex items-center justify-between gap-2 border-b border-border bg-card px-4 py-3 sm:px-6">
-        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+    <div className="flex h-dvh overflow-hidden bg-background">
+      {/* ---------------- Desktop sidebar ---------------- */}
+      <aside className="hidden w-[244px] shrink-0 flex-col border-r border-border bg-card lg:flex">
+        <div className="flex items-center gap-2.5 border-b border-border px-5 py-4">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--ga-field)] text-white">
             <Leaf className="h-5 w-5" />
           </div>
           <div className="min-w-0">
-            <p className="ga-display truncate text-base font-semibold leading-none text-foreground sm:text-lg">
+            <p className="ga-display truncate text-[15px] font-bold leading-tight text-foreground">
               Ops &amp; Support
             </p>
-            <p className="truncate text-xs text-muted-foreground">
-              AgriVil console
-            </p>
+            <p className="truncate text-xs text-muted-foreground">AgriVil console</p>
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-2 text-sm sm:gap-5">
-          <div className="flex items-center gap-2">
-            <span className="flex h-7 items-center rounded-full bg-secondary px-2.5 font-bold text-secondary-foreground">
-              {activeCount}
-            </span>
-            <span className="hidden text-muted-foreground sm:inline">active</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span
-              className="flex h-7 items-center rounded-full px-2.5 font-bold"
-              style={{ color: '#c0492e', background: '#f3ddd5' }}
-            >
-              {attentionCount}
-            </span>
-            <span className="hidden text-muted-foreground sm:inline">
-              need attention
-            </span>
-          </div>
-          <div className="flex items-center gap-2 rounded-full bg-secondary px-1.5 py-1.5 sm:px-3">
-            <div className="h-7 w-7 rounded-full bg-[var(--ga-gold-soft)]" />
-            <span className="hidden font-semibold text-foreground sm:inline">
-              Efua A.
-            </span>
-          </div>
-        </div>
-      </header>
 
-      {/* Section tabs */}
-      <div className="flex items-center gap-1 border-b border-border bg-card px-4 sm:px-6">
-        <SectionTab
-          active={section === 'orders'}
-          onClick={() => setSection('orders')}
-          icon={Package}
-          label="Orders"
-        />
-        <SectionTab
-          active={section === 'support'}
-          onClick={() => setSection('support')}
-          icon={Headphones}
-          label="Customer support"
-        />
-        <SectionTab
-          active={section === 'payouts'}
-          onClick={() => setSection('payouts')}
-          icon={Wallet}
-          label="Farmer payouts"
-        />
-        <SectionTab
-          active={section === 'fleet'}
-          onClick={() => setSection('fleet')}
-          icon={Navigation}
-          label="Fleet map"
-        />
+        <nav className="flex flex-1 flex-col gap-1 p-3">
+          <p className="px-2 pb-1 pt-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+            Workspace
+          </p>
+          {NAV_ITEMS.map((item) => (
+            <NavButton
+              key={item.key}
+              icon={item.icon}
+              label={item.label}
+              active={section === item.key}
+              badge={badges[item.key]}
+              attention={item.key === 'orders' && attentionCount > 0}
+              onClick={() => setSection(item.key)}
+            />
+          ))}
+        </nav>
+
+        <div className="border-t border-border p-3">
+          <div className="flex items-center gap-3 rounded-lg px-2 py-2">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--ga-gold-soft)] text-sm font-bold text-[var(--ga-field-deep)]">
+              EA
+            </div>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold text-foreground">Efua A.</p>
+              <p className="truncate text-xs text-muted-foreground">Operations lead</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      {/* ---------------- Main column ---------------- */}
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* Mobile top bar */}
+        <header className="flex items-center gap-2.5 border-b border-border bg-card px-4 py-3 lg:hidden">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--ga-field)] text-white">
+            <Leaf className="h-4 w-4" />
+          </div>
+          <p className="ga-display flex-1 truncate text-base font-bold text-foreground">
+            Ops &amp; Support
+          </p>
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--ga-gold-soft)] text-xs font-bold text-[var(--ga-field-deep)]">
+            EA
+          </div>
+        </header>
+
+        {/* Mobile nav strip */}
+        <div className="flex gap-1 overflow-x-auto border-b border-border bg-card px-2 py-2 lg:hidden">
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon
+            const active = section === item.key
+            return (
+              <button
+                key={item.key}
+                onClick={() => setSection(item.key)}
+                className={`flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                  active
+                    ? 'bg-[var(--ga-field)] text-white'
+                    : 'bg-secondary text-secondary-foreground'
+                }`}
+              >
+                <Icon className="h-3.5 w-3.5" />
+                {item.label}
+                {badges[item.key] > 0 && (
+                  <span
+                    className={`rounded-full px-1.5 text-[10px] font-bold ${
+                      active ? 'bg-white/20' : 'bg-background'
+                    }`}
+                  >
+                    {badges[item.key]}
+                  </span>
+                )}
+              </button>
+            )
+          })}
+        </div>
+
+        {section === 'orders' ? (
+          <OrdersSection
+            orders={orders}
+            filtered={filtered}
+            selected={selected}
+            query={query}
+            setQuery={setQuery}
+            filter={filter}
+            setFilter={setFilter}
+            setSelectedRef={setSelectedRef}
+            mobileView={mobileView}
+            setMobileView={setMobileView}
+            activeCount={activeCount}
+            attentionCount={attentionCount}
+            applyRefund={applyRefund}
+          />
+        ) : section === 'support' ? (
+          <SupportQueue />
+        ) : section === 'payouts' ? (
+          <PayoutsConsole />
+        ) : (
+          <div className="flex flex-1 flex-col overflow-hidden">
+            <div className="min-h-0 flex-1 overflow-auto">
+              <FleetMap />
+            </div>
+          </div>
+        )}
       </div>
+    </div>
+  )
+}
 
-      {section === 'support' ? (
-        <SupportQueue />
-      ) : section === 'payouts' ? (
-        <PayoutsConsole />
-      ) : section === 'fleet' ? (
-        <FleetMap />
-      ) : (
-      <div className="grid flex-1 grid-cols-1 lg:grid-cols-[380px_1fr]">
-        {/* Queue */}
-        <aside
-          className={`border-b border-border bg-card/60 lg:block lg:border-b-0 lg:border-r ${
-            mobileView === 'detail' ? 'hidden' : 'block'
+function NavButton({
+  icon: Icon,
+  label,
+  active,
+  badge,
+  attention,
+  onClick,
+}: {
+  icon: typeof Package
+  label: string
+  active: boolean
+  badge: number
+  attention?: boolean
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition-colors ${
+        active
+          ? 'bg-[var(--ga-field)]/10 text-[var(--ga-field-deep)]'
+          : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+      }`}
+    >
+      <Icon
+        className={`h-[18px] w-[18px] shrink-0 ${
+          active ? 'text-[var(--ga-field)]' : ''
+        }`}
+      />
+      <span className="flex-1 truncate text-left">{label}</span>
+      {badge > 0 && (
+        <span
+          className={`flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[11px] font-bold ${
+            attention
+              ? 'bg-[#f3ddd5] text-[#c0492e]'
+              : active
+                ? 'bg-[var(--ga-field)] text-white'
+                : 'bg-secondary text-secondary-foreground'
           }`}
         >
-          <div className="border-b border-border p-4">
+          {badge}
+        </span>
+      )}
+    </button>
+  )
+}
+
+function SectionHeader({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string
+  subtitle?: string
+  children?: React.ReactNode
+}) {
+  return (
+    <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-card px-4 py-4 sm:px-6">
+      <div className="min-w-0">
+        <h1 className="ga-display text-lg font-bold text-foreground sm:text-xl">
+          {title}
+        </h1>
+        {subtitle && (
+          <p className="mt-0.5 text-sm text-muted-foreground">{subtitle}</p>
+        )}
+      </div>
+      {children && <div className="flex items-center gap-2">{children}</div>}
+    </header>
+  )
+}
+
+function MetricChip({
+  value,
+  label,
+  tone = 'neutral',
+}: {
+  value: number | string
+  label: string
+  tone?: 'neutral' | 'alert' | 'good'
+}) {
+  const styles =
+    tone === 'alert'
+      ? { color: '#c0492e', background: '#f3ddd5' }
+      : tone === 'good'
+        ? { color: '#2c5238', background: '#d4e6d8' }
+        : undefined
+  return (
+    <div
+      className={`flex items-center gap-2 rounded-lg px-3 py-1.5 ${
+        tone === 'neutral' ? 'bg-secondary' : ''
+      }`}
+      style={styles}
+    >
+      <span className="text-base font-extrabold leading-none">{value}</span>
+      <span
+        className={`text-xs font-medium ${
+          tone === 'neutral' ? 'text-muted-foreground' : 'opacity-80'
+        }`}
+      >
+        {label}
+      </span>
+    </div>
+  )
+}
+
+/* ============================= Orders ============================= */
+
+function OrdersSection({
+  orders,
+  filtered,
+  selected,
+  query,
+  setQuery,
+  filter,
+  setFilter,
+  setSelectedRef,
+  mobileView,
+  setMobileView,
+  activeCount,
+  attentionCount,
+  applyRefund,
+}: {
+  orders: Order[]
+  filtered: Order[]
+  selected: Order | undefined
+  query: string
+  setQuery: (v: string) => void
+  filter: FilterKey
+  setFilter: (k: FilterKey) => void
+  setSelectedRef: (r: string) => void
+  mobileView: 'queue' | 'detail'
+  setMobileView: (v: 'queue' | 'detail') => void
+  activeCount: number
+  attentionCount: number
+  applyRefund: (o: Order) => void
+}) {
+  return (
+    <div className="flex flex-1 flex-col overflow-hidden">
+      <SectionHeader
+        title="Orders"
+        subtitle={`${orders.length} total · fulfilment & tracking`}
+      >
+        <MetricChip value={activeCount} label="active" />
+        <MetricChip value={attentionCount} label="need attention" tone="alert" />
+      </SectionHeader>
+
+      <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[360px_1fr]">
+        {/* Queue */}
+        <aside
+          className={`flex min-h-0 flex-col border-b border-border bg-card/40 lg:border-b-0 lg:border-r ${
+            mobileView === 'detail' ? 'hidden lg:flex' : 'flex'
+          }`}
+        >
+          <div className="border-b border-border p-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -238,14 +477,14 @@ export function OpsConsole() {
                 className="ga-input pl-9 text-sm"
               />
             </div>
-            <div className="mt-3 flex flex-wrap gap-1.5">
+            <div className="mt-2.5 flex flex-wrap gap-1.5">
               {FILTERS.map((f) => (
                 <button
                   key={f.key}
                   onClick={() => setFilter(f.key)}
                   className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
                     filter === f.key
-                      ? 'bg-primary text-primary-foreground'
+                      ? 'bg-[var(--ga-field)] text-white'
                       : 'bg-secondary text-secondary-foreground hover:bg-muted'
                   }`}
                 >
@@ -254,9 +493,11 @@ export function OpsConsole() {
               ))}
             </div>
           </div>
-          <ul className="divide-y divide-border">
+          <ul className="min-h-0 flex-1 overflow-y-auto">
             {filtered.map((o) => {
               const active = o.reference === selected?.reference
+              const attention =
+                o.fault !== 'None' || o.payment.status === 'partial-refund'
               return (
                 <li key={o.id}>
                   <button
@@ -264,14 +505,19 @@ export function OpsConsole() {
                       setSelectedRef(o.reference)
                       setMobileView('detail')
                     }}
-                    className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${
-                      active ? 'bg-secondary' : 'hover:bg-secondary/50'
+                    className={`relative flex w-full items-center gap-3 border-b border-border/60 px-4 py-3 text-left transition-colors ${
+                      active ? 'bg-[var(--ga-field)]/10' : 'hover:bg-secondary/60'
                     }`}
                   >
+                    {active && (
+                      <span className="absolute inset-y-0 left-0 w-1 bg-[var(--ga-field)]" />
+                    )}
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-foreground">{o.reference}</span>
-                        {o.fault !== 'None' && (
+                        <span className="font-bold text-foreground">
+                          {o.reference}
+                        </span>
+                        {attention && (
                           <AlertTriangle
                             className="h-3.5 w-3.5"
                             style={{ color: '#c0492e' }}
@@ -287,15 +533,17 @@ export function OpsConsole() {
                     </div>
                     <div className="text-right">
                       <p className="font-bold text-foreground">{cedis(o.total)}</p>
-                      <p className="text-xs text-muted-foreground">{timeOf(o.placedAt)}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {timeOf(o.placedAt)}
+                      </p>
                     </div>
-                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                    <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
                   </button>
                 </li>
               )
             })}
             {filtered.length === 0 && (
-              <li className="px-4 py-10 text-center text-sm text-muted-foreground">
+              <li className="px-4 py-12 text-center text-sm text-muted-foreground">
                 No orders match.
               </li>
             )}
@@ -304,8 +552,8 @@ export function OpsConsole() {
 
         {/* Detail */}
         <main
-          className={`bg-background p-4 sm:p-6 lg:block ${
-            mobileView === 'detail' ? 'block' : 'hidden'
+          className={`min-h-0 overflow-y-auto bg-background ${
+            mobileView === 'detail' ? 'block' : 'hidden lg:block'
           }`}
         >
           {selected ? (
@@ -315,38 +563,13 @@ export function OpsConsole() {
               onBack={() => setMobileView('queue')}
             />
           ) : (
-            <p className="text-muted-foreground">Select an order.</p>
+            <div className="flex h-full items-center justify-center p-12 text-center text-muted-foreground">
+              Select an order to view details.
+            </div>
           )}
         </main>
       </div>
-      )}
     </div>
-  )
-}
-
-function SectionTab({
-  active,
-  onClick,
-  icon: Icon,
-  label,
-}: {
-  active: boolean
-  onClick: () => void
-  icon: typeof Package
-  label: string
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`-mb-px flex items-center gap-2 border-b-2 px-3 py-3 text-sm font-semibold transition-colors ${
-        active
-          ? 'border-primary text-foreground'
-          : 'border-transparent text-muted-foreground hover:text-foreground'
-      }`}
-    >
-      <Icon className="h-4 w-4" />
-      {label}
-    </button>
   )
 }
 
@@ -391,8 +614,10 @@ function OrderDetail({
     advanceOrder(order.reference)
   }
 
+  const canCancel = order.status !== 'delivered' && order.status !== 'cancelled'
+
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-4xl p-4 sm:p-6">
       {/* Mobile back to queue */}
       <button
         onClick={onBack}
@@ -403,62 +628,66 @@ function OrderDetail({
       </button>
 
       {/* Header */}
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="ga-display text-2xl font-semibold text-foreground sm:text-3xl">
-              {order.reference}
-            </h1>
-            <StatusPill status={order.status} />
+      <div className="rounded-2xl border border-border bg-card p-5">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <h1 className="ga-display text-2xl font-bold text-foreground sm:text-3xl">
+                {order.reference}
+              </h1>
+              <StatusPill status={order.status} size="md" />
+            </div>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              Placed {shortDate(order.placedAt)} at {timeOf(order.placedAt)} ·{' '}
+              {order.items.length} items · slot {order.slot.window}
+            </p>
+            <span
+              className="mt-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold"
+              style={{ color: fault.color, background: fault.bg }}
+            >
+              <ShieldCheck className="h-3.5 w-3.5" />
+              Fault: {order.fault}
+            </span>
           </div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Placed {shortDate(order.placedAt)} at {timeOf(order.placedAt)} ·{' '}
-            {order.items.length} items · slot {order.slot.window}
-          </p>
         </div>
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold"
-            style={{ color: fault.color, background: fault.bg }}
-          >
-            <ShieldCheck className="h-4 w-4" />
-            Fault: {order.fault}
-          </span>
+
+        {/* Action toolbar */}
+        <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-4">
           {nextLabel && (
             <button
               onClick={handleNext}
               disabled={dispatching}
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--ga-field)] px-4 py-2 text-sm font-bold text-cream transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-full bg-[var(--ga-field)] px-4 py-2 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <ArrowRightCircle className="h-4 w-4" />
               {dispatching ? 'Dispatching…' : nextLabel}
             </button>
           )}
-          {order.status !== 'delivered' && order.status !== 'cancelled' && (
-            <button
-              onClick={() => setOrderStatus(order.reference, 'cancelled')}
-              className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-bold text-foreground transition-colors hover:bg-secondary"
-            >
-              <Ban className="h-4 w-4" />
-              Cancel
-            </button>
-          )}
           <button
             onClick={() => setRefundOpen(true)}
-            className="inline-flex items-center gap-2 rounded-full bg-[var(--ga-terracotta)] px-4 py-2 text-sm font-bold text-white transition-transform hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--ga-terracotta)]/40 px-4 py-2 text-sm font-bold text-[var(--ga-terracotta)] transition-colors hover:bg-[var(--ga-terracotta)]/10"
           >
             <RotateCcw className="h-4 w-4" />
             Instant refund
           </button>
+          {canCancel && (
+            <button
+              onClick={() => setOrderStatus(order.reference, 'cancelled')}
+              className="ml-auto inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            >
+              <Ban className="h-4 w-4" />
+              Cancel order
+            </button>
+          )}
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-[1.3fr_1fr]">
+      <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[1.3fr_1fr]">
         {/* Left column */}
         <div className="space-y-5">
           {/* Customer + payment */}
           <section className="rounded-xl border border-border bg-card p-5">
-            <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-muted-foreground">
+            <h2 className="mb-3 text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Customer &amp; payment
             </h2>
             <div className="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
@@ -479,7 +708,7 @@ function OrderDetail({
 
           {/* Items with weight reconciliation */}
           <section className="rounded-xl border border-border bg-card p-5">
-            <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-muted-foreground">
+            <h2 className="mb-3 text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Items &amp; weight reconciliation
             </h2>
             <ul className="divide-y divide-border">
@@ -488,7 +717,7 @@ function OrderDetail({
                   it.finalWeightKg != null && it.finalWeightKg !== it.estWeightKg
                 return (
                   <li key={it.productId} className="flex items-center gap-3 py-2.5">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary">
                       {it.refrigerationRequired ? (
                         <Snowflake className="h-4 w-4 text-[var(--ga-field)]" />
                       ) : (
@@ -543,7 +772,7 @@ function OrderDetail({
           {/* Refund history */}
           {order.refunds.length > 0 && (
             <section className="rounded-xl border border-border bg-card p-5">
-              <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-muted-foreground">
+              <h2 className="mb-3 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 Refund history
               </h2>
               <ul className="space-y-3">
@@ -580,7 +809,7 @@ function OrderDetail({
         {/* Right column — 3PL tracking */}
         <div>
           <section className="rounded-xl border border-border bg-card p-5">
-            <h2 className="mb-1 text-sm font-bold uppercase tracking-wide text-muted-foreground">
+            <h2 className="mb-3 text-xs font-bold uppercase tracking-wider text-muted-foreground">
               3PL tracking
             </h2>
             <div className="mb-4 rounded-lg bg-secondary p-3 text-sm">
@@ -901,6 +1130,8 @@ function RefundDialog({
   )
 }
 
+/* ============================= Customer support ============================= */
+
 const TICKET_STATUS_META: Record<
   TicketStatus,
   { label: string; color: string; bg: string }
@@ -926,8 +1157,7 @@ function SupportQueue() {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const list = tickets ?? []
-  const selected =
-    list.find((t) => t.reference === selectedRef) ?? list[0]
+  const selected = list.find((t) => t.reference === selectedRef) ?? list[0]
   const openCount = list.filter((t) => t.status !== 'resolved').length
   const msgCount = selected?.messages.length ?? 0
 
@@ -993,238 +1223,286 @@ function SupportQueue() {
 
   if (!tickets) {
     return (
-      <div className="flex flex-1 items-center justify-center p-12">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <SectionHeader title="Customer support" subtitle="Live ticket queue" />
+        <div className="flex flex-1 items-center justify-center p-12">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        </div>
       </div>
     )
   }
 
   if (list.length === 0) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center p-12 text-center">
-        <Inbox className="h-10 w-10 text-muted-foreground/50" />
-        <p className="mt-3 font-semibold text-foreground">No support tickets</p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Customer requests from the Help Centre will appear here.
-        </p>
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <SectionHeader title="Customer support" subtitle="Live ticket queue" />
+        <div className="flex flex-1 flex-col items-center justify-center p-12 text-center">
+          <Inbox className="h-10 w-10 text-muted-foreground/50" />
+          <p className="mt-3 font-semibold text-foreground">No support tickets</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Customer requests from the Help Centre will appear here.
+          </p>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="grid flex-1 grid-cols-1 lg:grid-cols-[380px_1fr]">
-      {/* Ticket list */}
-      <aside
-        className={`border-b border-border bg-card/60 lg:block lg:border-b-0 lg:border-r ${
-          mobileView === 'detail' ? 'hidden' : 'block'
-        }`}
+    <div className="flex flex-1 flex-col overflow-hidden">
+      <SectionHeader
+        title="Customer support"
+        subtitle={`${list.length} tickets · live queue`}
       >
-        <div className="flex items-center justify-between border-b border-border p-4">
-          <p className="font-semibold text-foreground">Tickets</p>
-          <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-bold text-secondary-foreground">
-            {openCount} open
-          </span>
-        </div>
-        <ul className="divide-y divide-border">
-          {list.map((t) => {
-            const active = t.reference === selected?.reference
-            const m = TICKET_STATUS_META[t.status]
-            return (
-              <li key={t.id}>
-                <button
-                  onClick={() => {
-                    setSelectedRef(t.reference)
-                    setMobileView('detail')
-                  }}
-                  className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors ${
-                    active ? 'bg-secondary/60' : 'hover:bg-secondary/40'
-                  }`}
-                >
-                  <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary">
-                    <MessageSquare className="h-4 w-4 text-[var(--ga-field)]" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="font-semibold text-foreground">
-                        {t.reference}
-                      </span>
-                      <span
-                        className="rounded-full px-2 py-0.5 text-[10px] font-bold"
-                        style={{ color: m.color, background: m.bg }}
-                      >
-                        {m.label}
-                      </span>
-                    </div>
-                    <p className="truncate text-sm text-foreground">{t.subject}</p>
-                    <p className="truncate text-xs text-muted-foreground">
-                      {t.customerName} · {t.category}
-                    </p>
-                  </div>
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-      </aside>
+        <MetricChip value={openCount} label="open" tone={openCount > 0 ? 'alert' : 'good'} />
+      </SectionHeader>
 
-      {/* Ticket detail */}
-      <main
-        className={`flex flex-col bg-background lg:flex ${
-          mobileView === 'detail' ? 'flex' : 'hidden'
-        }`}
-      >
-        {selected ? (
-          <div className="flex h-full flex-col">
-            <div className="border-b border-border bg-card/40 p-4 sm:p-6">
-              <button
-                onClick={() => setMobileView('queue')}
-                className="mb-3 inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground lg:hidden"
-              >
-                <ChevronRight className="h-4 w-4 rotate-180" />
-                Back to tickets
-              </button>
-
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <h1 className="ga-display text-xl font-semibold text-foreground sm:text-2xl">
-                    {selected.subject}
-                  </h1>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {selected.reference} · {selected.customerName}
-                    {selected.orderRef ? ` · ${selected.orderRef}` : ''}
-                  </p>
-                </div>
-                <div className="flex gap-1.5">
-                  {(['open', 'pending', 'resolved'] as TicketStatus[]).map((s) => {
-                    const m = TICKET_STATUS_META[s]
-                    const on = selected.status === s
-                    return (
-                      <button
-                        key={s}
-                        onClick={() => changeStatus(s)}
-                        className="ga-press rounded-full px-3 py-1 text-xs font-bold transition-colors"
-                        style={
-                          on
-                            ? { color: m.color, background: m.bg }
-                            : { color: 'var(--muted-foreground)', background: 'var(--secondary)' }
-                        }
-                      >
-                        {m.label}
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* Conversation */}
-            <div
-              ref={scrollRef}
-              className="flex-1 space-y-3 overflow-y-auto p-4 sm:p-6"
-            >
-              {selected.messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex ${
-                    msg.author === 'support' ? 'justify-end' : 'justify-start'
-                  }`}
-                >
-                  <div
-                    className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
-                      msg.author === 'support'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-card text-foreground'
+      <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[340px_1fr]">
+        {/* Ticket list */}
+        <aside
+          className={`flex min-h-0 flex-col border-b border-border bg-card/40 lg:border-b-0 lg:border-r ${
+            mobileView === 'detail' ? 'hidden lg:flex' : 'flex'
+          }`}
+        >
+          <ul className="min-h-0 flex-1 overflow-y-auto">
+            {list.map((t) => {
+              const active = t.reference === selected?.reference
+              const m = TICKET_STATUS_META[t.status]
+              return (
+                <li key={t.id}>
+                  <button
+                    onClick={() => {
+                      setSelectedRef(t.reference)
+                      setMobileView('detail')
+                    }}
+                    className={`relative flex w-full items-start gap-3 border-b border-border/60 px-4 py-3.5 text-left transition-colors ${
+                      active ? 'bg-[var(--ga-field)]/10' : 'hover:bg-secondary/60'
                     }`}
                   >
-                    <p className="mb-0.5 text-xs font-semibold opacity-80">
-                      {msg.authorName}
-                    </p>
-                    {msg.body && <p className="whitespace-pre-wrap leading-relaxed">{msg.body}</p>}
-                    {msg.attachments && msg.attachments.length > 0 && (
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {msg.attachments.map((a, i) => (
-                          <a
-                            key={i}
-                            href={a.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block h-20 w-20 overflow-hidden rounded-lg border border-border/50"
-                          >
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={a.url || '/placeholder.svg'}
-                              alt={a.name}
-                              className="h-full w-full object-cover"
-                            />
-                          </a>
-                        ))}
-                      </div>
+                    {active && (
+                      <span className="absolute inset-y-0 left-0 w-1 bg-[var(--ga-field)]" />
                     )}
+                    <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary">
+                      <MessageSquare className="h-4 w-4 text-[var(--ga-field)]" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-bold text-foreground">{t.reference}</span>
+                        <span
+                          className="rounded-full px-2 py-0.5 text-[10px] font-bold"
+                          style={{ color: m.color, background: m.bg }}
+                        >
+                          {m.label}
+                        </span>
+                      </div>
+                      <p className="mt-0.5 truncate text-sm font-medium text-foreground">
+                        {t.subject}
+                      </p>
+                      <p className="truncate text-xs text-muted-foreground">
+                        {t.customerName} · {t.category}
+                      </p>
+                    </div>
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        </aside>
+
+        {/* Ticket detail */}
+        <main
+          className={`flex min-h-0 flex-col bg-background lg:flex ${
+            mobileView === 'detail' ? 'flex' : 'hidden'
+          }`}
+        >
+          {selected ? (
+            <div className="flex min-h-0 flex-1 flex-col">
+              <div className="border-b border-border bg-card px-4 py-4 sm:px-6">
+                <button
+                  onClick={() => setMobileView('queue')}
+                  className="mb-3 inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground lg:hidden"
+                >
+                  <ChevronRight className="h-4 w-4 rotate-180" />
+                  Back to tickets
+                </button>
+
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <h1 className="ga-display text-xl font-bold text-foreground sm:text-2xl">
+                      {selected.subject}
+                    </h1>
+                    <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+                      <span className="inline-flex items-center gap-1.5">
+                        <User className="h-3.5 w-3.5" />
+                        {selected.customerName}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5">
+                        <Tag className="h-3.5 w-3.5" />
+                        {selected.category}
+                      </span>
+                      <span className="font-mono text-xs">{selected.reference}</span>
+                      {selected.orderRef && (
+                        <span className="font-mono text-xs">{selected.orderRef}</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-1.5">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      Set status
+                    </span>
+                    <div className="flex gap-1.5">
+                      {(['open', 'pending', 'resolved'] as TicketStatus[]).map((s) => {
+                        const m = TICKET_STATUS_META[s]
+                        const on = selected.status === s
+                        return (
+                          <button
+                            key={s}
+                            onClick={() => changeStatus(s)}
+                            className="ga-press rounded-full px-3 py-1 text-xs font-bold transition-colors"
+                            style={
+                              on
+                                ? { color: m.color, background: m.bg }
+                                : {
+                                    color: 'var(--muted-foreground)',
+                                    background: 'var(--secondary)',
+                                  }
+                            }
+                          >
+                            {m.label}
+                          </button>
+                        )
+                      })}
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
 
-            {/* Reply */}
-            <div className="border-t border-border bg-card/40 p-4">
-              {pending.length > 0 && (
-                <div className="mb-2 flex flex-wrap gap-2">
-                  {pending.map((a, i) => (
+              {/* Conversation */}
+              <div
+                ref={scrollRef}
+                className="min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-6"
+              >
+                <div className="mx-auto max-w-2xl space-y-3">
+                  {selected.messages.map((msg) => (
                     <div
-                      key={i}
-                      className="relative h-14 w-14 overflow-hidden rounded-lg border border-border"
+                      key={msg.id}
+                      className={`flex ${
+                        msg.author === 'support' ? 'justify-end' : 'justify-start'
+                      }`}
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={a.url || '/placeholder.svg'} alt={a.name} className="h-full w-full object-cover" />
-                      <button
-                        type="button"
-                        onClick={() => setPending((p) => p.filter((_, idx) => idx !== i))}
-                        aria-label={`Remove ${a.name}`}
-                        className="absolute right-0.5 top-0.5 rounded-full bg-foreground/70 p-0.5 text-background"
+                      <div
+                        className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm shadow-sm ${
+                          msg.author === 'support'
+                            ? 'rounded-br-md bg-[var(--ga-field)] text-white'
+                            : 'rounded-bl-md border border-border bg-card text-foreground'
+                        }`}
                       >
-                        <X className="h-3 w-3" />
-                      </button>
+                        <p
+                          className={`mb-0.5 text-xs font-semibold ${
+                            msg.author === 'support' ? 'text-white/80' : 'text-muted-foreground'
+                          }`}
+                        >
+                          {msg.authorName}
+                        </p>
+                        {msg.body && (
+                          <p className="whitespace-pre-wrap leading-relaxed">{msg.body}</p>
+                        )}
+                        {msg.attachments && msg.attachments.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {msg.attachments.map((a, i) => (
+                              <a
+                                key={i}
+                                href={a.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block h-20 w-20 overflow-hidden rounded-lg border border-border/50"
+                              >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  src={a.url || '/placeholder.svg'}
+                                  alt={a.name}
+                                  className="h-full w-full object-cover"
+                                />
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
-              )}
-              <div className="flex items-end gap-2">
-                <label className="ga-press inline-flex h-11 cursor-pointer items-center rounded-full border border-border bg-background px-3 text-muted-foreground">
-                  {uploading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Paperclip className="h-4 w-4" />
+              </div>
+
+              {/* Reply */}
+              <div className="border-t border-border bg-card px-4 py-3 sm:px-6">
+                <div className="mx-auto max-w-2xl">
+                  {pending.length > 0 && (
+                    <div className="mb-2 flex flex-wrap gap-2">
+                      {pending.map((a, i) => (
+                        <div
+                          key={i}
+                          className="relative h-14 w-14 overflow-hidden rounded-lg border border-border"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={a.url || '/placeholder.svg'}
+                            alt={a.name}
+                            className="h-full w-full object-cover"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setPending((p) => p.filter((_, idx) => idx !== i))}
+                            aria-label={`Remove ${a.name}`}
+                            className="absolute right-0.5 top-0.5 rounded-full bg-foreground/70 p-0.5 text-background"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
                   )}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    className="sr-only"
-                    onChange={(e) => handleUpload(e.target.files)}
-                  />
-                </label>
-                <textarea
-                  value={reply}
-                  onChange={(e) => setReply(e.target.value)}
-                  rows={2}
-                  placeholder="Type a reply to the customer…"
-                  className="ga-input flex-1 resize-none"
-                />
-                <button
-                  onClick={send}
-                  disabled={(!reply.trim() && pending.length === 0) || sending}
-                  className="ga-press inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 font-semibold text-primary-foreground disabled:opacity-50"
-                >
-                  {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                  Send
-                </button>
+                  <div className="flex items-end gap-2">
+                    <label className="ga-press inline-flex h-11 cursor-pointer items-center rounded-full border border-border bg-background px-3 text-muted-foreground transition-colors hover:bg-secondary">
+                      {uploading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Paperclip className="h-4 w-4" />
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="sr-only"
+                        onChange={(e) => handleUpload(e.target.files)}
+                      />
+                    </label>
+                    <textarea
+                      value={reply}
+                      onChange={(e) => setReply(e.target.value)}
+                      rows={1}
+                      placeholder="Type a reply to the customer…"
+                      className="ga-input max-h-32 flex-1 resize-none py-2.5"
+                    />
+                    <button
+                      onClick={send}
+                      disabled={(!reply.trim() && pending.length === 0) || sending}
+                      className="ga-press inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-[var(--ga-field)] px-4 font-semibold text-white transition-opacity disabled:opacity-40"
+                    >
+                      {sending ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Send className="h-4 w-4" />
+                      )}
+                      Send
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <p className="p-6 text-muted-foreground">Select a ticket.</p>
-        )}
-      </main>
+          ) : (
+            <p className="p-6 text-muted-foreground">Select a ticket.</p>
+          )}
+        </main>
+      </div>
     </div>
   )
 }
@@ -1278,140 +1556,168 @@ function PayoutsConsole() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-3xl flex-1 space-y-6 p-4 sm:p-6">
-      {/* Run card */}
-      <div className="rounded-2xl bg-[var(--ga-field-deep)] p-5 text-[var(--ga-cream)] sm:p-6">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-[var(--ga-cream)]/60">
-              Pending settlement
-            </p>
-            <p className="ga-display mt-1 text-4xl font-semibold">
-              {cedis(dueTotal)}
-            </p>
-            <p className="mt-1 text-sm text-[var(--ga-cream)]/70">
-              {dueCount} {dueCount === 1 ? 'entry' : 'entries'} ·{' '}
-              {queue?.farmerCount ?? 0}{' '}
-              {(queue?.farmerCount ?? 0) === 1 ? 'farmer' : 'farmers'}
-            </p>
-          </div>
-          <Wallet className="h-8 w-8 shrink-0 text-[var(--ga-gold-soft)]" />
-        </div>
+    <div className="flex flex-1 flex-col overflow-hidden">
+      <SectionHeader
+        title="Farmer payouts"
+        subtitle="Settle delivered-order earnings via Mobile Money"
+      >
+        <MetricChip value={dueCount} label="due" tone={dueCount > 0 ? 'alert' : 'good'} />
+      </SectionHeader>
 
-        <button
-          onClick={() => setConfirming(true)}
-          disabled={dueCount === 0 || running}
-          className="ga-press mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--ga-gold)] px-5 font-bold text-[var(--ga-field-deep)] disabled:opacity-50"
-        >
-          {running ? (
-            <>
-              <Loader2 className="h-5 w-5 animate-spin" /> Sending MoMo payouts…
-            </>
-          ) : (
-            <>
-              <Smartphone className="h-5 w-5" />
-              {dueCount === 0 ? 'No payouts due' : `Run payouts · ${cedis(dueTotal)}`}
-            </>
-          )}
-        </button>
-        <p className="mt-2 text-center text-xs text-[var(--ga-cream)]/55">
-          Disburses each farmer&apos;s net earnings to their Mobile Money wallet.
-        </p>
-      </div>
-
-      {/* Result / error banners */}
-      {result && (
-        <div className="flex items-center gap-3 rounded-xl border border-[var(--ga-leaf)]/30 bg-[var(--ga-leaf)]/10 px-4 py-3">
-          <CheckCircle2 className="h-5 w-5 shrink-0 text-[var(--ga-leaf)]" />
-          <p className="text-sm font-semibold text-foreground">
-            Paid {cedis(result.total)} to {result.paid}{' '}
-            {result.paid === 1 ? 'farmer' : 'farmers'}.
-            {result.failed > 0 && (
-              <span className="text-[var(--ga-clay)]">
-                {' '}
-                {result.failed} failed and will retry next run.
-              </span>
-            )}
-          </p>
-        </div>
-      )}
-      {error && (
-        <div className="flex items-center gap-3 rounded-xl border border-[var(--ga-clay)]/30 bg-[var(--ga-clay)]/10 px-4 py-3">
-          <AlertTriangle className="h-5 w-5 shrink-0 text-[var(--ga-clay)]" />
-          <p className="text-sm font-semibold text-[var(--ga-clay)]">{error}</p>
-        </div>
-      )}
-
-      {/* Queue grouped by farmer */}
-      <section>
-        <h3 className="mb-2 text-sm font-bold text-foreground">
-          Who gets paid
-        </h3>
-        {queueLoading ? (
-          <div className="rounded-2xl border border-border bg-card p-8 text-center text-sm text-muted-foreground">
-            Loading settlement queue…
-          </div>
-        ) : groups.length === 0 ? (
-          <div className="rounded-2xl border border-border bg-card p-8 text-center text-sm text-muted-foreground">
-            Nothing pending. Delivered orders accrue here automatically.
-          </div>
-        ) : (
-          <ul className="divide-y divide-border rounded-2xl border border-border bg-card">
-            {groups.map((g) => (
-              <li
-                key={g.farmerId}
-                className="flex items-center justify-between gap-3 p-4"
-              >
-                <div className="min-w-0">
-                  <p className="truncate font-bold text-foreground">
-                    {g.farmerName}
-                  </p>
-                  <p className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Smartphone className="h-3 w-3" />
-                    {g.momoProvider ?? 'No MoMo'}{' '}
-                    {g.momoNumberMasked ?? '— add a payout number'}
-                    {' · '}
-                    {g.entryCount} {g.entryCount === 1 ? 'order' : 'orders'}
-                  </p>
-                </div>
-                <p className="shrink-0 font-extrabold text-[var(--ga-field-deep)]">
-                  {cedis(g.net)}
-                </p>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      {/* Recent runs */}
-      {batches && batches.length > 0 && (
-        <section>
-          <h3 className="mb-2 text-sm font-bold text-foreground">
-            Recent payout runs
-          </h3>
-          <ul className="divide-y divide-border rounded-2xl border border-border bg-card">
-            {batches.map((b) => (
-              <li
-                key={b.id}
-                className="flex items-center justify-between gap-3 p-4"
-              >
+      <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
+        <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-5 lg:grid-cols-[1.1fr_1fr]">
+          {/* Left: run card + queue */}
+          <div className="space-y-5">
+            {/* Run card */}
+            <div className="rounded-2xl bg-[var(--ga-field-deep)] p-5 text-[var(--ga-cream)] sm:p-6">
+              <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="font-semibold text-foreground">
-                    {shortDate(b.createdAt)} · {timeOf(b.createdAt)}
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[var(--ga-cream)]/60">
+                    Pending settlement
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {b.paidCount} paid
-                    {b.failedCount > 0 && ` · ${b.failedCount} failed`}
+                  <p className="ga-display mt-1 text-4xl font-bold">{cedis(dueTotal)}</p>
+                  <p className="mt-1 text-sm text-[var(--ga-cream)]/70">
+                    {dueCount} {dueCount === 1 ? 'entry' : 'entries'} ·{' '}
+                    {queue?.farmerCount ?? 0}{' '}
+                    {(queue?.farmerCount ?? 0) === 1 ? 'farmer' : 'farmers'}
                   </p>
                 </div>
-                <p className="font-bold text-[var(--ga-leaf)]">
-                  {cedis(b.totalPaid)}
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/10">
+                  <Wallet className="h-6 w-6 text-[var(--ga-gold-soft)]" />
+                </div>
+              </div>
+
+              <button
+                onClick={() => setConfirming(true)}
+                disabled={dueCount === 0 || running}
+                className="ga-press mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--ga-gold)] px-5 font-bold text-white disabled:opacity-50"
+              >
+                {running ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" /> Sending MoMo payouts…
+                  </>
+                ) : (
+                  <>
+                    <Smartphone className="h-5 w-5" />
+                    {dueCount === 0 ? 'No payouts due' : `Run payouts · ${cedis(dueTotal)}`}
+                  </>
+                )}
+              </button>
+              <p className="mt-2 text-center text-xs text-[var(--ga-cream)]/55">
+                Disburses each farmer&apos;s net earnings to their Mobile Money wallet.
+              </p>
+            </div>
+
+            {/* Result / error banners */}
+            {result && (
+              <div className="flex items-center gap-3 rounded-xl border border-[var(--ga-leaf)]/30 bg-[var(--ga-leaf)]/10 px-4 py-3">
+                <CheckCircle2 className="h-5 w-5 shrink-0 text-[var(--ga-leaf)]" />
+                <p className="text-sm font-semibold text-foreground">
+                  Paid {cedis(result.total)} to {result.paid}{' '}
+                  {result.paid === 1 ? 'farmer' : 'farmers'}.
+                  {result.failed > 0 && (
+                    <span className="text-[var(--ga-clay)]">
+                      {' '}
+                      {result.failed} failed and will retry next run.
+                    </span>
+                  )}
                 </p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+              </div>
+            )}
+            {error && (
+              <div className="flex items-center gap-3 rounded-xl border border-[var(--ga-clay)]/30 bg-[var(--ga-clay)]/10 px-4 py-3">
+                <AlertTriangle className="h-5 w-5 shrink-0 text-[var(--ga-clay)]" />
+                <p className="text-sm font-semibold text-[var(--ga-clay)]">{error}</p>
+              </div>
+            )}
+
+            {/* Queue grouped by farmer */}
+            <section>
+              <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                Who gets paid
+              </h3>
+              {queueLoading ? (
+                <div className="rounded-2xl border border-border bg-card p-8 text-center text-sm text-muted-foreground">
+                  Loading settlement queue…
+                </div>
+              ) : groups.length === 0 ? (
+                <div className="rounded-2xl border border-border bg-card p-8 text-center text-sm text-muted-foreground">
+                  Nothing pending. Delivered orders accrue here automatically.
+                </div>
+              ) : (
+                <ul className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+                  {groups.map((g) => (
+                    <li
+                      key={g.farmerId}
+                      className="flex items-center justify-between gap-3 p-4"
+                    >
+                      <div className="flex min-w-0 items-center gap-3">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary text-sm font-bold text-[var(--ga-field-deep)]">
+                          {g.farmerName.charAt(0)}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="truncate font-bold text-foreground">
+                            {g.farmerName}
+                          </p>
+                          <p className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <Smartphone className="h-3 w-3" />
+                            {g.momoProvider ?? 'No MoMo'}{' '}
+                            {g.momoNumberMasked ?? '— add a payout number'}
+                            {' · '}
+                            {g.entryCount} {g.entryCount === 1 ? 'order' : 'orders'}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="shrink-0 font-extrabold text-[var(--ga-field-deep)]">
+                        {cedis(g.net)}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          </div>
+
+          {/* Right: recent runs */}
+          <section>
+            <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Recent payout runs
+            </h3>
+            {batches && batches.length > 0 ? (
+              <ul className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+                {batches.map((b) => (
+                  <li
+                    key={b.id}
+                    className="flex items-center justify-between gap-3 p-4"
+                  >
+                    <div className="flex min-w-0 items-center gap-3">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--ga-leaf)]/15">
+                        <CheckCircle2 className="h-4 w-4 text-[var(--ga-leaf)]" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-semibold text-foreground">
+                          {shortDate(b.createdAt)} · {timeOf(b.createdAt)}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {b.paidCount} paid
+                          {b.failedCount > 0 && ` · ${b.failedCount} failed`}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="shrink-0 font-bold text-[var(--ga-leaf)]">
+                      {cedis(b.totalPaid)}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="rounded-2xl border border-border bg-card p-8 text-center text-sm text-muted-foreground">
+                No payout runs yet. Completed runs appear here.
+              </div>
+            )}
+          </section>
+        </div>
+      </div>
 
       {/* Confirm dialog */}
       {confirming && (
@@ -1437,7 +1743,7 @@ function PayoutsConsole() {
               <button
                 onClick={handleRun}
                 disabled={running}
-                className="ga-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-full bg-primary font-bold text-primary-foreground disabled:opacity-50"
+                className="ga-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-full bg-[var(--ga-field)] font-bold text-white disabled:opacity-50"
               >
                 {running ? (
                   <>
