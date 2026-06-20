@@ -41,3 +41,14 @@ export function RowSkeleton() {
     </div>
   )
 }
+
+/** Stack of row skeletons for a loading list/queue. */
+export function ListSkeleton({ rows = 3 }: { rows?: number }) {
+  return (
+    <div className="space-y-3">
+      {Array.from({ length: rows }).map((_, i) => (
+        <RowSkeleton key={i} />
+      ))}
+    </div>
+  )
+}

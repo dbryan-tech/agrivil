@@ -374,7 +374,7 @@ export async function replyToReview(
     await createNotification({
       userId: existing.userId,
       forPhone: "",
-      kind: "review",
+      kind: "support",
       title: "A farmer replied to your review",
       body: trimmed.slice(0, 120),
       dedupeKey: `review-reply:${reviewId}`,

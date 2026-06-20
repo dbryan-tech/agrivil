@@ -11,6 +11,8 @@ import {
 } from '@/components/golden-acres/image-upload-control'
 import { useSession } from '@/components/golden-acres/auth/session-context'
 import { useDataStore } from '@/components/golden-acres/store/data-store'
+import { FarmerInsights } from '@/components/golden-acres/farmer/farmer-insights'
+import { FarmerReviewsTab } from '@/components/golden-acres/farmer/farmer-reviews-tab'
 import { getFarmerLedger } from '@/app/actions/payouts'
 import { maskMomoNumber as maskMomo } from '@/lib/golden-acres/momo'
 import {
@@ -52,13 +54,14 @@ import {
   Save,
 } from 'lucide-react'
 
-type Tab = 'today' | 'inventory' | 'add' | 'earnings' | 'profile'
+type Tab = 'today' | 'inventory' | 'add' | 'earnings' | 'reviews' | 'profile'
 
 const TABS: { id: Tab; label: string; icon: typeof Package }[] = [
   { id: 'today', label: 'Today', icon: CalendarClock },
   { id: 'inventory', label: 'Stock', icon: Package },
   { id: 'add', label: 'Add', icon: Plus },
   { id: 'earnings', label: 'Earnings', icon: Wallet },
+  { id: 'reviews', label: 'Reviews', icon: Star },
   { id: 'profile', label: 'Profile', icon: UserCog },
 ]
 
@@ -86,6 +89,7 @@ export function FarmerPortal() {
         {tab === 'inventory' && <InventoryTab farmer={farmer} online={online} />}
         {tab === 'add' && <AddProduceTab farmer={farmer} online={online} />}
         {tab === 'earnings' && <EarningsTab farmer={farmer} />}
+        {tab === 'reviews' && <FarmerReviewsTab farmer={farmer} />}
         {tab === 'profile' && <ProfileTab farmer={farmer} />}
       </main>
 
@@ -553,6 +557,9 @@ function EarningsTab({ farmer }: { farmer: Farmer }) {
     <section className="space-y-5">
       <SectionTitle eyebrow="Earnings" title="Your payouts" />
 
+      {/* Sales analytics — revenue trend, best sellers, fulfilment mix */}
+      <FarmerInsights farmer={farmer} />
+
       {/* Balance card */}
       <div className="rounded-2xl bg-[var(--ga-field-deep)] p-5 text-[var(--ga-cream)]">
         <p className="text-xs font-semibold uppercase tracking-wide text-[var(--ga-cream)]/60">
@@ -807,7 +814,7 @@ function ProfileTab({ farmer }: { farmer: Farmer }) {
 function BottomNav({ tab, setTab }: { tab: Tab; setTab: (t: Tab) => void }) {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md border-t border-border bg-card/95 backdrop-blur">
-      <div className="grid grid-cols-5">
+      <div className="grid grid-cols-6">
         {TABS.map((t) => {
           const Icon = t.icon
           const active = t.id === tab
@@ -815,7 +822,7 @@ function BottomNav({ tab, setTab }: { tab: Tab; setTab: (t: Tab) => void }) {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`flex flex-col items-center gap-1 py-3 text-[11px] font-bold transition-colors ${
+              className={`flex flex-col items-center gap-1 py-3 text-[10px] font-bold transition-colors ${
                 active ? 'text-[var(--ga-gold)]' : 'text-muted-foreground'
               }`}
             >
@@ -824,7 +831,7 @@ function BottomNav({ tab, setTab }: { tab: Tab; setTab: (t: Tab) => void }) {
                   active ? 'bg-[var(--ga-gold)]/12' : ''
                 }`}
               >
-                <Icon className="h-5 w-5" />
+                <Icon className="h-[18px] w-[18px]" />
               </span>
               {t.label}
             </button>
