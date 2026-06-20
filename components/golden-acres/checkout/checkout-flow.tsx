@@ -22,6 +22,7 @@ import {
   confirmCardOrder,
   type PlaceOrderInput,
 } from '@/app/actions/orders'
+import { validatePromoCode } from '@/app/actions/promotions'
 import type {
   DeliverySlot,
   DeliveryQuote,
@@ -46,6 +47,7 @@ import {
   Sparkles,
   MapPinned,
   Award,
+  Tag,
 } from 'lucide-react'
 import {
   maxRedeemablePoints,
@@ -95,6 +97,11 @@ export function CheckoutFlow() {
   const [reference, setReference] = useState<string | null>(null)
   const [redeem, setRedeem] = useState(false)
   const [payError, setPayError] = useState<string | null>(null)
+  // Promo / discount code state.
+  const [promoInput, setPromoInput] = useState('')
+  const [promo, setPromo] = useState<{ code: string; discount: number; label: string } | null>(null)
+  const [promoError, setPromoError] = useState<string | null>(null)
+  const [promoChecking, setPromoChecking] = useState(false)
 
   useEffect(() => {
     getDeliverySlots().then(setSlots)
@@ -177,8 +184,39 @@ export function CheckoutFlow() {
   const canRedeem = redeemablePoints >= MIN_REDEEM_POINTS
   const pointsUsed = redeem && canRedeem ? redeemablePoints : 0
   const pointsDiscount = pointsToCedis(pointsUsed)
-  const total = Math.max(0, preDiscountTotal - pointsDiscount)
+  // Promo discount is recomputed against the live subtotal so editing the cart
+  // after applying a code keeps the math honest; the server re-validates too.
+  const promoDiscount = promo
+    ? Math.min(promo.discount, Math.max(0, subtotalEstimate))
+    : 0
+  const total = Math.max(0, preDiscountTotal - pointsDiscount - promoDiscount)
   const selectedSlot = slots.find((s) => s.id === slotId)
+
+  async function applyPromo() {
+    const code = promoInput.trim()
+    if (!code) return
+    setPromoChecking(true)
+    setPromoError(null)
+    const res = await validatePromoCode(code, subtotalEstimate)
+    setPromoChecking(false)
+    if (res.ok && res.promo) {
+      setPromo({
+        code: res.promo.code,
+        discount: res.promo.discount,
+        label: res.promo.description || res.promo.code,
+      })
+      setPromoError(null)
+    } else {
+      setPromo(null)
+      setPromoError(res.error ?? 'That code is not valid.')
+    }
+  }
+
+  function clearPromo() {
+    setPromo(null)
+    setPromoInput('')
+    setPromoError(null)
+  }
 
   async function runValidate(code: string) {
     setValidating(true)
@@ -213,6 +251,7 @@ export function CheckoutFlow() {
       method,
       deliveryFee,
       redeemPoints: redeem && canRedeem,
+      promoCode: promo?.code,
     }
   }
 
@@ -373,6 +412,14 @@ export function CheckoutFlow() {
             subtotal={subtotalEstimate}
             deliveryFee={deliveryFee}
             pointsDiscount={pointsDiscount}
+            promo={promo}
+            promoDiscount={promoDiscount}
+            promoInput={promoInput}
+            promoError={promoError}
+            promoChecking={promoChecking}
+            onPromoInput={setPromoInput}
+            onApplyPromo={applyPromo}
+            onClearPromo={clearPromo}
             total={total}
             quote={quote}
             slot={selectedSlot}
@@ -933,6 +980,14 @@ function OrderSummary({
   subtotal,
   deliveryFee,
   pointsDiscount,
+  promo,
+  promoDiscount,
+  promoInput,
+  promoError,
+  promoChecking,
+  onPromoInput,
+  onApplyPromo,
+  onClearPromo,
   total,
   quote,
   slot,
@@ -941,6 +996,14 @@ function OrderSummary({
   subtotal: number
   deliveryFee: number
   pointsDiscount: number
+  promo: { code: string; discount: number; label: string } | null
+  promoDiscount: number
+  promoInput: string
+  promoError: string | null
+  promoChecking: boolean
+  onPromoInput: (v: string) => void
+  onApplyPromo: () => void
+  onClearPromo: () => void
   total: number
   quote: DeliveryQuote | null
   slot?: DeliverySlot
@@ -972,12 +1035,73 @@ function OrderSummary({
             </dd>
           </div>
         )}
+        {promoDiscount > 0 && promo && (
+          <div className="flex justify-between">
+            <dt className="flex items-center gap-1.5 text-[var(--ga-leaf)]">
+              <Tag className="h-3.5 w-3.5" /> {promo.code}
+            </dt>
+            <dd className="font-bold text-[var(--ga-leaf)]">
+              −{formatGHS(promoDiscount)}
+            </dd>
+          </div>
+        )}
         {refrigerated && (
           <div className="flex items-center gap-1.5 text-xs font-semibold text-[var(--ga-field)]">
             <Snowflake className="h-3.5 w-3.5" /> Cold-chain packaging included
           </div>
         )}
       </dl>
+
+      {/* Promo code */}
+      <div className="mt-4 border-t border-border pt-4">
+        {promo ? (
+          <div className="flex items-center justify-between rounded-xl bg-[var(--ga-leaf)]/10 px-3 py-2.5">
+            <div className="flex items-center gap-2 text-sm">
+              <Tag className="h-4 w-4 text-[var(--ga-leaf)]" />
+              <span className="font-bold text-foreground">{promo.code}</span>
+              <span className="text-muted-foreground">applied</span>
+            </div>
+            <button
+              type="button"
+              onClick={onClearPromo}
+              className="text-xs font-bold text-muted-foreground underline-offset-2 hover:underline"
+            >
+              Remove
+            </button>
+          </div>
+        ) : (
+          <div>
+            <div className="flex gap-2">
+              <input
+                value={promoInput}
+                onChange={(e) => onPromoInput(e.target.value.toUpperCase())}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    onApplyPromo()
+                  }
+                }}
+                placeholder="Promo code"
+                aria-label="Promo code"
+                className="min-w-0 flex-1 rounded-xl border border-border bg-background px-3 py-2 text-sm font-semibold uppercase tracking-wide text-foreground outline-none focus:border-[var(--ga-gold)]"
+              />
+              <button
+                type="button"
+                onClick={onApplyPromo}
+                disabled={promoChecking || !promoInput.trim()}
+                className="ga-scale-interactive shrink-0 rounded-xl bg-[var(--ga-field-deep)] px-4 py-2 text-sm font-bold text-[var(--ga-cream)] disabled:opacity-50"
+              >
+                {promoChecking ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Apply'}
+              </button>
+            </div>
+            {promoError && (
+              <p className="mt-1.5 text-xs font-semibold text-[var(--ga-deal)]">
+                {promoError}
+              </p>
+            )}
+          </div>
+        )}
+      </div>
       <div className="mt-4 flex items-baseline justify-between border-t border-border pt-4">
         <span className="font-bold text-foreground">Total (est.)</span>
         <span className="ga-display text-2xl font-semibold text-foreground">
