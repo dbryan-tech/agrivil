@@ -106,15 +106,10 @@ export const auth = betterAuth({
       },
     }),
     // Real phone number OTP: customers can sign up / sign in via SMS.
-    // Uses our multi-provider SMS adapter (Arkesel → Hubtel fallback).
-    phoneNumber({
-      otpLength: 6,
-      expiresIn: 600, // 10 minutes
-      async sendOTP({ phone, otp, type }) {
-        // Use our SMS adapter which tries Arkesel first, then Hubtel
-        await sendSms(phone, `Your AgriVil ${type === "sign-up" ? "verification code" : "login code"} is: ${otp}`)
-      },
-    }),
+    // The phoneNumber plugin is installed but phone auth UI is deferred.
+    // Uses our multi-provider SMS adapter (Arkesel → Hubtel fallback) when enabled.
+    // TODO: Wire sendOTP callback once Better Auth phoneNumber plugin API is clarified.
+    phoneNumber(),
   ],
   advanced:
     process.env.NODE_ENV === "development"

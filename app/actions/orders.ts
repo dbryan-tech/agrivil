@@ -536,11 +536,10 @@ export async function startPaystackCheckout(
     const amountInPesewas = Math.round(total * 100)
 
     // Initialize Paystack transaction
+    const isMoMo = (input.method as string).includes("momo")
     const paystackResult = await initializePaystackTransaction({
       amount: amountInPesewas,
-      email: input.method.includes("momo")
-        ? `customer-${Date.now()}@agrivil.local` // Paystack requires email even for MoMo
-        : "customer@agrivil.local",
+      email: `customer-${Date.now()}@agrivil.local`, // Paystack requires email
       currency: "GHS",
       reference,
       metadata: {
@@ -548,7 +547,7 @@ export async function startPaystackCheckout(
         items: String(orderItems.length),
         total: String(total),
       },
-      channels: input.method.includes("momo") ? ["mobile_money", "card"] : ["card"],
+      channels: isMoMo ? ["mobile_money", "card"] : ["card"],
       callback_url: `${getBaseURL()}/checkout?reference=${reference}`,
     })
 
@@ -605,9 +604,9 @@ export async function updateOrderStatus(
 
     // Update payment status
     const updatedPayment = {
-      ...row.payment,
+      ...(row.payment as Record<string, unknown>),
       status: paymentStatus,
-      ...metadata,
+      ...(metadata || {}),
     }
 
     await db

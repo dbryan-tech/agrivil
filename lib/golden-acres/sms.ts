@@ -9,8 +9,7 @@ import { sendSMS, sendSMSDev, type SendSMSResult as AdapterResult } from "@/lib/
  */
 
 export type SmsSendResult =
-  | { ok: true; status: "sent"; id: string; provider: string | undefined }
-  | { ok: false; status: "failed"; error: string; provider: string | undefined }
+  | { ok: boolean; status: "sent" | "failed"; id: string; provider?: string; error?: string }
 
 /**
  * Normalise a Ghana phone number to E.164 format.
@@ -37,7 +36,13 @@ export function toE164Ghana(raw: string): string | null {
 export async function sendSms(toRaw: string, message: string): Promise<SmsSendResult> {
   const to = toE164Ghana(toRaw)
   if (!to) {
-    return { ok: false, status: "failed", error: "Invalid phone number", provider: "none" }
+    return {
+      ok: false,
+      status: "failed",
+      error: "Invalid phone number",
+      provider: "none",
+      id: "err-" + crypto.randomUUID(),
+    }
   }
 
   // Check if any real provider is configured
@@ -49,9 +54,9 @@ export async function sendSms(toRaw: string, message: string): Promise<SmsSendRe
     const result = await sendSMSDev({ phone: to, message })
     return {
       ok: result.success,
-      status: result.success ? "sent" : "failed",
+      status: result.success ? ("sent" as const) : ("failed" as const),
       id: result.messageId || "dev-" + crypto.randomUUID(),
-      provider: "dev",
+      provider: "dev" as unknown as string,
     }
   }
 
@@ -59,8 +64,8 @@ export async function sendSms(toRaw: string, message: string): Promise<SmsSendRe
   const result = await sendSMS({ phone: to, message })
   return {
     ok: result.success,
-    status: result.success ? "sent" : "failed",
+    status: result.success ? ("sent" as const) : ("failed" as const),
     id: result.messageId || crypto.randomUUID(),
-    provider: result.provider || "unknown",
+    provider: (result.provider || "unknown") as unknown as string,
   }
 }

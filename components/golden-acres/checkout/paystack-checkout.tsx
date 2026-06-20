@@ -21,7 +21,7 @@ export function PaystackCheckout({
 }) {
   const [loading, setLoading] = useState(false)
   const [pollingRef, setPollingRef] = useState<string>('')
-  const pollIntervalRef = useRef<NodeJS.Timeout>()
+  const pollIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined)
 
   /** Start the checkout flow: initialize Paystack, then redirect. */
   const handleInitialize = useCallback(async () => {
