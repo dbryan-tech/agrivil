@@ -103,6 +103,16 @@ export const farmers = pgTable("farmers", {
   momoProvider: text("momoProvider"), // 'MTN' | 'Vodafone' | 'AirtelTigo'
   momoNumber: text("momoNumber"), // MoMo payout destination
   ownerUserId: text("ownerUserId"),
+  // ---- KYC / seller verification (admin-gated onboarding) ----
+  // 'verified' = approved & listable, 'pending' = awaiting admin review,
+  // 'rejected' = declined. Seeded farmers default to 'verified'.
+  kycStatus: text("kycStatus").notNull().default("verified"),
+  kycSubmittedAt: text("kycSubmittedAt"),
+  kycReviewedAt: text("kycReviewedAt"),
+  kycNotes: text("kycNotes"),
+  // Applicant contact captured on the public "Sell on AgriVil" form.
+  applicantEmail: text("applicantEmail"),
+  applicantPhone: text("applicantPhone"),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
 })
