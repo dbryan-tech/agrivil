@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ShoppingCart, Check, Star, Users, Leaf, Eye, MapPin } from 'lucide-react'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { useCart } from '@/components/golden-acres/cart-context'
@@ -21,7 +21,14 @@ export function ProductListRow({
   const [added, setAdded] = useState(false)
 
   const farmer = productFarmer(product)
-  const fresh = freshnessLabel(product.expiryDate)
+  // Date-dependent + statically prerendered → compute after mount to avoid a
+  // hydration mismatch on the freshness chip.
+  const [fresh, setFresh] = useState<ReturnType<typeof freshnessLabel> | null>(
+    null,
+  )
+  useEffect(() => {
+    setFresh(freshnessLabel(product.expiryDate))
+  }, [product.expiryDate])
   const estimate = productEstimate(product)
   const unitLabel = product.variableWeight ? weight(product.estWeightKg) : product.unit
   const rounded = Math.round(farmer.rating)
@@ -89,10 +96,12 @@ export function ProductListRow({
           </div>
 
           {/* freshness chip */}
-          <span className="hidden shrink-0 items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-foreground sm:inline-flex">
-            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: fresh.color }} />
-            {fresh.label}
-          </span>
+          {fresh && (
+            <span className="hidden shrink-0 items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-foreground sm:inline-flex">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: fresh.color }} />
+              {fresh.label}
+            </span>
+          )}
         </div>
 
         <p className="mt-2 line-clamp-2 hidden text-sm leading-relaxed text-muted-foreground sm:block">
