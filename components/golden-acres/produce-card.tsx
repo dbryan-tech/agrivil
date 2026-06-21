@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ShoppingCart, Check, Heart, Star, Users, Leaf, Eye, GitCompareArrows } from 'lucide-react'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { useCart } from '@/components/golden-acres/cart-context'
@@ -33,7 +33,15 @@ export function ProduceCard({
   const comparing = isComparing(product.id)
 
   const farmer = productFarmer(product)
-  const fresh = freshnessLabel(product.expiryDate)
+  // Freshness depends on the current date, but these cards are statically
+  // prerendered — so compute it only after mount to avoid a server/client
+  // hydration mismatch (the badge would otherwise flip label/colour on hydrate).
+  const [fresh, setFresh] = useState<ReturnType<typeof freshnessLabel> | null>(
+    null,
+  )
+  useEffect(() => {
+    setFresh(freshnessLabel(product.expiryDate))
+  }, [product.expiryDate])
   const estimate = productEstimate(product)
   const unitLabel = product.variableWeight ? weight(product.estWeightKg) : product.unit
   const rounded = Math.round(farmer.rating)
@@ -130,10 +138,14 @@ export function ProduceCard({
 
         {/* bottom overlay row: freshness chip + multi-farmer pill */}
         <div className="pointer-events-none absolute inset-x-2.5 bottom-2.5 flex items-end justify-between gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-black/35 px-2 py-[3px] text-[10px] font-bold uppercase tracking-wide text-white shadow-sm backdrop-blur-md">
-            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: fresh.color }} />
-            {fresh.label}
-          </span>
+          {fresh ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-black/35 px-2 py-[3px] text-[10px] font-bold uppercase tracking-wide text-white shadow-sm backdrop-blur-md">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: fresh.color }} />
+              {fresh.label}
+            </span>
+          ) : (
+            <span aria-hidden />
+          )}
           {multi && (
             <span className="inline-flex items-center gap-1 rounded-full bg-[var(--ga-copper-deep)]/90 px-2 py-[3px] text-[10px] font-bold uppercase tracking-wide text-[var(--ga-copper-foreground)] shadow-sm backdrop-blur-md">
               <Users className="h-3 w-3" />

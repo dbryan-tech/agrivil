@@ -196,7 +196,11 @@ export function OrderTracking({ reference }: { reference: string }) {
         <div className="space-y-6">
           {/* Post-delivery feedback — rate the order, rider, tip, and produce.
               Shown once delivered; collapses to a summary after submission. */}
-          {order.status === 'delivered' && <DeliveryFeedback order={order} />}
+          {order.status === 'delivered' && (
+            <div id="feedback" className="scroll-mt-24">
+              <DeliveryFeedback order={order} />
+            </div>
+          )}
 
           {/* Live delivery map — shown once the carrier has the order (tracking
               assigned at dispatch, even while still "packed"). Mounting it here

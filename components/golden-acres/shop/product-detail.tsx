@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+  import { useEffect, useState } from 'react'
 import {
   Minus,
   Plus,
@@ -40,7 +40,15 @@ export function ProductDetail({
   useRecordView(product.id)
   const recentlyViewed = useRecentlyViewed(product.id)
 
-  const fresh = freshnessLabel(product.expiryDate)
+  // Computed after mount only — freshness depends on the current date and this
+  // page is statically prerendered, so computing it during render would cause a
+  // hydration mismatch when the prerendered date differs from the client's.
+  const [fresh, setFresh] = useState<ReturnType<typeof freshnessLabel> | null>(
+    null,
+  )
+  useEffect(() => {
+    setFresh(freshnessLabel(product.expiryDate))
+  }, [product.expiryDate])
   const estimateEach = product.variableWeight
     ? product.estWeightKg * product.pricePerKg
     : product.priceMin
@@ -71,12 +79,14 @@ export function ProductDetail({
             className="object-cover"
             priority
           />
-          <span
-            className="absolute right-4 top-4 rounded-full px-3 py-1.5 text-sm font-bold text-white"
-            style={{ backgroundColor: fresh.color }}
-          >
-            {fresh.label}
-          </span>
+          {fresh && (
+            <span
+              className="absolute right-4 top-4 rounded-full px-3 py-1.5 text-sm font-bold text-white"
+              style={{ backgroundColor: fresh.color }}
+            >
+              {fresh.label}
+            </span>
+          )}
         </div>
 
         <div className="ga-rise" style={{ animationDelay: '80ms' }}>
