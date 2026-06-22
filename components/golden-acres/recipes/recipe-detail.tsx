@@ -99,14 +99,16 @@ export function RecipeDetail({ recipeId }: { recipeId: string }) {
   return (
     <div className="ga-root min-h-screen bg-background">
       {/* Hero image */}
-      <section className="ga-media-scrim relative overflow-hidden border-b border-border">
+      <section className="relative flex min-h-[22rem] items-end overflow-hidden border-b border-border sm:min-h-[26rem]">
         <SmartImage
           src={recipe.image}
           alt={recipe.name}
-          className="absolute inset-0 h-full w-full object-cover"
-          aria-hidden
+          fill
+          priority
+          imgClassName="object-cover"
         />
-        <div className="relative mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="ga-media-scrim" aria-hidden />
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
           <Link
             href="/recipes"
             className="inline-flex items-center gap-1.5 text-sm font-bold text-cream/90 transition-opacity hover:opacity-80"

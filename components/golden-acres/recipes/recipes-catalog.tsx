@@ -27,14 +27,16 @@ export function RecipesCatalog() {
   return (
     <div className="ga-root min-h-screen bg-background">
       {/* Hero */}
-      <section className="ga-media-scrim relative overflow-hidden border-b border-border">
+      <section className="relative overflow-hidden border-b border-border">
         <SmartImage
           src="/golden-acres/recipes/ghana-jollof.png"
           alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-          aria-hidden
+          fill
+          priority
+          imgClassName="object-cover"
         />
-        <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="ga-media-scrim" aria-hidden />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <p className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-cream/90">
             <UtensilsCrossed className="h-4 w-4" /> Cook &amp; shop
           </p>
