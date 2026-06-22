@@ -166,6 +166,16 @@ export const recipes = pgTable("recipes", {
   image: text("image").notNull(),
   time: text("time").notNull().default(""),
   productIds: jsonb("productIds").notNull().default([]),
+  // ---- Enriched recipe content (additive; defaults keep old rows valid) ----
+  description: text("description").notNull().default(""),
+  category: text("category").notNull().default("Stews & soups"),
+  serves: text("serves").notNull().default(""),
+  difficulty: text("difficulty").notNull().default("Easy"),
+  // ingredients: [{ productId, qty, note? }]
+  ingredients: jsonb("ingredients").notNull().default([]),
+  // steps: ordered string[] cooking method
+  steps: jsonb("steps").notNull().default([]),
+  tip: text("tip").notNull().default(""),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
 })
 

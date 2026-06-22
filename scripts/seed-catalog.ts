@@ -109,16 +109,39 @@ async function main() {
   console.log("[seed-catalog] bundles upserted")
 
   for (const r of seedRecipes) {
+    const values = {
+      id: r.id,
+      name: r.name,
+      image: r.image,
+      time: r.time,
+      productIds: r.productIds,
+      description: r.description ?? "",
+      category: r.category ?? "Stews & soups",
+      serves: r.serves ?? "",
+      difficulty: r.difficulty ?? "Easy",
+      ingredients: r.ingredients ?? [],
+      steps: r.steps ?? [],
+      tip: r.tip ?? "",
+    }
     await db
       .insert(recipesTable)
-      .values({
-        id: r.id,
-        name: r.name,
-        image: r.image,
-        time: r.time,
-        productIds: r.productIds,
+      .values(values)
+      .onConflictDoUpdate({
+        target: recipesTable.id,
+        set: {
+          name: values.name,
+          image: values.image,
+          time: values.time,
+          productIds: values.productIds,
+          description: values.description,
+          category: values.category,
+          serves: values.serves,
+          difficulty: values.difficulty,
+          ingredients: values.ingredients,
+          steps: values.steps,
+          tip: values.tip,
+        },
       })
-      .onConflictDoUpdate({ target: recipesTable.id, set: { name: r.name } })
   }
   console.log("[seed-catalog] recipes upserted")
 

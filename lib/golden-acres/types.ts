@@ -118,12 +118,32 @@ export interface Bundle {
   popular?: boolean
 }
 
+export type RecipeCategory =
+  | 'Rice & grains'
+  | 'Stews & soups'
+  | 'Street food'
+  | 'Sides & snacks'
+
+export interface RecipeIngredient {
+  productId: string
+  qty: number // how many of the product unit this recipe needs
+  note?: string // e.g. "ripe", "finely diced"
+}
+
 export interface Recipe {
   id: string
   name: string
   image: string
   time: string
-  productIds: string[]
+  productIds: string[] // legacy flat list (kept for back-compat + quick lookups)
+  // ---- Enriched, optional fields (additive; older rows still valid) ----
+  description?: string
+  category?: RecipeCategory
+  serves?: string // e.g. "Serves 4"
+  difficulty?: 'Easy' | 'Medium' | 'Advanced'
+  ingredients?: RecipeIngredient[] // produce ingredients w/ quantities + notes
+  steps?: string[] // numbered cooking method
+  tip?: string // optional chef's tip
 }
 
 // ---- Orders / fulfilment ----

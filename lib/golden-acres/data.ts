@@ -490,10 +490,154 @@ export const bundles: Bundle[] = [
 ]
 
 export const recipes: Recipe[] = [
-  { id: 'r1', name: 'Classic Ghana Jollof', image: '/golden-acres/produce/roma-tomatoes.png', time: '45 min', productIds: ['p1', 'p13', 'p2'] },
-  { id: 'r2', name: 'Red-Red with Plantain', image: '/golden-acres/produce/ripe-plantain.png', time: '40 min', productIds: ['p15', 'p4', 'p13'] },
-  { id: 'r3', name: 'Kontomire Palava Sauce', image: '/golden-acres/produce/kontomire.png', time: '35 min', productIds: ['p9', 'p3', 'p2'] },
-  { id: 'r4', name: 'Garden Egg Stew', image: '/golden-acres/produce/garden-eggs.png', time: '30 min', productIds: ['p3', 'p1', 'p13'] },
+  {
+    id: 'r1',
+    name: 'Classic Ghana Jollof',
+    image: '/golden-acres/recipes/ghana-jollof.png',
+    time: '45 min',
+    productIds: ['p1', 'p13', 'p2'],
+    category: 'Rice & grains',
+    serves: 'Serves 4',
+    difficulty: 'Medium',
+    description:
+      'The crown jewel of any Ghanaian gathering — smoky, long-grain rice simmered in a rich tomato, onion and pepper base until every grain is deeply flavoured.',
+    ingredients: [
+      { productId: 'p1', qty: 1, note: 'blended ripe' },
+      { productId: 'p13', qty: 1, note: 'one for blending, one sliced' },
+      { productId: 'p2', qty: 1, note: 'to taste — start with half' },
+    ],
+    steps: [
+      'Blend the tomatoes, half the onions and the scotch bonnet into a smooth pepper base.',
+      'Heat oil and fry the sliced onions until golden, then stir in tomato paste and cook for 2–3 minutes.',
+      'Pour in the blended base and fry on medium heat until the oil rises and the raw smell is gone (about 12–15 min).',
+      'Add stock, seasoning and your washed rice, stir once, then cover tightly and cook on low until the rice is tender.',
+      'Let it sit off the heat for 5 minutes, then fluff gently and serve hot.',
+    ],
+    tip: 'For that signature party-jollof smokiness, let the bottom catch very lightly before the final steam.',
+  },
+  {
+    id: 'r2',
+    name: 'Red-Red with Fried Plantain',
+    image: '/golden-acres/recipes/red-red.png',
+    time: '40 min',
+    productIds: ['p15', 'p4', 'p13'],
+    category: 'Stews & soups',
+    serves: 'Serves 3–4',
+    difficulty: 'Easy',
+    description:
+      'A beloved black-eyed pea stew cooked in red palm oil, served with sweet, caramelised fried plantain. Hearty, naturally plant-based comfort food.',
+    ingredients: [
+      { productId: 'p15', qty: 2, note: 'soaked overnight' },
+      { productId: 'p4', qty: 2, note: 'very ripe, for frying' },
+      { productId: 'p13', qty: 1, note: 'diced' },
+    ],
+    steps: [
+      'Boil the soaked cowpeas until soft but not mushy, then drain and set aside.',
+      'Fry diced onions in palm oil until soft, add blended pepper and tomato, and simmer into a thick sauce.',
+      'Fold the beans into the sauce, season, and let everything simmer together for 10 minutes.',
+      'Meanwhile, slice the ripe plantain and fry in hot oil until golden on both sides.',
+      'Serve the red-red hot alongside the fried plantain.',
+    ],
+    tip: 'The riper the plantain, the sweeter the contrast against the savoury beans.',
+  },
+  {
+    id: 'r3',
+    name: 'Kontomire Palava Sauce',
+    image: '/golden-acres/recipes/kontomire-palava.png',
+    time: '35 min',
+    productIds: ['p9', 'p3', 'p2'],
+    category: 'Stews & soups',
+    serves: 'Serves 4',
+    difficulty: 'Medium',
+    description:
+      'Cocoyam leaves stewed with melon seeds, garden eggs and palm oil into a deep, earthy green sauce — a classic of Ghanaian home cooking.',
+    ingredients: [
+      { productId: 'p9', qty: 2, note: 'washed and shredded' },
+      { productId: 'p3', qty: 1, note: 'boiled and mashed' },
+      { productId: 'p2', qty: 1, note: 'to taste' },
+    ],
+    steps: [
+      'Boil and shred the kontomire leaves, then squeeze out excess water.',
+      'Boil the garden eggs until soft and mash them into a rough paste.',
+      'Fry onions in palm oil, add blended pepper, and cook down for a few minutes.',
+      'Stir in ground melon seeds (agushie) if using, the mashed garden eggs and the kontomire.',
+      'Simmer for 10–12 minutes until thick, then serve with yam, rice or kenkey.',
+    ],
+    tip: 'Squeeze the boiled leaves well — too much water and the sauce turns thin.',
+  },
+  {
+    id: 'r4',
+    name: 'Garden Egg Stew',
+    image: '/golden-acres/recipes/garden-egg-stew.png',
+    time: '30 min',
+    productIds: ['p3', 'p1', 'p13'],
+    category: 'Stews & soups',
+    serves: 'Serves 3',
+    difficulty: 'Easy',
+    description:
+      'A quick, rustic stew of boiled garden eggs mashed into a fragrant tomato-onion base — simple, satisfying and ready in half an hour.',
+    ingredients: [
+      { productId: 'p3', qty: 2, note: 'boiled until soft' },
+      { productId: 'p1', qty: 1, note: 'blended' },
+      { productId: 'p13', qty: 1, note: 'sliced' },
+    ],
+    steps: [
+      'Boil the garden eggs until tender, then peel and mash roughly.',
+      'Fry sliced onions in oil until soft, then add the blended tomatoes.',
+      'Cook the tomato base down until thick and the oil separates.',
+      'Stir in the mashed garden eggs, season to taste, and simmer for 8 minutes.',
+      'Serve hot with boiled yam, plantain or rice.',
+    ],
+    tip: 'A handful of smoked fish stirred in at the end lifts the whole dish.',
+  },
+  {
+    id: 'r5',
+    name: 'Spicy Grilled Corn',
+    image: '/golden-acres/recipes/grilled-corn.png',
+    time: '20 min',
+    productIds: ['p14', 'p2', 'p18'],
+    category: 'Street food',
+    serves: 'Serves 2',
+    difficulty: 'Easy',
+    description:
+      'Roadside-style charred maize brushed with a smoky pepper-ginger glaze — the taste of a Ghanaian evening by the grill.',
+    ingredients: [
+      { productId: 'p14', qty: 2, note: 'husked' },
+      { productId: 'p2', qty: 1, note: 'finely ground' },
+      { productId: 'p18', qty: 1, note: 'grated, for the glaze' },
+    ],
+    steps: [
+      'Husk the maize and pat dry.',
+      'Mix ground scotch bonnet, grated ginger, a little oil and salt into a glaze.',
+      'Grill the corn over medium coals, turning often, until charred in spots.',
+      'Brush generously with the glaze in the last few minutes of grilling.',
+      'Serve hot, traditionally with a wedge of coconut.',
+    ],
+    tip: 'No grill? A dry cast-iron pan over high heat gives a great char too.',
+  },
+  {
+    id: 'r6',
+    name: 'Pineapple Ginger Cooler',
+    image: '/golden-acres/recipes/pineapple-ginger.png',
+    time: '15 min',
+    productIds: ['p16', 'p18'],
+    category: 'Sides & snacks',
+    serves: 'Makes 1.5L',
+    difficulty: 'Easy',
+    description:
+      'A bright, zingy blend of fresh pineapple and ginger — refreshing, naturally sweet and a Ghanaian party favourite.',
+    ingredients: [
+      { productId: 'p16', qty: 1, note: 'ripe, peeled and chopped' },
+      { productId: 'p18', qty: 1, note: 'peeled' },
+    ],
+    steps: [
+      'Blend the pineapple and ginger with a little water until smooth.',
+      'Strain through a fine sieve into a jug.',
+      'Sweeten to taste and top up with cold water to 1.5 litres.',
+      'Chill thoroughly and serve over ice.',
+    ],
+    tip: 'Use the pineapple core too — it holds a lot of sweetness.',
+  },
 ]
 
 // ---- Delivery slots (next 6 days) ----

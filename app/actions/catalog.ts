@@ -130,6 +130,13 @@ function toRecipe(r: any): Recipe {
     image: r.image,
     time: r.time,
     productIds: (r.productIds ?? []) as string[],
+    description: r.description || undefined,
+    category: r.category || undefined,
+    serves: r.serves || undefined,
+    difficulty: r.difficulty || undefined,
+    ingredients: (r.ingredients ?? []) as Recipe["ingredients"],
+    steps: (r.steps ?? []) as string[],
+    tip: r.tip || undefined,
   }
 }
 
