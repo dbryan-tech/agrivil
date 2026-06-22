@@ -13,6 +13,7 @@ import {
   ShoppingBasket,
   CornerDownLeft,
   Leaf,
+  UtensilsCrossed,
 } from 'lucide-react'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { products as catalog, farmers as allFarmers } from '@/lib/golden-acres/data'
@@ -35,6 +36,7 @@ const PAGE_COMMANDS: Cmd[] = [
   { id: 'p-shop', label: 'Shop all produce', icon: Store, href: '/shop', group: 'Pages' },
   { id: 'p-farmers', label: 'Meet the farmers', icon: Users, href: '/farmers', group: 'Pages' },
   { id: 'p-bundles', label: 'Bundles & boxes', icon: ShoppingBasket, href: '/bundles', group: 'Pages' },
+  { id: 'p-recipes', label: 'Recipes — cook & shop', icon: UtensilsCrossed, href: '/recipes', group: 'Pages' },
   { id: 'p-orders', label: 'My orders', icon: Package, href: '/account?tab=orders', group: 'Pages' },
   { id: 'p-wishlist', label: 'My favorites', icon: Heart, href: '/account?tab=favorites', group: 'Pages' },
   { id: 'p-rewards', label: 'Rewards & points', icon: Award, href: '/account?tab=rewards', group: 'Pages' },

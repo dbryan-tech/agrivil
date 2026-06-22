@@ -6,6 +6,7 @@ import { FeaturedProduce } from '@/components/golden-acres/home/featured-produce
 import { FreshnessStory } from '@/components/golden-acres/home/freshness-story'
 import { MatchTeaser } from '@/components/golden-acres/home/match-teaser'
 import { BundlesPreview } from '@/components/golden-acres/home/bundles-preview'
+import { RecipesPreview } from '@/components/golden-acres/home/recipes-preview'
 import { FarmerSpotlight } from '@/components/golden-acres/home/farmer-spotlight'
 import { TestimonialsCta } from '@/components/golden-acres/home/testimonials-cta'
 import { Reveal } from '@/components/golden-acres/reveal'
@@ -29,6 +30,9 @@ export default function HomePage() {
       </Reveal>
       <Reveal>
         <BundlesPreview />
+      </Reveal>
+      <Reveal>
+        <RecipesPreview />
       </Reveal>
       <Reveal>
         <FarmerSpotlight />

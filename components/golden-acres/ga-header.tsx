@@ -39,6 +39,7 @@ const CATEGORIES = [
 const PRIMARY_NAV = [
   { href: '/shop', label: 'All Produce' },
   { href: '/bundles', label: 'Boxes & Subscriptions' },
+  { href: '/recipes', label: 'Recipes' },
   { href: '/farmers', label: 'Our Farmers' },
   { href: '/local', label: 'Shop Local' },
 ]
