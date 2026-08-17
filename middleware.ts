@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/navigation'
+import type { NextRequest } from 'next/server'
 
-export function middleware(request: Request) {
-  const url = new URL(request.url)
+export function middleware(request: NextRequest) {
+  const url = request.nextUrl.clone()
   const pathname = url.pathname
 
   // Only handle root '/' route for automatic device detection
