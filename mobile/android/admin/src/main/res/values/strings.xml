@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">AgriVil Farmer</string>
+    <string name="title_activity_main">AgriVil Farmer</string>
+    <string name="package_name">com.agrivil.farmer</string>
+    <string name="custom_url_scheme">com.agrivil.farmer</string>
+</resources>

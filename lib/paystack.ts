@@ -8,7 +8,7 @@ import { createHmac } from "crypto"
 
 const BASE_URL = "https://api.paystack.co"
 const SECRET_KEY = process.env.PAYSTACK_SECRET_KEY
-const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET // We'll use this for now, but ideally Paystack has its own
+const WEBHOOK_SECRET = process.env.PAYSTACK_WEBHOOK_SECRET || process.env.PAYSTACK_SECRET_KEY
 
 if (!SECRET_KEY) {
   console.warn("[Paystack] PAYSTACK_SECRET_KEY not configured — payments will fail")

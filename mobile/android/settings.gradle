@@ -1,0 +1,11 @@
+// Two fully-independent app modules (no shared mutable source):
+//   :consumer -> com.knust.bazaar       (marketplace, loads /m)
+//   :admin    -> com.knust.bazaar.admin (admin console,  loads /ad)
+// Both share ONLY the read-only Capacitor library modules below.
+include ':consumer'
+include ':admin'
+
+include ':capacitor-cordova-android-plugins'
+project(':capacitor-cordova-android-plugins').projectDir = new File('./capacitor-cordova-android-plugins/')
+
+apply from: 'capacitor.settings.gradle'

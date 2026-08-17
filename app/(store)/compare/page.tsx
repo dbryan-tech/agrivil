@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { CompareView } from '@/components/golden-acres/compare/compare-view'
 
 export const metadata: Metadata = {
-  title: 'Compare produce · Golden Acres Ghana',
+  title: 'Compare Produce Side-by-Side | AgriVil',
   description:
-    'Compare fresh produce side by side — price, farm, freshness, ratings and more — to pick the perfect basket.',
+    'Compare price per kg, variable weight estimates, farm sources, growing methods, and shelf life across competing farmer offers.',
 }
 
 export default function ComparePage() {

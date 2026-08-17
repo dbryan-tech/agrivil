@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- KNUST Bazaar launcher foreground — precision mark centered at ~55%
+     of the 108dp adaptive icon canvas (white background surrounds it).
+     All paths are wrapped in a group that scales 0.55x and translates to center. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="100" android:viewportHeight="100">
+  <group
+      android:pivotX="50" android:pivotY="50"
+      android:scaleX="0.55" android:scaleY="0.55">
+    <!-- arms -->
+    <path android:fillColor="#1f9e63" android:pathData="M10,12 L32,12 L32,34 L56,54 L42,68 L10,40 Z" />
+    <path android:fillColor="#00331d" android:pathData="M90,12 L68,12 L68,34 L44,54 L58,68 L90,40 Z" />
+    <!-- center diamond (deep green) -->
+    <path android:fillColor="#00331d" android:pathData="M50,46 L62,58 L50,70 L38,58 Z" />
+    <!-- gold token -->
+    <path android:fillColor="#f4b942" android:pathData="M44,52 h12 v12 h-12 Z" />
+    <!-- base bar (soft green) -->
+    <path android:fillColor="#c8ddd0" android:pathData="M28,76 h44 v12 h-44 Z" />
+    <!-- top-light gloss highlights -->
+    <path android:fillColor="#ffffff" android:fillAlpha="0.20" android:pathData="M10,12 L32,12 L32,22 L34,28 L18,20 L10,24 Z" />
+    <path android:fillColor="#ffffff" android:fillAlpha="0.11" android:pathData="M90,12 L68,12 L68,22 L66,28 L82,20 L90,24 Z" />
+    <path android:fillColor="#ffffff" android:fillAlpha="0.16" android:pathData="M44,52 h12 v3 h-12 Z" />
+  </group>
+</vector>

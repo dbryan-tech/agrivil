@@ -1,0 +1,18 @@
+{
+	"appId": "com.agrivil.marketplace",
+	"appName": "AgriVil",
+	"webDir": "../out",
+	"server": {
+		"url": "https://agrivil.vercel.app/m"
+	},
+	"plugins": {
+		"SplashScreen": {
+			"launchAutoHide": false,
+			"backgroundColor": "#1E5D3B",
+			"showSpinner": false,
+			"androidScaleType": "CENTER",
+			"splashFullScreen": true,
+			"splashImmersive": true
+		}
+	}
+}

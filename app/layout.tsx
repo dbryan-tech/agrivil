@@ -16,6 +16,7 @@ import {
 import { ThemeProvider } from '@/components/theme-provider'
 import { SessionProvider } from '@/components/golden-acres/auth/session-context'
 import { DataStoreProvider } from '@/components/golden-acres/store/data-store'
+import { MobileSwitcherPill } from '@/components/golden-acres/mobile-switcher-pill'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -114,7 +115,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SessionProvider>
-            <DataStoreProvider>{children}</DataStoreProvider>
+            <DataStoreProvider>
+              {children}
+              <MobileSwitcherPill />
+            </DataStoreProvider>
           </SessionProvider>
         </ThemeProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}

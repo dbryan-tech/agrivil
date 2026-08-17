@@ -1,813 +1,219 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
+@import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
+@layer base {
+  :root {
+    --background: #F4F1EA;
+    --foreground: #2B1F17;
+    --card: #FFFFFF;
+    --card-foreground: #2B1F17;
+    --popover: #FFFFFF;
+    --popover-foreground: #2B1F17;
+    --primary: #1E5D3B;
+    --primary-foreground: #FFFFFF;
+    --secondary: #EBE6DA;
+    --secondary-foreground: #2B1F17;
+    --muted: #E6E0D2;
+    --muted-foreground: #6E6A63;
+    --accent: #E67A2E;
+    --accent-foreground: #FFFFFF;
+    --destructive: #DC2626;
+    --destructive-foreground: #FFFFFF;
+    --border: #E0DACB;
+    --input: #E0DACB;
+    --ring: #1E5D3B;
+    --radius: 1rem;
 
-@theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: var(--font-geist-sans), 'Geist Fallback';
-  --font-mono: var(--font-geist-mono), 'Geist Mono Fallback';
-  --font-serif: var(--font-source-serif), Georgia, serif;
-  --font-display: var(--font-archivo), var(--font-geist-sans), sans-serif;
-  --font-onest: var(--font-onest), var(--font-geist-sans), sans-serif;
-  --font-jetbrains: var(--font-jetbrains), var(--font-geist-mono), monospace;
-  --font-mono-display: var(--font-ibm-plex-mono), var(--font-geist-mono), monospace;
-  --font-grotesk: var(--font-space-grotesk), var(--font-geist-sans), sans-serif;
-  --font-rounded: var(--font-nunito), ui-rounded, 'SF Pro Rounded', var(--font-geist-sans), sans-serif;
-  /* Golden Acres — warm editorial farm-to-table */
-  --font-fraunces: var(--font-fraunces), Georgia, 'Times New Roman', serif;
-  --font-jakarta: var(--font-jakarta), var(--font-geist-sans), sans-serif;
-  --color-gold: var(--ga-gold);
-  --color-gold-soft: var(--ga-gold-soft);
-  --color-field: var(--ga-field);
-  --color-field-deep: var(--ga-field-deep);
-  --color-terracotta: var(--ga-terracotta);
-  --color-cream: var(--ga-cream);
-  --color-clay: var(--ga-clay);
-  --color-leaf: var(--ga-leaf);
-  /* v3 teal accent — scientific, distinctive */
-  --color-teal: #26d9b8;
-  --color-teal-dark: #1fb39d;
-  /* electric-blue brand accent (company site) */
-  --color-brand: var(--brand);
-  --color-brand-foreground: var(--brand-foreground);
-  /* marketplace chrome tokens */
-  --color-header: var(--ga-header);
-  --color-header-foreground: var(--ga-header-foreground);
-  --color-deal: var(--ga-deal);
-  --color-deal-foreground: var(--ga-deal-foreground);
-  --color-star: var(--ga-star);
-  /* copper brand chrome (header band, footer, premium accents) */
-  --color-copper: var(--ga-copper);
-  --color-copper-deep: var(--ga-copper-deep);
-  --color-copper-soft: var(--ga-copper-soft);
-  --color-copper-foreground: var(--ga-copper-foreground);
-  /* Paperfolio flat accents (founder page) */
-  --color-coral: #ff6b7a;
-  --color-cobalt: #2f81f7;
-  --color-sun: #fdb927;
-  --color-ink: #0a0a0a;
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --color-foreground: var(--foreground);
-  --color-background: var(--background);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-}
+    /* AgriVil Custom Palette */
+    --ga-field: #1E5D3B;
+    --ga-field-deep: #144028;
+    --ga-earth: #2B1F17;
+    --ga-cream: #F4F1EA;
+    --ga-sage: #DDE4C5;
+    --ga-gold: #8A6B3D;
+    --ga-gold-soft: #D4AF37;
+    --ga-orange: #E67A2E;
+    --ga-lime: #A3E635;
+    --ga-ink-deep: #16120E;
+    --ga-terracotta: #C85A17;
+    --ga-star: #FBBF24;
+    --ga-deal: #DC2626;
+  }
 
-:root {
-  color-scheme: light;
-  --background: oklch(0.962 0.004 95);
-  --foreground: oklch(0.16 0.006 265);
-  --card: oklch(0.985 0.003 95);
-  --card-foreground: oklch(0.16 0.006 265);
-  --popover: oklch(0.985 0.003 95);
-  --popover-foreground: oklch(0.16 0.006 265);
-  --primary: oklch(0.16 0.006 265);
-  --primary-foreground: oklch(0.97 0.004 95);
-  --secondary: oklch(0.93 0.005 95);
-  --secondary-foreground: oklch(0.16 0.006 265);
-  --muted: oklch(0.925 0.005 95);
-  --muted-foreground: oklch(0.48 0.012 265);
-  --accent: oklch(0.92 0.006 95);
-  --accent-foreground: oklch(0.16 0.006 265);
-  --brand: oklch(0.52 0.252 264);
-  --brand-foreground: oklch(0.985 0.004 95);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.86 0.006 95);
-  --input: oklch(0.86 0.006 95);
-  --ring: oklch(0.52 0.252 264);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.25rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  color-scheme: dark;
-  --background: oklch(0.135 0.005 265);
-  --foreground: oklch(0.96 0.004 95);
-  --card: oklch(0.18 0.006 265);
-  --card-foreground: oklch(0.96 0.004 95);
-  --popover: oklch(0.18 0.006 265);
-  --popover-foreground: oklch(0.96 0.004 95);
-  --primary: oklch(0.96 0.004 95);
-  --primary-foreground: oklch(0.135 0.005 265);
-  --secondary: oklch(0.22 0.006 265);
-  --secondary-foreground: oklch(0.96 0.004 95);
-  --muted: oklch(0.22 0.006 265);
-  --muted-foreground: oklch(0.66 0.01 265);
-  --accent: oklch(0.24 0.008 265);
-  --accent-foreground: oklch(0.96 0.004 95);
-  --brand: oklch(0.62 0.235 264);
-  --brand-foreground: oklch(0.99 0.003 95);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.62 0.235 264);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    color-scheme: dark;
-    --background: oklch(0.135 0.005 265);
-    --foreground: oklch(0.96 0.004 95);
-    --card: oklch(0.18 0.006 265);
-    --card-foreground: oklch(0.96 0.004 95);
-    --popover: oklch(0.18 0.006 265);
-    --popover-foreground: oklch(0.96 0.004 95);
-    --primary: oklch(0.96 0.004 95);
-    --primary-foreground: oklch(0.135 0.005 265);
-    --secondary: oklch(0.22 0.006 265);
-    --secondary-foreground: oklch(0.96 0.004 95);
-    --muted: oklch(0.22 0.006 265);
-    --muted-foreground: oklch(0.66 0.01 265);
-    --accent: oklch(0.24 0.008 265);
-    --accent-foreground: oklch(0.96 0.004 95);
-    --brand: oklch(0.62 0.235 264);
-    --brand-foreground: oklch(0.99 0.003 95);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 12%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.62 0.235 264);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+  .dark {
+    --background: #14120E;
+    --foreground: #F4F1EA;
+    --card: #1C1914;
+    --card-foreground: #F4F1EA;
+    --popover: #1C1914;
+    --popover-foreground: #F4F1EA;
+    --primary: #2BA064;
+    --primary-foreground: #0A1E13;
+    --secondary: #26221B;
+    --secondary-foreground: #F4F1EA;
+    --muted: #2E2922;
+    --muted-foreground: #A6A095;
+    --accent: #F97316;
+    --accent-foreground: #FFFFFF;
+    --destructive: #EF4444;
+    --destructive-foreground: #FFFFFF;
+    --border: #2E2922;
+    --input: #2E2922;
+    --ring: #2BA064;
   }
 }
 
-/* ============================================================
-   Golden Acres — scoped warm editorial theme (.ga-root)
-   Fixed warm palette, independent of the global light/dark toggle
-   so it never collides with the Gar reference pages.
-   ============================================================ */
-.ga-root {
-  color-scheme: light;
-  font-family: var(--font-jakarta);
-  letter-spacing: -0.011em;
-  /* AgriVil — "Harvest Market": copper chrome + green actions + yellow accents */
-  --background: #f5f1e8;
-  --foreground: #1c2118;
-  --card: #ffffff;
-  --card-foreground: #1c2118;
-  --popover: #ffffff;
-  --popover-foreground: #1c2118;
-  --primary: #0f7a43;
-  --primary-foreground: #ffffff;
-  --secondary: #ecefe4;
-  --secondary-foreground: #14422a;
-  --muted: #efece1;
-  --muted-foreground: #6a6450;
-  --accent: #f0a81e;
-  --accent-foreground: #2a1c02;
-  --destructive: #d33b2a;
-  --border: #e3ddcd;
-  --input: #e3ddcd;
-  --ring: #0f7a43;
-  --brand: #0f7a43;
-  --brand-foreground: #ffffff;
-  --radius: 0.625rem;
-
-  /* marketplace chrome — copper brand band */
-  --ga-header: #7a3f1c;          /* deep copper top brand band */
-  --ga-header-foreground: #f7ead9;
-  --ga-deal: #d6402c;            /* sale / flash-deal red */
-  --ga-deal-foreground: #ffffff;
-  --ga-star: #f0a81e;            /* rating star yellow */
-
-  /* copper brand chrome */
-  --ga-copper: #b5642e;
-  --ga-copper-deep: #7a3f1c;
-  --ga-copper-soft: #d98a4e;
-  --ga-copper-foreground: #f7ead9;
-
-  /* warm yellow — ratings + highlights */
-  --ga-gold: #a8740f;
-  --ga-gold-soft: #f0a81e;
-  /* green brand core */
-  --ga-field: #0f7a43;
-  --ga-field-deep: #0b3b25;
-  /* copper accent (warmth) */
-  --ga-terracotta: #b5642e;
-  --ga-cream: #f5f1e8;
-  --ga-paper: #f5f1e8;
-  --ga-clay: #8a5a3a;
-  --ga-leaf: #3f8a4f;
-  /* cinematic dark-section ink + fresh pop */
-  --ga-ink-deep: #1a0f06;
-  --ga-ink-soft: #2a1a0d;
-  --ga-lime: #f0c84a;
-
-  --chart-1: #0f7a43;
-  --chart-2: #f0a81e;
-  --chart-3: #b5642e;
-  --chart-4: #3f8a4f;
-  --chart-5: #7a3f1c;
-
-  --sidebar: #ffffff;
-  --sidebar-foreground: #16241b;
-  --sidebar-primary: #0f7a43;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e8f1e8;
-  --sidebar-accent-foreground: #14422a;
-  --sidebar-border: #e1e5db;
-  --sidebar-ring: #0f7a43;
+/* Animations for Corner Produce Ornaments (Fly-in + 2x Bounce + Settle) */
+@keyframes corner-entry-tl {
+  0% {
+    transform: translate3d(-140%, -140%, 0) scale(0.5) rotate(-20deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  65% {
+    transform: translate3d(0, 0, 0) scale(1.10) rotate(3deg);
+  }
+  80% {
+    transform: translate3d(0, 0, 0) scale(0.96) rotate(-1deg);
+  }
+  90% {
+    transform: translate3d(0, 0, 0) scale(1.04) rotate(1deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
 }
 
-.ga-display {
-  font-family: var(--font-display);
-  font-weight: 800;
-  letter-spacing: -0.03em;
+@keyframes corner-entry-tr {
+  0% {
+    transform: translate3d(140%, -140%, 0) scale(0.5) rotate(20deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  65% {
+    transform: translate3d(0, 0, 0) scale(1.10) rotate(-3deg);
+  }
+  80% {
+    transform: translate3d(0, 0, 0) scale(0.96) rotate(1deg);
+  }
+  90% {
+    transform: translate3d(0, 0, 0) scale(1.04) rotate(-1deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
 }
 
-/* editorial serif accent (reserved for highlight words / pull quotes) */
-.ga-serif {
-  font-family: var(--font-fraunces);
-  font-optical-sizing: auto;
-  font-style: italic;
-  font-weight: 500;
+@keyframes corner-entry-bl {
+  0% {
+    transform: translate3d(-140%, 140%, 0) scale(0.5) rotate(-20deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  65% {
+    transform: translate3d(0, 0, 0) scale(1.10) rotate(3deg);
+  }
+  80% {
+    transform: translate3d(0, 0, 0) scale(0.96) rotate(-1deg);
+  }
+  90% {
+    transform: translate3d(0, 0, 0) scale(1.04) rotate(1deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
 }
 
-/* ---- Marketplace typography ---- */
+@keyframes corner-entry-br {
+  0% {
+    transform: translate3d(140%, 140%, 0) scale(0.5) rotate(20deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  65% {
+    transform: translate3d(0, 0, 0) scale(1.10) rotate(-3deg);
+  }
+  80% {
+    transform: translate3d(0, 0, 0) scale(0.96) rotate(1deg);
+  }
+  90% {
+    transform: translate3d(0, 0, 0) scale(1.04) rotate(-1deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
 
-/* primary heading voice: confident grotesque, tight + bold. */
+@keyframes corner-idle-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(0.5deg);
+  }
+}
+
+.animate-corner-tl {
+  animation: corner-entry-tl 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-corner-tr {
+  animation: corner-entry-tr 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-corner-bl {
+  animation: corner-entry-bl 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-corner-br {
+  animation: corner-entry-br 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-idle-float {
+  animation: corner-idle-float 5s ease-in-out infinite;
+}
+
+/* Custom Typography & Utility Classes */
 .ga-headline {
-  font-family: var(--font-display);
-  font-weight: 800;
-  letter-spacing: -0.022em;
-  line-height: 1.04;
-}
-.ga-headline em,
-.ga-headline .em {
-  font-style: normal;
-  font-weight: 800;
-  color: var(--primary);
-}
-
-/* hairline rule */
-.ga-rule {
-  height: 1px;
-  width: 100%;
-  background: var(--border);
-}
-
-/* tabular numeral for counts / prices */
-.ga-index {
-  font-family: var(--font-jakarta);
-  font-feature-settings: 'tnum' 1;
-  letter-spacing: 0;
-}
-
-/* small uppercase section label */
-.ga-kicker {
-  font-family: var(--font-display);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 700;
-  font-size: 0.72rem;
-}
-
-/* tabular price — used on cards + cart */
-.ga-price {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-feature-settings: 'tnum' 1;
+  font-family: var(--font-source-serif), serif;
   letter-spacing: -0.02em;
 }
 
-/* horizontal scroll rail (product carousels) */
-.ga-rail {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.ga-rail::-webkit-scrollbar {
-  display: none;
+.ga-display {
+  font-family: var(--font-source-serif), serif;
 }
 
-/* copper brand chrome gradient (header band, footer, premium bands) */
-.ga-copper-band {
-  background:
-    radial-gradient(120% 140% at 12% 0%, rgba(217, 138, 78, 0.45) 0%, transparent 55%),
-    linear-gradient(115deg, var(--ga-copper-deep) 0%, var(--ga-copper) 58%, #8a4a22 100%);
-  color: var(--ga-copper-foreground);
+.ga-eyebrow, .ga-kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
-/* dark overlay scrim for image-backed section headers */
-.ga-media-scrim {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(26, 15, 6, 0.25) 0%, rgba(26, 15, 6, 0.78) 100%),
-    linear-gradient(100deg, rgba(122, 63, 28, 0.55) 0%, rgba(11, 59, 37, 0.35) 100%);
-}
-
-/* gentle entrance used across Golden Acres surfaces */
-@keyframes ga-rise {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.ga-rise {
-  animation: ga-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-/* ---- Golden Acres motion kit ---- */
-
-/* immediate entrance (mount) */
-@keyframes ga-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.ga-fade-up {
-  animation: ga-fade-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes ga-scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-.ga-scale-in {
-  animation: ga-scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-/* stagger children: apply .ga-stagger to a parent, children animate in sequence */
-.ga-stagger > * {
-  animation: ga-fade-up 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.ga-stagger > *:nth-child(1) {
-  animation-delay: 0.02s;
-}
-.ga-stagger > *:nth-child(2) {
-  animation-delay: 0.05s;
-}
-.ga-stagger > *:nth-child(3) {
-  animation-delay: 0.08s;
-}
-.ga-stagger > *:nth-child(4) {
-  animation-delay: 0.11s;
-}
-.ga-stagger > *:nth-child(5) {
-  animation-delay: 0.14s;
-}
-.ga-stagger > *:nth-child(6) {
-  animation-delay: 0.17s;
-}
-.ga-stagger > *:nth-child(7) {
-  animation-delay: 0.2s;
-}
-.ga-stagger > *:nth-child(8) {
-  animation-delay: 0.23s;
-}
-
-/* scroll-reveal: start hidden, .is-visible toggled by IntersectionObserver */
-.ga-reveal {
-  opacity: 0;
-  transform: translateY(16px);
-  transition:
-    opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-.ga-reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* tactile press feedback for buttons / tap targets */
 .ga-press {
-  transition:
-    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.18s ease,
-    background-color 0.18s ease;
-}
-.ga-press:hover {
-  transform: translateY(-1px);
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), opacity 0.15s ease;
+  user-select: none;
 }
 .ga-press:active {
-  transform: translateY(0) scale(0.98);
+  transform: scale(0.97);
+  opacity: 0.92;
 }
 
-/* ---- Refined elevation scale (warm-tinted shadows) ---- */
-.ga-elev-1 {
-  box-shadow:
-    0 1px 2px -1px rgba(28, 33, 24, 0.08),
-    0 2px 6px -2px rgba(28, 33, 24, 0.06);
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-.ga-elev-2 {
-  box-shadow:
-    0 2px 4px -2px rgba(28, 33, 24, 0.1),
-    0 8px 20px -6px rgba(28, 33, 24, 0.1);
-}
-.ga-elev-3 {
-  box-shadow:
-    0 4px 10px -4px rgba(28, 33, 24, 0.12),
-    0 24px 48px -16px rgba(15, 122, 67, 0.22);
-}
-
-/* premium card hover: lift + two-layer shadow + border warm-up.
-   transitions only the properties that change (no `transition: all`). */
-.ga-card-hover {
-  transition:
-    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.32s ease;
-  box-shadow:
-    0 1px 2px -1px rgba(28, 33, 24, 0.07),
-    0 2px 8px -4px rgba(28, 33, 24, 0.06);
-}
-.ga-card-hover:hover {
-  transform: translateY(-6px);
-  border-color: color-mix(in oklab, var(--primary) 32%, var(--border));
-  box-shadow:
-    0 6px 14px -6px rgba(28, 33, 24, 0.14),
-    0 26px 52px -18px rgba(15, 122, 67, 0.26);
-}
-
-/* smooth color transitions */
-.ga-color-transition {
-  transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* scale on interaction */
-.ga-scale-interactive {
-  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.ga-scale-interactive:hover {
-  transform: scale(1.04);
-}
-.ga-scale-interactive:active {
-  transform: scale(0.96);
-}
-
-/* cinematic scrim for full-bleed video/image heroes —
-   anchors legibility to the lower-left where copy lives, regardless of footage. */
-.ga-hero-scrim {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(102deg, rgba(11, 33, 22, 0.92) 0%, rgba(11, 33, 22, 0.62) 34%, rgba(11, 33, 22, 0.12) 64%, transparent 100%),
-    linear-gradient(0deg, rgba(11, 33, 22, 0.78) 0%, rgba(11, 33, 22, 0.18) 30%, transparent 58%);
-}
-
-/* glossy sheen that sweeps across a CTA on hover */
-.ga-sheen {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-.ga-sheen::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  transform: translateX(-130%) skewX(-18deg);
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.28) 50%,
-    transparent 100%
-  );
-  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-  pointer-events: none;
-}
-.ga-sheen:hover::after {
-  transform: translateX(130%) skewX(-18deg);
-}
-
-/* loading shimmer for images / skeletons */
-@keyframes ga-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-.ga-shimmer,
-.ga-skeleton {
-  background: linear-gradient(
-    100deg,
-    color-mix(in oklab, var(--secondary) 70%, transparent) 30%,
-    color-mix(in oklab, var(--card) 90%, var(--secondary)) 50%,
-    color-mix(in oklab, var(--secondary) 70%, transparent) 70%
-  );
-  background-size: 200% 100%;
-  animation: ga-shimmer 1.4s ease-in-out infinite;
-}
-
-/* smooth fade for conditionally rendered content */
-@keyframes ga-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-.ga-fade-in {
-  animation: ga-fade-in 0.3s ease-in-out;
-}
-
-/* page transition (for route changes) */
-@keyframes ga-page-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.ga-page-in {
-  animation: ga-page-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* parallax-aware scroll hint */
-@keyframes ga-bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-3px);
-  }
-}
-.ga-bounce {
-  animation: ga-bounce 1.5s ease-in-out infinite;
-}
-
-/* respect users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .ga-rise,
-  .ga-fade-up,
-  .ga-scale-in,
-  .ga-stagger > *,
-  .ga-reveal,
-  .ga-press,
-  .ga-card-hover,
-  .ga-scale-interactive,
-  .ga-shimmer,
-  .ga-fade-in,
-  .ga-page-in,
-  .ga-bounce {
-    animation: none !important;
-    transition: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-  .ga-sheen::after {
-    display: none !important;
-  }
-}
-
-.ga-input {
-  width: 100%;
-  border-radius: 0.75rem;
-  border: 1px solid var(--border);
-  background: var(--card);
-  padding: 0.75rem 1rem;
-  font-weight: 600;
-  color: var(--foreground);
-  outline: none;
-}
-.ga-input::placeholder {
-  color: var(--muted-foreground);
-  font-weight: 500;
-}
-.ga-input:focus {
-  border-color: var(--ga-gold-soft);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ga-gold-soft) 30%, transparent);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  html {
-    @apply font-sans;
-  }
-}
-
-@keyframes gar-marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-marquee {
-  animation: gar-marquee 30s linear infinite;
-}
-
-.marquee-pause:hover .animate-marquee {
-  animation-play-state: paused;
-}
-
-/* subtle film grain overlay for premium editorial texture */
-.grain::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-.dark .grain::after {
-  opacity: 0.06;
-}
-
-::selection {
-  background: var(--brand);
-  color: var(--brand-foreground);
-}
-
-/* animated editorial link underline */
-.link-underline {
-  background-image: linear-gradient(var(--brand), var(--brand));
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  background-size: 0% 1.5px;
-  transition: background-size 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.link-underline:hover {
-  background-size: 100% 1.5px;
-}
-
-/* ---- Modern Harvest additions ---- */
-
-/* cinematic dark band: deep ink with a soft top glow + grain-ready */
-.ga-dark {
-  background-color: var(--ga-ink-deep);
-  color: #eaf3ec;
-  --foreground: #eaf3ec;
-  --muted-foreground: #9db4a4;
-  --card: var(--ga-ink-soft);
-  --card-foreground: #eaf3ec;
-  --border: rgba(255, 255, 255, 0.1);
-  background-image: radial-gradient(
-    120% 80% at 50% -10%,
-    color-mix(in oklab, var(--ga-copper) 32%, transparent),
-    transparent 60%
-  );
-}
-
-/* card hover-lift used on product / feature cards */
-.ga-card-hover {
-  transition:
-    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.3s ease;
-}
-.ga-card-hover:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 22px 48px -24px color-mix(in oklab, var(--ga-field-deep) 55%, transparent);
-}
-
-/* image zoom-on-hover (wrap image, add .ga-zoom to the parent) */
-.ga-zoom {
-  overflow: hidden;
-}
-.ga-zoom img {
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform;
-}
-.ga-zoom:hover img {
-  transform: scale(1.07);
-}
-
-/* gradient sheen sweep for primary buttons */
-.ga-sheen {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-.ga-sheen::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(
-    110deg,
-    transparent 20%,
-    rgba(255, 255, 255, 0.28) 45%,
-    transparent 70%
-  );
-  transform: translateX(-120%);
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.ga-sheen:hover::after {
-  transform: translateX(120%);
-}
-
-/* sticky-header scroll shrink/blur */
-.ga-header-blur {
-  transition:
-    background-color 0.3s ease,
-    backdrop-filter 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
-}
-
-/* eyebrow label rhythm */
-.ga-eyebrow {
-  font-family: var(--font-grotesk);
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  font-weight: 600;
-  font-size: 0.72rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ga-card-hover,
-  .ga-zoom img,
-  .ga-sheen::after {
-    transition: none !important;
-    transform: none !important;
-  }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

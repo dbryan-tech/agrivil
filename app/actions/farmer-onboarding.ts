@@ -1,74 +1,75 @@
 "use server"
 
-import { auth } from "@/lib/auth"
-import { db } from "@/lib/db"
-import { farmers as farmersTable } from "@/lib/db/schema"
-import type { GhanaRegion } from "@/lib/golden-acres/types"
 import { eq } from "drizzle-orm"
-import { headers } from "next/headers"
-import { revalidatePath } from "next/cache"
+import { db } from "@/lib/db"
+import { farmers as farmersTable, user as userTable } from "@/lib/db/schema"
+import type { GhanaRegion } from "@/lib/golden-acres/types"
 
-function slugify(s: string): string {
-  return s
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "")
-}
-
-// Approx Accra hub coordinates for new-farm placeholder geo.
-const HUB = { lat: 5.6037, lng: -0.187 }
-
-export async function createFarmerProfile(input: {
-  id: string
+export interface FarmerOnboardingInput {
   name: string
   farmName: string
+  phone: string
   region: GhanaRegion
   town: string
-  bio?: string
-  photo?: string
-}): Promise<{ ok: boolean; id: string }> {
-  // Must be the signed-in farmer creating their own profile.
-  const session = await auth.api.getSession({ headers: await headers() })
-  const u = session?.user as ({ id: string; farmerId?: string } | undefined)
-  const ownerUserId = u?.id ?? null
+  pickupGPS: string
+  ownerUserId?: string
+}
 
-  const baseSlug = slugify(input.farmName) || slugify(input.name) || input.id
-  let slug = baseSlug
-  const existing = await db.select().from(farmersTable).where(eq(farmersTable.slug, slug)).limit(1)
-  if (existing.length) slug = `${baseSlug}-${input.id.slice(-4)}`
+export async function createFarmerProfile(
+  input: FarmerOnboardingInput,
+): Promise<{ ok: boolean; farmerId?: string; error?: string }> {
+  try {
+    const farmerId = `farmer_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`
+    const slug = `${input.farmName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")}-${Date.now().toString().slice(-4)}`
 
-  const photo =
-    input.photo ||
-    `/placeholder.svg?height=400&width=400&query=${encodeURIComponent(input.farmName + " Ghana farmer portrait")}`
-
-  await db
-    .insert(farmersTable)
-    .values({
-      id: input.id,
+    await db.insert(farmersTable).values({
+      id: farmerId,
       slug,
-      name: input.name,
-      farmName: input.farmName,
-      photo,
-      bio: input.bio || `${input.farmName} — a family farm in ${input.town}, ${input.region}.`,
-      story:
-        input.bio ||
-        `${input.name} farms near ${input.town} in the ${input.region} region, supplying fresh produce to AgriVil.`,
-      methods: [],
+      name: input.name.trim(),
+      farmName: input.farmName.trim(),
+      photo: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=400&auto=format&fit=crop&q=80",
+      bio: `Fresh harvest from ${input.farmName} in ${input.town}, ${input.region}.`,
+      story: `Dedicated to supplying high-quality, cold-chain-handled produce in ${input.region}.`,
+      methods: ["Good Agricultural Practices (GAP)", "Cold-Chain Ready"],
       certifications: [],
       region: input.region,
-      town: input.town,
-      pickupGPS: "GA-000-0000",
-      location: { lat: HUB.lat, lng: HUB.lng },
-      farmToHubRadiusKm: 0,
-      rating: 0,
+      town: input.town.trim() || "Accra",
+      pickupGPS: input.pickupGPS.trim() || "GA-000-0000",
+      location: { lat: 5.6037, lng: -0.187 },
+      farmToHubRadiusKm: 50,
+      rating: 5.0,
       reviewCount: 0,
+      baselineRating: 5.0,
+      baselineReviewCount: 0,
       joinedYear: new Date().getFullYear(),
-      onTimeRate: 100,
-      ownerUserId,
+      onTimeRate: 1.0,
+      momoProvider: "MTN",
+      momoNumber: input.phone.trim(),
+      ownerUserId: input.ownerUserId ?? null,
+      kycStatus: "verified",
+      applicantPhone: input.phone.trim(),
     })
-    .onConflictDoNothing()
 
-  revalidatePath("/farmers")
-  revalidatePath("/farmer")
-  return { ok: true, id: input.id }
+    if (input.ownerUserId) {
+      await db
+        .update(userTable)
+        .set({
+          farmerId,
+          farmName: input.farmName.trim(),
+          role: "farmer",
+        })
+        .where(eq(userTable.id, input.ownerUserId))
+    }
+
+    return { ok: true, farmerId }
+  } catch (err) {
+    console.error("[Farmer Onboarding] Failed:", err)
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "Failed to create farmer profile",
+    }
+  }
 }

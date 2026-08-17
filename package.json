@@ -1,12 +1,15 @@
 {
-  "name": "my-project",
-  "version": "0.1.0",
+  "name": "agrivil",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "mobile:sync": "cd mobile && npm run cap:sync",
+    "mobile:android": "cd mobile && npm run cap:android",
+    "mobile:ios": "cd mobile && npm run cap:ios",
     "db:push": "drizzle-kit push",
     "db:generate": "drizzle-kit generate",
     "db:studio": "drizzle-kit studio",

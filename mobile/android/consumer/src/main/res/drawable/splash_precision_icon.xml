@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Precision splash mark for Android 12+ SplashScreen API: Proportional small white tile + BrandMark matching animated-eg.png -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+  
+  <group android:scaleX="0.36" android:scaleY="0.36" android:pivotX="50" android:pivotY="50">
+    <!-- Highlighted White Background Tile -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M22,22 L78,22 A12,12 0 0 1 90,34 L90,78 A12,12 0 0 1 78,90 L22,90 A12,12 0 0 1 10,78 L10,34 A12,12 0 0 1 22,22 Z" />
+    
+    <!-- Scaled Real KNUST Bazaar BrandMark -->
+    <group android:scaleX="0.575" android:scaleY="0.575" android:pivotX="50" android:pivotY="50">
+      <path android:fillColor="#FF00331D" android:pathData="M10,12 L32,12 L32,34 L56,54 L42,68 L10,40 Z"/>
+      <path android:fillColor="#FF00331D" android:pathData="M90,12 L68,12 L68,34 L44,54 L58,68 L90,40 Z"/>
+      <path android:fillColor="#FFF6F8F7" android:pathData="M50,46 L62,58 L50,70 L38,58 Z"/>
+      <path android:fillColor="#FFE0A200" android:pathData="M44,52 L56,52 L56,64 L44,64 Z"/>
+      <path android:fillColor="#FF00331D" android:pathData="M28,76 L72,76 L72,88 L28,88 Z"/>
+    </group>
+  </group>
+</vector>

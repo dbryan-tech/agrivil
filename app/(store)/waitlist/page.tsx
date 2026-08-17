@@ -1,38 +1,56 @@
-import type { Metadata } from 'next'
-import { SmartImage } from '@/components/golden-acres/smart-image'
-import { WaitlistForm } from '@/components/golden-acres/waitlist-form'
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Join the Waitlist — AgriVil',
-  description:
-    "We're expanding across Greater Accra. Join the waitlist and be first to know when we deliver to your area.",
-}
+import { useState } from 'react'
+import { MapPin, Sparkles, Sprout, ArrowRight } from 'lucide-react'
+import { WaitlistForm } from '@/components/golden-acres/waitlist-form'
+import { OUT_OF_ZONE_AREAS } from '@/lib/golden-acres/data'
 
 export default function WaitlistPage() {
+  const [selectedArea, setSelectedArea] = useState('Kumasi')
+
   return (
-    <div className="ga-root min-h-screen bg-background">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
-        <div className="ga-fade-up">
-          <p className="text-sm font-bold uppercase tracking-wide text-gold">Coming soon</p>
-          <h1 className="ga-display mt-2 text-balance text-4xl font-semibold text-foreground sm:text-5xl">
-            We&apos;re growing towards you
-          </h1>
-          <p className="mt-4 max-w-md text-pretty text-lg leading-relaxed text-muted-foreground">
-            AgriVil delivers across the Greater Accra pilot zone today, and we&apos;re adding
-            new areas every month. Tell us where you are and we&apos;ll bring the farm to your door
-            as soon as we reach you.
-          </p>
-          <div className="mt-8 max-w-md">
-            <WaitlistForm compact />
+    <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6 lg:px-8">
+      <div className="text-center">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3.5 py-1 text-xs font-bold text-primary">
+          <Sparkles className="h-3.5 w-3.5" /> Regional Expansion
+        </span>
+        <h1 className="ga-display mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-5xl">
+          Bring AgriVil to your city
+        </h1>
+        <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
+          We currently deliver across the Greater Accra pilot zone. Join the
+          priority waitlist for your region and get GH₵25 credit when we launch
+          our cold-chain hub near you.
+        </p>
+      </div>
+
+      <div className="mx-auto mt-10 max-w-xl">
+        <div className="mb-6 rounded-2xl border border-border bg-card p-5">
+          <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+            Select your city / region
+          </label>
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {OUT_OF_ZONE_AREAS.map((a) => {
+              const active = selectedArea === a
+              return (
+                <button
+                  key={a}
+                  type="button"
+                  onClick={() => setSelectedArea(a)}
+                  className={`rounded-xl px-3 py-2 text-xs font-semibold transition-all ${
+                    active
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'border border-border bg-secondary/50 text-foreground hover:bg-secondary'
+                  }`}
+                >
+                  {a}
+                </button>
+              )
+            })}
           </div>
         </div>
-        <div className="relative aspect-[4/5] overflow-hidden rounded-3xl">
-          <SmartImage
-            src="/golden-acres/auth/auth-customer.png"
-            alt="A lush Ghanaian vegetable farm at golden hour"
-            className="h-full w-full"
-          />
-        </div>
+
+        <WaitlistForm area={selectedArea} />
       </div>
     </div>
   )

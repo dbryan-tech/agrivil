@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- KNUST Bazaar brand colors -->
+    <color name="colorPrimary">#00331d</color>
+    <color name="colorPrimaryDark">#002414</color>
+    <color name="colorAccent">#e0a200</color>
+
+    <!-- Precision kit brand colors (merged, do not remove existing above) -->
+    <color name="bazaar_green">#00331d</color>
+    <color name="bazaar_deep_green">#00331d</color>
+    <color name="bazaar_gold">#e0a200</color>
+    <color name="bazaar_notification_color">#00331d</color>
+</resources>
