@@ -8,26 +8,25 @@ const COLS = [
       { label: 'All produce', href: '/shop' },
       { label: 'Vegetables', href: '/shop?category=Vegetables' },
       { label: 'Fruits', href: '/shop?category=Fruits' },
-      { label: 'Bundles & boxes', href: '/bundles' },
-      { label: 'Recipes', href: '/recipes' },
+      { label: 'Bundles & boxes', href: '/shop?category=Bundles' },
     ],
   },
   {
     title: 'Company',
     links: [
-      { label: 'About us', href: '/about' },
       { label: 'Our farmers', href: '/farmers' },
-      { label: 'Freshness promise', href: '/about' },
-      { label: 'Sell with us', href: '/sell' },
+      { label: 'How it works', href: '/#how-it-works' },
+      { label: 'Freshness promise', href: '/#freshness' },
+      { label: 'Sell with us', href: '/farmers' },
     ],
   },
   {
     title: 'Support',
     links: [
-      { label: 'Delivery areas', href: '/local' },
-      { label: 'Track an order', href: '/orders' },
-      { label: 'Help & refunds', href: '/help' },
-      { label: 'Contact us', href: '/contact' },
+      { label: 'Delivery areas', href: '/#match' },
+      { label: 'Track an order', href: '/checkout' },
+      { label: 'Returns & refunds', href: '/#freshness' },
+      { label: 'Contact us', href: '/#contact' },
     ],
   },
 ]
@@ -123,10 +122,10 @@ export function GaFooter() {
             © {new Date().getFullYear()} AgriVil, managed under Golden Acres Ghana. Grown in Ghana.
           </p>
           <div className="flex items-center gap-5">
-            <Link href="/privacy" className="transition-colors hover:text-white">
+            <Link href="/#" className="transition-colors hover:text-white">
               Privacy
             </Link>
-            <Link href="/terms" className="transition-colors hover:text-white">
+            <Link href="/#" className="transition-colors hover:text-white">
               Terms
             </Link>
             <span className="flex items-center gap-1.5">

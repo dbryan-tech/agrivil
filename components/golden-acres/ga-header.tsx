@@ -74,7 +74,7 @@ export function GaHeader() {
             <Link href="/sell" className="hidden items-center gap-1.5 hover:opacity-80 sm:flex">
               <Store className="h-3.5 w-3.5" /> Sell on AgriVil
             </Link>
-            <Link href="/orders" className="hidden items-center gap-1.5 hover:opacity-80 sm:flex">
+            <Link href="/account" className="hidden items-center gap-1.5 hover:opacity-80 sm:flex">
               <Truck className="h-3.5 w-3.5" /> Track order
             </Link>
             <Link href="/help" className="flex items-center gap-1.5 hover:opacity-80">

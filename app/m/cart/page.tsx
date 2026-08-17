@@ -27,7 +27,7 @@ export default function MobileCartScreen() {
     <div className="min-h-dvh bg-[#F4F1EA] pb-32 text-[#2B1F17]">
       {/* App Bar */}
       <header
-        className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[#E0DACB]/80 bg-[#F4F1EA]/95 px-4 backdrop-blur-md"
+        className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[#E0DACB] bg-[#F4F1EA] px-4"
         style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
         <div className="flex items-center gap-3">
@@ -182,7 +182,7 @@ export default function MobileCartScreen() {
       {/* Sticky Bottom Action */}
       {lines.length > 0 && (
         <div
-          className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t border-[#E0DACB] bg-white/95 p-4 shadow-xl backdrop-blur-md"
+          className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t border-[#E0DACB] bg-white p-4 shadow-md"
           style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 14px)' }}
         >
           <Link

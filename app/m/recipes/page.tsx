@@ -26,7 +26,7 @@ export default function MobileRecipesScreen() {
                 fill
                 className="object-cover"
               />
-              <span className="absolute top-2.5 left-2.5 rounded-full bg-white/90 px-2.5 py-0.5 text-[10px] font-extrabold text-[#1E5D3B] backdrop-blur-xs">
+              <span className="absolute top-2.5 left-2.5 rounded-full bg-white px-2.5 py-0.5 text-[10px] font-extrabold text-[#1E5D3B] shadow-xs">
                 {recipe.category || 'Traditional Ghanaian'}
               </span>
             </div>

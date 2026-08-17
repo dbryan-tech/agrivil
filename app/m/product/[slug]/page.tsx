@@ -11,6 +11,7 @@ import {
   Star,
   ShieldCheck,
   Leaf,
+  Wheat,
   Truck,
   Plus,
   Minus,
@@ -36,13 +37,15 @@ export default function MobileProductDetailScreen() {
   const farmer = productFarmer(product)
 
   const [qty, setQty] = useState(1)
-  const [selectedWeightKg, setSelectedWeightKg] = useState(product.estWeightKg || 1.0)
+  const [selectedWeightKg, setSelectedWeightKg] = useState(
+    product.estWeightKg || 1
+  )
   const [showSuccessSheet, setShowSuccessSheet] = useState(false)
 
   const saved = isSaved(product.id)
 
   const lineEstimate = product.variableWeight
-    ? selectedWeightKg * product.pricePerKg * qty
+    ? product.pricePerKg * selectedWeightKg * qty
     : product.priceMin * qty
 
   function handleAddToCart() {
@@ -61,7 +64,7 @@ export default function MobileProductDetailScreen() {
           type="button"
           onClick={() => router.back()}
           aria-label="Back"
-          className="ga-press flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-[#2B1F17] shadow-md backdrop-blur-md"
+          className="ga-press flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-sm border border-[#E0DACB]"
         >
           <ArrowLeft className="h-5 w-5" />
         </button>
@@ -71,7 +74,7 @@ export default function MobileProductDetailScreen() {
             type="button"
             onClick={() => toggleWishlist(product.id)}
             aria-label="Save to favorites"
-            className="ga-press flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-[#2B1F17] shadow-md backdrop-blur-md"
+            className="ga-press flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-sm border border-[#E0DACB]"
           >
             <Heart
               className={cn(
@@ -84,7 +87,7 @@ export default function MobileProductDetailScreen() {
       </div>
 
       {/* 1. Large Hero Product Image */}
-      <div className="relative aspect-square w-full overflow-hidden bg-white shadow-xs">
+      <div className="relative aspect-square w-full overflow-hidden bg-white">
         <Image
           src={product.image}
           alt={product.name}
@@ -93,53 +96,54 @@ export default function MobileProductDetailScreen() {
           className="object-cover"
         />
         {product.organic && (
-          <span className="absolute top-18 left-4 rounded-full bg-[#1E5D3B] px-3 py-1 text-xs font-bold text-white shadow-sm">
-            100% Organic
+          <span className="absolute bottom-4 left-4 rounded-full bg-[#1E5D3B] px-3 py-1 text-xs font-bold text-white shadow-sm">
+            Certified Organic
           </span>
         )}
       </div>
 
-      {/* 2. Product Information Card */}
-      <div className="px-4 pt-5">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="ga-headline text-2xl font-extrabold tracking-tight text-[#2B1F17]">
-              {product.name}
-            </h1>
-            <Link
-              href={`/m/farmers/${farmer.slug}`}
-              className="mt-1 inline-flex items-center gap-1.5 text-xs font-semibold text-[#1E5D3B] hover:underline"
-            >
-              <span>From {farmer.name}</span>
-              <CheckCircle2 className="h-3.5 w-3.5 fill-[#1E5D3B] text-white" />
-            </Link>
+      <div className="px-4 pt-5 space-y-4">
+        {/* 2. Product Headline & Pricing */}
+        <div className="rounded-3xl border border-[#E0DACB] bg-white p-5 shadow-xs">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#8A6B3D]">
+                {product.category}
+              </span>
+              <h1 className="mt-0.5 text-xl font-extrabold text-[#2B1F17]">
+                {product.name}
+              </h1>
+            </div>
+
+            <div className="text-right">
+              <span className="text-xl font-extrabold text-[#1E5D3B]">
+                {formatGHS(product.priceMin)}
+              </span>
+              <p className="text-[10px] font-semibold text-[#6E6A63]">
+                / {product.unit} {product.variableWeight ? '(est)' : ''}
+              </p>
+            </div>
           </div>
 
-          <div className="flex flex-col items-end">
-            <span className="text-xl font-extrabold text-[#1E5D3B]">
-              {formatGHS(product.priceMin)}
-            </span>
-            <span className="text-xs font-semibold text-[#6E6A63]">
-              / {product.variableWeight ? 'kg' : product.unit}
-            </span>
-          </div>
-        </div>
+          <p className="mt-3 text-xs leading-relaxed text-[#6E6A63]">
+            {product.description}
+          </p>
 
-        {/* Rating and Reviews */}
-        <div className="mt-3 flex items-center gap-1.5 text-xs">
-          <Star className="h-4 w-4 fill-[#FBBF24] text-[#FBBF24]" />
-          <span className="font-bold text-[#2B1F17]">{farmer.rating}</span>
-          <span className="text-[#6E6A63]">({farmer.reviewCount} customer reviews)</span>
+          {product.variableWeight && (
+            <div className="mt-4 flex items-start gap-2.5 rounded-2xl bg-[#F4F1EA] p-3 text-xs text-[#2B1F17]">
+              <Info className="h-4 w-4 shrink-0 text-[#1E5D3B]" />
+              <div>
+                <p className="font-bold">Priced by actual harvested weight</p>
+                <p className="text-[11px] text-[#6E6A63]">
+                  Estimated ~{product.estWeightKg} kg per {product.unit}. You will only be charged for the exact weight picked at harvest.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
-
-        {/* Description */}
-        <p className="mt-3 text-xs leading-relaxed text-[#6E6A63]">
-          {product.description ||
-            'Farm-fresh produce harvested this morning in Ghana. Crisp, healthy, and handled with certified cold-chain care.'}
-        </p>
 
         {/* 3. Trust Badges */}
-        <div className="mt-5 grid grid-cols-4 gap-2 rounded-2xl border border-[#E0DACB] bg-white p-3 text-center text-[10px] font-bold text-[#2B1F17] shadow-xs">
+        <div className="grid grid-cols-4 gap-2 rounded-2xl border border-[#E0DACB] bg-white p-3 text-center text-[10px] font-bold text-[#2B1F17] shadow-xs">
           <div className="flex flex-col items-center gap-1">
             <Leaf className="h-4 w-4 text-[#1E5D3B]" />
             <span>100% Natural</span>
@@ -149,7 +153,7 @@ export default function MobileProductDetailScreen() {
             <span>Pesticide Free</span>
           </div>
           <div className="flex flex-col items-center gap-1">
-            <span className="text-sm">🌾</span>
+            <Wheat className="h-4 w-4 text-[#1E5D3B]" />
             <span>Hand Picked</span>
           </div>
           <div className="flex flex-col items-center gap-1">
@@ -159,7 +163,7 @@ export default function MobileProductDetailScreen() {
         </div>
 
         {/* 4. Variable-Weight / Quantity Control Box */}
-        <div className="mt-5 rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs">
+        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-extrabold uppercase tracking-wider text-[#2B1F17]">
               Select Quantity
@@ -176,7 +180,7 @@ export default function MobileProductDetailScreen() {
               <button
                 type="button"
                 onClick={() => setQty(qty + 1)}
-                className="ga-press flex h-8 w-8 items-center justify-center rounded-full bg-[#1E5D3B] text-white"
+                className="ga-press flex h-8 w-8 items-center justify-center rounded-full border border-[#E0DACB] bg-[#1E5D3B] text-white"
               >
                 <Plus className="h-3.5 w-3.5" />
               </button>
@@ -184,58 +188,69 @@ export default function MobileProductDetailScreen() {
           </div>
 
           {product.variableWeight && (
-            <div className="mt-4 border-t border-[#E0DACB]/60 pt-3">
+            <div className="mt-4 border-t border-[#E0DACB] pt-3">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold text-[#6E6A63]">Estimated Weight:</span>
-                <span className="font-bold text-[#1E5D3B]">{selectedWeightKg.toFixed(1)} kg</span>
+                <span className="font-semibold text-[#6E6A63]">Weight preference:</span>
+                <span className="font-bold text-[#1E5D3B]">
+                  {(selectedWeightKg * qty).toFixed(1)} kg total
+                </span>
               </div>
-              <input
-                type="range"
-                min="0.5"
-                max="5.0"
-                step="0.5"
-                value={selectedWeightKg}
-                onChange={(e) => setSelectedWeightKg(parseFloat(e.target.value))}
-                className="mt-2 h-2 w-full cursor-pointer accent-[#1E5D3B]"
-              />
-              <p className="mt-2 flex items-center gap-1.5 text-[10px] font-medium text-[#8A6B3D]">
-                <Info className="h-3.5 w-3.5 shrink-0" />
-                <span>You will pay for the exact weight confirmed at packing.</span>
-              </p>
+              <div className="mt-2 flex gap-2">
+                {[0.5, 1.0, 2.0, 5.0].map((wOption) => (
+                  <button
+                    key={wOption}
+                    type="button"
+                    onClick={() => setSelectedWeightKg(wOption)}
+                    className={cn(
+                      'ga-press flex-1 rounded-xl border py-1.5 text-center text-xs font-bold transition-colors',
+                      selectedWeightKg === wOption
+                        ? 'border-[#1E5D3B] bg-[#1E5D3B] text-white'
+                        : 'border-[#E0DACB] bg-[#F4F1EA] text-[#2B1F17]'
+                    )}
+                  >
+                    {wOption} kg
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>
 
-        {/* 5. Farmer Snippet Card */}
-        <Link
-          href={`/m/farmers/${farmer.slug}`}
-          className="ga-press mt-5 flex items-center justify-between rounded-3xl border border-[#E0DACB] bg-white p-3.5 shadow-xs"
-        >
-          <div className="flex items-center gap-3">
-            <div className="relative h-12 w-12 overflow-hidden rounded-full border border-[#E0DACB]">
-              <Image
-                src={farmer.photo}
-                alt={farmer.name}
-                fill
-                className="object-cover"
-              />
+        {/* 5. Origin / Farmer Profile Card */}
+        {farmer && (
+          <Link
+            href={`/m/farmers/${farmer.slug}`}
+            className="ga-press flex items-center justify-between rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs"
+          >
+            <div className="flex items-center gap-3.5">
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-[#F4F1EA]">
+                <Image
+                  src={farmer.photo}
+                  alt={farmer.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <span className="text-[10px] font-bold text-[#8A6B3D]">Grown By</span>
+                <h3 className="text-sm font-extrabold text-[#2B1F17]">{farmer.name}</h3>
+                <p className="text-[11px] text-[#6E6A63]">
+                  {farmer.farmName} · {farmer.town}, {farmer.region}
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-xs font-extrabold text-[#2B1F17]">{farmer.name}</h3>
-              <p className="text-[10px] text-[#6E6A63]">{farmer.region} · 0.8 km away</p>
-            </div>
-          </div>
 
-          <div className="flex items-center gap-1 text-xs font-bold text-[#1E5D3B]">
-            <span>View Farm</span>
-            <ChevronRight className="h-4 w-4" />
-          </div>
-        </Link>
+            <div className="flex items-center gap-1 text-xs font-bold text-[#1E5D3B]">
+              <span>View Farm</span>
+              <ChevronRight className="h-4 w-4" />
+            </div>
+          </Link>
+        )}
       </div>
 
       {/* Sticky Bottom Add-to-Cart Bar */}
       <div
-        className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t border-[#E0DACB] bg-white/95 p-4 shadow-xl backdrop-blur-md"
+        className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t border-[#E0DACB] bg-white p-4 shadow-md"
         style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 14px)' }}
       >
         <div className="flex items-center justify-between gap-4">
@@ -249,7 +264,7 @@ export default function MobileProductDetailScreen() {
           <button
             type="button"
             onClick={handleAddToCart}
-            className="ga-press flex flex-1 h-13 items-center justify-center rounded-2xl bg-[#1E5D3B] text-sm font-bold text-white shadow-md hover:bg-[#144028]"
+            className="ga-press flex flex-1 h-13 items-center justify-center rounded-2xl bg-[#1E5D3B] text-sm font-bold text-white shadow-sm hover:bg-[#144028]"
           >
             Add to Cart
           </button>
@@ -258,7 +273,7 @@ export default function MobileProductDetailScreen() {
 
       {/* Add to Cart Success Sheet */}
       {showSuccessSheet && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-xs">
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50">
           <div className="w-full max-w-md rounded-t-3xl bg-white p-6 shadow-2xl animate-in slide-in-from-bottom duration-200">
             <div className="flex flex-col items-center text-center">
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#1E5D3B]/10 text-[#1E5D3B]">
@@ -273,16 +288,17 @@ export default function MobileProductDetailScreen() {
             </div>
 
             <div className="mt-6 space-y-3">
-              <Link
-                href="/m/cart"
-                className="ga-press flex h-13 w-full items-center justify-center rounded-2xl bg-[#1E5D3B] text-sm font-bold text-white shadow-md"
+              <button
+                type="button"
+                onClick={() => router.push('/m/cart')}
+                className="ga-press flex h-12 w-full items-center justify-center rounded-2xl bg-[#1E5D3B] text-xs font-bold text-white shadow-sm hover:bg-[#144028]"
               >
-                View Cart
-              </Link>
+                View Cart &amp; Checkout
+              </button>
               <button
                 type="button"
                 onClick={() => setShowSuccessSheet(false)}
-                className="ga-press flex h-11 w-full items-center justify-center rounded-2xl border border-[#E0DACB] text-xs font-bold text-[#6E6A63]"
+                className="ga-press flex h-12 w-full items-center justify-center rounded-2xl border border-[#E0DACB] bg-[#F4F1EA] text-xs font-bold text-[#2B1F17]"
               >
                 Continue Shopping
               </button>

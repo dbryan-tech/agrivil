@@ -19,7 +19,7 @@ export default function HowItWorksScreen() {
           type="button"
           onClick={() => router.back()}
           aria-label="Back"
-          className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-[#2B1F17] shadow-xs border border-[#E0DACB]/60"
+          className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
         >
           <ArrowLeft className="h-4 w-4" />
         </button>

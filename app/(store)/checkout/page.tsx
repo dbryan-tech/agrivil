@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { CheckoutFlow } from '@/components/golden-acres/checkout/checkout-flow'
 
 export const metadata: Metadata = {
-  title: 'Secure Checkout — Mobile Money & Card | AgriVil',
+  title: 'Checkout — AgriVil',
   description:
-    'Complete your order with GhanaPostGPS digital address delivery, scheduled arrival time slots, and Mobile Money or card payment.',
+    'Confirm your fresh produce order with scheduled delivery and Mobile Money or card payment.',
 }
 
 export default function CheckoutPage() {

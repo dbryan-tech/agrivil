@@ -48,7 +48,7 @@ export function MobileAppBar({
         'sticky top-0 z-30 flex h-14 items-center justify-between px-4 transition-colors',
         transparent
           ? 'bg-transparent'
-          : 'border-b border-[#E0DACB]/80 bg-[#F4F1EA]/95 backdrop-blur-md',
+          : 'border-b border-[#E0DACB] bg-[#F4F1EA]',
         className
       )}
       style={{ paddingTop: 'env(safe-area-inset-top)' }}
@@ -60,7 +60,7 @@ export function MobileAppBar({
             type="button"
             onClick={() => router.back()}
             aria-label="Go back"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-[#2B1F17] shadow-xs border border-[#E0DACB]/60"
+            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
@@ -84,7 +84,7 @@ export function MobileAppBar({
           <Link
             href="/m/search"
             aria-label="Search"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-black/5"
+            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#EBE6DA]"
           >
             <Search className="h-4 w-4" />
           </Link>
@@ -94,7 +94,7 @@ export function MobileAppBar({
           <Link
             href="/m/account/notifications"
             aria-label="Notifications"
-            className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-black/5"
+            className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#EBE6DA]"
           >
             <Bell className="h-4 w-4" />
             <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-[#E67A2E]" />
@@ -106,7 +106,7 @@ export function MobileAppBar({
             type="button"
             onClick={onFavoriteToggle}
             aria-label="Save item"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-black/5"
+            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#EBE6DA]"
           >
             <Heart
               className={cn(
@@ -122,7 +122,7 @@ export function MobileAppBar({
             type="button"
             onClick={onShare}
             aria-label="Share"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-black/5"
+            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#EBE6DA]"
           >
             <Share2 className="h-4 w-4" />
           </button>
@@ -132,7 +132,7 @@ export function MobileAppBar({
           <Link
             href="/m/cart"
             aria-label="Shopping Cart"
-            className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-[#2B1F17] shadow-xs border border-[#E0DACB]/60"
+            className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
           >
             <ShoppingBag className="h-4 w-4 text-[#1E5D3B]" />
             {count > 0 && (

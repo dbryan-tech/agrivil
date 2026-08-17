@@ -53,7 +53,7 @@ export default function WelcomeScreen() {
 
         <Link
           href="/m/auth/login"
-          className="ga-press flex h-14 w-full items-center justify-center rounded-2xl border border-[#E0DACB] bg-white/70 text-base font-bold text-[#2B1F17] hover:bg-white"
+          className="ga-press flex h-14 w-full items-center justify-center rounded-2xl border border-[#E0DACB] bg-white text-base font-bold text-[#2B1F17] hover:bg-[#EBE6DA]"
         >
           I have an account
         </Link>

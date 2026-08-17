@@ -48,7 +48,7 @@ export default function MobileCheckoutScreen() {
     <div className="min-h-dvh bg-[#F4F1EA] pb-32 text-[#2B1F17]">
       {/* App Bar */}
       <header
-        className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-[#E0DACB]/80 bg-[#F4F1EA]/95 px-4 backdrop-blur-md"
+        className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-[#E0DACB] bg-[#F4F1EA] px-4"
         style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
         <button
@@ -192,14 +192,14 @@ export default function MobileCheckoutScreen() {
 
       {/* Sticky Bottom Place Order Action */}
       <div
-        className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t border-[#E0DACB] bg-white/95 p-4 shadow-xl backdrop-blur-md"
+        className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t border-[#E0DACB] bg-white p-4 shadow-md"
         style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 14px)' }}
       >
         <button
           type="button"
           onClick={handlePlaceOrder}
           disabled={busy}
-          className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#1E5D3B] text-base font-bold text-white shadow-md hover:bg-[#144028] disabled:opacity-50"
+          className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#1E5D3B] text-base font-bold text-white shadow-sm hover:bg-[#144028] disabled:opacity-50"
         >
           {busy ? (
             <>
@@ -214,7 +214,7 @@ export default function MobileCheckoutScreen() {
 
       {/* Order Confirmed Modal */}
       {orderConfirmed && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-sm rounded-3xl bg-white p-6 text-center shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#1E5D3B]/10 text-[#1E5D3B]">
               <CheckCircle2 className="h-10 w-10 stroke-[2.5]" />

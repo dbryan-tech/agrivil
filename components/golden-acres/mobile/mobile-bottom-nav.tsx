@@ -22,7 +22,7 @@ export function MobileBottomNav() {
   return (
     <nav
       aria-label="Mobile Navigation"
-      className="fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around border-t border-[#E0DACB] bg-[#F4F1EA]/95 px-2 backdrop-blur-md"
+      className="fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around border-t border-[#E0DACB] bg-[#F4F1EA] px-2 shadow-xs"
       style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 8px)', paddingTop: '6px' }}
     >
       {TABS.map((tab) => {
@@ -41,7 +41,7 @@ export function MobileBottomNav() {
             <div className="relative">
               <Icon className={cn('h-5 w-5', active && 'stroke-[2.4]')} />
               {Boolean(tab.badge && tab.badge > 0) && (
-                <span className="absolute -top-1 -right-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#1E5D3B] px-1 text-[9px] font-bold text-white shadow-sm">
+                <span className="absolute -top-1 -right-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#1E5D3B] px-1 text-[9px] font-bold text-white shadow-xs">
                   {tab.badge! > 9 ? '9+' : tab.badge}
                 </span>
               )}

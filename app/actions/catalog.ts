@@ -1,53 +1,89 @@
 "use server"
 
-import { eq } from "drizzle-orm"
+// Golden Acres — catalog & farmer persistence actions (DB-backed)
+// -----------------------------------------------------------------------------
+// The client data-store stays the source of truth for the optimistic UI and
+// computes new records locally (ids, price ranges, status). These actions
+// persist those exact records to Neon so every surface — storefront, farmer
+// portal, ops console — reads the same live data after a reload. Reads are
+// public; writes require a session, moderation requires staff.
+
 import { db } from "@/lib/db"
 import {
   products as productsTable,
   farmers as farmersTable,
-  reviews as reviewsTable,
+  bundles as bundlesTable,
+  recipes as recipesTable,
+  orders as ordersTable,
 } from "@/lib/db/schema"
-import {
-  products as seedProducts,
-  farmers as seedFarmers,
-} from "@/lib/golden-acres/data"
+import { auth } from "@/lib/auth"
+import { headers } from "next/headers"
+import { eq, desc } from "drizzle-orm"
 import type {
   Product,
   Farmer,
-  StockStatus,
+  Bundle,
+  Recipe,
+  Order,
   ProductReviewStatus,
+  StockStatus,
+  GhanaRegion,
+  ProduceCategory,
+  ProductUnit,
 } from "@/lib/golden-acres/types"
 
+/* ----------------------------- session helpers ---------------------------- */
+
+async function getSessionUser() {
+  const session = await auth.api.getSession({ headers: await headers() })
+  return session?.user ?? null
+}
+
+async function requireUser() {
+  const user = await getSessionUser()
+  if (!user) throw new Error("Sign in required")
+  return user
+}
+
+async function requireStaff() {
+  const user = await getSessionUser()
+  if (!user || (user as { role?: string }).role !== "staff") {
+    throw new Error("Staff access required")
+  }
+  return user
+}
+
+/* ------------------------------- row mappers ------------------------------- */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-function dbToProduct(r: any): Product {
+function toProduct(r: any): Product {
   return {
     id: r.id,
     slug: r.slug,
     name: r.name,
-    category: r.category,
+    category: r.category as ProduceCategory,
     farmerId: r.farmerId,
     image: r.image,
-    unit: r.unit,
-    variableWeight: Boolean(r.variableWeight),
-    estWeightKg: Number(r.estWeightKg ?? 0),
-    pricePerKg: Number(r.pricePerKg ?? 0),
-    priceMin: Number(r.priceMin ?? 0),
-    priceMax: Number(r.priceMax ?? 0),
-    refrigerationRequired: Boolean(r.refrigerationRequired),
-    shelfLifeDays: Number(r.shelfLifeDays ?? 0),
+    unit: r.unit as ProductUnit,
+    variableWeight: r.variableWeight,
+    estWeightKg: Number(r.estWeightKg),
+    pricePerKg: Number(r.pricePerKg),
+    priceMin: Number(r.priceMin),
+    priceMax: Number(r.priceMax),
+    refrigerationRequired: r.refrigerationRequired,
+    shelfLifeDays: r.shelfLifeDays,
     expiryDate: r.expiryDate,
-    stockKg: Number(r.stockKg ?? 0),
-    lowStockThreshold: Number(r.lowStockThreshold ?? 0),
-    status: (r.status as StockStatus) ?? "in-stock",
-    organic: Boolean(r.organic),
-    season: r.season ?? "",
-    tags: Array.isArray(r.tags) ? r.tags : [],
-    description: r.description ?? "",
-    reviewStatus: (r.reviewStatus as ProductReviewStatus) ?? "live",
+    stockKg: Number(r.stockKg),
+    lowStockThreshold: Number(r.lowStockThreshold),
+    status: r.status as StockStatus,
+    organic: r.organic,
+    season: r.season,
+    tags: (r.tags ?? []) as string[],
+    description: r.description,
+    reviewStatus: r.reviewStatus as ProductReviewStatus,
   }
 }
 
-function dbToFarmer(r: any): Farmer {
+function toFarmer(r: any): Farmer {
   return {
     id: r.id,
     slug: r.slug,
@@ -57,272 +93,244 @@ function dbToFarmer(r: any): Farmer {
     cover: r.cover ?? undefined,
     bio: r.bio,
     story: r.story,
-    methods: Array.isArray(r.methods) ? r.methods : [],
-    certifications: Array.isArray(r.certifications) ? r.certifications : [],
-    region: r.region,
+    methods: (r.methods ?? []) as string[],
+    certifications: (r.certifications ?? []) as string[],
+    region: r.region as GhanaRegion,
     town: r.town,
     pickupGPS: r.pickupGPS,
-    location: r.location ?? { lat: 5.6037, lng: -0.187 },
-    farmToHubRadiusKm: Number(r.farmToHubRadiusKm ?? 0),
-    rating: Number(r.rating ?? 5.0),
-    reviewCount: Number(r.reviewCount ?? 0),
-    joinedYear: Number(r.joinedYear ?? 2024),
-    onTimeRate: Number(r.onTimeRate ?? 1.0),
-    momoProvider: r.momoProvider ?? undefined,
-    momoNumber: r.momoNumber ?? undefined,
+    location: r.location as Farmer["location"],
+    farmToHubRadiusKm: Number(r.farmToHubRadiusKm),
+    rating: Number(r.rating),
+    reviewCount: r.reviewCount,
+    joinedYear: r.joinedYear,
+    onTimeRate: Number(r.onTimeRate),
+  }
+}
+
+function toBundle(r: any): Bundle {
+  return {
+    id: r.id,
+    slug: r.slug,
+    name: r.name,
+    description: r.description,
+    image: r.image,
+    type: r.type,
+    items: (r.items ?? []) as Bundle["items"],
+    price: Number(r.price),
+    frequency: r.frequency,
+    serves: r.serves,
+    popular: r.popular,
+  }
+}
+
+function toRecipe(r: any): Recipe {
+  return {
+    id: r.id,
+    name: r.name,
+    image: r.image,
+    time: r.time,
+    productIds: (r.productIds ?? []) as string[],
+    description: r.description || undefined,
+    category: r.category || undefined,
+    serves: r.serves || undefined,
+    difficulty: r.difficulty || undefined,
+    ingredients: (r.ingredients ?? []) as Recipe["ingredients"],
+    steps: (r.steps ?? []) as string[],
+    tip: r.tip || undefined,
+  }
+}
+
+function toOrder(r: any): Order {
+  return {
+    id: r.id,
+    reference: r.reference,
+    customerName: r.customerName,
+    customerPhone: r.customerPhone,
+    items: (r.items ?? []) as Order["items"],
+    status: r.status as Order["status"],
+    placedAt: r.placedAt,
+    payment: r.payment as Order["payment"],
+    address: r.address as Order["address"],
+    slot: r.slot as Order["slot"],
+    subtotalEstimate: Number(r.subtotalEstimate),
+    subtotalFinal: r.subtotalFinal != null ? Number(r.subtotalFinal) : undefined,
+    deliveryFee: Number(r.deliveryFee),
+    total: Number(r.total),
+    threePL: r.threePL as Order["threePL"],
+    fault: r.fault as Order["fault"],
+    refunds: (r.refunds ?? []) as Order["refunds"],
+    orderRating: r.orderRating ?? null,
+    riderRating: r.riderRating ?? null,
+    tip: r.tip != null ? Number(r.tip) : 0,
+    feedbackComment: r.feedbackComment ?? null,
+    feedbackAt: r.feedbackAt ?? null,
   }
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-/**
- * Returns the live catalog snapshot from DB, or falls back to seed data.
- */
-export async function getCatalogSnapshot(): Promise<{
+/* --------------------------------- reads ----------------------------------- */
+
+export interface CatalogSnapshot {
   products: Product[]
   farmers: Farmer[]
-}> {
-  try {
-    const [dbProducts, dbFarmers] = await Promise.all([
-      db.select().from(productsTable),
-      db.select().from(farmersTable),
-    ])
+  bundles: Bundle[]
+  recipes: Recipe[]
+  orders: Order[]
+}
 
-    const pList =
-      dbProducts.length > 0
-        ? dbProducts.map(dbToProduct)
-        : seedProducts
-
-    const fList =
-      dbFarmers.length > 0
-        ? dbFarmers.map(dbToFarmer)
-        : seedFarmers
-
-    return { products: pList, farmers: fList }
-  } catch (err) {
-    console.warn("[Catalog] DB fetch failed, returning seed:", err)
-    return { products: seedProducts, farmers: seedFarmers }
+/** Full catalog snapshot used to hydrate the client data-store at boot. */
+export async function getCatalogSnapshot(): Promise<CatalogSnapshot> {
+  const [pRows, fRows, bRows, rRows, oRows] = await Promise.all([
+    db.select().from(productsTable),
+    db.select().from(farmersTable),
+    db.select().from(bundlesTable),
+    db.select().from(recipesTable),
+    db.select().from(ordersTable).orderBy(desc(ordersTable.createdAt)),
+  ])
+  // Only verified sellers (and their produce) appear on the storefront.
+  // Pending/rejected KYC applicants live solely in the admin queue.
+  const verifiedFarmers = fRows.filter(
+    (f) => (f.kycStatus ?? "verified") === "verified",
+  )
+  const verifiedFarmerIds = new Set(verifiedFarmers.map((f) => f.id))
+  return {
+    products: pRows
+      .filter((p) => verifiedFarmerIds.has(p.farmerId))
+      .map(toProduct),
+    farmers: verifiedFarmers.map(toFarmer),
+    bundles: bRows.map(toBundle),
+    recipes: rRows.map(toRecipe),
+    orders: oRows.map(toOrder),
   }
 }
 
-export async function persistProduct(
-  product: Product,
-): Promise<{ ok: boolean; error?: string }> {
-  try {
-    await db
-      .insert(productsTable)
-      .values({
-        id: product.id,
-        slug: product.slug,
-        name: product.name,
-        category: product.category,
-        farmerId: product.farmerId,
-        image: product.image,
-        unit: product.unit,
-        variableWeight: product.variableWeight,
-        estWeightKg: product.estWeightKg,
-        pricePerKg: product.pricePerKg,
-        priceMin: product.priceMin,
-        priceMax: product.priceMax,
-        refrigerationRequired: product.refrigerationRequired,
-        shelfLifeDays: product.shelfLifeDays,
-        expiryDate: product.expiryDate,
-        stockKg: product.stockKg,
-        lowStockThreshold: product.lowStockThreshold,
-        status: product.status,
-        organic: product.organic,
-        season: product.season,
-        tags: product.tags,
-        description: product.description,
-        reviewStatus: product.reviewStatus ?? "live",
-      })
-      .onConflictDoUpdate({
-        target: productsTable.id,
-        set: {
-          name: product.name,
-          category: product.category,
-          pricePerKg: product.pricePerKg,
-          priceMin: product.priceMin,
-          priceMax: product.priceMax,
-          stockKg: product.stockKg,
-          status: product.status,
-          expiryDate: product.expiryDate,
-          shelfLifeDays: product.shelfLifeDays,
-          refrigerationRequired: product.refrigerationRequired,
-          organic: product.organic,
-          season: product.season,
-          tags: product.tags,
-          description: product.description,
-          reviewStatus: product.reviewStatus ?? "live",
-          updatedAt: new Date(),
-        },
-      })
+/* -------------------------- product persistence ---------------------------- */
 
-    return { ok: true }
-  } catch (err) {
-    console.error("[Catalog] persistProduct error:", err)
-    return {
-      ok: false,
-      error: err instanceof Error ? err.message : "Failed to persist product",
-    }
+/**
+ * Persist a full product record (insert or update). The client computes the
+ * record optimistically; this mirrors it to the database. Any signed-in user
+ * may call it (a farmer adding produce); staff approval still gates visibility
+ * via reviewStatus.
+ */
+export async function persistProduct(p: Product): Promise<void> {
+  await requireUser()
+  const row = {
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    category: p.category,
+    farmerId: p.farmerId,
+    image: p.image,
+    unit: p.unit,
+    variableWeight: p.variableWeight,
+    estWeightKg: p.estWeightKg,
+    pricePerKg: p.pricePerKg,
+    priceMin: p.priceMin,
+    priceMax: p.priceMax,
+    refrigerationRequired: p.refrigerationRequired,
+    shelfLifeDays: p.shelfLifeDays,
+    expiryDate: p.expiryDate,
+    stockKg: p.stockKg,
+    lowStockThreshold: p.lowStockThreshold,
+    status: p.status,
+    organic: p.organic,
+    season: p.season,
+    tags: p.tags,
+    description: p.description,
+    reviewStatus: p.reviewStatus ?? "pending",
+    updatedAt: new Date(),
   }
+  await db
+    .insert(productsTable)
+    .values(row)
+    .onConflictDoUpdate({ target: productsTable.id, set: row })
 }
 
+/** Update stock + derived status for a product. */
 export async function persistProductStock(
   productId: string,
   stockKg: number,
   status: StockStatus,
-): Promise<{ ok: boolean; error?: string }> {
-  try {
-    await db
-      .update(productsTable)
-      .set({
-        stockKg,
-        status,
-        updatedAt: new Date(),
-      })
-      .where(eq(productsTable.id, productId))
-
-    return { ok: true }
-  } catch (err) {
-    console.error("[Catalog] persistProductStock error:", err)
-    return {
-      ok: false,
-      error: err instanceof Error ? err.message : "Failed to update stock",
-    }
-  }
+): Promise<void> {
+  await requireUser()
+  await db
+    .update(productsTable)
+    .set({ stockKg, status, updatedAt: new Date() })
+    .where(eq(productsTable.id, productId))
 }
 
+/** Staff moderation decision on a pending listing. */
 export async function persistProductReview(
   productId: string,
-  review: {
-    userId: string
-    authorName: string
-    rating: number
-    title?: string
-    body?: string
-    verifiedPurchase?: boolean
-  },
-): Promise<{ ok: boolean; error?: string }> {
-  try {
-    const id = `rev_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`
-    await db.insert(reviewsTable).values({
-      id,
-      userId: review.userId,
-      authorName: review.authorName,
-      productId,
-      rating: review.rating,
-      title: review.title || null,
-      body: review.body || "",
-      verifiedPurchase: Boolean(review.verifiedPurchase),
-      status: "live",
-    })
-
-    return { ok: true }
-  } catch (err) {
-    return {
-      ok: false,
-      error: err instanceof Error ? err.message : "Failed to save review",
-    }
-  }
+  review: ProductReviewStatus,
+): Promise<void> {
+  await requireStaff()
+  await db
+    .update(productsTable)
+    .set({ reviewStatus: review, updatedAt: new Date() })
+    .where(eq(productsTable.id, productId))
 }
 
-export async function persistFarmer(
-  farmer: Farmer,
-): Promise<{ ok: boolean; error?: string }> {
-  try {
-    await db
-      .insert(farmersTable)
-      .values({
-        id: farmer.id,
-        slug: farmer.slug,
-        name: farmer.name,
-        farmName: farmer.farmName,
-        photo: farmer.photo,
-        cover: farmer.cover || null,
-        bio: farmer.bio,
-        story: farmer.story,
-        methods: farmer.methods,
-        certifications: farmer.certifications,
-        region: farmer.region,
-        town: farmer.town,
-        pickupGPS: farmer.pickupGPS,
-        location: farmer.location,
-        farmToHubRadiusKm: farmer.farmToHubRadiusKm,
-        rating: farmer.rating,
-        reviewCount: farmer.reviewCount,
-        baselineRating: farmer.rating,
-        baselineReviewCount: farmer.reviewCount,
-        joinedYear: farmer.joinedYear,
-        onTimeRate: farmer.onTimeRate,
-        momoProvider: farmer.momoProvider || null,
-        momoNumber: farmer.momoNumber || null,
-        kycStatus: "verified",
-      })
-      .onConflictDoUpdate({
-        target: farmersTable.id,
-        set: {
-          name: farmer.name,
-          farmName: farmer.farmName,
-          photo: farmer.photo,
-          cover: farmer.cover || null,
-          bio: farmer.bio,
-          story: farmer.story,
-          methods: farmer.methods,
-          certifications: farmer.certifications,
-          region: farmer.region,
-          town: farmer.town,
-          pickupGPS: farmer.pickupGPS,
-          location: farmer.location,
-          farmToHubRadiusKm: farmer.farmToHubRadiusKm,
-          momoProvider: farmer.momoProvider || null,
-          momoNumber: farmer.momoNumber || null,
-          updatedAt: new Date(),
-        },
-      })
+/* --------------------------- farmer persistence ---------------------------- */
 
-    return { ok: true }
-  } catch (err) {
-    console.error("[Catalog] persistFarmer error:", err)
-    return {
-      ok: false,
-      error: err instanceof Error ? err.message : "Failed to persist farmer",
-    }
+/** Persist a full farmer record (insert or update). */
+export async function persistFarmer(f: Farmer, ownerUserId?: string): Promise<void> {
+  await requireUser()
+  const row = {
+    id: f.id,
+    slug: f.slug,
+    name: f.name,
+    farmName: f.farmName,
+    photo: f.photo,
+    cover: f.cover ?? null,
+    bio: f.bio,
+    story: f.story,
+    methods: f.methods,
+    certifications: f.certifications,
+    region: f.region,
+    town: f.town,
+    pickupGPS: f.pickupGPS,
+    location: f.location,
+    farmToHubRadiusKm: f.farmToHubRadiusKm,
+    rating: f.rating,
+    reviewCount: f.reviewCount,
+    joinedYear: f.joinedYear,
+    onTimeRate: f.onTimeRate,
+    ownerUserId: ownerUserId ?? null,
+    updatedAt: new Date(),
   }
+  await db
+    .insert(farmersTable)
+    .values(row)
+    .onConflictDoUpdate({ target: farmersTable.id, set: row })
 }
 
+/** Patch fields on an existing farmer (e.g. photo, cover, bio). */
 export async function persistFarmerPatch(
   farmerId: string,
   patch: Partial<Farmer>,
-): Promise<{ ok: boolean; error?: string }> {
-  try {
-    const updateData: Record<string, unknown> = {
-      updatedAt: new Date(),
-    }
-    if (patch.name !== undefined) updateData.name = patch.name
-    if (patch.farmName !== undefined) updateData.farmName = patch.farmName
-    if (patch.bio !== undefined) updateData.bio = patch.bio
-    if (patch.story !== undefined) updateData.story = patch.story
-    if (patch.methods !== undefined) updateData.methods = patch.methods
-    if (patch.certifications !== undefined)
-      updateData.certifications = patch.certifications
-    if (patch.photo !== undefined) updateData.photo = patch.photo
-    if (patch.cover !== undefined) updateData.cover = patch.cover
-    if (patch.momoProvider !== undefined)
-      updateData.momoProvider = patch.momoProvider
-    if (patch.momoNumber !== undefined) updateData.momoNumber = patch.momoNumber
-    if (patch.pickupGPS !== undefined) updateData.pickupGPS = patch.pickupGPS
-
-    await db
-      .update(farmersTable)
-      .set(updateData)
-      .where(eq(farmersTable.id, farmerId))
-
-    return { ok: true }
-  } catch (err) {
-    console.error("[Catalog] persistFarmerPatch error:", err)
-    return {
-      ok: false,
-      error: err instanceof Error ? err.message : "Failed to update farmer",
+): Promise<void> {
+  await requireUser()
+  // Only persist known columns.
+  const allowed: Record<string, unknown> = {}
+  for (const k of [
+    "name",
+    "farmName",
+    "photo",
+    "cover",
+    "bio",
+    "story",
+    "methods",
+    "certifications",
+    "region",
+    "town",
+    "pickupGPS",
+  ] as const) {
+    if (k in patch && (patch as Record<string, unknown>)[k] !== undefined) {
+      allowed[k] = (patch as Record<string, unknown>)[k]
     }
   }
+  if (Object.keys(allowed).length === 0) return
+  allowed.updatedAt = new Date()
+  await db.update(farmersTable).set(allowed).where(eq(farmersTable.id, farmerId))
 }

@@ -51,7 +51,7 @@ export default function MobileSearchScreen() {
     <div className="min-h-dvh bg-[#F4F1EA] pb-24 text-[#2B1F17]">
       {/* Search Header */}
       <div
-        className="sticky top-0 z-30 flex items-center gap-3 border-b border-[#E0DACB]/80 bg-[#F4F1EA]/95 px-4 py-3 backdrop-blur-md"
+        className="sticky top-0 z-30 flex items-center gap-3 border-b border-[#E0DACB] bg-[#F4F1EA] px-4 py-3"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
       >
         <Link

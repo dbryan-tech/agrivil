@@ -64,7 +64,7 @@ export default function MobileCategoryDetailScreen() {
       />
 
       {/* Filter and Sort Action Bar */}
-      <div className="sticky top-14 z-20 flex items-center gap-2 border-b border-[#E0DACB]/80 bg-[#F4F1EA]/95 px-4 py-2.5 backdrop-blur-md">
+      <div className="sticky top-14 z-20 flex items-center gap-2 border-b border-[#E0DACB] bg-[#F4F1EA] px-4 py-2.5">
         <button
           type="button"
           onClick={() => setFilterOpen(true)}
@@ -185,7 +185,7 @@ export default function MobileCategoryDetailScreen() {
 
       {/* Filter Bottom Sheet Modal */}
       {filterOpen && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-xs">
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50">
           <div className="w-full max-w-md rounded-t-3xl bg-white p-6 shadow-2xl animate-in slide-in-from-bottom duration-200">
             <div className="flex items-center justify-between border-b border-[#E0DACB] pb-3">
               <h3 className="text-base font-extrabold text-[#2B1F17]">Filter Produce</h3>

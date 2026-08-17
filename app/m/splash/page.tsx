@@ -55,7 +55,7 @@ export default function MobileSplashScreen() {
 
         <Link
           href="/m/auth/login"
-          className="ga-press flex h-14 w-full items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-base font-bold text-white backdrop-blur-xs hover:bg-white/20"
+          className="ga-press flex h-14 w-full items-center justify-center rounded-2xl border border-white/40 bg-transparent text-base font-bold text-white hover:bg-white/10"
         >
           Sign In
         </Link>

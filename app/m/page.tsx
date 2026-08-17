@@ -17,6 +17,12 @@ import {
   Repeat,
   Clock,
   UtensilsCrossed,
+  Wheat,
+  Leaf,
+  Apple,
+  Layers,
+  Flame,
+  LayoutGrid,
 } from 'lucide-react'
 import { products, farmers, bundles, recipes } from '@/lib/golden-acres/data'
 import { formatGHS, weight } from '@/lib/golden-acres/format'
@@ -25,12 +31,12 @@ import { MobileBottomNav } from '@/components/golden-acres/mobile/mobile-bottom-
 import { cn } from '@/lib/utils'
 
 const CATEGORY_CHIPS = [
-  { label: 'Staples', icon: '🌾', slug: 'Grains & Legumes' },
-  { label: 'Vegetables', icon: '🥬', slug: 'Vegetables' },
-  { label: 'Fruits', icon: '🍌', slug: 'Fruits' },
-  { label: 'Tubers', icon: '🥔', slug: 'Roots & Tubers' },
-  { label: 'Herbs', icon: '🌿', slug: 'Herbs & Spices' },
-  { label: 'All', icon: '🛒', slug: 'All' },
+  { label: 'Staples', icon: Wheat, slug: 'Grains & Legumes' },
+  { label: 'Vegetables', icon: Leaf, slug: 'Vegetables' },
+  { label: 'Fruits', icon: Apple, slug: 'Fruits' },
+  { label: 'Tubers', icon: Layers, slug: 'Roots & Tubers' },
+  { label: 'Spices', icon: Flame, slug: 'Herbs & Spices' },
+  { label: 'All', icon: LayoutGrid, slug: 'All' },
 ]
 
 export default function MobileHomeScreen() {
@@ -58,13 +64,12 @@ export default function MobileHomeScreen() {
     <div className="min-h-dvh bg-[#F4F1EA] pb-24 text-[#2B1F17]">
       {/* 1. Header Bar: Location & Status Actions */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[#E0DACB]/80 bg-[#F4F1EA]/95 px-4 py-3 backdrop-blur-md"
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[#E0DACB] bg-[#F4F1EA] px-4 py-3"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
       >
         <Link href="/m/onboarding/gps" className="ga-press flex flex-col">
-          <div className="flex items-center gap-1 text-xs font-bold text-[#6E6A63]">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-[#6E6A63]">
             <span>Hi, Ewoke</span>
-            <span>🌾</span>
           </div>
           <div className="flex items-center gap-1 text-sm font-extrabold text-[#2B1F17]">
             <MapPin className="h-3.5 w-3.5 text-[#1E5D3B]" />
@@ -77,7 +82,7 @@ export default function MobileHomeScreen() {
           <Link
             href="/m/account/notifications"
             aria-label="Notifications"
-            className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-[#2B1F17] shadow-xs border border-[#E0DACB]/60"
+            className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
           >
             <Bell className="h-4 w-4" />
             <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-[#E67A2E]" />
@@ -111,9 +116,9 @@ export default function MobileHomeScreen() {
 
       {/* 3. Hero Promo Banner Card */}
       <div className="px-4 pt-4">
-        <div className="relative overflow-hidden rounded-3xl bg-[#1E5D3B] p-5 text-white shadow-md">
+        <div className="relative overflow-hidden rounded-3xl bg-[#1E5D3B] p-5 text-white shadow-xs">
           <div className="relative z-10 max-w-[65%]">
-            <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-[#A3E635] backdrop-blur-xs">
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#144028] px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-[#A3E635]">
               <Sparkles className="h-3 w-3" /> Harvested Today
             </span>
             <h2 className="ga-headline mt-2 text-xl font-extrabold leading-tight text-white sm:text-2xl">
@@ -136,7 +141,7 @@ export default function MobileHomeScreen() {
               src="/golden-acres/produce/roma-tomatoes-1.png"
               alt="Fresh tomatoes"
               fill
-              className="object-contain drop-shadow-xl"
+              className="object-contain drop-shadow-md"
             />
           </div>
         </div>
@@ -157,19 +162,20 @@ export default function MobileHomeScreen() {
         <div className="no-scrollbar flex gap-2.5 overflow-x-auto px-4 py-1">
           {CATEGORY_CHIPS.map((cat) => {
             const active = activeCategory === cat.slug
+            const Icon = cat.icon
             return (
               <button
                 key={cat.label}
                 type="button"
                 onClick={() => setActiveCategory(cat.slug)}
                 className={cn(
-                  'ga-press flex shrink-0 items-center gap-2 rounded-2xl border px-3.5 py-2 text-xs font-bold shadow-xs transition-all',
+                  'ga-press flex shrink-0 items-center gap-1.5 rounded-2xl border px-3.5 py-2 text-xs font-bold shadow-xs transition-all',
                   active
                     ? 'border-[#1E5D3B] bg-[#1E5D3B] text-white'
                     : 'border-[#E0DACB] bg-white text-[#2B1F17] hover:bg-[#EBE6DA]'
                 )}
               >
-                <span>{cat.icon}</span>
+                <Icon className={cn('h-3.5 w-3.5', active ? 'text-[#A3E635]' : 'text-[#1E5D3B]')} />
                 <span>{cat.label}</span>
               </button>
             )
@@ -177,7 +183,7 @@ export default function MobileHomeScreen() {
         </div>
       </div>
 
-      {/* 5. Recommended For You Grid */}
+      {/* 5. Recommended Produce Grid */}
       <div className="px-4 pt-6">
         <div className="flex items-center justify-between pb-3">
           <h3 className="text-sm font-extrabold text-[#2B1F17]">Recommended for you</h3>
@@ -204,11 +210,10 @@ export default function MobileHomeScreen() {
                       src={product.image}
                       alt={product.name}
                       fill
-                      sizes="(max-width: 640px) 150px, 200px"
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     {product.organic && (
-                      <span className="absolute top-2 left-2 rounded-md bg-[#1E5D3B] px-1.5 py-0.5 text-[9px] font-bold text-white">
+                      <span className="absolute top-2 left-2 rounded-full bg-[#1E5D3B] px-2 py-0.5 text-[9px] font-extrabold text-white shadow-xs">
                         Organic
                       </span>
                     )}
@@ -219,7 +224,7 @@ export default function MobileHomeScreen() {
                       {product.name}
                     </h4>
                     <p className="truncate text-[10px] font-medium text-[#6E6A63]">
-                      {product.farmerName}
+                      {product.farmerName || 'Local Ghana Farm'}
                     </p>
                   </div>
                 </div>
@@ -230,7 +235,7 @@ export default function MobileHomeScreen() {
                       {formatGHS(product.priceMin)}
                     </span>
                     <span className="text-[9px] font-semibold text-[#6E6A63]">
-                      / {product.variableWeight ? 'kg (est)' : product.unit}
+                      / {product.unit} {product.variableWeight ? '(est)' : ''}
                     </span>
                   </div>
 
@@ -239,7 +244,9 @@ export default function MobileHomeScreen() {
                     onClick={(e) => handleQuickAdd(e, product)}
                     className={cn(
                       'ga-press flex h-8 w-8 items-center justify-center rounded-full text-white shadow-xs transition-colors',
-                      isAdded ? 'bg-[#A3E635] text-[#144028]' : 'bg-[#1E5D3B] hover:bg-[#144028]'
+                      isAdded
+                        ? 'bg-[#144028]'
+                        : 'bg-[#1E5D3B] hover:bg-[#144028]'
                     )}
                     aria-label={`Add ${product.name} to basket`}
                   >
@@ -256,7 +263,7 @@ export default function MobileHomeScreen() {
         </div>
       </div>
 
-      {/* 6. Curated Boxes & Subscriptions Rail */}
+      {/* 6. Bundles & Subscriptions Preview */}
       <div className="pt-8">
         <div className="flex items-center justify-between px-4 pb-3">
           <div>
@@ -285,8 +292,8 @@ export default function MobileHomeScreen() {
                   fill
                   className="object-cover"
                 />
-                <span className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-full bg-[#A3E635] px-2 py-0.5 text-[10px] font-extrabold text-[#144028]">
-                  <Repeat className="h-3 w-3" /> {bundle.frequency}
+                <span className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-full bg-[#1E5D3B] px-2 py-0.5 text-[10px] font-extrabold text-white">
+                  <Repeat className="h-3 w-3 text-[#A3E635]" /> {bundle.frequency}
                 </span>
               </div>
               <h4 className="mt-2.5 text-xs font-extrabold text-[#2B1F17]">
@@ -295,7 +302,7 @@ export default function MobileHomeScreen() {
               <p className="mt-0.5 line-clamp-1 text-[10px] text-[#6E6A63]">
                 {bundle.description}
               </p>
-              <div className="mt-2 flex items-center justify-between border-t border-[#E0DACB]/60 pt-2 text-xs font-extrabold text-[#1E5D3B]">
+              <div className="mt-2 flex items-center justify-between border-t border-[#E0DACB] pt-2 text-xs font-extrabold text-[#1E5D3B]">
                 <span>{formatGHS(bundle.price)}</span>
                 <span className="text-[10px] font-semibold text-[#8A6B3D]">
                   {bundle.items.length} items
@@ -338,7 +345,7 @@ export default function MobileHomeScreen() {
               </div>
               <div className="flex flex-1 flex-col">
                 <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#8A6B3D]">
-                  {recipe.category || 'Traditional'}
+                  {recipe.category}
                 </span>
                 <h4 className="text-xs font-extrabold text-[#2B1F17]">
                   {recipe.name}
@@ -360,7 +367,55 @@ export default function MobileHomeScreen() {
         </div>
       </div>
 
-      {/* 8. Bottom Navigation Bar */}
+      {/* 8. Meet Local Ghanaian Farmers */}
+      <div className="px-4 pt-8">
+        <div className="flex items-center justify-between pb-3">
+          <div>
+            <h3 className="text-sm font-extrabold text-[#2B1F17]">Meet your farmers</h3>
+            <p className="text-[10px] text-[#6E6A63]">Know the hands that grow your food</p>
+          </div>
+          <Link
+            href="/m/farmers"
+            className="text-xs font-bold text-[#1E5D3B] hover:underline"
+          >
+            See all
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          {farmers.slice(0, 2).map((farmer) => (
+            <Link
+              key={farmer.id}
+              href={`/m/farmers/${farmer.slug}`}
+              className="ga-press flex flex-col overflow-hidden rounded-3xl border border-[#E0DACB] bg-white p-3 shadow-xs"
+            >
+              <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-[#F4F1EA]">
+                <Image
+                  src={farmer.photo}
+                  alt={farmer.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <h4 className="mt-2.5 truncate text-xs font-extrabold text-[#2B1F17]">
+                {farmer.name}
+              </h4>
+              <p className="truncate text-[10px] font-medium text-[#8A6B3D]">
+                {farmer.farmName}
+              </p>
+              <div className="mt-2 flex items-center justify-between border-t border-[#E0DACB] pt-2 text-[10px] text-[#6E6A63]">
+                <span className="flex items-center gap-1 font-semibold text-[#1E5D3B]">
+                  <MapPin className="h-3 w-3" /> {farmer.town}
+                </span>
+                <span className="flex items-center gap-0.5 font-bold text-[#2B1F17]">
+                  <Star className="h-3 w-3 fill-[#E67A2E] text-[#E67A2E]" /> {farmer.rating}
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
       <MobileBottomNav />
     </div>
   )

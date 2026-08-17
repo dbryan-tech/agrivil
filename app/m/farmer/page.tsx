@@ -42,7 +42,7 @@ export default function MobileFarmerCockpitScreen() {
     <div className="min-h-dvh bg-[#F4F1EA] pb-24 text-[#2B1F17]">
       {/* App Bar */}
       <header
-        className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[#E0DACB]/80 bg-[#F4F1EA]/95 px-4 backdrop-blur-md"
+        className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[#E0DACB] bg-[#F4F1EA] px-4"
         style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
         <Link

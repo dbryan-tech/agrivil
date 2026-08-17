@@ -1,10 +1,9 @@
-import type { Metadata } from 'next'
 import { HelpCenter } from '@/components/golden-acres/help/help-center'
 
-export const metadata: Metadata = {
-  title: 'Help Center & Support Desk | AgriVil',
+export const metadata = {
+  title: 'Help & Support — AgriVil',
   description:
-    'Instant assistance for orders, perishable quality guarantees, Mobile Money payments, and live encrypted support tickets.',
+    'Find answers to common questions about orders, delivery, payments, and produce quality — or send our Accra-based support team a message.',
 }
 
 export default function HelpPage() {

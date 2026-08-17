@@ -68,7 +68,7 @@ export default function MobileLoginScreen() {
       {/* Center Form */}
       <div className="relative z-10 my-auto flex flex-col pt-4">
         <h1 className="ga-headline text-3xl font-extrabold tracking-tight text-[#2B1F17]">
-          Welcome back 👋
+          Welcome back
         </h1>
         <p className="mt-1.5 text-sm font-medium text-[#6E6A63]">
           Log in to continue shopping farm fresh.
