@@ -12,8 +12,8 @@ const config: CapacitorConfig = {
   appName: 'AgriVil',
   webDir: '../out',
   server: {
-    // Vercel deployment URL serving the mobile app route /m
-    url: process.env.CAPACITOR_SERVER_URL || 'https://agrivil.vercel.app/m',
+    // Vercel live production URL serving the mobile app route /m
+    url: process.env.CAPACITOR_SERVER_URL || 'https://agrivil1.vercel.app/m',
     cleartext: true,
   },
   plugins: {

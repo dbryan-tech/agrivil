@@ -76,11 +76,16 @@ export function RecentlyViewedProvider({ children }: { children: React.ReactNode
   return <Ctx.Provider value={{ ids, record, clear }}>{children}</Ctx.Provider>
 }
 
+const FALLBACK_CTX: RecentlyViewedCtx = {
+  ids: [],
+  record: () => {},
+  clear: () => {},
+}
+
 /** Low-level access to the recently-viewed context (ids + record + clear). */
 export function useRecentlyViewedCtx(): RecentlyViewedCtx {
   const ctx = useContext(Ctx)
-  if (!ctx) throw new Error('useRecentlyViewedCtx must be used within RecentlyViewedProvider')
-  return ctx
+  return ctx || FALLBACK_CTX
 }
 
 /**

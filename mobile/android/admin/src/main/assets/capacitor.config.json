@@ -3,7 +3,7 @@
 	"appName": "AgriVil Farmer",
 	"webDir": "../out",
 	"server": {
-		"url": "https://agrivil.vercel.app/m/farmer"
+		"url": "https://agrivil1.vercel.app/m/farmer"
 	},
 	"plugins": {
 		"SplashScreen": {

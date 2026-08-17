@@ -16,6 +16,7 @@ import {
 import { ThemeProvider } from '@/components/theme-provider'
 import { SessionProvider } from '@/components/golden-acres/auth/session-context'
 import { DataStoreProvider } from '@/components/golden-acres/store/data-store'
+import { RecentlyViewedProvider } from '@/components/golden-acres/store/recently-viewed'
 import { MobileSwitcherPill } from '@/components/golden-acres/mobile-switcher-pill'
 import './globals.css'
 
@@ -116,8 +117,10 @@ export default function RootLayout({
         >
           <SessionProvider>
             <DataStoreProvider>
-              {children}
-              <MobileSwitcherPill />
+              <RecentlyViewedProvider>
+                {children}
+                <MobileSwitcherPill />
+              </RecentlyViewedProvider>
             </DataStoreProvider>
           </SessionProvider>
         </ThemeProvider>

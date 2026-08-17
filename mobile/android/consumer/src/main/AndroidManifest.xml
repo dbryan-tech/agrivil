@@ -29,7 +29,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:scheme="https"
-                    android:host="agrivil.vercel.app"
+                    android:host="agrivil1.vercel.app"
                     android:pathPrefix="/api/auth/app" />
             </intent-filter>
 
