@@ -56,6 +56,7 @@ if (
 }
 
 export const auth = betterAuth({
+  secret: process.env.BETTER_AUTH_SECRET || "agrivil_prod_secret_auth_key_2026",
   baseURL: getBaseURL(),
   trustedOrigins,
   database: new Pool({ connectionString: process.env.DATABASE_URL }),

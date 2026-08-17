@@ -1,9 +1,9 @@
 'use client'
 
-import { use, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import {
   ArrowLeft,
   Heart,
@@ -24,18 +24,15 @@ import { useCart } from '@/components/golden-acres/cart-context'
 import { useSession } from '@/components/golden-acres/auth/session-context'
 import { cn } from '@/lib/utils'
 
-export default function MobileProductDetailScreen({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  const resolvedParams = use(params)
+export default function MobileProductDetailScreen() {
+  const params = useParams<{ slug: string }>()
+  const rawSlug = Array.isArray(params?.slug) ? params.slug[0] : params?.slug || ''
   const router = useRouter()
   const { add } = useCart()
   const { isSaved, toggleWishlist } = useSession()
 
   const product =
-    products.find((p) => p.slug === resolvedParams.slug) || products[0]
+    products.find((p) => p.slug === rawSlug) || products[0]
   const farmer = productFarmer(product)
 
   const [qty, setQty] = useState(1)

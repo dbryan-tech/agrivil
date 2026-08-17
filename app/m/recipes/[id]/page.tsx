@@ -1,33 +1,30 @@
 'use client'
 
-import { use, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import {
-  ArrowLeft,
   Clock,
   UtensilsCrossed,
   Plus,
   Check,
   ShoppingBag,
   Sparkles,
+  ArrowLeft,
 } from 'lucide-react'
 import { recipes, products } from '@/lib/golden-acres/data'
 import { formatGHS } from '@/lib/golden-acres/format'
 import { useCart } from '@/components/golden-acres/cart-context'
 
-export default function MobileRecipeDetailScreen({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
-  const resolvedParams = use(params)
+export default function MobileRecipeDetailScreen() {
+  const params = useParams<{ id: string }>()
+  const rawId = Array.isArray(params?.id) ? params.id[0] : params?.id || '1'
   const router = useRouter()
   const { add } = useCart()
 
   const recipe =
-    recipes.find((r) => r.id === resolvedParams.id) || recipes[0]
+    recipes.find((r) => r.id === rawId) || recipes[0]
 
   const [servings, setServings] = useState(4)
   const [allAdded, setAllAdded] = useState(false)

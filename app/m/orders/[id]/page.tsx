@@ -1,9 +1,9 @@
 'use client'
 
-import { use, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import {
   ArrowLeft,
   Truck,
@@ -18,14 +18,11 @@ import {
 } from 'lucide-react'
 import { formatGHS } from '@/lib/golden-acres/format'
 
-export default function MobileOrderTrackingScreen({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
-  const resolvedParams = use(params)
+export default function MobileOrderTrackingScreen() {
+  const params = useParams<{ id: string }>()
+  const rawId = Array.isArray(params?.id) ? params.id[0] : params?.id || 'AG-12345678'
   const router = useRouter()
-  const orderId = resolvedParams.id || 'AG-12345678'
+  const orderId = rawId || 'AG-12345678'
 
   const [rating, setRating] = useState(5)
   const [tipped, setTipped] = useState(false)

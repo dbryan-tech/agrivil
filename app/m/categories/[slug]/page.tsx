@@ -1,8 +1,9 @@
 'use client'
 
-import { use, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useParams } from 'next/navigation'
 import {
   SlidersHorizontal,
   ArrowUpDown,
@@ -18,13 +19,10 @@ import { MobileAppBar } from '@/components/golden-acres/mobile/mobile-app-bar'
 import { MobileBottomNav } from '@/components/golden-acres/mobile/mobile-bottom-nav'
 import { cn } from '@/lib/utils'
 
-export default function MobileCategoryDetailScreen({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  const resolvedParams = use(params)
-  const categoryName = decodeURIComponent(resolvedParams.slug)
+export default function MobileCategoryDetailScreen() {
+  const params = useParams<{ slug: string }>()
+  const rawSlug = Array.isArray(params?.slug) ? params.slug[0] : params?.slug || 'All'
+  const categoryName = decodeURIComponent(rawSlug)
   const { add } = useCart()
 
   const [sortBy, setSortBy] = useState<'default' | 'price-asc' | 'price-desc' | 'rating'>('default')

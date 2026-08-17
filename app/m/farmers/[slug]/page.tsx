@@ -1,9 +1,9 @@
 'use client'
 
-import { use, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import {
   ArrowLeft,
   Heart,
@@ -23,17 +23,14 @@ import { formatGHS } from '@/lib/golden-acres/format'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { cn } from '@/lib/utils'
 
-export default function MobileFarmerProfileScreen({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  const resolvedParams = use(params)
+export default function MobileFarmerProfileScreen() {
+  const params = useParams<{ slug: string }>()
+  const rawSlug = Array.isArray(params?.slug) ? params.slug[0] : params?.slug || ''
   const router = useRouter()
   const { add } = useCart()
 
   const farmer =
-    farmers.find((f) => f.slug === resolvedParams.slug) || farmers[0]
+    farmers.find((f) => f.slug === rawSlug) || farmers[0]
 
   const farmProducts = products.filter(
     (p) =>
