@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Repeat, Plus, Check, CheckCircle2 } from 'lucide-react'
-import { bundles } from '@/lib/golden-acres/data'
+import { bundles, products } from '@/lib/golden-acres/data'
 import { formatGHS } from '@/lib/golden-acres/format'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { MobileAppBar } from '@/components/golden-acres/mobile/mobile-app-bar'
@@ -15,9 +15,12 @@ export default function MobileBundlesScreen() {
   const [subscribedId, setSubscribedId] = useState<string | null>(null)
 
   function handleSubscribe(bundle: (typeof bundles)[0]) {
-    // Treat first item as representative product for cart
-    if (bundle.items[0]) {
-      add(bundle.items[0].product, 1)
+    // Add all products in the box to cart
+    if (bundle.items && bundle.items.length > 0) {
+      bundle.items.forEach((it) => {
+        const p = products.find((pr) => pr.id === it.productId)
+        if (p) add(p, it.qty || 1)
+      })
     }
     setSubscribedId(bundle.id)
     setTimeout(() => setSubscribedId(null), 1500)
@@ -38,6 +41,13 @@ export default function MobileBundlesScreen() {
         <div className="space-y-4">
           {bundles.map((bundle) => {
             const isDone = subscribedId === bundle.id
+            const lineItems = (bundle.items || [])
+              .map((it) => {
+                const p = products.find((pr) => pr.id === it.productId)
+                return p ? { name: p.name, qty: it.qty } : null
+              })
+              .filter((x): x is { name: string; qty: number } => x !== null)
+
             return (
               <div
                 key={bundle.id}
@@ -68,17 +78,19 @@ export default function MobileBundlesScreen() {
                 </div>
 
                 {/* Box contents list */}
-                <div className="mt-3 rounded-2xl bg-[#F4F1EA] p-3 text-[11px]">
-                  <span className="font-bold text-[#8A6B3D]">Includes {bundle.items.length} items:</span>
-                  <ul className="mt-1 space-y-0.5 text-[#2B1F17]">
-                    {bundle.items.slice(0, 3).map((item) => (
-                      <li key={item.product.id} className="flex justify-between">
-                        <span>• {item.product.name}</span>
-                        <span className="font-semibold text-[#6E6A63]">x{item.quantity}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                {lineItems.length > 0 && (
+                  <div className="mt-3 rounded-2xl bg-[#F4F1EA] p-3 text-[11px]">
+                    <span className="font-bold text-[#8A6B3D]">Includes {bundle.items.length} items:</span>
+                    <ul className="mt-1 space-y-0.5 text-[#2B1F17]">
+                      {lineItems.slice(0, 3).map((item, idx) => (
+                        <li key={idx} className="flex justify-between">
+                          <span>• {item.name}</span>
+                          <span className="font-semibold text-[#6E6A63]">x{item.qty}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 <button
                   type="button"
