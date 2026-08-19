@@ -214,67 +214,76 @@ export default function MobileCategoryDetailScreen() {
         }}
       />
 
-      {/* 1. Header Bar */}
-      <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
-      >
-        <div className="flex items-center gap-2.5">
+      {/* ========================================================
+          1. FULL-BLEED TOP HERO BANNER (Bleeds to edges & top)
+         ======================================================== */}
+      <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] overflow-hidden rounded-b-[32px] bg-[#211A12] shadow-xs">
+        <Image
+          src={meta.bannerImage}
+          alt={meta.title}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center scale-[1.05] opacity-90 transition-transform select-none"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
+
+        {/* Floating Top Navigation Header */}
+        <header
+          className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-3.5 pt-3"
+          style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
+        >
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-[#211A12] shadow-sm border border-[rgba(33,26,18,0.08)] active:scale-95 transition-transform backdrop-blur-xs"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4 stroke-[2.4]" />
           </button>
-          <h1 className="text-[16px] font-black text-[#211A12]">{meta.title}</h1>
-        </div>
 
-        <Link
-          href="/m/cart"
-          aria-label="Basket"
-          className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-sm active:scale-95 transition-transform"
-        >
-          <ShoppingBag className="h-4 w-4" />
-          {count > 0 && (
-            <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#7A3F1C] px-1 text-[9px] font-black text-white shadow-xs">
-              {count > 9 ? '9+' : count}
-            </span>
-          )}
-        </Link>
-      </header>
-
-      {/* 2. Category Hero Image Banner */}
-      <div className="relative px-3 pt-2.5">
-        <div className="relative aspect-[16/8] w-full overflow-hidden rounded-[24px] bg-[#211A12] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.08)]">
-          <Image
-            src={meta.bannerImage}
-            alt={meta.title}
-            fill
-            priority
-            className="object-cover opacity-90"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-          <div className="absolute bottom-3 left-3.5 right-3.5 text-white">
-            <span className="inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-xs">
-              <Sparkles className="h-2.5 w-2.5" /> Farm Fresh
-            </span>
-            <h2 className="mt-1 text-[18px] font-black tracking-tight text-white sm:text-xl">
-              {meta.title}
-            </h2>
+          <div className="flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1.5 text-[11px] font-black uppercase tracking-wider text-[#211A12] shadow-sm border border-[rgba(33,26,18,0.08)] backdrop-blur-xs">
+            <Sparkles className="h-3 w-3 text-[#0B3B25]" />
+            <span>{meta.title}</span>
           </div>
+
+          <Link
+            href="/m/cart"
+            aria-label="Basket"
+            className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-[#211A12] shadow-sm border border-[rgba(33,26,18,0.08)] active:scale-95 transition-transform backdrop-blur-xs"
+          >
+            <ShoppingBag className="h-4.5 w-4.5" />
+            {count > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#7A3F1C] px-1 text-[9px] font-black text-white shadow-xs">
+                {count > 9 ? '9+' : count}
+              </span>
+            )}
+          </Link>
+        </header>
+
+        {/* Bottom Banner Title & Subtitle */}
+        <div className="absolute bottom-3.5 left-4 right-4 text-white z-20">
+          <span className="inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-xs">
+            <Sparkles className="h-2.5 w-2.5" /> Farm Fresh Harvests
+          </span>
+          <h2 className="mt-1 text-[20px] font-black tracking-tight text-white sm:text-2xl">
+            {meta.title}
+          </h2>
+          <p className="text-[11.5px] font-medium text-white/90 line-clamp-1">
+            {meta.subtitle}
+          </p>
         </div>
       </div>
 
-      {/* 3. Subtitle & Filter Trigger Bar */}
-      <div className="px-3 py-2.5">
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex-1">
-            <h3 className="text-[13.5px] font-extrabold text-[#211A12]">{meta.title}</h3>
-            <p className="mt-0.5 text-[11px] font-medium text-[#5C5247]">{meta.subtitle}</p>
-            <span className="mt-0.5 inline-block text-[10.5px] font-extrabold text-[#0B3B25]">
-              {meta.count}
+      {/* 2. Subtitle & Filter Trigger Bar */}
+      <div className="px-3.5 pt-3 pb-1">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <span className="text-[13px] font-black text-[#211A12]">
+              All {meta.title} Produce
+            </span>
+            <span className="ml-1.5 text-[11px] font-extrabold text-[#0B3B25]">
+              {products.filter((p) => p.category?.toLowerCase() === categoryKey || categoryKey.includes(p.category?.toLowerCase() || '')).length || meta.canonicalItems.length} items
             </span>
           </div>
 
@@ -282,7 +291,7 @@ export default function MobileCategoryDetailScreen() {
             <button
               type="button"
               onClick={() => setSortOpen(true)}
-              className="flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[10.5px] font-extrabold text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.08)]"
+              className="flex items-center gap-1 rounded-full bg-white px-3 py-1 text-[11px] font-extrabold text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.08)]"
             >
               <span>Sort</span>
             </button>
@@ -290,7 +299,7 @@ export default function MobileCategoryDetailScreen() {
             <button
               type="button"
               onClick={() => setFilterOpen(true)}
-              className="flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[10.5px] font-extrabold text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.08)] hover:border-[#0B3B25]"
+              className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-[11px] font-extrabold text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.08)] hover:border-[#0B3B25]"
             >
               <SlidersHorizontal className="h-3 w-3 text-[#0B3B25]" />
               <span>Filter</span>
@@ -299,53 +308,24 @@ export default function MobileCategoryDetailScreen() {
         </div>
       </div>
 
-      {/* 4. Product List with Dynamic ProductImageShell */}
-      <div className="px-3 space-y-1.5">
-        {meta.canonicalItems.map((item) => {
-          const isAdded = addedItem === item.name
-          return (
-            <div
-              key={item.name}
-              className="flex items-center justify-between overflow-hidden rounded-[22px] bg-[#FDFDFB] p-3 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.99] transition-all"
-            >
-              <div className="flex items-center gap-3">
-                <ProductImageShell
-                  src={item.image}
-                  alt={item.name}
-                  className="h-12 w-12 rounded-xl"
-                />
-                <div className="flex flex-col">
-                  <h4 className="text-[13px] font-extrabold text-[#211A12]">
-                    {item.name}
-                  </h4>
-                  <span className="text-[12px] font-black text-[#0B3B25]">
-                    {item.priceText}
-                  </span>
-                  <span className="text-[10px] font-semibold text-[#5C5247]">
-                    {item.farmerName}
-                  </span>
-                </div>
-              </div>
-
-              {/* Circular Quick Add (+) Button */}
-              <button
-                type="button"
-                onClick={() => handleQuickAdd(item)}
-                aria-label={`Add ${item.name}`}
-                className={cn(
-                  'flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white shadow-xs transition-all active:scale-90',
-                  isAdded ? 'bg-[#0B3B25]/20 text-[#0B3B25]' : 'bg-[#0B3B25] text-white hover:bg-[#072618]'
-                )}
-              >
-                {isAdded ? (
-                  <Check className="h-4 w-4 stroke-[3]" />
-                ) : (
-                  <Plus className="h-4 w-4 stroke-[2.5]" />
-                )}
-              </button>
-            </div>
-          )
-        })}
+      {/* 3. 2-Column Product Grid */}
+      <div className="px-3.5 pt-2">
+        <div className="grid grid-cols-2 gap-1.5">
+          {(() => {
+            const matched = products.filter((p) => {
+              const cat = p.category?.toLowerCase() || ''
+              return (
+                cat.includes(categoryKey) ||
+                categoryKey.includes(cat) ||
+                p.tags?.some((t) => t.toLowerCase().includes(categoryKey))
+              )
+            })
+            const list = matched.length > 0 ? matched : products.slice(0, 8)
+            return list.map((prod) => (
+              <MobileProductCard key={prod.id} product={prod} />
+            ))
+          })()}
+        </div>
       </div>
 
       {/* 5. Screen 9: Search & Filter Modal */}

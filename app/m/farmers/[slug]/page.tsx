@@ -205,55 +205,55 @@ export default function MobileFarmerProfileScreen() {
               </div>
             </div>
 
-            {/* About Card */}
-            <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-              <h2 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+            {/* About Section (Direct on background, zero card box) */}
+            <div className="pt-1 space-y-2">
+              <h2 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
                 About the Farm
               </h2>
-              <p className="mt-1.5 text-[12px] leading-relaxed text-[#211A12] font-semibold">
+              <p className="text-[12.5px] leading-relaxed text-[#211A12] font-semibold">
                 {farmer.bio}
               </p>
 
-              {/* 4 Value Pillars */}
-              <div className="mt-3 grid grid-cols-2 gap-1.5 border-t border-[rgba(33,26,18,0.06)] pt-2.5">
-                <div className="flex items-center gap-2 rounded-2xl bg-[#F7F5F0] p-2">
-                  <Leaf className="h-3.5 w-3.5 text-[#0B3B25]" />
+              {/* 4 Value Pillars (Clean direct inline list, zero card boxes) */}
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 pt-1.5">
+                <div className="flex items-center gap-2">
+                  <Leaf className="h-4 w-4 text-[#0B3B25] shrink-0" />
                   <div>
-                    <span className="block text-[10.5px] font-extrabold text-[#211A12]">Sustainable</span>
-                    <span className="text-[9px] text-[#5C5247]">Eco-friendly soil</span>
+                    <span className="block text-[11.5px] font-black text-[#211A12]">Sustainable</span>
+                    <span className="text-[9.5px] text-[#5C5247] font-semibold">Eco-friendly soil</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 rounded-2xl bg-[#F7F5F0] p-2">
-                  <ShieldCheck className="h-3.5 w-3.5 text-[#0B3B25]" />
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4 text-[#0B3B25] shrink-0" />
                   <div>
-                    <span className="block text-[10.5px] font-extrabold text-[#211A12]">Pesticide-Free</span>
-                    <span className="text-[9px] text-[#5C5247]">Natural control</span>
+                    <span className="block text-[11.5px] font-black text-[#211A12]">Pesticide-Free</span>
+                    <span className="text-[9.5px] text-[#5C5247] font-semibold">Natural control</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 rounded-2xl bg-[#F7F5F0] p-2">
-                  <Sparkles className="h-3.5 w-3.5 text-[#0B3B25]" />
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-[#0B3B25] shrink-0" />
                   <div>
-                    <span className="block text-[10.5px] font-extrabold text-[#211A12]">Hand Picked</span>
-                    <span className="text-[9px] text-[#5C5247]">At dawn freshness</span>
+                    <span className="block text-[11.5px] font-black text-[#211A12]">Hand Picked</span>
+                    <span className="text-[9.5px] text-[#5C5247] font-semibold">At dawn freshness</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 rounded-2xl bg-[#F7F5F0] p-2">
-                  <Truck className="h-3.5 w-3.5 text-[#0B3B25]" />
+                <div className="flex items-center gap-2">
+                  <Truck className="h-4 w-4 text-[#0B3B25] shrink-0" />
                   <div>
-                    <span className="block text-[10.5px] font-extrabold text-[#211A12]">Cold-Chain</span>
-                    <span className="text-[9px] text-[#5C5247]">Hub dispatched</span>
+                    <span className="block text-[11.5px] font-black text-[#211A12]">Cold-Chain</span>
+                    <span className="text-[9.5px] text-[#5C5247] font-semibold">Hub dispatched</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Quick Preview of Harvest */}
-            <div>
+            <div className="pt-2">
               <div className="flex items-center justify-between pb-1.5">
-                <h3 className="text-[10.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+                <h3 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
                   Freshly Listed Harvest
                 </h3>
                 <button
@@ -292,27 +292,27 @@ export default function MobileFarmerProfileScreen() {
           </div>
         )}
 
-        {/* STORY & METHODS TAB */}
+        {/* STORY & METHODS TAB (Direct on background, zero card boxes) */}
         {activeTab === 'story' && (
-          <div className="space-y-2.5">
-            <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-              <h2 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+          <div className="space-y-3 pt-1">
+            <div className="space-y-1">
+              <h2 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
                 Heritage &amp; Story
               </h2>
-              <p className="mt-1.5 text-[12px] leading-relaxed text-[#211A12] font-semibold">
+              <p className="text-[12.5px] leading-relaxed text-[#211A12] font-semibold">
                 {farmer.story || farmer.bio}
               </p>
             </div>
 
-            <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+            <div className="space-y-1.5 pt-2 border-t border-[rgba(33,26,18,0.06)]">
+              <h3 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
                 Cultivation Standards
               </h3>
-              <div className="mt-2 flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-1.5 pt-1">
                 {(farmer.methods || ['Hand-harvested at dawn', 'Drip irrigation', 'Composting', 'Low-spray']).map((m) => (
                   <span
                     key={m}
-                    className="inline-flex items-center gap-1 rounded-full bg-[#F7F5F0] px-2.5 py-0.5 text-[11px] font-extrabold text-[#0B3B25] border border-[rgba(33,26,18,0.08)]"
+                    className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[11px] font-extrabold text-[#0B3B25] border border-[rgba(33,26,18,0.08)] shadow-2xs"
                   >
                     <Leaf className="h-3 w-3" /> {m}
                   </span>
