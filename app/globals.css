@@ -2,6 +2,10 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
+/* Dev-only: hide the Next.js dev-mode 'N' portal overlay in local previews.
+   This element is never emitted in production/APK builds. */
+nextjs-portal { display: none !important; }
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

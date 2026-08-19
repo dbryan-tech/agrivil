@@ -9,14 +9,14 @@
 	"plugins": {
 		"SplashScreen": {
 			"launchAutoHide": true,
-			"backgroundColor": "#0F7A43",
+			"backgroundColor": "#0B3B25",
 			"showSpinner": false,
 			"androidScaleType": "CENTER",
 			"splashFullScreen": true,
 			"splashImmersive": true
 		},
 		"StatusBar": {
-			"backgroundColor": "#FAF7F0",
+			"backgroundColor": "#F7F5F0",
 			"style": "DARK"
 		}
 	}

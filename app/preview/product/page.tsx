@@ -1,90 +1,164 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import Image from 'next/image'
 import {
   ArrowLeft,
   Heart,
+  Share2,
   Star,
   ShieldCheck,
-  Leaf,
+  Truck,
+  Sparkles,
   Plus,
   Minus,
   Check,
   ShoppingBag,
-  Share2,
+  Leaf,
   Snowflake,
   MapPin,
   Users,
+  ChevronRight,
   Info,
+  GitCompareArrows,
 } from 'lucide-react'
-import { products, productFarmer } from '@/lib/golden-acres/data'
-import { formatGHS, freshnessLabel } from '@/lib/golden-acres/format'
-import { useCart } from '@/components/golden-acres/cart-context'
-import { useSession } from '@/components/golden-acres/auth/session-context'
-import { MobileProductCard } from '@/components/golden-acres/mobile/mobile-product-card'
+import { formatGHS } from '@/lib/golden-acres/format'
 import { cn } from '@/lib/utils'
+import {
+  ProductImageShell,
+  PackageBoxes3D,
+  MobileProduceCardRich,
+} from '@/app/preview/_lib/premium'
 
-export default function MobileProductDetailScreen() {
-  const params = useParams<{ slug: string }>()
-  const rawSlug = Array.isArray(params?.slug) ? params.slug[0] : params?.slug || ''
-  const { add } = useCart()
-  const { isSaved, toggleWishlist } = useSession()
+const COMPETING_OFFERS = [
+  {
+    farmerId: 'f4',
+    farmerName: 'Darko Organics',
+    region: 'Ho, Volta Region (170km)',
+    price: 9.48,
+    unit: '1 kg',
+    rating: 4.9,
+    freshness: 'Just Harvested',
+    freshnessColor: '#0B3B25',
+    isCurrent: true,
+  },
+  {
+    farmerId: 'f1',
+    farmerName: "Auntie Ama's Garden",
+    region: 'Koforidua, Eastern (85km)',
+    price: 10.20,
+    unit: '1 kg',
+    rating: 4.9,
+    freshness: 'Just Harvested',
+    freshnessColor: '#0B3B25',
+    isCurrent: false,
+  },
+  {
+    farmerId: 'f6',
+    farmerName: 'Fati Abukari Fields',
+    region: 'Tamale, Northern (420km)',
+    price: 8.90,
+    unit: '1 kg',
+    rating: 4.7,
+    freshness: 'Fresh',
+    freshnessColor: '#F59E0B',
+    isCurrent: false,
+  },
+]
 
-  // Find product by slug or fallback
-  const product = products.find((p) => p.slug === rawSlug) || products[0]
-  const farmer = productFarmer(product)
+const RELATED_PRODUCE = [
+  {
+    id: 'p2',
+    slug: 'crisphead-lettuce',
+    name: 'Crisphead Lettuce',
+    farmName: 'Green Leaf Collective',
+    image: '/golden-acres/produce/crisphead-lettuce.png',
+    unit: 'each',
+    price: 9.44,
+    rating: 4.9,
+    reviews: 41,
+    organic: true,
+    freshness: 'JUST HARVESTED',
+    freshnessColor: '#0B3B25',
+    offerCount: 6,
+  },
+  {
+    id: 'p4',
+    slug: 'kontomire',
+    name: 'Kontomire (Cocoyam Leaves)',
+    farmName: 'Green Leaf Collective',
+    image: '/golden-acres/produce/kontomire.png',
+    unit: 'bunch',
+    price: 6.00,
+    rating: 4.8,
+    reviews: 176,
+    organic: true,
+    freshness: 'FRESH',
+    freshnessColor: '#F59E0B',
+    offerCount: 3,
+  },
+]
 
+const REVIEWS_DATA = [
+  {
+    id: 'r1',
+    author: 'Kofi Mensah',
+    date: 'Yesterday',
+    rating: 5,
+    comment: 'Super fresh! Still had morning dew on the skin when delivered to East Legon. Best tomatoes in Accra.',
+  },
+  {
+    id: 'r2',
+    author: 'Abena Osei',
+    date: '3 days ago',
+    rating: 5,
+    comment: 'Firm and sweet for stew. Love supporting Darko Organics directly without market middlemen markup.',
+  },
+]
+
+export default function MobileProductDetailsScreen() {
   const [qty, setQty] = useState(1)
+  const [liked, setLiked] = useState(false)
   const [added, setAdded] = useState(false)
-  const [selectedOfferIndex, setSelectedOfferIndex] = useState(0)
+  const [selectedFarmerIndex, setSelectedFarmerIndex] = useState(0)
 
-  const saved = isSaved(product.id)
-  const fresh = freshnessLabel(product.expiryDate)
+  const currentOffer = COMPETING_OFFERS[selectedFarmerIndex]
 
-  // Competing farmer offers for this product
-  const competingOffers = [
-    {
-      id: farmer.id,
-      name: farmer.farmName,
-      region: `${farmer.region} (${farmer.distanceKm}km)`,
-      price: product.pricePerKg || product.priceMin,
-      rating: farmer.rating,
-      freshness: fresh.label || 'Just Harvested',
-      freshnessColor: fresh.color || '#0B3B25',
+  const product = {
+    id: 'p1',
+    slug: 'roma-tomatoes',
+    name: 'Roma Tomatoes',
+    category: 'Vegetables',
+    image: '/golden-acres/produce/roma-tomatoes-1.png',
+    description:
+      'Firm, plump, and deeply red. Hand-picked at dawn from rich mineral soils. Ideal for rich Ghanaian stews, jollof sauce, and salads.',
+    organic: true,
+    coldChain: true,
+    variableWeight: true,
+    estWeightKg: 1.0,
+    pricePerKg: currentOffer.price,
+    farmer: {
+      name: currentOffer.farmerName,
+      farm: currentOffer.farmerName,
+      location: currentOffer.region,
+      photo: '/golden-acres/farmers/yaw-darko.jpg',
+      bio: 'Pioneering certified organic agriculture in the Volta hills. Never uses synthetic pesticides.',
+      rating: currentOffer.rating,
+      reviews: 121,
+      joinedYear: 2022,
     },
-    {
-      id: 'f-alt-1',
-      name: "Auntie Ama's Garden",
-      region: 'Koforidua, Eastern (85km)',
-      price: (product.pricePerKg || product.priceMin) * 1.08,
-      rating: 4.9,
-      freshness: 'Just Harvested',
-      freshnessColor: '#0B3B25',
-    },
-    {
-      id: 'f-alt-2',
-      name: 'Fati Abukari Fields',
-      region: 'Tamale, Northern (420km)',
-      price: (product.pricePerKg || product.priceMin) * 0.94,
-      rating: 4.7,
-      freshness: 'Fresh',
-      freshnessColor: '#F59E0B',
-    },
-  ]
+    specs: [
+      { label: 'Harvest Date', val: 'Today at 5:30 AM' },
+      { label: 'Shelf Life', val: '6 Days (FEFO Guaranteed)' },
+      { label: 'Storage', val: 'Refrigerated < 8°C' },
+      { label: 'Origin', val: currentOffer.region },
+    ],
+  }
 
-  const activeOffer = competingOffers[selectedOfferIndex]
-  const activePrice = activeOffer.price
-  const lineEstimate = activePrice * qty
+  const lineEstimate = product.pricePerKg * qty
 
-  const relatedProducts = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4)
-
-  function handleAddToCart() {
-    add(product, qty)
+  const handleAdd = () => {
     setAdded(true)
     setTimeout(() => setAdded(false), 1800)
   }
@@ -116,7 +190,7 @@ export default function MobileProductDetailScreen() {
       {/* Header Navigation Bar */}
       <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-5 py-3 backdrop-blur-md">
         <Link
-          href="/m"
+          href="/preview/home"
           aria-label="Back"
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-[0_1px_4px_rgba(33,26,18,0.06)] border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
         >
@@ -125,20 +199,20 @@ export default function MobileProductDetailScreen() {
         <div className="text-center">
           <nav className="text-[11px] font-bold text-[#5C5247]">
             <span>Market</span> <span className="px-1">/</span>{' '}
-            <span className="capitalize">{product.category}</span>
+            <span>{product.category}</span>
           </nav>
         </div>
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => toggleWishlist(product.id)}
+            onClick={() => setLiked(!liked)}
             aria-label="Favorite"
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-[0_1px_4px_rgba(33,26,18,0.06)] border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
             <Heart
               className={cn(
                 'h-5 w-5',
-                saved ? 'fill-[#7A3F1C] text-[#7A3F1C]' : 'text-[#211A12]'
+                liked ? 'fill-[#7A3F1C] text-[#7A3F1C]' : 'text-[#211A12]'
               )}
             />
           </button>
@@ -160,11 +234,8 @@ export default function MobileProductDetailScreen() {
 
           <div className="absolute top-4 right-4 z-10">
             <span className="inline-flex items-center gap-1 rounded-full bg-black/45 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white backdrop-blur-md shadow-xs">
-              <span
-                className="h-2 w-2 rounded-full"
-                style={{ backgroundColor: activeOffer.freshnessColor }}
-              />
-              {activeOffer.freshness}
+              <span className="h-2 w-2 rounded-full bg-[#0B3B25]" />
+              {currentOffer.freshness}
             </span>
           </div>
 
@@ -182,11 +253,11 @@ export default function MobileProductDetailScreen() {
           {/* Title & Farmer Attribution */}
           <div className="w-full text-center">
             <Link
-              href={`/m/farmer/${farmer.slug}`}
+              href="/preview/farmers"
               className="inline-flex items-center gap-1 text-[12px] font-extrabold text-[#7A3F1C] hover:underline"
             >
               <MapPin className="h-3.5 w-3.5" />
-              <span>{activeOffer.name} · {activeOffer.region}</span>
+              <span>{product.farmer.name} · {product.farmer.location}</span>
             </Link>
 
             <h1 className="mt-1 text-[24px] font-black tracking-tight text-[#211A12]">
@@ -202,8 +273,8 @@ export default function MobileProductDetailScreen() {
                   />
                 ))}
               </div>
-              <span className="font-black text-[#211A12]">{activeOffer.rating.toFixed(1)}</span>
-              <span>({farmer.reviewCount} reviews)</span>
+              <span className="font-black text-[#211A12]">{product.farmer.rating}</span>
+              <span>({product.farmer.reviews} reviews)</span>
             </div>
 
             <p className="mt-2.5 text-[12.5px] font-medium leading-relaxed text-[#3D332A] px-2">
@@ -214,18 +285,14 @@ export default function MobileProductDetailScreen() {
 
         {/* 2. Feature Badges Strip */}
         <div className="flex flex-wrap gap-2">
-          {product.organic && (
-            <div className="flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-extrabold text-[#0B3B25] border border-[rgba(33,26,18,0.08)] shadow-2xs">
-              <Leaf className="h-3.5 w-3.5" />
-              <span>100% Certified Organic</span>
-            </div>
-          )}
-          {product.refrigerationRequired && (
-            <div className="flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-extrabold text-[#7A3F1C] border border-[rgba(33,26,18,0.08)] shadow-2xs">
-              <Snowflake className="h-3.5 w-3.5" />
-              <span>Chilled Cold-Chain Van</span>
-            </div>
-          )}
+          <div className="flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-extrabold text-[#0B3B25] border border-[rgba(33,26,18,0.08)] shadow-2xs">
+            <Leaf className="h-3.5 w-3.5" />
+            <span>100% Certified Organic</span>
+          </div>
+          <div className="flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-extrabold text-[#7A3F1C] border border-[rgba(33,26,18,0.08)] shadow-2xs">
+            <Snowflake className="h-3.5 w-3.5" />
+            <span>Chilled Cold-Chain Van</span>
+          </div>
           <div className="flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-extrabold text-[#211A12] border border-[rgba(33,26,18,0.08)] shadow-2xs">
             <ShieldCheck className="h-3.5 w-3.5 text-[#0B3B25]" />
             <span>GhanaGAP Verified</span>
@@ -237,31 +304,24 @@ export default function MobileProductDetailScreen() {
           <div className="flex items-baseline justify-between">
             <div>
               <span className="text-[26px] font-black text-[#211A12]">
-                {formatGHS(activePrice)}
+                {formatGHS(product.pricePerKg)}
               </span>
-              <span className="text-[13px] font-bold text-[#5C5247]">
-                {' '}
-                / {product.unit}
-              </span>
+              <span className="text-[13px] font-bold text-[#5C5247]"> / 1 kg</span>
             </div>
-            {product.pricePerKg && (
-              <span className="rounded-full bg-[#0B3B25]/10 px-2.5 py-1 text-[11px] font-black text-[#0B3B25]">
-                {formatGHS(product.pricePerKg)}/kg
-              </span>
-            )}
+            <span className="rounded-full bg-[#0B3B25]/10 px-2.5 py-1 text-[11px] font-black text-[#0B3B25]">
+              {formatGHS(product.pricePerKg)}/kg
+            </span>
           </div>
 
-          {product.variableWeight && (
-            <div className="mt-3 rounded-2xl bg-white/80 p-3.5 border border-[rgba(33,26,18,0.06)]">
-              <div className="flex items-start gap-2">
-                <Info className="h-4 w-4 text-[#7A3F1C] shrink-0 mt-0.5" />
-                <p className="text-[11.5px] font-semibold leading-relaxed text-[#5C5247]">
-                  <strong className="text-[#211A12]">Priced by weight:</strong> You are charged an estimate of{' '}
-                  <strong className="text-[#211A12]">{formatGHS(activePrice)}</strong> now; the final price is reconciled to the exact weight picked (typically {formatGHS(product.priceMin)}–{formatGHS(product.priceMax)}). You only pay for what you receive.
-                </p>
-              </div>
+          <div className="mt-3 rounded-2xl bg-white/80 p-3.5 border border-[rgba(33,26,18,0.06)]">
+            <div className="flex items-start gap-2">
+              <Info className="h-4 w-4 text-[#7A3F1C] shrink-0 mt-0.5" />
+              <p className="text-[11.5px] font-semibold leading-relaxed text-[#5C5247]">
+                <strong className="text-[#211A12]">Priced by weight:</strong> You are charged an estimate of{' '}
+                <strong className="text-[#211A12]">{formatGHS(product.pricePerKg)}</strong> now; the final price is reconciled to the exact weight picked (typically {formatGHS(product.pricePerKg * 0.9)}–{formatGHS(product.pricePerKg * 1.1)}). You only pay for what you receive.
+              </p>
             </div>
-          )}
+          </div>
         </div>
 
         {/* 4. Competing Farmer Offers Comparison Section */}
@@ -277,18 +337,18 @@ export default function MobileProductDetailScreen() {
             </div>
             <span className="flex items-center gap-1 rounded-full bg-[#7A3F1C]/10 px-2.5 py-1 text-[11px] font-extrabold text-[#7A3F1C]">
               <Users className="h-3.5 w-3.5" />
-              <span>{competingOffers.length} offers</span>
+              <span>{COMPETING_OFFERS.length} offers</span>
             </span>
           </div>
 
           <div className="mt-3 space-y-2.5">
-            {competingOffers.map((offer, idx) => {
-              const isSelected = selectedOfferIndex === idx
+            {COMPETING_OFFERS.map((offer, idx) => {
+              const isSelected = selectedFarmerIndex === idx
               return (
                 <button
-                  key={offer.id}
+                  key={offer.farmerId}
                   type="button"
-                  onClick={() => setSelectedOfferIndex(idx)}
+                  onClick={() => setSelectedFarmerIndex(idx)}
                   className={cn(
                     'flex w-full items-center justify-between rounded-2xl p-3.5 text-left transition-all border',
                     isSelected
@@ -299,7 +359,7 @@ export default function MobileProductDetailScreen() {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <h4 className="text-[13.5px] font-black text-[#211A12] truncate">
-                        {offer.name}
+                        {offer.farmerName}
                       </h4>
                       {isSelected && (
                         <span className="rounded-md bg-[#0B3B25] px-1.5 py-0.5 text-[9px] font-black text-white">
@@ -308,7 +368,7 @@ export default function MobileProductDetailScreen() {
                       )}
                     </div>
                     <p className="text-[11px] font-semibold text-[#5C5247]">
-                      {offer.region} · {offer.rating.toFixed(1)} ★
+                      {offer.region} · {offer.rating} ★
                     </p>
                   </div>
 
@@ -317,7 +377,7 @@ export default function MobileProductDetailScreen() {
                       {formatGHS(offer.price)}
                     </span>
                     <span className="block text-[10px] font-bold text-[#5C5247]">
-                      /{product.unit}
+                      /{offer.unit}
                     </span>
                   </div>
                 </button>
@@ -334,8 +394,8 @@ export default function MobileProductDetailScreen() {
           <div className="mt-3 flex items-center gap-3.5">
             <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs border border-[rgba(33,26,18,0.10)]">
               <Image
-                src={farmer.photo}
-                alt={farmer.name}
+                src={product.farmer.photo}
+                alt={product.farmer.name}
                 fill
                 className="object-cover"
               />
@@ -343,22 +403,22 @@ export default function MobileProductDetailScreen() {
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
                 <h4 className="text-[15px] font-extrabold text-[#211A12]">
-                  {farmer.name}
+                  {product.farmer.name}
                 </h4>
                 <ShieldCheck className="h-4 w-4 text-[#0B3B25]" />
               </div>
               <p className="text-[12px] font-bold text-[#7A3F1C]">
-                {farmer.farmName} · {farmer.region}
+                {product.farmer.location}
               </p>
               <div className="mt-0.5 flex items-center gap-1 text-[11px] font-bold text-[#5C5247]">
                 <Star className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
-                <span>{farmer.rating}</span>
-                <span>({farmer.reviewCount} reviews · Since {farmer.joinedYear})</span>
+                <span>{product.farmer.rating}</span>
+                <span>({product.farmer.reviews} reviews · Since {product.farmer.joinedYear})</span>
               </div>
             </div>
           </div>
           <p className="mt-3 text-[12px] font-medium leading-relaxed text-[#3D332A] border-t border-[rgba(33,26,18,0.06)] pt-2.5">
-            {farmer.bio}
+            {product.farmer.bio}
           </p>
         </div>
 
@@ -368,38 +428,19 @@ export default function MobileProductDetailScreen() {
             Farm-to-Door Specifications
           </h3>
           <div className="grid grid-cols-2 gap-2.5">
-            <div className="rounded-2xl bg-white/70 p-3 border border-[rgba(33,26,18,0.06)]">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5C5247]">
-                Harvest Date
-              </span>
-              <p className="mt-0.5 text-[12.5px] font-extrabold text-[#211A12]">
-                {product.harvestDate}
-              </p>
-            </div>
-            <div className="rounded-2xl bg-white/70 p-3 border border-[rgba(33,26,18,0.06)]">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5C5247]">
-                Shelf Life
-              </span>
-              <p className="mt-0.5 text-[12.5px] font-extrabold text-[#211A12]">
-                {product.shelfLifeDays} Days (FEFO)
-              </p>
-            </div>
-            <div className="rounded-2xl bg-white/70 p-3 border border-[rgba(33,26,18,0.06)]">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5C5247]">
-                Storage
-              </span>
-              <p className="mt-0.5 text-[12.5px] font-extrabold text-[#211A12]">
-                {product.refrigerationRequired ? 'Refrigerated < 8°C' : 'Cool dry place'}
-              </p>
-            </div>
-            <div className="rounded-2xl bg-white/70 p-3 border border-[rgba(33,26,18,0.06)]">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#5C5247]">
-                Origin
-              </span>
-              <p className="mt-0.5 text-[12.5px] font-extrabold text-[#211A12]">
-                {farmer.region}
-              </p>
-            </div>
+            {product.specs.map((s, idx) => (
+              <div
+                key={idx}
+                className="rounded-2xl bg-white/70 p-3 border border-[rgba(33,26,18,0.06)]"
+              >
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#5C5247]">
+                  {s.label}
+                </span>
+                <p className="mt-0.5 text-[12.5px] font-extrabold text-[#211A12]">
+                  {s.val}
+                </p>
+              </div>
+            ))}
           </div>
 
           <div className="mt-3 flex items-center gap-2 text-[12px] font-bold text-[#0B3B25] border-t border-[rgba(33,26,18,0.06)] pt-3">
@@ -408,33 +449,93 @@ export default function MobileProductDetailScreen() {
           </div>
         </div>
 
-        {/* 7. More from the Market (Related Produce) */}
-        {relatedProducts.length > 0 && (
-          <div className="pt-2">
-            <div className="flex items-center justify-between mb-3">
-              <div>
-                <h3 className="text-[16px] font-extrabold tracking-tight text-[#211A12]">
-                  More From The Market
-                </h3>
-                <p className="text-[11px] font-semibold text-[#5C5247]">
-                  Fresh picks you might also like
-                </p>
-              </div>
-              <Link
-                href="/m/categories"
-                className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
-              >
-                See all
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              {relatedProducts.map((p) => (
-                <MobileProductCard key={p.id} product={p} />
-              ))}
+        {/* 7. Customer Reviews & Ratings */}
+        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+          <div className="flex items-center justify-between pb-3 border-b border-[rgba(33,26,18,0.06)]">
+            <h3 className="text-[14px] font-black text-[#211A12]">
+              Customer Reviews ({product.farmer.reviews})
+            </h3>
+            <div className="flex items-center gap-1 text-[13px] font-black text-[#211A12]">
+              <Star className="h-4 w-4 fill-[#F0A81E] text-[#F0A81E]" />
+              <span>4.9 / 5.0</span>
             </div>
           </div>
-        )}
+
+          <div className="mt-3 space-y-3">
+            {REVIEWS_DATA.map((rev) => (
+              <div
+                key={rev.id}
+                className="rounded-2xl bg-white/70 p-3.5 border border-[rgba(33,26,18,0.06)]"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[12.5px] font-extrabold text-[#211A12]">
+                      {rev.author}
+                    </span>
+                    <span className="rounded-md bg-[#0B3B25]/10 px-1.5 py-0.2 text-[9px] font-bold text-[#0B3B25]">
+                      Verified Buyer
+                    </span>
+                  </div>
+                  <span className="text-[10.5px] font-semibold text-[#5C5247]">
+                    {rev.date}
+                  </span>
+                </div>
+                <div className="mt-1 flex items-center">
+                  {Array.from({ length: rev.rating }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]"
+                    />
+                  ))}
+                </div>
+                <p className="mt-1.5 text-[12px] font-medium leading-relaxed text-[#3D332A]">
+                  {rev.comment}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 8. More from the Market (Related Produce) */}
+        <div className="pt-2">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <h3 className="text-[16px] font-extrabold tracking-tight text-[#211A12]">
+                More From The Market
+              </h3>
+              <p className="text-[11px] font-semibold text-[#5C5247]">
+                Fresh picks you might also like
+              </p>
+            </div>
+            <Link
+              href="/preview/categories"
+              className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
+            >
+              See all
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            {RELATED_PRODUCE.map((prod) => (
+              <MobileProduceCardRich
+                key={prod.id}
+                id={prod.id}
+                slug={prod.slug}
+                name={prod.name}
+                farmName={prod.farmName}
+                image={prod.image}
+                price={prod.price}
+                unit={prod.unit}
+                rating={prod.rating}
+                reviews={prod.reviews}
+                organic={prod.organic}
+                freshness={prod.freshness}
+                freshnessColor={prod.freshnessColor}
+                offerCount={prod.offerCount}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Sticky Bottom Add to Cart Action Bar */}
@@ -463,7 +564,7 @@ export default function MobileProductDetailScreen() {
         {/* Primary CTA Button */}
         <button
           type="button"
-          onClick={handleAddToCart}
+          onClick={handleAdd}
           className="flex flex-1 ml-3 items-center justify-center gap-2 rounded-full bg-[#0B3B25] py-3 text-[14px] font-extrabold text-white shadow-md active:scale-[0.98] transition-transform"
         >
           {added ? (

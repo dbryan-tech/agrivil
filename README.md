@@ -30,12 +30,12 @@ Agrivil utilizes an earthy, fresh, and modern organic palette tailored for the G
 
 | Color Role | Hex Code | Usage |
 |---|---|---|
-| **Brand Primary Green** | `#0F7A43` | Primary CTA buttons, key brand headings, active navigation states, verified badges |
-| **Brand Copper** | `#7A3F1C` | Accent links, secondary buttons, warm icons, helper actions |
-| **General Background (Porcelain Cream)** | `#FAF7F0` | Softened light background for mobile (`/m`) screens (20% softer than `#F8F4EC`) |
-| **Text Dark Neutral** | `#2B1F17` | High-contrast headings and body text |
-| **Text Muted** | `#6E6A63` | Subtitles, secondary copy, and helper descriptions |
-| **Surface White** | `#FFFFFF` | Input cards, confirmation containers, and social login buttons |
+| **Brand Primary Green** | `#0B3B25` | Primary CTA buttons, key brand headings, active navigation states, verified badges |
+| **Brand Copper** | `#7A3F1C` | Accent links, secondary buttons, transit ribbons, warm icons, helper actions |
+| **General Background & Card (Clean Bright Tan)** | `#F7F5F0` | Canonical bright & clean warm porcelain tan canvas and card background for mobile (`/m` and `/preview`) screens |
+| **Text Dark Neutral / Ink** | `#211A12` | High-contrast headings, process badges, and body text |
+| **Text Muted** | `#8A8175` | Subtitles, secondary copy, and helper descriptions |
+| **Surface White** | `#FFFFFF` | Search inputs, filter buttons, elevated dialogs, and action containers |
 
 ### Mobile Flow Architecture (`/m`)
 
