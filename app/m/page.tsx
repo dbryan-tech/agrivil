@@ -134,37 +134,57 @@ export default function MobileHomeScreen() {
         </Link>
       </div>
 
-      {/* 3. Hero Promo Banner Card */}
+      {/* 3. Scaled-down Real Web Hero Banner */}
       <div className="relative px-5 pt-3.5">
-        <div className="relative overflow-hidden rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
-          <div className="relative z-10 max-w-[210px]">
-            <span className="inline-block rounded-full bg-[#0B3B25]/10 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-[#0B3B25]">
-              Dawn Harvest
-            </span>
-            <h2 className="mt-1.5 text-[18px] font-black leading-tight text-[#211A12]">
-              Fresh From The Farm
-            </h2>
-            <p className="mt-1 text-[11.5px] font-semibold text-[#5C5247] leading-relaxed">
-              Harvested at sunrise in Ashanti &amp; Eastern hills. Dispatched cold.
-            </p>
-            <Link
-              href="/m/categories"
-              className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-[#0B3B25] px-4 py-2 text-[12px] font-extrabold text-white shadow-xs active:scale-95 transition-transform"
-            >
-              <span>Shop Harvest</span>
-              <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
-            </Link>
-          </div>
-
-          <div className="absolute -right-2 -bottom-2 h-36 w-36 overflow-hidden pointer-events-none">
+        <Link
+          href="/m/categories"
+          className="group relative block overflow-hidden rounded-[28px] shadow-[0_4px_20px_-4px_rgba(33,26,18,0.12)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.99] transition-transform"
+        >
+          <div className="relative min-h-[250px] sm:min-h-[270px] w-full overflow-hidden">
             <Image
-              src="/golden-acres/bundle-box.png"
-              alt="Produce crate"
+              src="/golden-acres/new-hero.png"
+              alt="Fresh Ghanaian farm produce"
               fill
-              className="object-contain"
+              priority
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
+            {/* Multi-gradient backdrop for crisp legibility */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/65 to-black/25" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+
+            <div className="relative z-10 flex h-full flex-col justify-between p-5">
+              {/* Yellow Location Pill */}
+              <div className="flex items-center">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F0A81E] px-3 py-1 text-[10px] font-black uppercase tracking-wider text-[#211A12] shadow-xs">
+                  <MapPin className="h-3 w-3 stroke-[2.8]" />
+                  <span>Now Delivering in Accra</span>
+                </span>
+              </div>
+
+              {/* Title & Subtitle */}
+              <div className="mt-3.5 max-w-[270px]">
+                <h2 className="text-[22px] font-black leading-[1.12] tracking-tight text-white">
+                  Fresh from <br />
+                  the farm, <span className="text-[#10B981]">to your door</span>
+                </h2>
+                <p className="mt-1.5 text-[11.5px] font-medium leading-relaxed text-white/90">
+                  Order produce picked this morning by Ghana&apos;s local farmers. Priced by weight, delivered cold, paid with Mobile Money.
+                </p>
+              </div>
+
+              {/* CTA & Delivery info */}
+              <div className="mt-3.5 flex flex-wrap items-center gap-3">
+                <div className="inline-flex items-center gap-1.5 rounded-full bg-[#0B3B25] px-4 py-2 text-[12px] font-extrabold text-white shadow-sm transition-transform active:scale-95 group-hover:bg-[#072618]">
+                  <span>Shop today&apos;s harvest</span>
+                  <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
+                </div>
+                <span className="text-[11px] font-bold text-white/90">
+                  Free delivery over GH₵250
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
+        </Link>
 
         {/* Value Badges Strip */}
         <div className="mt-3 flex items-center justify-between rounded-2xl bg-white/80 p-3 shadow-2xs border border-[rgba(33,26,18,0.06)] text-[11px] font-bold text-[#5C5247]">
