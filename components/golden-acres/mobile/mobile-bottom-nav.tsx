@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, FileText, ShoppingBag, User, LayoutGrid } from 'lucide-react'
+import { Home, Package, ShoppingBag, User, LayoutGrid } from 'lucide-react'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { cn } from '@/lib/utils'
 
@@ -13,8 +13,8 @@ export function MobileBottomNav() {
   const TABS = [
     { href: '/m', label: 'Home', icon: Home, match: (p: string) => p === '/m' },
     { href: '/m/categories', label: 'Categories', icon: LayoutGrid, match: (p: string) => p.startsWith('/m/categories') },
-    { href: '/m/orders', label: 'Shipping', icon: FileText, match: (p: string) => p.startsWith('/m/orders') },
-    { href: '/m/cart', label: 'Basket', icon: ShoppingBag, badge: count, match: (p: string) => p.startsWith('/m/cart') },
+    { href: '/m/orders', label: 'Orders', icon: Package, match: (p: string) => p.startsWith('/m/orders') },
+    { href: '/m/cart', label: 'Cart', icon: ShoppingBag, badge: count, match: (p: string) => p.startsWith('/m/cart') },
     { href: '/m/account', label: 'Account', icon: User, match: (p: string) => p.startsWith('/m/account') },
   ]
 

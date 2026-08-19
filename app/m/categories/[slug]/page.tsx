@@ -20,6 +20,7 @@ import { formatGHS } from '@/lib/golden-acres/format'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { MobileBottomNav } from '@/components/golden-acres/mobile/mobile-bottom-nav'
 import { MobileProductCard } from '@/components/golden-acres/mobile/mobile-product-card'
+import { ProductImageShell } from '@/app/preview/_lib/premium'
 import { cn } from '@/lib/utils'
 
 interface CategoryMeta {
@@ -203,65 +204,76 @@ export default function MobileCategoryDetailScreen() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#FAF7F0] pb-24 text-[#2B1F17]">
+    <div className="relative min-h-dvh bg-[#F7F5F0] pb-28 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
       {/* 1. Header Bar */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[#E0DACB] bg-[#FAF7F0] px-3 sm:px-4 py-2.5"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-4 py-3 backdrop-blur-md"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
       >
         <div className="flex items-center gap-2.5">
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
-          <h1 className="text-base font-extrabold text-[#2B1F17]">{meta.title}</h1>
+          <h1 className="text-[17px] font-extrabold text-[#211A12]">{meta.title}</h1>
         </div>
 
         <Link
           href="/m/cart"
           aria-label="Basket"
-          className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full bg-[#0F7A43] text-white shadow-xs"
+          className="relative flex h-10 w-10 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-sm active:scale-95 transition-transform"
         >
           <ShoppingBag className="h-4 w-4" />
           {count > 0 && (
-            <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#A3E635] px-1 text-[9px] font-extrabold text-[#0B3B25]">
+            <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#7A3F1C] px-1 text-[9px] font-black text-white shadow-xs">
               {count > 9 ? '9+' : count}
             </span>
           )}
         </Link>
       </header>
 
-      {/* 2. Category Hero Image Banner (Matching Screens 2-8) */}
-      <div className="relative aspect-[16/8] w-full overflow-hidden bg-[#2B1F17]">
-        <Image
-          src={meta.bannerImage}
-          alt={meta.title}
-          fill
-          priority
-          className="object-cover opacity-90"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        <div className="absolute bottom-3 left-3.5 right-3.5 text-white">
-          <span className="inline-flex items-center gap-1 rounded-full bg-[#0F7A43] px-2 py-0.5 text-[9px] font-extrabold text-white">
-            <Sparkles className="h-2.5 w-2.5" /> Farm Fresh
-          </span>
-          <h2 className="mt-1 text-lg font-extrabold text-white sm:text-xl">
-            {meta.title}
-          </h2>
+      {/* 2. Category Hero Image Banner */}
+      <div className="relative px-5 pt-3">
+        <div className="relative aspect-[16/8] w-full overflow-hidden rounded-[26px] bg-[#211A12] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.08)]">
+          <Image
+            src={meta.bannerImage}
+            alt={meta.title}
+            fill
+            priority
+            className="object-cover opacity-90"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+          <div className="absolute bottom-3.5 left-4 right-4 text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[9.5px] font-black uppercase tracking-wider text-white shadow-xs">
+              <Sparkles className="h-2.5 w-2.5" /> Farm Fresh
+            </span>
+            <h2 className="mt-1 text-[20px] font-black tracking-tight text-white sm:text-2xl">
+              {meta.title}
+            </h2>
+          </div>
         </div>
       </div>
 
       {/* 3. Subtitle & Filter Trigger Bar */}
-      <div className="px-3 sm:px-4 py-3">
+      <div className="px-5 py-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1">
-            <h3 className="text-sm font-extrabold text-[#2B1F17]">{meta.title}</h3>
-            <p className="mt-0.5 text-xs text-[#6E6A63]">{meta.subtitle}</p>
-            <span className="mt-1.5 inline-block text-[11px] font-bold text-[#0F7A43]">
+            <h3 className="text-[14px] font-extrabold text-[#211A12]">{meta.title}</h3>
+            <p className="mt-0.5 text-[11.5px] font-medium text-[#5C5247]">{meta.subtitle}</p>
+            <span className="mt-1 inline-block text-[11px] font-extrabold text-[#0B3B25]">
               {meta.count}
             </span>
           </div>
@@ -270,7 +282,7 @@ export default function MobileCategoryDetailScreen() {
             <button
               type="button"
               onClick={() => setSortOpen(true)}
-              className="ga-press flex items-center gap-1 rounded-full border border-[#E0DACB] bg-white px-3 py-1.5 text-xs font-bold text-[#2B1F17] shadow-xs"
+              className="flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.08)]"
             >
               <span>Sort</span>
             </button>
@@ -278,41 +290,38 @@ export default function MobileCategoryDetailScreen() {
             <button
               type="button"
               onClick={() => setFilterOpen(true)}
-              className="ga-press flex items-center gap-1.5 rounded-full border border-[#E0DACB] bg-white px-3 py-1.5 text-xs font-bold text-[#2B1F17] shadow-xs hover:border-[#0F7A43]"
+              className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.08)] hover:border-[#0B3B25]"
             >
-              <SlidersHorizontal className="h-3.5 w-3.5 text-[#0F7A43]" />
+              <SlidersHorizontal className="h-3.5 w-3.5 text-[#0B3B25]" />
               <span>Filter</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* 4. Product List (Exact Row-by-Row Layout Matching Screens 2-8) */}
-      <div className="px-3 sm:px-4 space-y-2.5">
+      {/* 4. Product List with Dynamic ProductImageShell */}
+      <div className="px-5 space-y-3">
         {meta.canonicalItems.map((item) => {
           const isAdded = addedItem === item.name
           return (
             <div
               key={item.name}
-              className="ga-press flex items-center justify-between overflow-hidden rounded-3xl border border-[#E0DACB] bg-white p-3 shadow-xs hover:border-[#0F7A43]/40 transition-all"
+              className="flex items-center justify-between overflow-hidden rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.99] transition-all"
             >
               <div className="flex items-center gap-3">
-                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-[#FAF7F0]">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-contain p-1.5"
-                  />
-                </div>
+                <ProductImageShell
+                  src={item.image}
+                  alt={item.name}
+                  className="h-14 w-14 rounded-2xl"
+                />
                 <div className="flex flex-col">
-                  <h4 className="text-xs font-extrabold text-[#2B1F17]">
+                  <h4 className="text-[13.5px] font-extrabold text-[#211A12]">
                     {item.name}
                   </h4>
-                  <span className="text-[11px] font-bold text-[#0F7A43]">
+                  <span className="text-[12px] font-black text-[#0B3B25]">
                     {item.priceText}
                   </span>
-                  <span className="text-[9px] text-[#6E6A63]">
+                  <span className="text-[10px] font-semibold text-[#5C5247]">
                     {item.farmerName}
                   </span>
                 </div>
@@ -324,8 +333,8 @@ export default function MobileCategoryDetailScreen() {
                 onClick={() => handleQuickAdd(item)}
                 aria-label={`Add ${item.name}`}
                 className={cn(
-                  'ga-press flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white shadow-xs transition-all',
-                  isAdded ? 'bg-[#0B3B25]' : 'bg-[#0F7A43] hover:bg-[#0B3B25]'
+                  'flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white shadow-xs transition-all active:scale-90',
+                  isAdded ? 'bg-[#0B3B25]/20 text-[#0B3B25]' : 'bg-[#0B3B25] text-white hover:bg-[#072618]'
                 )}
               >
                 {isAdded ? (

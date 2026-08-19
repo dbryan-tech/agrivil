@@ -135,7 +135,7 @@ export default function MobileOrderTrackingScreen() {
         </div>
 
         {/* Ordered Items Summary */}
-        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] space-y-2.5">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-[rgba(33,26,18,0.06)]">
             <h3 className="text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
               Items in this Order
@@ -143,14 +143,34 @@ export default function MobileOrderTrackingScreen() {
             <PackageBoxes3D size={48} />
           </div>
 
-          <div className="flex items-center justify-between pt-1 text-[13px]">
-            <span className="text-[#211A12] font-semibold">Fresh Roma Tomatoes (1.0 kg)</span>
-            <span className="font-bold text-[#0B3B25]">{formatGHS(12.0)}</span>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <ProductImageShell
+                src="/golden-acres/produce/roma-tomatoes-1.png"
+                alt="Roma Tomatoes"
+                className="h-12 w-12 rounded-xl"
+              />
+              <div>
+                <h4 className="text-[13.5px] font-extrabold text-[#211A12]">Roma Tomatoes</h4>
+                <p className="text-[11px] font-semibold text-[#5C5247]">1.0 kg · Auntie Ama</p>
+              </div>
+            </div>
+            <span className="font-extrabold text-[13px] text-[#0B3B25]">{formatGHS(12.0)}</span>
           </div>
 
-          <div className="flex items-center justify-between text-[13px]">
-            <span className="text-[#211A12] font-semibold">White Yam (2.0 kg est)</span>
-            <span className="font-bold text-[#0B3B25]">{formatGHS(20.0)}</span>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <ProductImageShell
+                src="/golden-acres/produce/white-yam.png"
+                alt="White Yam"
+                className="h-12 w-12 rounded-xl"
+              />
+              <div>
+                <h4 className="text-[13.5px] font-extrabold text-[#211A12]">White Yam</h4>
+                <p className="text-[11px] font-semibold text-[#5C5247]">2.0 kg est · Kwame Mensah</p>
+              </div>
+            </div>
+            <span className="font-extrabold text-[13px] text-[#0B3B25]">{formatGHS(20.0)}</span>
           </div>
 
           <div className="flex items-center justify-between border-t border-[rgba(33,26,18,0.08)] pt-2.5 text-[15px] font-black text-[#211A12]">

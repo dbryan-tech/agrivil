@@ -186,25 +186,30 @@ export default function MobileOrdersScreen() {
             {/* Top-Right Diagonal Ribbon */}
             <StatusRibbon text={order.ribbon} tone={order.ribbonTone} />
 
-            {/* Header: Tracking Code & Away ETA */}
-            <div className="flex items-center gap-2 pr-24">
-              <span className="text-[12px] font-extrabold tracking-wide text-[#211A12]">
-                {order.trackingCode}
-              </span>
-              <span className="text-[12px] text-[#5C5247]">·</span>
-              <span className="text-[12px] font-bold text-[#7A3F1C]">
-                {order.id}
-              </span>
-            </div>
+            {/* Top Row: +40% Borderless Dynamic Product Image Shell + ID + Title + Farmer */}
+            <div className="flex items-center gap-[clamp(12px,2vw,16px)] pr-16">
+              <ProductImageShell
+                src={order.image}
+                alt={order.title}
+                priority
+              />
 
-            {/* Produce Title & Farm Attribution */}
-            <div className="mt-2.5 pr-20">
-              <h3 className="text-[15px] font-extrabold leading-snug text-[#211A12]">
-                {order.title}
-              </h3>
-              <p className="mt-0.5 text-[11.5px] font-semibold text-[#5C5247]">
-                {order.farmerName}
-              </p>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5 text-[12px] font-bold text-[#5C5247]">
+                  <span className="text-[#211A12] font-extrabold">{order.trackingCode}</span>
+                  <span>·</span>
+                  <span className="text-[#7A3F1C]">{order.id}</span>
+                </div>
+                <h3 className="mt-0.5 truncate text-[14.5px] font-black text-[#211A12] leading-tight">
+                  {order.title}
+                </h3>
+                <p className="truncate text-[11.5px] font-semibold text-[#5C5247]">
+                  {order.farmerName}
+                </p>
+                <p className="mt-0.5 text-[12.5px] font-black text-[#0B3B25]">
+                  {formatGHS(order.totalGHS)}
+                </p>
+              </div>
             </div>
 
             {/* Dotted Cold-Chain Progress Track */}

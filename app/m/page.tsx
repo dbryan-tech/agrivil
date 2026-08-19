@@ -138,24 +138,6 @@ export default function MobileHomeScreen() {
       {/* 3. Scaled-down Real Web Hero Banner (streams from HERO_BANNER_DATA) */}
       <div className="relative px-5 pt-3.5">
         <MobileHeroBanner />
-
-        {/* Value Badges Strip */}
-        <div className="mt-3 flex items-center justify-between rounded-2xl bg-white/80 p-3 shadow-2xs border border-[rgba(33,26,18,0.06)] text-[11px] font-bold text-[#5C5247]">
-          <div className="flex items-center gap-1.5">
-            <Truck className="h-4 w-4 text-[#0B3B25]" />
-            <span>Chilled Cold-Chain</span>
-          </div>
-          <div className="h-3 w-px bg-[rgba(33,26,18,0.12)]" />
-          <div className="flex items-center gap-1.5">
-            <ShieldCheck className="h-4 w-4 text-[#0B3B25]" />
-            <span>Direct Fair Trade</span>
-          </div>
-          <div className="h-3 w-px bg-[rgba(33,26,18,0.12)]" />
-          <div className="flex items-center gap-1.5">
-            <Sparkles className="h-4 w-4 text-[#7A3F1C]" />
-            <span>FEFO Quality</span>
-          </div>
-        </div>
       </div>
 
       {/* 4. Category Chips Scroller */}

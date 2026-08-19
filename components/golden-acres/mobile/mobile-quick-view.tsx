@@ -90,22 +90,22 @@ export function MobileQuickView({
       />
 
       {/* Modal Sheet Container */}
-      <div className="relative z-10 w-full max-w-md max-h-[88vh] overflow-y-auto rounded-t-3xl bg-[#FAF7F0] p-4 sm:p-5 shadow-2xl animate-in slide-in-from-bottom duration-300">
+      <div className="relative z-10 w-full max-w-md max-h-[88vh] overflow-y-auto rounded-t-3xl bg-[#FDFDFB] p-4 sm:p-5 shadow-2xl animate-in slide-in-from-bottom duration-300">
         {/* Drag handle & close button */}
         <div className="flex items-center justify-between pb-3">
-          <div className="h-1 w-10 rounded-full bg-[#E0DACB] mx-auto" />
+          <div className="h-1 w-10 rounded-full bg-[#EAE5DC] mx-auto" />
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="ga-press absolute right-3.5 top-3.5 flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+            className="absolute right-3.5 top-3.5 flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Product Photo Header with badges */}
-        <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-white shadow-xs">
+        <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-white shadow-2xs">
           <Image
             src={product.image}
             alt={product.name}
@@ -115,18 +115,18 @@ export function MobileQuickView({
 
           <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
             {product.organic && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#0F7A43] px-2 py-0.5 text-[9px] font-extrabold text-white shadow-xs">
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-xs">
                 <Leaf className="h-2.5 w-2.5" /> Organic
               </span>
             )}
-            <span className="inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[9px] font-extrabold text-white backdrop-blur-xs">
-              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: fresh.color }} />
-              {fresh.label}
+            <span className="inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white backdrop-blur-xs">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: fresh.color || '#0B3B25' }} />
+              {fresh.label || 'FRESH'}
             </span>
           </div>
 
           {isLowStock && !isOutOfStock && (
-            <span className="absolute bottom-2.5 left-2.5 rounded-md bg-[#DC2626] px-2 py-0.5 text-[9px] font-extrabold text-white shadow-xs">
+            <span className="absolute bottom-2.5 left-2.5 rounded-md bg-[#DC2626] px-2 py-0.5 text-[9px] font-black text-white shadow-xs">
               Low Stock: Few kg left
             </span>
           )}
@@ -134,25 +134,25 @@ export function MobileQuickView({
 
         {/* Title & Pricing */}
         <div className="mt-3.5">
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#7A3F1C]">
+          <span className="text-[10px] font-black uppercase tracking-wider text-[#7A3F1C]">
             {product.category}
           </span>
-          <h2 className="ga-headline text-lg font-extrabold text-[#2B1F17]">
+          <h2 className="text-lg font-black text-[#211A12]">
             {product.name}
           </h2>
 
           <div className="mt-1 flex items-baseline gap-2">
-            <span className="text-xl font-extrabold text-[#0F7A43]">
+            <span className="text-xl font-black text-[#0B3B25]">
               {formatGHS(product.priceMin)}
             </span>
-            <span className="text-xs font-semibold text-[#6E6A63]">
+            <span className="text-xs font-semibold text-[#5C5247]">
               / {product.unit} {product.variableWeight ? '(est weight)' : ''}
             </span>
           </div>
         </div>
 
         {/* Description */}
-        <p className="mt-2 text-xs leading-relaxed text-[#6E6A63]">
+        <p className="mt-2 text-xs leading-relaxed text-[#5C5247]">
           {product.description}
         </p>
 
@@ -161,10 +161,10 @@ export function MobileQuickView({
           <Link
             href={`/m/farmers/${farmer.slug}`}
             onClick={onClose}
-            className="ga-press mt-3 flex items-center justify-between rounded-2xl border border-[#E0DACB] bg-white p-2.5 shadow-xs"
+            className="mt-3 flex items-center justify-between rounded-2xl bg-white p-2.5 shadow-2xs border border-[rgba(33,26,18,0.06)] active:scale-[0.99]"
           >
             <div className="flex items-center gap-2.5">
-              <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border border-[#E0DACB]">
+              <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border border-[rgba(33,26,18,0.10)]">
                 <Image
                   src={farmer.photo}
                   alt={farmer.name}
@@ -173,24 +173,24 @@ export function MobileQuickView({
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-xs font-extrabold text-[#2B1F17]">{farmer.name}</span>
-                <span className="text-[10px] font-medium text-[#0F7A43]">{farmer.town}, {farmer.region}</span>
+                <span className="text-xs font-extrabold text-[#211A12]">{farmer.name}</span>
+                <span className="text-[10px] font-bold text-[#0B3B25]">{farmer.town}, {farmer.region}</span>
               </div>
             </div>
             <div className="flex items-center gap-1 text-[10px] text-[#7A3F1C]">
-              <Star className="h-3 w-3 fill-[#FBBF24] text-[#FBBF24]" />
-              <span className="font-bold text-[#2B1F17]">{farmer.rating}</span>
-              <ChevronRight className="h-4 w-4 text-[#6E6A63]" />
+              <Star className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
+              <span className="font-black text-[#211A12]">{farmer.rating}</span>
+              <ChevronRight className="h-4 w-4 text-[#5C5247]" />
             </div>
           </Link>
         )}
 
         {/* Variable Weight Multiplier */}
         {product.variableWeight && (
-          <div className="mt-3 rounded-2xl border border-[#E0DACB] bg-white p-3 shadow-xs">
-            <div className="flex items-center justify-between text-xs font-bold text-[#2B1F17]">
+          <div className="mt-3 rounded-2xl bg-white p-3 shadow-2xs border border-[rgba(33,26,18,0.06)]">
+            <div className="flex items-center justify-between text-xs font-bold text-[#211A12]">
               <span>Choose Weight</span>
-              <span className="text-[#0F7A43] font-extrabold">{selectedWeight} kg</span>
+              <span className="text-[#0B3B25] font-extrabold">{selectedWeight} kg</span>
             </div>
             <div className="mt-2 flex gap-2">
               {[0.5, 1.0, 1.5, 2.0].map((w) => (
@@ -199,10 +199,10 @@ export function MobileQuickView({
                   type="button"
                   onClick={() => setSelectedWeight(w)}
                   className={cn(
-                    'ga-press flex-1 rounded-xl py-1.5 text-xs font-bold border transition-all',
+                    'flex-1 rounded-xl py-1.5 text-xs font-bold border transition-all',
                     selectedWeight === w
-                      ? 'border-[#0F7A43] bg-[#0F7A43] text-white shadow-xs'
-                      : 'border-[#E0DACB] bg-[#FAF7F0] text-[#2B1F17]'
+                      ? 'border-[#0B3B25] bg-[#0B3B25] text-white shadow-xs'
+                      : 'border-[rgba(33,26,18,0.10)] bg-[#F7F5F0] text-[#211A12]'
                   )}
                 >
                   {w} kg
@@ -213,25 +213,25 @@ export function MobileQuickView({
         )}
 
         {/* Quantity Controls & Add to Cart Footer */}
-        <div className="mt-4 flex items-center justify-between gap-3 border-t border-[#E0DACB] pt-3">
+        <div className="mt-4 flex items-center justify-between gap-3 border-t border-[rgba(33,26,18,0.06)] pt-3">
           {/* Stepper */}
-          <div className="flex items-center gap-2 rounded-2xl border border-[#E0DACB] bg-white p-1.5 shadow-xs">
+          <div className="flex items-center gap-2 rounded-2xl bg-white p-1.5 shadow-2xs border border-[rgba(33,26,18,0.08)]">
             <button
               type="button"
               onClick={() => setQty(Math.max(1, qty - 1))}
               disabled={isOutOfStock}
-              className="ga-press flex h-8 w-8 items-center justify-center rounded-xl bg-[#FAF7F0] text-[#2B1F17] disabled:opacity-50"
+              className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#F7F5F0] text-[#211A12] disabled:opacity-50 active:scale-95"
             >
               <Minus className="h-3.5 w-3.5" />
             </button>
-            <span className="min-w-6 text-center text-xs font-extrabold text-[#2B1F17]">
+            <span className="min-w-6 text-center text-xs font-black text-[#211A12]">
               {qty}
             </span>
             <button
               type="button"
               onClick={() => setQty(qty + 1)}
               disabled={isOutOfStock}
-              className="ga-press flex h-8 w-8 items-center justify-center rounded-xl bg-[#FAF7F0] text-[#2B1F17] disabled:opacity-50"
+              className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#F7F5F0] text-[#211A12] disabled:opacity-50 active:scale-95"
             >
               <Plus className="h-3.5 w-3.5" />
             </button>
@@ -243,12 +243,12 @@ export function MobileQuickView({
             onClick={handleAddToCart}
             disabled={isOutOfStock}
             className={cn(
-              'ga-press flex-1 flex h-12 items-center justify-center gap-2 rounded-2xl font-bold text-white shadow-md transition-all',
+              'flex-1 flex h-12 items-center justify-center gap-2 rounded-full font-black text-white shadow-md transition-all active:scale-[0.98]',
               isOutOfStock
                 ? 'bg-gray-400 cursor-not-allowed'
                 : added
-                ? 'bg-[#0B3B25]'
-                : 'bg-[#0F7A43] hover:bg-[#0B3B25]'
+                ? 'bg-[#0B3B25]/20 text-[#0B3B25]'
+                : 'bg-[#0B3B25] hover:bg-[#072618]'
             )}
           >
             {isOutOfStock ? (
