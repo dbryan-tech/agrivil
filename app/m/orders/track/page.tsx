@@ -6,30 +6,23 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import {
   ArrowLeft,
+  MoreVertical,
   Truck,
   Phone,
   MessageSquare,
   Check,
   Star,
+  Store,
 } from 'lucide-react'
 import { formatGHS } from '@/lib/golden-acres/format'
 import { cn } from '@/lib/utils'
-import { PackageBoxes3D, ProductImageShell } from '@/app/preview/_lib/premium'
+import { PackageBoxes3D } from '@/app/preview/_lib/premium'
 
 export default function MobileOrderLiveTrackingScreen() {
   const router = useRouter()
-  const [tipped, setTipped] = useState(false)
-
-  // Real AgriVil 3PL Cold-Chain Timeline Events
-  const steps = [
-    { label: 'Harvested at Koforidua Farm (Auntie Ama)', time: '6:40 AM', done: true },
-    { label: 'FEFO Quality Check & Packed with Ice Packs', time: '9:10 AM', done: true },
-    { label: 'Dispatched with Ibrahim Salifu (Van GR 4821-22)', time: '1:20 PM', done: true, current: true },
-    { label: 'Estimated Delivery at East Legon (GA-183-4250)', time: '4:00 PM', done: false },
-  ]
 
   return (
-    <div className="relative min-h-dvh bg-[#F7F5F0] pb-24 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+    <div className="relative min-h-dvh w-full bg-[#EAE6DE] text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden flex flex-col justify-between">
       {/* Zero Scrollbar Global Styles */}
       <style jsx global>{`
         * {
@@ -43,262 +36,321 @@ export default function MobileOrderLiveTrackingScreen() {
         }
       `}</style>
 
-      {/* Top warm brand gradient backdrop */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
-        style={{
-          background:
-            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.15) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
-        }}
-      />
-
-      {/* Header */}
-      <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
-      >
-        <div className="flex items-center gap-2.5">
+      {/* ========================================================
+          TOP HALF: VECTOR STREET MAP (Matching Reference Image 3)
+         ======================================================== */}
+      <div className="relative h-[48vh] min-h-[300px] w-full overflow-hidden bg-[#EAE6DE]">
+        {/* Floating Top Navigation Header */}
+        <header
+          className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-3.5 pt-3"
+          style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
+        >
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#211A12] shadow-sm border border-[rgba(33,26,18,0.06)] active:scale-95 transition-transform"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4 stroke-[2.5]" />
           </button>
-          <div>
-            <h1 className="text-[16px] font-black tracking-tight text-[#211A12]">
-              Live Tracking
-            </h1>
-            <p className="text-[11px] font-bold text-[#5C5247]">
-              Order ID: GA-24817 (SWFT-7781294)
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-1.5 rounded-full bg-[#7A3F1C]/10 px-2.5 py-0.5 text-[10px] font-black text-[#7A3F1C]">
-          <span className="h-2 w-2 rounded-full bg-[#7A3F1C] animate-pulse" />
-          IN TRANSIT
-        </div>
-      </header>
 
-      <div className="relative px-3 pt-2.5 space-y-2.5">
-        {/* Estimated Arrival Hero */}
-        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
-              <Truck className="h-5 w-5 stroke-[2.4]" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#7A3F1C]">
-                4 Hours Away · Cold-Chain Active
-              </span>
-              <h2 className="text-[16px] font-black leading-tight tracking-tight text-[#211A12]">
-                Arriving Today by 4:00 PM
-              </h2>
-              <p className="mt-0.5 text-[11.5px] font-semibold text-[#5C5247]">
-                East Legon, GA-183-4250 (3 stops ahead)
-              </p>
-            </div>
-          </div>
-        </div>
+          <h1 className="text-[16px] font-black tracking-tight text-[#211A12]">
+            Track Package
+          </h1>
 
-        {/* Visual GPS Route Representation */}
-        <div className="relative h-48 w-full overflow-hidden rounded-[24px] bg-[#EAE5DC] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.08)]">
-          {/* Map Grid Pattern */}
-          <div className="absolute inset-0 bg-[radial-gradient(rgba(122,63,28,0.12)_1.5px,transparent_1.5px)] [background-size:22px_22px] opacity-70" />
-          
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'linear-gradient(135deg, rgba(122,63,28,0.15) 0%, rgba(11,59,37,0.10) 60%, rgba(247,245,240,0.2) 100%)',
-            }}
-          />
-
-          {/* Dotted Curved Route Line */}
-          <svg className="absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 100 100">
-            <path
-              d="M18 32 C 38 28, 48 48, 82 72"
-              fill="none"
-              stroke="#7A3F1C"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeDasharray="2 3"
-            />
-          </svg>
-
-          {/* Origin: Tema Aggregation Hub */}
-          <div className="absolute top-[22%] left-[12%] flex flex-col items-center">
-            <span className="rounded-md bg-white/95 px-2 py-0.5 text-[9px] font-black text-[#3D332A] shadow-sm">
-              Tema Hub
-            </span>
-            <div className="mt-1 h-3 w-3 rounded-full bg-[#5C5247] ring-4 ring-white shadow-sm" />
-          </div>
-
-          {/* Active Courier Delivery Marker */}
-          <div className="absolute top-[48%] left-[50%] flex -translate-x-1/2 -translate-y-1/2 flex-col items-center z-10">
-            <span className="flex items-center gap-1 rounded-full bg-[#7A3F1C] px-2.5 py-0.5 text-[9px] font-black text-white shadow-md">
-              <Truck className="h-3 w-3 stroke-[2.5]" /> Driver Ibrahim (Van)
-            </span>
-            <div className="relative mt-1">
-              <span className="absolute -inset-1 rounded-full bg-[#7A3F1C]/40 animate-ping" />
-              <div className="relative h-3.5 w-3.5 rounded-full border-2 border-white bg-[#7A3F1C] shadow-sm" />
-            </div>
-          </div>
-
-          {/* Destination: East Legon */}
-          <div className="absolute bottom-[18%] right-[12%] flex flex-col items-center">
-            <span className="rounded-md bg-[#0B3B25] px-2 py-0.5 text-[9px] font-black text-white shadow-md">
-              East Legon (GA-183)
-            </span>
-            <div className="mt-1 h-3.5 w-3.5 rounded-full bg-[#0B3B25] ring-4 ring-white shadow-sm" />
-          </div>
-        </div>
-
-        {/* Step-by-Step Delivery Timeline */}
-        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-          <h3 className="pb-2.5 text-[10.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
-            Cold-Chain Dispatch Timeline
-          </h3>
-          <div className="space-y-3">
-            {steps.map((step, idx) => (
-              <div key={idx} className="flex items-start gap-3">
-                <div className="flex flex-col items-center">
-                  <div
-                    className={cn(
-                      'flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black',
-                      step.done && !step.current && 'bg-[#0B3B25] text-white',
-                      step.current && 'bg-[#7A3F1C] text-white shadow-sm ring-2 ring-[#7A3F1C]/20',
-                      !step.done && !step.current && 'border border-[rgba(33,26,18,0.18)] bg-[#FDFDFB] text-[#5C5247]'
-                    )}
-                  >
-                    {step.done && !step.current ? (
-                      <Check className="h-3 w-3 stroke-[3]" />
-                    ) : step.current ? (
-                      <Truck className="h-3 w-3 stroke-[2.5]" />
-                    ) : (
-                      idx + 1
-                    )}
-                  </div>
-                  {idx < steps.length - 1 && (
-                    <div
-                      className={cn(
-                        'h-5 w-0.5',
-                        step.done ? 'bg-[#0B3B25]' : 'bg-[rgba(33,26,18,0.18)]'
-                      )}
-                    />
-                  )}
-                </div>
-                <div className="flex flex-1 items-center justify-between pt-0.5">
-                  <h4
-                    className={cn(
-                      'text-[13px] font-bold tracking-tight',
-                      step.current ? 'text-[#7A3F1C]' : step.done ? 'text-[#211A12]' : 'text-[#5C5247]'
-                    )}
-                  >
-                    {step.label}
-                  </h4>
-                  <span className="text-[11px] font-bold text-[#5C5247]">
-                    {step.time}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Assigned Driver Card */}
-        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-          <span className="text-[9.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
-            Assigned Cold-Chain Driver
-          </span>
-          <div className="mt-2 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs">
-                <Image
-                  src="/golden-acres/farmers/kwame-mensah.jpg"
-                  alt="Ibrahim Salifu"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div>
-                <h4 className="text-[13.5px] font-extrabold tracking-tight text-[#211A12]">
-                  Ibrahim Salifu
-                </h4>
-                <p className="mt-0.5 flex items-center gap-1.5 text-[10.5px] font-semibold text-[#5C5247]">
-                  Refrigerated Van · GR 4821-22
-                  <span className="flex items-center gap-0.5 text-[#7A3F1C] font-black">
-                    <Star className="h-3 w-3 fill-[#7A3F1C]" /> 4.9
-                  </span>
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <a
-                href="tel:0245550142"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-[rgba(11,59,37,0.12)] text-[#0B3B25] active:scale-95 transition-transform"
-                aria-label="Call Driver"
-              >
-                <Phone className="h-4 w-4" />
-              </a>
-              <a
-                href="sms:0245550142"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-sm active:scale-95 transition-transform"
-                aria-label="Message Driver"
-              >
-                <MessageSquare className="h-4 w-4" />
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Real Produce Package Summary with Product Image Shell */}
-        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <ProductImageShell
-                src="/golden-acres/produce/roma-tomatoes-1.png"
-                alt="Roma Tomatoes"
-              />
-              <div>
-                <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
-                  Produce Box Details
-                </span>
-                <h4 className="text-[14px] font-extrabold text-[#211A12]">
-                  Fresh Farm Box (4.2 kg)
-                </h4>
-                <p className="text-[11.5px] font-semibold text-[#7A3F1C]">
-                  3 items · Insulated packaging
-                </p>
-              </div>
-            </div>
-            <PackageBoxes3D size={58} />
-          </div>
-        </div>
-
-        {/* Support & Rider Tip */}
-        <div className="flex items-center justify-between gap-2.5 pt-1">
           <button
             type="button"
-            onClick={() => setTipped(!tipped)}
-            className={cn(
-              'flex-1 rounded-full py-2.5 text-center text-[12px] font-extrabold transition-all shadow-2xs active:scale-95',
-              tipped
-                ? 'bg-[#0B3B25] text-white'
-                : 'bg-white text-[#211A12]'
-            )}
+            aria-label="Options"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#211A12] shadow-sm border border-[rgba(33,26,18,0.06)] active:scale-95 transition-transform"
           >
-            {tipped ? '✓ GH₵5 Tip Added' : '+ GH₵5 Rider Tip'}
+            <MoreVertical className="h-4 w-4" />
           </button>
-          <a
-            href="tel:0302000000"
-            className="rounded-full bg-white px-4 py-2.5 text-[12px] font-extrabold text-[#5C5247] shadow-2xs active:scale-95 transition-transform"
-          >
-            Need Help?
-          </a>
+        </header>
+
+        {/* Vector Street Map SVG Graphics */}
+        <svg
+          className="absolute inset-0 h-full w-full object-cover"
+          viewBox="0 0 600 480"
+          preserveAspectRatio="xMidYMid slice"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* Base map color */}
+          <rect width="600" height="480" fill="#EFEBE4" />
+
+          {/* Water body accent on right edge */}
+          <path
+            d="M520 0 C500 120, 540 280, 510 480 L600 480 L600 0 Z"
+            fill="#CFE6FA"
+            opacity="0.8"
+          />
+
+          {/* Park green zone accent */}
+          <rect x="380" y="400" width="120" height="80" rx="8" fill="#E2EED8" />
+          <rect x="40" y="420" width="100" height="60" rx="8" fill="#E2EED8" />
+
+          {/* City building block shapes */}
+          <rect x="60" y="70" width="70" height="90" rx="4" fill="#E2DDD5" />
+          <rect x="150" y="70" width="80" height="90" rx="4" fill="#E2DDD5" />
+          <rect x="250" y="70" width="90" height="90" rx="4" fill="#E2DDD5" />
+          <rect x="360" y="70" width="110" height="90" rx="4" fill="#E2DDD5" />
+
+          <rect x="60" y="180" width="70" height="100" rx="4" fill="#E2DDD5" />
+          <rect x="150" y="180" width="80" height="100" rx="4" fill="#E2DDD5" />
+          <rect x="250" y="180" width="90" height="100" rx="4" fill="#E2DDD5" />
+          <rect x="360" y="180" width="110" height="100" rx="4" fill="#E2DDD5" />
+
+          <rect x="60" y="300" width="70" height="110" rx="4" fill="#E2DDD5" />
+          <rect x="150" y="300" width="80" height="110" rx="4" fill="#E2DDD5" />
+          <rect x="250" y="300" width="90" height="110" rx="4" fill="#E2DDD5" />
+          <rect x="360" y="300" width="110" height="90" rx="4" fill="#E2DDD5" />
+
+          {/* Road Network (White / Light grid lines) */}
+          <line x1="0" y1="60" x2="600" y2="60" stroke="#FFFFFF" strokeWidth="14" />
+          <line x1="0" y1="170" x2="600" y2="170" stroke="#FFFFFF" strokeWidth="14" />
+          <line x1="0" y1="290" x2="600" y2="290" stroke="#FFFFFF" strokeWidth="14" />
+          <line x1="0" y1="420" x2="600" y2="420" stroke="#FFFFFF" strokeWidth="14" />
+
+          <line x1="50" y1="0" x2="50" y2="480" stroke="#FFFFFF" strokeWidth="14" />
+          <line x1="140" y1="0" x2="140" y2="480" stroke="#FFFFFF" strokeWidth="14" />
+          <line x1="240" y1="0" x2="240" y2="480" stroke="#FFFFFF" strokeWidth="14" />
+          <line x1="350" y1="0" x2="350" y2="480" stroke="#FFFFFF" strokeWidth="14" />
+          <line x1="480" y1="0" x2="480" y2="480" stroke="#FFFFFF" strokeWidth="14" />
+
+          {/* Street Labels matching Reference Image 3 */}
+          <text x="270" y="85" fill="#8A8175" fontSize="9" fontWeight="700" fontFamily="sans-serif">
+            Airport Rd
+          </text>
+          <text x="110" y="275" fill="#8A8175" fontSize="9" fontWeight="700" fontFamily="sans-serif">
+            King Field Rd
+          </text>
+          <text x="270" y="430" fill="#8A8175" fontSize="9" fontWeight="700" fontFamily="sans-serif">
+            Olaya St
+          </text>
+
+          {/* Route Path (Glowing Orange curved road from Store to Van) */}
+          <path
+            d="M100 350 L190 310 C210 300, 240 310, 240 280 L240 230 C240 200, 280 180, 320 180 L370 180 C400 180, 420 160, 420 130 L420 90 C420 70, 450 60, 480 60"
+            fill="none"
+            stroke="#E86328"
+            strokeWidth="5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Origin Store Pin */}
+          <g transform="translate(100, 350)">
+            <circle cx="0" cy="0" r="18" fill="#FFFFFF" filter="drop-shadow(0px 3px 6px rgba(0,0,0,0.15))" />
+            <path
+              d="M-6 -5 L6 -5 L7 0 L-7 0 Z M-7 0 L7 0 L6 6 L-6 6 Z"
+              fill="#211A12"
+            />
+            <rect x="-4" y="1" width="3" height="5" fill="#FFFFFF" />
+            <rect x="1" y="1" width="3" height="5" fill="#FFFFFF" />
+          </g>
+
+          {/* Destination / Courier Pin with 1min Floating Badge */}
+          <g transform="translate(480, 60)">
+            {/* Orange Destination Dot */}
+            <circle cx="0" cy="0" r="8" fill="#E86328" stroke="#FFFFFF" strokeWidth="2.5" filter="drop-shadow(0px 2px 4px rgba(0,0,0,0.2))" />
+
+            {/* Floating 1min Tooltip Pill matching reference */}
+            <g transform="translate(-18, -32)">
+              <rect x="0" y="0" width="58" height="24" rx="12" fill="#FFFFFF" filter="drop-shadow(0px 2px 8px rgba(0,0,0,0.12))" />
+              {/* Truck Icon */}
+              <path
+                d="M8 12 L14 12 L16 15 L20 15 L20 18 L7 18 L7 12 Z M9 18 A 1.5 1.5 0 0 1 6 18 M18 18 A 1.5 1.5 0 0 1 15 18"
+                fill="#E86328"
+              />
+              <text x="24" y="16" fill="#211A12" fontSize="10" fontWeight="900" fontFamily="sans-serif">
+                1min
+              </text>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      {/* ========================================================
+          BOTTOM HALF: FLOATING WHITE BOTTOM SHEET
+          (Matching Reference Image 3)
+         ======================================================== */}
+      <div className="relative -mt-6 z-20 flex flex-col justify-between rounded-t-[32px] bg-white px-5 pt-3 pb-8 shadow-[0_-8px_30px_rgba(0,0,0,0.08)]">
+        {/* Top Pull Handle Indicator */}
+        <div className="mx-auto h-1 w-10 rounded-full bg-[#E5E0D8] mb-3" />
+
+        {/* 1. Driver Profile Row */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* Driver Avatar */}
+            <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-[#211A12] border border-white shadow-xs">
+              <Image
+                src="/golden-acres/farmers/kwame-mensah.jpg"
+                alt="Max Scott"
+                fill
+                sizes="48px"
+                className="object-cover"
+              />
+            </div>
+
+            <div>
+              <div className="flex items-center gap-1 text-[11px] font-bold text-[#5C5247]">
+                <span>Delivery</span>
+                <span className="flex items-center text-[#E86328] font-black">
+                  <Star className="h-3 w-3 fill-[#E86328]" /> 4.9
+                </span>
+              </div>
+              <h2 className="text-[16px] font-black tracking-tight text-[#211A12]">
+                Max Scott
+              </h2>
+            </div>
+          </div>
+
+          {/* Circular Action Buttons */}
+          <div className="flex items-center gap-2.5">
+            <a
+              href="tel:0245550142"
+              aria-label="Call Courier"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-[#211A12] text-white shadow-xs active:scale-90 transition-transform"
+            >
+              <Phone className="h-4 w-4" />
+            </a>
+            <a
+              href="sms:0245550142"
+              aria-label="Message Courier"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-[#211A12] text-white shadow-xs active:scale-90 transition-transform"
+            >
+              <MessageSquare className="h-4 w-4" />
+            </a>
+          </div>
         </div>
+
+        {/* 2. In-Transit Status Banner Pill */}
+        <div className="mt-3 flex items-center justify-between rounded-2xl bg-[#FFF5ED] border border-[#FDE6D2] px-3.5 py-2.5">
+          <div className="flex items-center gap-2 text-[12px] font-bold text-[#E86328]">
+            <span className="h-2 w-2 rounded-full bg-[#E86328] animate-pulse" />
+            <span>In transit - arriving in 1 min</span>
+          </div>
+          <span className="text-[12px] font-black text-[#E86328]">
+            0.2 km left
+          </span>
+        </div>
+
+        {/* 3. Booking Details Row */}
+        <div className="mt-3 flex items-center justify-between">
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
+              Booking
+            </span>
+            <h3 className="text-[20px] font-black tracking-tight text-[#211A12]">
+              M87952263
+            </h3>
+          </div>
+
+          <span className="rounded-full bg-[#211A12] px-3.5 py-1 text-[11px] font-black text-white shadow-xs">
+            Transit
+          </span>
+        </div>
+
+        {/* 4. Dotted Progress Track matching reference */}
+        <div className="relative mt-2 pt-4 pb-1">
+          {/* Dotted Line */}
+          <div className="absolute left-3 right-3 top-[23px] flex items-center">
+            <div className="h-[2px] w-full border-t-2 border-dotted border-[rgba(33,26,18,0.22)]" />
+          </div>
+
+          {/* Step Circles */}
+          <div className="relative flex items-center justify-between">
+            {/* Step 1: Picked */}
+            <div className="relative flex flex-col items-center">
+              <div className="z-10 flex h-6 w-6 items-center justify-center rounded-full bg-[#E86328] text-white shadow-xs">
+                <Check className="h-3 w-3 stroke-[3]" />
+              </div>
+            </div>
+
+            {/* Step 2: Quality Checked */}
+            <div className="relative flex flex-col items-center">
+              <div className="z-10 flex h-6 w-6 items-center justify-center rounded-full bg-[#E86328] text-white shadow-xs">
+                <Check className="h-3 w-3 stroke-[3]" />
+              </div>
+            </div>
+
+            {/* Step 3: Truck with 1min Away floating pill */}
+            <div className="relative flex flex-col items-center">
+              <div className="absolute -top-4.5 whitespace-nowrap">
+                <span className="text-[10px] font-black text-[#211A12]">
+                  1min Away
+                </span>
+              </div>
+              <div className="z-10 flex h-6 w-6 items-center justify-center rounded-full bg-[#E86328] text-white shadow-xs">
+                <Truck className="h-3 w-3 stroke-[2.5]" />
+              </div>
+            </div>
+
+            {/* Step 4: Destination */}
+            <div className="relative flex flex-col items-center">
+              <div className="z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 border-[rgba(33,26,18,0.20)] bg-white text-[#5C5247]">
+                <Check className="h-2.5 w-2.5 stroke-[2] text-[#8A7E72]" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 5. Order Summary Grid & 3D Packaging Boxes */}
+        <div className="mt-3 border-t border-[rgba(33,26,18,0.06)] pt-3">
+          <div className="flex items-end justify-between">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 flex-1 pr-2">
+              {/* From */}
+              <div>
+                <span className="text-[9px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
+                  From
+                </span>
+                <h4 className="mt-0.5 truncate text-[12px] font-black text-[#211A12]">
+                  Palm Springs
+                </h4>
+              </div>
+
+              {/* To */}
+              <div>
+                <span className="text-[9px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
+                  To
+                </span>
+                <h4 className="mt-0.5 truncate text-[12px] font-black text-[#211A12]">
+                  Diriyah, Riyadh
+                </h4>
+              </div>
+
+              {/* Order Cost */}
+              <div>
+                <span className="text-[9px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
+                  Order Cost
+                </span>
+                <h4 className="mt-0.5 truncate text-[12px] font-black text-[#211A12]">
+                  $328.00
+                </h4>
+              </div>
+
+              {/* Customer */}
+              <div>
+                <span className="text-[9px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
+                  Customer
+                </span>
+                <h4 className="mt-0.5 truncate text-[12px] font-black text-[#211A12]">
+                  Lucas
+                </h4>
+              </div>
+            </div>
+
+            {/* 3D Stacked Cardboard Packaging Boxes Illustration */}
+            <div className="shrink-0 -mb-1 -mr-1">
+              <PackageBoxes3D size={68} />
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Home Indicator Bar */}
+        <div className="mx-auto mt-3 h-1 w-32 rounded-full bg-[rgba(33,26,18,0.20)]" />
       </div>
     </div>
   )
 }
+
