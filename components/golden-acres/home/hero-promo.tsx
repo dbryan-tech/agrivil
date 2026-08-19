@@ -1,20 +1,111 @@
 import Link from 'next/link'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { ArrowRight, MapPin, Truck, ShieldCheck } from 'lucide-react'
+import { cn } from '@/lib/utils'
+
+export interface HeroBannerData {
+  badge: string
+  title: string
+  highlightText: string
+  description: string
+  ctaText: string
+  ctaHref: string
+  freeDeliveryText: string
+  image: string
+  imageAlt: string
+}
+
+export const HERO_BANNER_DATA: HeroBannerData = {
+  badge: 'Now delivering in Accra',
+  title: 'Fresh from the farm,',
+  highlightText: 'to your door',
+  description:
+    "Order produce picked this morning by Ghana's local farmers. Priced by weight, delivered cold, paid with Mobile Money.",
+  ctaText: "Shop today's harvest",
+  ctaHref: '/shop',
+  freeDeliveryText: 'Free delivery over GH₵250',
+  image: '/golden-acres/new-hero.png',
+  imageAlt: 'Fresh produce harvested this morning in Ghana',
+}
+
+export function MobileHeroBanner({
+  data = HERO_BANNER_DATA,
+  className = '',
+}: {
+  data?: HeroBannerData
+  className?: string
+}) {
+  return (
+    <Link
+      href="/m/categories"
+      className={cn(
+        'group relative block overflow-hidden rounded-[28px] shadow-[0_4px_20px_-4px_rgba(33,26,18,0.12)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.99] transition-transform',
+        className
+      )}
+    >
+      <div className="relative min-h-[250px] sm:min-h-[270px] w-full overflow-hidden">
+        <SmartImage
+          src={data.image}
+          alt={data.imageAlt}
+          fill
+          priority
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        {/* Multi-gradient backdrop for crisp legibility */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/65 to-black/25" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+
+        <div className="relative z-10 flex h-full flex-col justify-between p-5">
+          {/* Yellow Location Pill */}
+          <div className="flex items-center">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F0A81E] px-3 py-1 text-[10px] font-black uppercase tracking-wider text-[#211A12] shadow-xs">
+              <MapPin className="h-3 w-3 stroke-[2.8]" />
+              <span>{data.badge}</span>
+            </span>
+          </div>
+
+          {/* Title & Subtitle */}
+          <div className="mt-3.5 max-w-[270px]">
+            <h2 className="text-[22px] font-black leading-[1.12] tracking-tight text-white">
+              {data.title} <br />
+              <span className="text-[#10B981]">{data.highlightText}</span>
+            </h2>
+            <p className="mt-1.5 text-[11.5px] font-medium leading-relaxed text-white/90">
+              {data.description}
+            </p>
+          </div>
+
+          {/* CTA & Delivery info */}
+          <div className="mt-3.5 flex flex-wrap items-center gap-3">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-[#0B3B25] px-4 py-2 text-[12px] font-extrabold text-white shadow-sm transition-transform active:scale-95 group-hover:bg-[#072618]">
+              <span>{data.ctaText}</span>
+              <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
+            </div>
+            <span className="text-[11px] font-bold text-white/90">
+              {data.freeDeliveryText}
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  )
+}
 
 export function HeroPromo() {
+  const data = HERO_BANNER_DATA
+
   return (
     <section className="mx-auto max-w-7xl px-4 pt-5 sm:px-6 lg:px-8">
       <div className="grid gap-4 lg:grid-cols-12">
         {/* Main promo */}
         <Link
-          href="/shop"
+          href={data.ctaHref}
           className="group relative col-span-12 overflow-hidden rounded-2xl lg:col-span-8"
         >
           <div className="relative aspect-[16/10] sm:aspect-[16/8] lg:aspect-auto lg:h-full lg:min-h-[420px]">
             <SmartImage
-              src="/golden-acres/new-hero.png"
-              alt="Fresh produce harvested this morning in Ghana"
+              src={data.image}
+              alt={data.imageAlt}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
               priority
@@ -22,25 +113,25 @@ export function HeroPromo() {
             <div className="absolute inset-0 bg-gradient-to-r from-[var(--ga-ink-deep)]/85 via-[var(--ga-ink-deep)]/45 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-center gap-4 p-7 sm:p-10 lg:max-w-[60%]">
               <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-accent-foreground">
-                <MapPin className="h-3.5 w-3.5" /> Now delivering in Accra
+                <MapPin className="h-3.5 w-3.5" /> {data.badge}
               </span>
               <h1 className="ga-headline text-balance text-4xl text-white sm:text-5xl lg:text-6xl">
-                Fresh from the farm, <em className="text-[var(--ga-lime)]">to your door</em>
+                {data.title} <em className="text-[var(--ga-lime)]">{data.highlightText}</em>
               </h1>
               <p className="max-w-md text-pretty text-sm leading-relaxed text-white/85 sm:text-base">
-                Order produce picked this morning by Ghana&apos;s local farmers. Priced by
-                weight, delivered cold, paid with Mobile Money.
+                {data.description}
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <span className="ga-press inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-colors group-hover:bg-field-deep">
-                  Shop today&apos;s harvest
+                  {data.ctaText}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </span>
-                <span className="text-sm font-semibold text-white/90">Free delivery over GH₵250</span>
+                <span className="text-sm font-semibold text-white/90">{data.freeDeliveryText}</span>
               </div>
             </div>
           </div>
         </Link>
+
 
         {/* Side promos */}
         <div className="col-span-12 grid gap-4 sm:grid-cols-2 lg:col-span-4 lg:grid-cols-1">
