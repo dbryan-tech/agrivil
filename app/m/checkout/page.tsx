@@ -13,8 +13,6 @@ import {
   Loader2,
   ShieldCheck,
   ChevronRight,
-  Truck,
-  Sparkles,
 } from 'lucide-react'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { formatGHS } from '@/lib/golden-acres/format'
@@ -100,7 +98,7 @@ export default function MobileCheckoutScreen() {
 
       <div className="relative px-5 pt-4 space-y-4">
         {/* 1. Delivery Address Card */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center justify-between pb-2 border-b border-[rgba(33,26,18,0.06)]">
             <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
               DELIVERING TO
@@ -132,7 +130,7 @@ export default function MobileCheckoutScreen() {
         </div>
 
         {/* 2. Delivery Time Window */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
@@ -151,7 +149,7 @@ export default function MobileCheckoutScreen() {
         </div>
 
         {/* 3. Payment Method Card */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             CHOOSE PAYMENT METHOD
           </span>
@@ -227,7 +225,7 @@ export default function MobileCheckoutScreen() {
         </div>
 
         {/* 4. Parcel Summary Card */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center justify-between pb-3 border-b border-[rgba(33,26,18,0.06)]">
             <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
               PAYMENT BREAKDOWN

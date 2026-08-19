@@ -157,10 +157,10 @@ export default function MobileShopLocalScreen() {
             <Link
               key={farm.name}
               href={`/m/farmers/${farm.slug}`}
-              className="flex items-center justify-between rounded-[26px] bg-[#FAF9F6] p-3.5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.98] transition-transform"
+              className="flex items-center justify-between rounded-[26px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
             >
               <div className="flex items-center gap-3.5 flex-1 min-w-0 pr-2">
-                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs border border-[rgba(33,26,18,0.08)]">
+                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs">
                   <Image
                     src={farm.image}
                     alt={farm.name}

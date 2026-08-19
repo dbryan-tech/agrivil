@@ -127,10 +127,10 @@ export default function MobileCategoriesScreen() {
             <Link
               key={cat.slug}
               href={`/m/categories/${encodeURIComponent(cat.slug)}`}
-              className="group flex flex-col overflow-hidden rounded-[26px] bg-[#FAF9F6] p-3 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.98] transition-transform"
+              className="group flex flex-col overflow-hidden rounded-[26px] bg-[#FDFDFB] p-3 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
             >
               {/* Category Photo Container */}
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-white shadow-2xs border border-[rgba(33,26,18,0.08)]">
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-white shadow-2xs">
                 <Image
                   src={cat.image}
                   alt={cat.name}

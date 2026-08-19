@@ -108,7 +108,7 @@ export default function MobileSearchScreen() {
                   {recent.map((term) => (
                     <div
                       key={term}
-                      className="inline-flex items-center gap-2 rounded-full border border-[rgba(33,26,18,0.08)] bg-[#FAF9F6] px-3.5 py-1.5 text-[12px] font-extrabold text-[#211A12] shadow-2xs"
+                      className="inline-flex items-center gap-2 rounded-full bg-[#FDFDFB] px-3.5 py-1.5 text-[12px] font-extrabold text-[#211A12] shadow-2xs"
                     >
                       <button
                         type="button"

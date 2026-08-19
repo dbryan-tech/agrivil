@@ -21,7 +21,7 @@ export function MobileBottomNav() {
   return (
     <nav
       aria-label="Mobile Navigation"
-      className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-[rgba(33,26,18,0.08)] bg-[#FAF9F6]/95 px-3 backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]"
+      className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-[rgba(33,26,18,0.06)] bg-[#FDFDFB]/95 px-3 backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]"
       style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 12px)', paddingTop: '8px' }}
     >
       {TABS.map((tab) => {

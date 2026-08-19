@@ -149,7 +149,7 @@ export default function MobileOrdersScreen() {
 
       {/* Filter Tabs */}
       <div className="relative px-5 pt-2">
-        <div className="flex gap-2 rounded-2xl bg-[#FAF9F6] p-1 shadow-2xs border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="flex gap-2 rounded-2xl bg-[#FDFDFB] p-1 shadow-2xs">
           {(
             [
               { key: 'all', label: 'All Orders' },
@@ -181,7 +181,7 @@ export default function MobileOrdersScreen() {
           <Link
             key={order.id}
             href={`/m/orders/track`}
-            className="group relative block overflow-hidden rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.985] transition-all"
+            className="group relative block overflow-hidden rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-all"
           >
             {/* Top-Right Diagonal Ribbon */}
             <StatusRibbon text={order.ribbon} tone={order.ribbonTone} />

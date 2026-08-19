@@ -144,7 +144,7 @@ export default function MobileWalletScreen() {
         )}
 
         {/* Recent Transactions List */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center justify-between pb-3 border-b border-[rgba(33,26,18,0.06)]">
             <h3 className="text-[12px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
               Transaction History

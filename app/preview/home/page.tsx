@@ -245,7 +245,7 @@ export default function MobileHomeScreen() {
                 'flex shrink-0 items-center gap-1.5 rounded-full px-[clamp(14px,2vw,18px)] py-[clamp(6px,0.9vh,9px)] text-[clamp(12px,1.55vh,14px)] font-bold tracking-tight transition-all',
                 active
                   ? 'bg-[#211A12] text-[#F7F5F0] shadow-xs'
-                  : 'bg-[#FAF9F6] text-[#3D332A] border border-[rgba(33,26,18,0.10)] shadow-2xs hover:bg-white'
+                  : 'bg-[#FDFDFB] text-[#3D332A] shadow-2xs hover:bg-white'
               )}
             >
               <span>{cat.label}</span>
@@ -323,7 +323,7 @@ export default function MobileHomeScreen() {
               href="/preview/farmers"
               className="block active:scale-[0.985] transition-transform"
             >
-              <div className="flex items-center gap-3.5 rounded-[clamp(20px,2.6vh,26px)] bg-[#FAF9F6] p-3.5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+              <div className="flex items-center gap-3.5 rounded-[clamp(20px,2.6vh,26px)] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
                 <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs border border-[rgba(33,26,18,0.10)]">
                   <Image
                     src={farmer.photo}

@@ -61,7 +61,7 @@ export default function MobileAccountScreen() {
 
       <div className="relative px-5 pt-2 space-y-4">
         {/* Profile Card */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center gap-4">
             <div className="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#211A12] text-white shadow-md text-[20px] font-black">
               EN
@@ -133,7 +133,7 @@ export default function MobileAccountScreen() {
         </Link>
 
         {/* Menu Items Group */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-2 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-2 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <Link
             href="/preview/orders"
             className="flex items-center justify-between p-3.5 hover:bg-white/50 rounded-2xl transition-colors"

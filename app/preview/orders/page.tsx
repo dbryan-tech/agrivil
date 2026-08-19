@@ -206,7 +206,7 @@ export default function MobileOrdersScreen() {
             'flex shrink-0 items-center gap-1.5 rounded-full px-[clamp(12px,1.8vw,18px)] py-[clamp(5px,0.8vh,8px)] text-[clamp(12px,1.55vh,14px)] font-bold tracking-tight transition-all',
             tab === 'all'
               ? 'bg-[#211A12] text-[#F7F5F0] shadow-xs'
-              : 'bg-[#FAF9F6] text-[#3D332A] border border-[rgba(33,26,18,0.10)] shadow-2xs hover:bg-white'
+              : 'bg-[#FDFDFB] text-[#3D332A] shadow-2xs hover:bg-white'
           )}
         >
           <span>All</span>
@@ -223,7 +223,7 @@ export default function MobileOrdersScreen() {
             'flex shrink-0 items-center gap-1.5 rounded-full px-[clamp(12px,1.8vw,18px)] py-[clamp(5px,0.8vh,8px)] text-[clamp(12px,1.55vh,14px)] font-bold tracking-tight transition-all',
             tab === 'transit'
               ? 'bg-[#211A12] text-[#F7F5F0] shadow-xs'
-              : 'bg-[#FAF9F6] text-[#3D332A] border border-[rgba(33,26,18,0.10)] shadow-2xs hover:bg-white'
+              : 'bg-[#FDFDFB] text-[#3D332A] shadow-2xs hover:bg-white'
           )}
         >
           <span>Transit</span>
@@ -240,7 +240,7 @@ export default function MobileOrdersScreen() {
             'flex shrink-0 items-center gap-1.5 rounded-full px-[clamp(12px,1.8vw,18px)] py-[clamp(5px,0.8vh,8px)] text-[clamp(12px,1.55vh,14px)] font-bold tracking-tight transition-all',
             tab === 'process'
               ? 'bg-[#211A12] text-[#F7F5F0] shadow-xs'
-              : 'bg-[#FAF9F6] text-[#3D332A] border border-[rgba(33,26,18,0.10)] shadow-2xs hover:bg-white'
+              : 'bg-[#FDFDFB] text-[#3D332A] shadow-2xs hover:bg-white'
           )}
         >
           <span>On Process</span>
@@ -257,7 +257,7 @@ export default function MobileOrdersScreen() {
             'flex shrink-0 items-center gap-1.5 rounded-full px-[clamp(12px,1.8vw,18px)] py-[clamp(5px,0.8vh,8px)] text-[clamp(12px,1.55vh,14px)] font-bold tracking-tight transition-all',
             tab === 'delivered'
               ? 'bg-[#211A12] text-[#F7F5F0] shadow-xs'
-              : 'bg-[#FAF9F6] text-[#3D332A] border border-[rgba(33,26,18,0.10)] shadow-2xs hover:bg-white'
+              : 'bg-[#FDFDFB] text-[#3D332A] shadow-2xs hover:bg-white'
           )}
         >
           <span>Delivered</span>
@@ -275,7 +275,7 @@ export default function MobileOrdersScreen() {
             href={`/preview/track?id=${order.id}`}
             className="block active:scale-[0.985] transition-transform"
           >
-            <div className="relative overflow-hidden rounded-[clamp(22px,2.8vh,28px)] bg-[#FAF9F6] p-[clamp(14px,2vh,20px)] shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+            <div className="relative overflow-hidden rounded-[clamp(22px,2.8vh,28px)] bg-[#FDFDFB] p-[clamp(14px,2vh,20px)] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
               {/* Diagonal Status Ribbon in Corner */}
               <StatusRibbon label={order.ribbon} tone={order.ribbonTone} />
 

@@ -154,7 +154,7 @@ export default function MobileCartScreen() {
           {items.map((item) => (
             <div
               key={item.id}
-              className="relative flex items-center justify-between overflow-hidden rounded-[24px] bg-[#FAF9F6] p-4 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90"
+              className="relative flex items-center justify-between overflow-hidden rounded-[24px] bg-[#FDFDFB] p-4 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]"
             >
               <div className="flex items-center gap-3.5 flex-1 pr-2">
                 <ProductImageShell src={item.image} alt={item.name} />
@@ -179,7 +179,7 @@ export default function MobileCartScreen() {
                 <button
                   type="button"
                   onClick={() => updateQty(item.id, -1)}
-                  className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FAF9F6] text-[#211A12] active:scale-90"
+                  className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FDFDFB] text-[#211A12] active:scale-90"
                 >
                   {item.qty === 1 ? (
                     <Trash2 className="h-3 w-3 text-[#7A3F1C]" />
@@ -193,7 +193,7 @@ export default function MobileCartScreen() {
                 <button
                   type="button"
                   onClick={() => updateQty(item.id, 1)}
-                  className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FAF9F6] text-[#211A12] active:scale-90"
+                  className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FDFDFB] text-[#211A12] active:scale-90"
                 >
                   <Plus className="h-3 w-3" />
                 </button>
@@ -203,7 +203,7 @@ export default function MobileCartScreen() {
         </div>
 
         {/* Cold-Chain Guarantee Card */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-4 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-4 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#0B3B25]/10 text-[#0B3B25]">
               <Truck className="h-5 w-5 stroke-[2.2]" />
@@ -220,7 +220,7 @@ export default function MobileCartScreen() {
         </div>
 
         {/* Delivery Slot Selector */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Select Delivery Window
           </span>
@@ -270,7 +270,7 @@ export default function MobileCartScreen() {
         </div>
 
         {/* Price Breakdown Summary */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 space-y-2">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] space-y-2">
           <div className="flex justify-between text-[13px] font-semibold text-[#5C5247]">
             <span>Produce Subtotal</span>
             <span className="font-extrabold text-[#211A12]">{formatGHS(subtotal)}</span>

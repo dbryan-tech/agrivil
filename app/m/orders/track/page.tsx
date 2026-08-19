@@ -83,7 +83,7 @@ export default function MobileOrderLiveTrackingScreen() {
 
       <div className="relative px-5 pt-4 space-y-4">
         {/* Estimated Arrival Hero */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
               <Truck className="h-6 w-6 stroke-[2.4]" />
@@ -103,7 +103,7 @@ export default function MobileOrderLiveTrackingScreen() {
         </div>
 
         {/* Visual GPS Route Representation */}
-        <div className="relative h-56 w-full overflow-hidden rounded-[28px] bg-[#EAE5DC] border border-[rgba(33,26,18,0.10)] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.08)]">
+        <div className="relative h-56 w-full overflow-hidden rounded-[28px] bg-[#EAE5DC] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.08)]">
           {/* Map Grid Pattern */}
           <div className="absolute inset-0 bg-[radial-gradient(rgba(122,63,28,0.12)_1.5px,transparent_1.5px)] [background-size:22px_22px] opacity-70" />
           
@@ -129,7 +129,7 @@ export default function MobileOrderLiveTrackingScreen() {
 
           {/* Origin: Tema Aggregation Hub */}
           <div className="absolute top-[22%] left-[12%] flex flex-col items-center">
-            <span className="rounded-md bg-white/95 px-2 py-0.5 text-[9px] font-black text-[#3D332A] shadow-sm border border-[rgba(33,26,18,0.10)]">
+            <span className="rounded-md bg-white/95 px-2 py-0.5 text-[9px] font-black text-[#3D332A] shadow-sm">
               Tema Hub
             </span>
             <div className="mt-1 h-3.5 w-3.5 rounded-full bg-[#5C5247] ring-4 ring-white shadow-sm" />
@@ -156,7 +156,7 @@ export default function MobileOrderLiveTrackingScreen() {
         </div>
 
         {/* Step-by-Step Delivery Timeline */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <h3 className="pb-3 text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Cold-Chain Dispatch Timeline
           </h3>
@@ -169,7 +169,7 @@ export default function MobileOrderLiveTrackingScreen() {
                       'flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-black',
                       step.done && !step.current && 'bg-[#0B3B25] text-white',
                       step.current && 'bg-[#7A3F1C] text-white shadow-sm ring-2 ring-[#7A3F1C]/20',
-                      !step.done && !step.current && 'border border-[rgba(33,26,18,0.22)] bg-[#FAF9F6] text-[#5C5247]'
+                      !step.done && !step.current && 'border border-[rgba(33,26,18,0.18)] bg-[#FDFDFB] text-[#5C5247]'
                     )}
                   >
                     {step.done && !step.current ? (
@@ -208,13 +208,13 @@ export default function MobileOrderLiveTrackingScreen() {
         </div>
 
         {/* Assigned Driver Card */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Assigned Cold-Chain Driver
           </span>
           <div className="mt-2.5 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs border border-[rgba(33,26,18,0.10)]">
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs">
                 <Image
                   src="/golden-acres/farmers/kwame-mensah.jpg"
                   alt="Ibrahim Salifu"
@@ -244,7 +244,7 @@ export default function MobileOrderLiveTrackingScreen() {
               </a>
               <a
                 href="sms:0245550142"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#211A12] shadow-sm border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#211A12] shadow-sm active:scale-95 transition-transform"
                 aria-label="Message Driver"
               >
                 <MessageSquare className="h-4 w-4" />
@@ -254,7 +254,7 @@ export default function MobileOrderLiveTrackingScreen() {
         </div>
 
         {/* Real Produce Package Summary with Product Image Shell */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3.5">
               <ProductImageShell
@@ -283,17 +283,17 @@ export default function MobileOrderLiveTrackingScreen() {
             type="button"
             onClick={() => setTipped(!tipped)}
             className={cn(
-              'flex-1 rounded-full py-3 text-center text-[13px] font-extrabold transition-all border shadow-2xs active:scale-95',
+              'flex-1 rounded-full py-3 text-center text-[13px] font-extrabold transition-all shadow-2xs active:scale-95',
               tipped
-                ? 'bg-[#0B3B25] text-white border-[#0B3B25]'
-                : 'bg-white text-[#211A12] border-[rgba(33,26,18,0.10)]'
+                ? 'bg-[#0B3B25] text-white'
+                : 'bg-white text-[#211A12]'
             )}
           >
             {tipped ? '✓ GH₵5 Rider Tip Added' : '+ Add GH₵5 Rider Tip'}
           </button>
           <a
             href="tel:0302000000"
-            className="rounded-full bg-white px-5 py-3 text-[13px] font-extrabold text-[#5C5247] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+            className="rounded-full bg-white px-5 py-3 text-[13px] font-extrabold text-[#5C5247] shadow-2xs active:scale-95 transition-transform"
           >
             Need Help?
           </a>

@@ -68,7 +68,7 @@ export default function MobileAccountScreen() {
 
       <div className="relative px-5 pt-3 space-y-4">
         {/* 1. Profile Member Card */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center gap-4">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0B3B25] text-xl font-black text-white shadow-sm">
               {userName.charAt(0)}
@@ -92,7 +92,7 @@ export default function MobileAccountScreen() {
         <div className="grid grid-cols-2 gap-3">
           <Link
             href="/m/orders"
-            className="flex flex-col rounded-[26px] bg-[#FAF9F6] p-4 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.98] transition-transform"
+            className="flex flex-col rounded-[26px] bg-[#FDFDFB] p-4 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#0B3B25]/10 text-[#0B3B25]">
               <Package className="h-5 w-5 stroke-[2.2]" />
@@ -103,7 +103,7 @@ export default function MobileAccountScreen() {
 
           <Link
             href="/m/farmers"
-            className="flex flex-col rounded-[26px] bg-[#FAF9F6] p-4 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.98] transition-transform"
+            className="flex flex-col rounded-[26px] bg-[#FDFDFB] p-4 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
               <Store className="h-5 w-5 stroke-[2.2]" />
@@ -114,7 +114,7 @@ export default function MobileAccountScreen() {
         </div>
 
         {/* 3. Account Menu */}
-        <div className="overflow-hidden rounded-[28px] bg-[#FAF9F6] p-2 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 divide-y divide-[rgba(33,26,18,0.06)]">
+        <div className="overflow-hidden rounded-[28px] bg-[#FDFDFB] p-2 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] divide-y divide-[rgba(33,26,18,0.06)]">
           <Link
             href="/m/onboarding/gps"
             className="flex items-center justify-between p-3.5 text-[13px] font-extrabold text-[#211A12] active:bg-black/5 rounded-2xl transition-colors"

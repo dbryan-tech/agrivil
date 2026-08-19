@@ -70,7 +70,7 @@ export default function MobileCheckoutScreen() {
 
       <div className="relative px-5 pt-3 space-y-4">
         {/* Delivery Address Card */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center justify-between pb-3 border-b border-[rgba(33,26,18,0.06)]">
             <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
               Delivery Destination
@@ -101,7 +101,7 @@ export default function MobileCheckoutScreen() {
         </div>
 
         {/* Payment Method Selector */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Payment Method
           </span>
@@ -223,7 +223,7 @@ export default function MobileCheckoutScreen() {
         </div>
 
         {/* Order Parcel Summary */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center justify-between">
             <div>
               <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
@@ -242,7 +242,7 @@ export default function MobileCheckoutScreen() {
       </div>
 
       {/* Sticky Bottom Place Order Action Bar */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[rgba(33,26,18,0.08)] bg-[#FAF9F6]/95 px-5 pt-3 pb-[clamp(18px,2.8vh,24px)] backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95 px-5 pt-3 pb-[clamp(18px,2.8vh,24px)] backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]">
         <button
           type="button"
           onClick={() => setSuccess(true)}
@@ -256,7 +256,7 @@ export default function MobileCheckoutScreen() {
       {/* Success Modal Simulation */}
       {success && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6 backdrop-blur-sm">
-          <div className="w-full max-w-sm rounded-[32px] bg-[#FAF9F6] p-6 text-center shadow-2xl border border-[rgba(33,26,18,0.10)] ring-1 ring-white/90">
+          <div className="w-full max-w-sm rounded-[32px] bg-[#FDFDFB] p-6 text-center shadow-2xl">
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-md">
               <CheckCircle2 className="h-9 w-9 stroke-[2.5]" />
             </div>

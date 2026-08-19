@@ -39,7 +39,7 @@ export function MobileHeroBanner({
     <Link
       href="/m/categories"
       className={cn(
-        'group relative block overflow-hidden rounded-[28px] shadow-[0_4px_20px_-4px_rgba(33,26,18,0.12)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.99] transition-transform',
+        'group relative block overflow-hidden rounded-[28px] shadow-[0_4px_20px_-4px_rgba(33,26,18,0.10)] active:scale-[0.99] transition-transform',
         className
       )}
     >

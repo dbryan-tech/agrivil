@@ -63,7 +63,7 @@ export default function MobileOrderTrackingScreen() {
 
       <div className="relative px-5 pt-4 space-y-4">
         {/* Status Card */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
               <Truck className="h-6 w-6 stroke-[2.4]" />
@@ -83,7 +83,7 @@ export default function MobileOrderTrackingScreen() {
         </div>
 
         {/* Timeline */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <h3 className="pb-3 text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Progress Timeline
           </h3>
@@ -97,7 +97,7 @@ export default function MobileOrderTrackingScreen() {
                       'flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-black',
                       step.done && !step.current && 'bg-[#0B3B25] text-white',
                       step.current && 'bg-[#7A3F1C] text-white shadow-sm ring-2 ring-[#7A3F1C]/20',
-                      !step.done && !step.current && 'border border-[rgba(33,26,18,0.22)] bg-[#FAF9F6] text-[#5C5247]'
+                      !step.done && !step.current && 'border border-[rgba(33,26,18,0.18)] bg-[#FDFDFB] text-[#5C5247]'
                     )}
                   >
                     {step.done && !step.current ? (
@@ -135,7 +135,7 @@ export default function MobileOrderTrackingScreen() {
         </div>
 
         {/* Ordered Items Summary */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 space-y-2.5">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] space-y-2.5">
           <div className="flex items-center justify-between pb-2 border-b border-[rgba(33,26,18,0.06)]">
             <h3 className="text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
               Items in this Order

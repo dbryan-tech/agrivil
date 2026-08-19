@@ -30,7 +30,7 @@ import { formatGHS } from '@/lib/golden-acres/format'
  * AgriVil — Redesign Design Primitives & SVG Assets
  * Canonical Brand Palette:
  *  - General Background (Canvas) .............. #F7F5F0
- *  - Cards (50% Whiter Than Canvas) .......... #FAF9F6
+ *  - Cards (75% White + 25% Tan) ............. #FDFDFB
  *  - Brand Primary Green ..................... #0B3B25
  *  - Brand Copper ............................ #7A3F1C
  *  - Text Dark Neutral / Ink ................. #211A12
@@ -40,7 +40,7 @@ import { formatGHS } from '@/lib/golden-acres/format'
 
 export const BRAND = {
   canvas: '#F7F5F0',
-  card: '#FAF9F6', // ~50% whiter than #F7F5F0 canvas
+  card: '#FDFDFB', // 25% tan (#F7F5F0) + 75% white (#FFFFFF)
   cardElevated: '#FFFFFF',
   ink: '#211A12',
   body: '#3D332A',
@@ -50,7 +50,7 @@ export const BRAND = {
   green: '#0B3B25',
   charcoal: '#211A12',
   red: '#B91C1C',
-  border: 'rgba(33, 26, 18, 0.09)',
+  border: 'rgba(33, 26, 18, 0.05)',
 } as const
 
 export type RibbonTone = 'copper' | 'charcoal' | 'green' | 'red'
@@ -102,7 +102,7 @@ export function ProductImageShell({
 /**
  * MobileProduceCardRich
  * - Height reduced by 20% (aspect-[1.32/1] header, streamlined padding & button)
- * - Card background is ~50% whiter (#FAF9F6)
+ * - Card background is 75% white / 25% tan (#FDFDFB) with borderless natural shadow
  */
 export function MobileProduceCardRich({
   id,
@@ -155,7 +155,7 @@ export function MobileProduceCardRich({
   return (
     <Link
       href={`/preview/product?slug=${slug}`}
-      className="group relative flex flex-col justify-between overflow-hidden rounded-[24px] bg-[#FAF9F6] shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.985] transition-transform"
+      className="group relative flex flex-col justify-between overflow-hidden rounded-[24px] bg-[#FDFDFB] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-transform"
     >
       {/* 1. Image Container with Badges (Reduced height: aspect-[1.32/1]) */}
       <div className="relative aspect-[1.32/1] w-full overflow-hidden bg-white/40">
@@ -426,10 +426,10 @@ export function DottedProgressTrack({
                 className={cn(
                   'z-10 flex h-[clamp(24px,3.2vh,28px)] w-[clamp(24px,3.2vh,28px)] items-center justify-center rounded-full transition-all',
                   (isDone || isTruck) && 'text-white shadow-xs',
-                  !isDone && !isTruck && 'border-2 border-[rgba(33,26,18,0.22)] bg-[#FAF9F6] text-[#5C5247]'
+                  !isDone && !isTruck && 'border-2 border-[rgba(33,26,18,0.18)] bg-[#FDFDFB] text-[#5C5247]'
                 )}
                 style={{
-                  backgroundColor: isDone || isTruck ? activeColor : '#FAF9F6',
+                  backgroundColor: isDone || isTruck ? activeColor : '#FDFDFB',
                 }}
               >
                 {isTruck ? (
@@ -466,7 +466,7 @@ export function PreviewBottomNav({
   ]
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-[rgba(33,26,18,0.08)] bg-[#FAF9F6]/95 px-5 pt-2.5 pb-[clamp(18px,2.8vh,24px)] backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]">
+    <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-[rgba(33,26,18,0.06)] bg-[#FDFDFB]/95 px-5 pt-2.5 pb-[clamp(18px,2.8vh,24px)] backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]">
       {tabs.map((tab) => {
         const isActive = tab.key === active
         const Icon = tab.icon

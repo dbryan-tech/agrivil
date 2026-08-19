@@ -221,7 +221,7 @@ export default function MobileProductDetailsScreen() {
 
       <div className="relative px-5 pt-3 space-y-4">
         {/* 1. Large Hero Produce Display Card */}
-        <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-[28px] bg-[#FAF9F6] p-6 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-[28px] bg-[#FDFDFB] p-6 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           {/* Top Badges */}
           <div className="absolute top-4 left-4 z-10 flex flex-col gap-1.5">
             {product.organic && (
@@ -300,7 +300,7 @@ export default function MobileProductDetailsScreen() {
         </div>
 
         {/* 3. Variable-Weight Pricing Explainer Card */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-baseline justify-between">
             <div>
               <span className="text-[26px] font-black text-[#211A12]">
@@ -325,7 +325,7 @@ export default function MobileProductDetailsScreen() {
         </div>
 
         {/* 4. Competing Farmer Offers Comparison Section */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center justify-between pb-3 border-b border-[rgba(33,26,18,0.06)]">
             <div>
               <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
@@ -387,12 +387,12 @@ export default function MobileProductDetailsScreen() {
         </div>
 
         {/* 5. Farmer Mini-Profile & Story Card */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Farmer Profile
           </span>
           <div className="mt-3 flex items-center gap-3.5">
-            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs border border-[rgba(33,26,18,0.10)]">
+            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs">
               <Image
                 src={product.farmer.photo}
                 alt={product.farmer.name}
@@ -423,7 +423,7 @@ export default function MobileProductDetailsScreen() {
         </div>
 
         {/* 6. Freshness & Cold-Chain Specs Grid */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <h3 className="pb-3 text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Farm-to-Door Specifications
           </h3>
@@ -450,7 +450,7 @@ export default function MobileProductDetailsScreen() {
         </div>
 
         {/* 7. Customer Reviews & Ratings */}
-        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center justify-between pb-3 border-b border-[rgba(33,26,18,0.06)]">
             <h3 className="text-[14px] font-black text-[#211A12]">
               Customer Reviews ({product.farmer.reviews})
