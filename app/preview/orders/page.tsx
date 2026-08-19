@@ -5,10 +5,6 @@ import Link from 'next/link'
 import {
   Search,
   MoreVertical,
-  Home,
-  FileText,
-  Wallet,
-  User,
 } from 'lucide-react'
 import { formatGHS } from '@/lib/golden-acres/format'
 import { cn } from '@/lib/utils'
@@ -17,6 +13,7 @@ import {
   PackageBoxes3D,
   DottedProgressTrack,
   ProductImageShell,
+  PreviewBottomNav,
   type RibbonTone,
 } from '@/app/preview/_lib/premium'
 
