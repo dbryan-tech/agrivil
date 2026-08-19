@@ -67,7 +67,7 @@ export function MobileProductCard({
       <Link
         href={`/m/product/${product.slug}`}
         className={cn(
-          'group relative flex flex-col justify-between overflow-hidden rounded-[24px] bg-[#FDFDFB] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-transform',
+          'group relative flex flex-col justify-between overflow-hidden rounded-[20px] bg-[#FDFDFB] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-transform',
           className
         )}
       >

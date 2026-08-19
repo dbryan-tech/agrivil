@@ -192,7 +192,7 @@ export default function MobileHomeScreen() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-1.5">
           {recommended.map((product, idx) => (
             <MobileProductCard
               key={product.id}
@@ -220,7 +220,7 @@ export default function MobileHomeScreen() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-1.5">
           {popular.map((product) => (
             <MobileProductCard key={product.id} product={product} />
           ))}

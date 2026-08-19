@@ -59,7 +59,7 @@ export default function MobileFarmerProductsScreen() {
           All produce grown on-site and harvested fresh for same-day packing.
         </p>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-1.5">
           {items.map((prod) => (
             <MobileProductCard key={prod.id} product={prod} />
           ))}

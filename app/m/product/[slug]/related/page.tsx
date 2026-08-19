@@ -84,7 +84,7 @@ export default function MobileRelatedProductsScreen() {
         </header>
 
         {/* Vertical Items List */}
-        <div className="space-y-2 pt-1">
+        <div className="space-y-1.5 pt-1">
           {relatedItems.map((item) => {
             const isAdded = addedItem === item.name
             return (
@@ -131,7 +131,7 @@ export default function MobileRelatedProductsScreen() {
             Recently viewed
           </h3>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-1.5">
             {recentlyViewed.map((item) => (
               <Link
                 key={item.name}

@@ -265,7 +265,7 @@ export default function MobileFarmerProfileScreen() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-1.5">
                 {(farmProducts.length > 0 ? farmProducts : products.slice(0, 4)).map((product) => (
                   <MobileProductCard key={product.id} product={product} />
                 ))}
@@ -284,7 +284,7 @@ export default function MobileFarmerProfileScreen() {
               <p className="text-[10.5px] font-semibold text-[#5C5247]">Harvested directly from {farmer.farmName || farmer.name}</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-1.5">
               {(farmProducts.length > 0 ? farmProducts : products.slice(0, 4)).map((product) => (
                 <MobileProductCard key={product.id} product={product} />
               ))}

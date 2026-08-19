@@ -300,7 +300,7 @@ export default function MobileCategoryDetailScreen() {
       </div>
 
       {/* 4. Product List with Dynamic ProductImageShell */}
-      <div className="px-3 space-y-2">
+      <div className="px-3 space-y-1.5">
         {meta.canonicalItems.map((item) => {
           const isAdded = addedItem === item.name
           return (

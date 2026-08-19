@@ -162,7 +162,7 @@ export default function MobileSearchScreen() {
                 <p className="mt-0.5 text-[11.5px] font-semibold text-[#5C5247]">Try searching for &quot;Tomatoes&quot;, &quot;Yam&quot;, or &quot;Plantain&quot;</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-1.5">
                 {results.map((product) => (
                   <MobileProductCard key={product.id} product={product} />
                 ))}
