@@ -17,7 +17,7 @@
 
 
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/bazaar_green</item>
+        <item name="windowSplashScreenBackground">@color/agrivil_green</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash_precision_icon</item>
         <item name="windowSplashScreenAnimationDuration">450</item>
         <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>

@@ -1,27 +1,20 @@
+// NOTE: This script previously copied a pre-built Android project from a
+// separate KNUST Bazaar checkout. That is what originally injected the wrong
+// (Bazaar) app icons, splash screens and Java package names into AgriVil.
+//
+// The AgriVil Android project now lives directly under mobile/android and is
+// already rebranded (com.agrivil.* packages, AgriVil green assets). This setup
+// step is therefore a no-op — we only validate that the local project exists.
+// If you ever need to bootstrap from scratch, build the native shell with
+// `npx cap add android` inside mobile/ instead of copying from another repo.
+
 import fs from 'node:fs'
 import path from 'node:path'
 
-const srcDir = 'C:\\Users\\HP\\Desktop\\knust-bazaar-master\\mobile\\android'
 const destDir = path.resolve('mobile/android')
 
-function copyRecursiveSync(src, dest) {
-  const exists = fs.existsSync(src)
-  const stats = exists && fs.statSync(src)
-  const isDirectory = exists && stats.isDirectory()
-  if (isDirectory) {
-    if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true })
-    fs.readdirSync(src).forEach((childItemName) => {
-      copyRecursiveSync(path.join(src, childItemName), path.join(dest, childItemName))
-    })
-  } else {
-    fs.copyFileSync(src, dest)
-  }
-}
-
-if (fs.existsSync(srcDir)) {
-  console.log(`Copying Android project from ${srcDir} to ${destDir}...`)
-  copyRecursiveSync(srcDir, destDir)
-  console.log('Android project files copied successfully!')
+if (fs.existsSync(destDir)) {
+  console.log(`AgriVil Android project already present at ${destDir} — nothing to copy.`)
 } else {
-  console.warn('Source android dir does not exist.')
+  console.warn('mobile/android not found. Run `npx cap add android` inside mobile/ to bootstrap it.')
 }

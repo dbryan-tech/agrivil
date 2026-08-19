@@ -42,3 +42,6 @@ mobile/android/build/
 mobile/android/local.properties
 mobile/android/*.apk
 mobile/android/*.aab
+
+# git worktree (embedded repo)
+.worktrees/

@@ -1,25 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- KNUST Bazaar launcher foreground — precision mark centered at ~60%
-     of the 108dp adaptive icon canvas (white background surrounds it).
-     All paths are wrapped in a group that scales 0.6x and translates to center. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp" android:height="108dp"
-    android:viewportWidth="100" android:viewportHeight="100">
-  <group
-      android:pivotX="50" android:pivotY="50"
-      android:scaleX="0.55" android:scaleY="0.55">
-    <!-- arms -->
-    <path android:fillColor="#1f9e63" android:pathData="M10,12 L32,12 L32,34 L56,54 L42,68 L10,40 Z" />
-    <path android:fillColor="#00331d" android:pathData="M90,12 L68,12 L68,34 L44,54 L58,68 L90,40 Z" />
-    <!-- center diamond (deep green) -->
-    <path android:fillColor="#00331d" android:pathData="M50,46 L62,58 L50,70 L38,58 Z" />
-    <!-- gold token -->
-    <path android:fillColor="#f4b942" android:pathData="M44,52 h12 v12 h-12 Z" />
-    <!-- base bar (soft white → use light green on white bg for contrast) -->
-    <path android:fillColor="#c8ddd0" android:pathData="M28,76 h44 v12 h-44 Z" />
-    <!-- top-light gloss highlights -->
-    <path android:fillColor="#ffffff" android:fillAlpha="0.20" android:pathData="M10,12 L32,12 L32,22 L34,28 L18,20 L10,24 Z" />
-    <path android:fillColor="#ffffff" android:fillAlpha="0.11" android:pathData="M90,12 L68,12 L68,22 L66,28 L82,20 L90,24 Z" />
-    <path android:fillColor="#ffffff" android:fillAlpha="0.16" android:pathData="M44,52 h12 v3 h-12 Z" />
-  </group>
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#FFFFFFFF" android:pathData="M59.763 36.672 H75.746 C82.226 36.672 87.48 41.925 87.48 48.406 V63.648 H80.915 V48.406 C80.915 48.25 80.909 48.095 80.897 47.941 L64.915 63.646 C64.969 63.648 65.023 63.648 65.077 63.648 H80.915 V69.849 H65.077 C58.596 69.849 53.198 64.543 53.198 58.062 V42.861 H59.763 V58.062 C59.763 58.355 59.785 58.644 59.829 58.928 L76.164 42.878 C76.026 42.866 75.887 42.861 75.746 42.861 H59.763 V36.672 Z"/>
+    <path android:fillColor="#FFFFFFFF" android:pathData="M43.619 68.707 L20.52 42.858 H29.813 L43.374 58.034 V42.858 H50.304 V66.155 C50.304 69.671 45.962 71.328 43.619 68.707 Z"/>
 </vector>

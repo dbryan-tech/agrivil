@@ -1,6 +1,6 @@
 // Two fully-independent app modules (no shared mutable source):
-//   :consumer -> com.knust.bazaar       (marketplace, loads /m)
-//   :admin    -> com.knust.bazaar.admin (admin console,  loads /ad)
+//   :consumer -> com.agrivil.marketplace (marketplace, loads /m)
+//   :admin    -> com.agrivil.farmer      (farmer cockpit, loads /m/farmer)
 // Both share ONLY the read-only Capacitor library modules below.
 include ':consumer'
 include ':admin'
