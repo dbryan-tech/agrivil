@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft, Star, CheckCircle2, ChevronRight, Navigation } from 'lucide-react'
+import { ArrowLeft, Star, CheckCircle2, ChevronRight, Navigation, MapPin } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { MobileBottomNav } from '@/components/golden-acres/mobile/mobile-bottom-nav'
 import { cn } from '@/lib/utils'
@@ -44,99 +44,123 @@ export default function MobileShopLocalScreen() {
   const [showNearMe, setShowNearMe] = useState(true)
 
   return (
-    <div className="min-h-dvh bg-[#FAF7F0] pb-24 text-[#2B1F17]">
-      {/* 1. Header (Matching Screen 11) */}
+    <div className="relative min-h-dvh w-full bg-[#F7F5F0] pb-28 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Zero Scrollbar Global Styles */}
+      <style jsx global>{`
+        * {
+          scrollbar-width: none !important;
+          -ms-overflow-style: none !important;
+        }
+        *::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+        }
+      `}</style>
+
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
+      {/* 1. Header */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[#E0DACB] bg-[#FAF7F0] px-3 sm:px-4 py-2.5"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-5 py-3 backdrop-blur-md"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
       >
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-5 w-5" />
           </button>
-          <h1 className="text-base font-extrabold text-[#2B1F17]">Shop Local</h1>
+          <h1 className="text-[17px] font-extrabold text-[#211A12]">Shop Local</h1>
         </div>
 
         <button
           type="button"
           onClick={() => setViewMode(viewMode === 'map' ? 'list' : 'map')}
-          className="ga-press rounded-full border border-[#E0DACB] bg-white px-3 py-1 text-xs font-bold text-[#2B1F17] shadow-xs hover:border-[#0F7A43]"
+          className="rounded-full border border-[rgba(33,26,18,0.10)] bg-white px-3.5 py-1.5 text-[11px] font-extrabold text-[#211A12] shadow-2xs active:scale-95 transition-transform"
         >
-          {viewMode === 'map' ? 'List view' : 'Map view'}
+          {viewMode === 'map' ? 'List View' : 'Map View'}
         </button>
       </header>
 
-      {/* 2. Map Radar Graphic Section (Screen 11) */}
-      <div className="relative h-64 w-full overflow-hidden bg-[#E7E2D5]">
-        {/* Map Grid Pattern & Roads */}
-        <div className="absolute inset-0 bg-[radial-gradient(#D5CEBD_1px,transparent_1px)] [background-size:16px_16px] opacity-70" />
+      {/* 2. Map Radar Graphic Section */}
+      <div className="relative h-60 w-full overflow-hidden bg-[#EAE5DC] border-b border-[rgba(33,26,18,0.10)]">
+        <div className="absolute inset-0 bg-[radial-gradient(rgba(122,63,28,0.12)_1.5px,transparent_1.5px)] [background-size:20px_20px] opacity-70" />
 
         {/* Pulsating User Location Dot */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
-          <div className="h-10 w-10 rounded-full bg-[#0F7A43]/20 animate-ping" />
-          <div className="absolute h-5 w-5 rounded-full border-2 border-white bg-[#0F7A43] shadow-md flex items-center justify-center text-white">
-            <Navigation className="h-2.5 w-2.5 fill-white" />
+          <div className="h-12 w-12 rounded-full bg-[#0B3B25]/20 animate-ping" />
+          <div className="absolute h-6 w-6 rounded-full border-2 border-white bg-[#0B3B25] shadow-md flex items-center justify-center text-white">
+            <Navigation className="h-3 w-3 fill-white" />
           </div>
         </div>
 
         {/* Nearby Farm Location Pins */}
         <div className="absolute top-1/4 left-1/4 flex flex-col items-center">
-          <span className="rounded-md bg-[#0F7A43] px-2 py-0.5 text-[9px] font-extrabold text-white shadow-md">
+          <span className="rounded-md bg-[#0B3B25] px-2 py-0.5 text-[9px] font-black text-white shadow-md">
             Adwoa (0.8km)
           </span>
-          <div className="mt-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0F7A43] shadow-md" />
+          <div className="mt-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0B3B25] shadow-md" />
         </div>
 
         <div className="absolute top-1/3 right-1/4 flex flex-col items-center">
-          <span className="rounded-md bg-[#0F7A43] px-2 py-0.5 text-[9px] font-extrabold text-white shadow-md">
+          <span className="rounded-md bg-[#0B3B25] px-2 py-0.5 text-[9px] font-black text-white shadow-md">
             Nyamekye (1.2km)
           </span>
-          <div className="mt-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0F7A43] shadow-md" />
+          <div className="mt-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0B3B25] shadow-md" />
         </div>
 
         <div className="absolute bottom-1/4 left-1/3 flex flex-col items-center">
-          <span className="rounded-md bg-[#0F7A43] px-2 py-0.5 text-[9px] font-extrabold text-white shadow-md">
+          <span className="rounded-md bg-[#0B3B25] px-2 py-0.5 text-[9px] font-black text-white shadow-md">
             Baffour (2.1km)
           </span>
-          <div className="mt-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0F7A43] shadow-md" />
+          <div className="mt-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0B3B25] shadow-md" />
         </div>
       </div>
 
       {/* 3. "Show products near me" Toggle Bar */}
-      <div className="border-b border-[#E0DACB] bg-[#FAF7F0] px-3 sm:px-4 py-2.5">
+      <div className="border-b border-[rgba(33,26,18,0.06)] bg-white/70 px-5 py-3 backdrop-blur-xs">
         <label className="flex items-center justify-between cursor-pointer">
-          <span className="text-xs font-bold text-[#2B1F17]">Show products near me</span>
+          <div className="flex items-center gap-2">
+            <MapPin className="h-4 w-4 text-[#0B3B25]" />
+            <span className="text-[13px] font-extrabold text-[#211A12]">Show growers near KNUST</span>
+          </div>
           <input
             type="checkbox"
             checked={showNearMe}
             onChange={(e) => setShowNearMe(e.target.checked)}
-            className="h-5 w-5 rounded-md accent-[#0F7A43]"
+            className="h-5 w-5 rounded-md accent-[#0B3B25]"
           />
         </label>
       </div>
 
-      {/* 4. Farmers & Products List (Matching Screen 11) */}
-      <div className="px-3 sm:px-4 pt-3.5 space-y-3">
+      {/* 4. Farmers & Products List */}
+      <div className="relative px-5 pt-4 space-y-3">
         <div className="pb-1">
-          <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#6E6A63]">
-            Farmers &amp; products near KNUST, Kumasi
+          <h2 className="text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+            Farmers &amp; produce near KNUST, Kumasi
           </h2>
         </div>
 
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           {LOCAL_FARMS.map((farm) => (
             <Link
               key={farm.name}
               href={`/m/farmers/${farm.slug}`}
-              className="ga-press flex items-center justify-between rounded-3xl border border-[#E0DACB] bg-white p-3 shadow-xs hover:border-[#0F7A43]/40 transition-all"
+              className="flex items-center justify-between rounded-[26px] bg-[#FAF9F6] p-3.5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.98] transition-transform"
             >
-              <div className="flex items-center gap-3">
-                <div className="relative h-13 w-13 shrink-0 overflow-hidden rounded-2xl border border-[#E0DACB] bg-[#FAF7F0]">
+              <div className="flex items-center gap-3.5 flex-1 min-w-0 pr-2">
+                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs border border-[rgba(33,26,18,0.08)]">
                   <Image
                     src={farm.image}
                     alt={farm.name}
@@ -144,26 +168,26 @@ export default function MobileShopLocalScreen() {
                     className="object-cover"
                   />
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <h3 className="text-xs font-extrabold text-[#2B1F17]">
+                    <h3 className="text-[14px] font-extrabold text-[#211A12] truncate">
                       {farm.name}
                     </h3>
-                    <CheckCircle2 className="h-3 w-3 fill-[#0F7A43] text-white" />
+                    <CheckCircle2 className="h-3.5 w-3.5 fill-[#0B3B25] text-white shrink-0" />
                   </div>
-                  <span className="text-[10px] font-semibold text-[#0F7A43]">
+                  <span className="text-[11px] font-extrabold text-[#0B3B25]">
                     {farm.distance}
                   </span>
-                  <div className="mt-0.5 flex items-center gap-1 text-[10px] text-[#6E6A63]">
-                    <Star className="h-2.5 w-2.5 fill-[#FBBF24] text-[#FBBF24]" />
-                    <span className="font-bold text-[#2B1F17]">{farm.rating}</span>
-                    <span>({farm.reviews})</span>
+                  <div className="mt-1 flex items-center gap-1 text-[11px] text-[#5C5247]">
+                    <Star className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
+                    <span className="font-black text-[#211A12]">{farm.rating}</span>
+                    <span className="font-semibold">({farm.reviews} reviews)</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex h-7 w-7 items-center justify-center text-[#6E6A63]">
-                <ChevronRight className="h-4 w-4" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0B3B25]/10 text-[#0B3B25] shrink-0">
+                <ChevronRight className="h-4 w-4 stroke-[2.5]" />
               </div>
             </Link>
           ))}
@@ -174,3 +198,4 @@ export default function MobileShopLocalScreen() {
     </div>
   )
 }
+

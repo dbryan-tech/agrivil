@@ -1,31 +1,27 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import {
   User,
   Heart,
   Store,
-  UtensilsCrossed,
   MapPin,
   CreditCard,
   Bell,
-  Headphones,
-  ShieldCheck,
   LogOut,
   ChevronRight,
   Sparkles,
-  Repeat,
   Package,
+  ShieldCheck,
+  Award,
 } from 'lucide-react'
 import { useSession } from '@/components/golden-acres/auth/session-context'
-import { MobileAppBar } from '@/components/golden-acres/mobile/mobile-app-bar'
 import { MobileBottomNav } from '@/components/golden-acres/mobile/mobile-bottom-nav'
 
 export default function MobileAccountScreen() {
   const router = useRouter()
-  const { account, signOut, wishlist } = useSession()
+  const { account, signOut } = useSession()
 
   const userName = account?.name || 'Ewoke Mensah'
   const userEmail = account?.email || 'ewoke@agrivil.gh'
@@ -36,102 +32,139 @@ export default function MobileAccountScreen() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#FAF7F0] pb-24 text-[#2B1F17]">
-      <MobileAppBar title="My Account" showCart />
+    <div className="relative min-h-dvh w-full bg-[#F7F5F0] pb-28 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Zero Scrollbar Global Styles */}
+      <style jsx global>{`
+        * {
+          scrollbar-width: none !important;
+          -ms-overflow-style: none !important;
+        }
+        *::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+        }
+      `}</style>
 
-      <div className="px-3 sm:px-4 py-3.5 space-y-3.5">
-        {/* 1. Profile Header Card */}
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 sm:p-5 shadow-xs">
-          <div className="flex items-center gap-3.5">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#0F7A43] text-xl font-extrabold text-white shadow-md">
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
+      {/* Header */}
+      <header className="relative flex items-center justify-between px-5 pt-4 pb-2">
+        <h1 className="text-[26px] font-extrabold tracking-tight text-[#211A12]">
+          My Profile
+        </h1>
+        <div className="flex items-center gap-1.5 rounded-full bg-[#0B3B25]/10 px-3 py-1 text-[11px] font-black text-[#0B3B25]">
+          <ShieldCheck className="h-3.5 w-3.5" />
+          <span>Verified Buyer</span>
+        </div>
+      </header>
+
+      <div className="relative px-5 pt-3 space-y-4">
+        {/* 1. Profile Member Card */}
+        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+          <div className="flex items-center gap-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0B3B25] text-xl font-black text-white shadow-sm">
               {userName.charAt(0)}
             </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <h2 className="text-sm font-extrabold text-[#2B1F17]">
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2">
+                <h2 className="text-[17px] font-extrabold text-[#211A12] truncate">
                   {userName}
                 </h2>
-                <span className="rounded-full bg-[#0F7A43]/10 px-2 py-0.5 text-[9px] font-extrabold text-[#0F7A43]">
-                  Verified
-                </span>
               </div>
-              <span className="text-xs text-[#6E6A63]">{userEmail}</span>
-              <span className="mt-1 inline-flex items-center gap-1 text-[10px] font-bold text-[#7A3F1C]">
-                <Sparkles className="h-3 w-3" /> Gold Harvest Member (140 pts)
-              </span>
+              <p className="text-[12px] font-semibold text-[#5C5247] truncate">{userEmail}</p>
+              <div className="mt-1.5 flex items-center gap-1 text-[11px] font-black text-[#7A3F1C]">
+                <Award className="h-3.5 w-3.5" />
+                <span>Gold Harvest Member · 140 pts</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* 2. Quick Links Grid */}
-        <div className="grid grid-cols-2 gap-2.5">
+        {/* 2. Quick Action Grid */}
+        <div className="grid grid-cols-2 gap-3">
           <Link
             href="/m/orders"
-            className="ga-press flex flex-col rounded-3xl border border-[#E0DACB] bg-white p-3.5 shadow-xs"
+            className="flex flex-col rounded-[26px] bg-[#FAF9F6] p-4 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.98] transition-transform"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#0F7A43]/10 text-[#0F7A43]">
-              <Package className="h-4 w-4" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#0B3B25]/10 text-[#0B3B25]">
+              <Package className="h-5 w-5 stroke-[2.2]" />
             </div>
-            <span className="mt-2.5 text-xs font-extrabold text-[#2B1F17]">My Orders</span>
-            <span className="text-[10px] text-[#6E6A63]">Track &amp; reorder</span>
+            <span className="mt-3 text-[14px] font-extrabold text-[#211A12]">My Shipping</span>
+            <span className="text-[11px] font-semibold text-[#5C5247]">Live track &amp; history</span>
           </Link>
 
           <Link
-            href="/m/local"
-            className="ga-press flex flex-col rounded-3xl border border-[#E0DACB] bg-white p-3.5 shadow-xs"
+            href="/m/farmers"
+            className="flex flex-col rounded-[26px] bg-[#FAF9F6] p-4 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.98] transition-transform"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
-              <Store className="h-4 w-4" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
+              <Store className="h-5 w-5 stroke-[2.2]" />
             </div>
-            <span className="mt-2.5 text-xs font-extrabold text-[#2B1F17]">Local Farms</span>
-            <span className="text-[10px] text-[#6E6A63]">Nearby growers</span>
+            <span className="mt-3 text-[14px] font-extrabold text-[#211A12]">Local Growers</span>
+            <span className="text-[11px] font-semibold text-[#5C5247]">Smallholder farms</span>
           </Link>
         </div>
 
-        {/* 3. Account Settings Menu */}
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-2 shadow-xs divide-y divide-[#E0DACB]/60">
+        {/* 3. Account Menu */}
+        <div className="overflow-hidden rounded-[28px] bg-[#FAF9F6] p-2 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 divide-y divide-[rgba(33,26,18,0.06)]">
           <Link
             href="/m/onboarding/gps"
-            className="ga-press flex items-center justify-between p-3 text-xs font-bold text-[#2B1F17]"
+            className="flex items-center justify-between p-3.5 text-[13px] font-extrabold text-[#211A12] active:bg-black/5 rounded-2xl transition-colors"
           >
             <div className="flex items-center gap-3">
-              <MapPin className="h-4 w-4 text-[#0F7A43]" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
+                <MapPin className="h-4 w-4 stroke-[2.4]" />
+              </div>
               <span>Delivery Addresses &amp; GPS</span>
             </div>
-            <ChevronRight className="h-4 w-4 text-[#6E6A63]" />
+            <ChevronRight className="h-4 w-4 text-[#5C5247]" />
           </Link>
 
           <Link
             href="/m/account/notifications"
-            className="ga-press flex items-center justify-between p-3 text-xs font-bold text-[#2B1F17]"
+            className="flex items-center justify-between p-3.5 text-[13px] font-extrabold text-[#211A12] active:bg-black/5 rounded-2xl transition-colors"
           >
             <div className="flex items-center gap-3">
-              <Bell className="h-4 w-4 text-[#0F7A43]" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
+                <Bell className="h-4 w-4 stroke-[2.4]" />
+              </div>
               <span>Notifications &amp; Harvest Alerts</span>
             </div>
-            <ChevronRight className="h-4 w-4 text-[#6E6A63]" />
+            <ChevronRight className="h-4 w-4 text-[#5C5247]" />
           </Link>
 
           <Link
             href="/m/cart/promo"
-            className="ga-press flex items-center justify-between p-3 text-xs font-bold text-[#2B1F17]"
+            className="flex items-center justify-between p-3.5 text-[13px] font-extrabold text-[#211A12] active:bg-black/5 rounded-2xl transition-colors"
           >
             <div className="flex items-center gap-3">
-              <CreditCard className="h-4 w-4 text-[#0F7A43]" />
-              <span>Coupons &amp; Vouchers</span>
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
+                <CreditCard className="h-4 w-4 stroke-[2.4]" />
+              </div>
+              <span>Coupons &amp; Direct Vouchers</span>
             </div>
-            <ChevronRight className="h-4 w-4 text-[#6E6A63]" />
+            <ChevronRight className="h-4 w-4 text-[#5C5247]" />
           </Link>
 
           <Link
             href="/m/farmer"
-            className="ga-press flex items-center justify-between p-3 text-xs font-bold text-[#0F7A43]"
+            className="flex items-center justify-between p-3.5 text-[13px] font-extrabold text-[#0B3B25] active:bg-black/5 rounded-2xl transition-colors"
           >
             <div className="flex items-center gap-3">
-              <Store className="h-4 w-4 text-[#0F7A43]" />
-              <span>Grower Portal (Sell on Agrivil)</span>
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
+                <Store className="h-4 w-4 stroke-[2.4]" />
+              </div>
+              <span>Grower Portal (Sell on AgriVil)</span>
             </div>
-            <ChevronRight className="h-4 w-4 text-[#6E6A63]" />
+            <ChevronRight className="h-4 w-4 text-[#0B3B25]" />
           </Link>
         </div>
 
@@ -139,7 +172,7 @@ export default function MobileAccountScreen() {
         <button
           type="button"
           onClick={handleSignOut}
-          className="ga-press flex h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#DC2626]/30 bg-white text-xs font-bold text-[#DC2626] shadow-xs hover:bg-[#DC2626]/5"
+          className="flex h-12 w-full items-center justify-center gap-2 rounded-full border border-[rgba(220,38,38,0.25)] bg-white text-[13px] font-extrabold text-[#DC2626] shadow-2xs active:scale-[0.98] transition-transform"
         >
           <LogOut className="h-4 w-4" /> Sign Out
         </button>
@@ -149,3 +182,4 @@ export default function MobileAccountScreen() {
     </div>
   )
 }
+

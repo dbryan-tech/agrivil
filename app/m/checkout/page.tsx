@@ -13,10 +13,13 @@ import {
   Loader2,
   ShieldCheck,
   ChevronRight,
+  Truck,
+  Sparkles,
 } from 'lucide-react'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { formatGHS } from '@/lib/golden-acres/format'
 import { cn } from '@/lib/utils'
+import { PackageBoxes3D } from '@/app/preview/_lib/premium'
 
 export default function MobileCheckoutScreen() {
   const router = useRouter()
@@ -25,13 +28,14 @@ export default function MobileCheckoutScreen() {
   const [paymentMethod, setPaymentMethod] = useState<'momo' | 'card' | 'cod'>('momo')
   const [momoProvider, setMomoProvider] = useState<'mtn' | 'telecel' | 'at'>('mtn')
   const [momoPhone, setMomoPhone] = useState('024 123 4567')
-  const [deliverySlot, setDeliverySlot] = useState('Today, 6:00 AM – 9:00 AM (Dawn Fresh)')
-  const [gpsCode, setGpsCode] = useState('GA-143-3586')
+  const [deliverySlot, setDeliverySlot] = useState('Today, 2:00 PM – 5:00 PM (Afternoon Dispatch)')
+  const [gpsCode, setGpsCode] = useState('GA-183-4250')
   const [busy, setBusy] = useState(false)
 
-  const deliveryFee = subtotalEstimate > 150 ? 0 : 5
-  const packagingFee = 2
-  const finalTotal = (subtotalEstimate || 34.0) + deliveryFee + packagingFee
+  const deliveryFee = subtotalEstimate > 150 ? 0 : 8
+  const packagingFee = 0
+  const discount = subtotalEstimate > 0 ? 5.0 : 0
+  const finalTotal = Math.max(0, (subtotalEstimate || 34.0) + deliveryFee + packagingFee - discount)
 
   async function handlePlaceOrder() {
     setBusy(true)
@@ -42,187 +46,243 @@ export default function MobileCheckoutScreen() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#FAF7F0] pb-32 text-[#2B1F17]">
+    <div className="relative min-h-dvh w-full bg-[#F7F5F0] pb-36 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Zero Scrollbar Global Styles */}
+      <style jsx global>{`
+        * {
+          scrollbar-width: none !important;
+          -ms-overflow-style: none !important;
+        }
+        *::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+        }
+      `}</style>
+
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
       {/* Header Bar */}
       <header
-        className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-[#E0DACB] bg-[#FAF7F0] px-4"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 8px)' }}
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-5 py-3 backdrop-blur-md"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
       >
-        <button
-          type="button"
-          onClick={() => router.back()}
-          aria-label="Back"
-          className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </button>
-        <div>
-          <h1 className="text-base font-extrabold text-[#2B1F17]">Checkout</h1>
-          <p className="text-[10px] text-[#6E6A63]">Direct Farm Dispatch</p>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            aria-label="Back"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+          <div>
+            <h1 className="text-[17px] font-extrabold tracking-tight text-[#211A12]">
+              Order Checkout
+            </h1>
+            <p className="text-[11px] font-bold text-[#5C5247]">
+              Direct Farm Dispatch
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 text-[11px] font-black text-[#0B3B25]">
+          <ShieldCheck className="h-4 w-4" />
+          <span>SSL Secured</span>
         </div>
       </header>
 
-      <div className="px-3 sm:px-4 pt-3.5 space-y-3.5">
+      <div className="relative px-5 pt-4 space-y-4">
         {/* 1. Delivery Address Card */}
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#6E6A63]">
-              Delivering To
+        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+          <div className="flex items-center justify-between pb-2 border-b border-[rgba(33,26,18,0.06)]">
+            <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+              DELIVERING TO
             </span>
-            <span className="text-[10px] font-bold text-[#0F7A43]">KNUST Hub Radius</span>
+            <Link
+              href="/m/onboarding/gps"
+              className="text-[11px] font-bold text-[#7A3F1C] hover:underline"
+            >
+              Edit Address
+            </Link>
           </div>
 
-          <div className="mt-2.5 flex items-start gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-[#0F7A43]/10 text-[#0F7A43]">
-              <MapPin className="h-4 w-4" />
+          <div className="mt-3 flex items-start gap-3.5">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#0B3B25]/10 text-[#0B3B25]">
+              <MapPin className="h-5 w-5 stroke-[2.2]" />
             </div>
-            <div className="flex-1">
-              <h2 className="text-xs font-extrabold text-[#2B1F17]">University Hall (Katanga), Room B12</h2>
-              <p className="text-[10px] text-[#6E6A63]">KNUST Campus, Kumasi</p>
-              <div className="mt-1 flex items-center gap-2">
-                <span className="rounded-md bg-[#FAF7F0] px-2 py-0.5 text-[9px] font-bold text-[#7A3F1C] border border-[#E0DACB]">
-                  GPS: {gpsCode}
-                </span>
+            <div className="min-w-0 flex-1">
+              <h2 className="text-[14px] font-extrabold text-[#211A12]">
+                University Hall (Katanga), Room B12
+              </h2>
+              <p className="mt-0.5 text-[12px] font-semibold text-[#5C5247]">
+                KNUST Campus, Kumasi
+              </p>
+              <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-0.5 text-[11px] font-black text-[#7A3F1C] shadow-2xs border border-[rgba(33,26,18,0.08)]">
+                GhanaPostGPS: {gpsCode}
               </div>
             </div>
           </div>
         </div>
 
         {/* 2. Delivery Time Window */}
-        <Link
-          href="/m/checkout/schedule"
-          className="ga-press flex items-center justify-between rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs"
-        >
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-[#0F7A43]/10 text-[#0F7A43]">
-              <Clock className="h-4 w-4" />
-            </div>
-            <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#6E6A63]">
-                Delivery Window
-              </span>
-              <h2 className="text-xs font-extrabold text-[#2B1F17]">{deliverySlot}</h2>
+        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
+                <Clock className="h-5 w-5 stroke-[2.2]" />
+              </div>
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+                  DELIVERY WINDOW
+                </span>
+                <h3 className="text-[13px] font-extrabold text-[#211A12] mt-0.5">
+                  {deliverySlot}
+                </h3>
+              </div>
             </div>
           </div>
-          <ChevronRight className="h-4 w-4 text-[#6E6A63]" />
-        </Link>
+        </div>
 
         {/* 3. Payment Method Card */}
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs">
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#6E6A63]">
-            Payment Method
+        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+          <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+            CHOOSE PAYMENT METHOD
           </span>
 
           <div className="mt-3 grid grid-cols-3 gap-2">
             {[
               { id: 'momo' as const, label: 'Mobile Money', icon: Smartphone },
-              { id: 'card' as const, label: 'Bank Card', icon: CreditCard },
+              { id: 'card' as const, label: 'Card / Visa', icon: CreditCard },
               { id: 'cod' as const, label: 'Cash / COD', icon: CheckCircle2 },
             ].map((p) => {
               const Icon = p.icon
+              const active = paymentMethod === p.id
               return (
                 <button
                   key={p.id}
                   type="button"
                   onClick={() => setPaymentMethod(p.id)}
                   className={cn(
-                    'ga-press flex flex-col items-center justify-center rounded-2xl p-2.5 border transition-all text-center',
-                    paymentMethod === p.id
-                      ? 'border-[#0F7A43] bg-[#0F7A43] text-white shadow-xs'
-                      : 'border-[#E0DACB] bg-[#FAF7F0] text-[#2B1F17]'
+                    'flex flex-col items-center justify-center rounded-2xl p-3 border transition-all text-center active:scale-95',
+                    active
+                      ? 'border-[#0B3B25] bg-[#0B3B25] text-white shadow-xs'
+                      : 'border-[rgba(33,26,18,0.10)] bg-white text-[#211A12]'
                   )}
                 >
-                  <Icon className="h-4 w-4" />
-                  <span className="mt-1 text-[10px] font-bold">{p.label}</span>
+                  <Icon className="h-5 w-5 stroke-[2.2]" />
+                  <span className="mt-1 text-[11px] font-extrabold">{p.label}</span>
                 </button>
               )
             })}
           </div>
 
-          {/* MoMo Provider Selection */}
+          {/* MoMo Provider Selection Sub-Panel */}
           {paymentMethod === 'momo' && (
-            <div className="mt-3 space-y-2.5 border-t border-[#E0DACB]/60 pt-3">
+            <div className="mt-4 pt-3.5 border-t border-[rgba(33,26,18,0.06)] space-y-3">
+              <span className="text-[10px] font-black uppercase tracking-wider text-[#5C5247]">
+                Select Network
+              </span>
               <div className="flex gap-2">
                 {[
-                  { id: 'mtn' as const, label: 'MTN MoMo' },
-                  { id: 'telecel' as const, label: 'Telecel Cash' },
-                  { id: 'at' as const, label: 'AT Money' },
-                ].map((prov) => (
+                  { id: 'mtn' as const, label: 'MTN MoMo', color: '#FFCC00' },
+                  { id: 'telecel' as const, label: 'Telecel Cash', color: '#E60000' },
+                  { id: 'at' as const, label: 'AT Money', color: '#0055AA' },
+                ].map((net) => (
                   <button
-                    key={prov.id}
+                    key={net.id}
                     type="button"
-                    onClick={() => setMomoProvider(prov.id)}
+                    onClick={() => setMomoProvider(net.id)}
                     className={cn(
-                      'ga-press flex-1 rounded-xl py-1.5 text-[10px] font-extrabold border transition-all',
-                      momoProvider === prov.id
-                        ? 'border-[#0F7A43] bg-[#0F7A43] text-white'
-                        : 'border-[#E0DACB] bg-[#FAF7F0] text-[#2B1F17]'
+                      'flex-1 rounded-xl py-2 text-center text-[11px] font-extrabold border transition-all',
+                      momoProvider === net.id
+                        ? 'border-[#0B3B25] bg-white text-[#0B3B25] ring-2 ring-[#0B3B25]/20 shadow-xs'
+                        : 'border-[rgba(33,26,18,0.10)] bg-[#F7F5F0] text-[#5C5247]'
                     )}
                   >
-                    {prov.label}
+                    {net.label}
                   </button>
                 ))}
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-[#6E6A63]">
-                  Wallet Phone Number
+                <label className="text-[10px] font-black uppercase tracking-wider text-[#5C5247]">
+                  MoMo Prompt Number
                 </label>
                 <input
                   type="tel"
                   value={momoPhone}
                   onChange={(e) => setMomoPhone(e.target.value)}
-                  className="mt-1 h-10 w-full rounded-xl border border-[#E0DACB] bg-[#FAF7F0] px-3 text-xs font-bold text-[#2B1F17] outline-none focus:border-[#0F7A43]"
+                  className="mt-1 flex h-11 w-full rounded-2xl border border-[rgba(33,26,18,0.10)] bg-white px-3.5 text-[13px] font-extrabold text-[#211A12] shadow-2xs outline-none focus:border-[#0B3B25]"
                 />
               </div>
             </div>
           )}
         </div>
 
-        {/* 4. Order Summary */}
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs space-y-2 text-xs">
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#6E6A63]">
-            Order Summary
-          </span>
-
-          <div className="flex justify-between text-[#6E6A63] pt-1">
-            <span>Produce Subtotal</span>
-            <span className="font-bold text-[#2B1F17]">{formatGHS(subtotalEstimate || 34.0)}</span>
+        {/* 4. Parcel Summary Card */}
+        <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+          <div className="flex items-center justify-between pb-3 border-b border-[rgba(33,26,18,0.06)]">
+            <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+              PAYMENT BREAKDOWN
+            </span>
+            <PackageBoxes3D size={54} />
           </div>
 
-          <div className="flex justify-between text-[#6E6A63]">
-            <span>Hub Dispatch Delivery</span>
-            <span className="font-bold text-[#2B1F17]">{formatGHS(deliveryFee)}</span>
-          </div>
-
-          <div className="flex justify-between text-[#6E6A63]">
-            <span>Cold-Chain Packaging</span>
-            <span className="font-bold text-[#2B1F17]">{formatGHS(packagingFee)}</span>
-          </div>
-
-          <div className="flex justify-between font-extrabold text-[#2B1F17] border-t border-[#E0DACB]/60 pt-2 text-sm">
-            <span>Total Payable</span>
-            <span className="text-[#0F7A43]">{formatGHS(finalTotal)}</span>
+          <div className="mt-3 space-y-2 text-[13px]">
+            <div className="flex justify-between font-semibold text-[#5C5247]">
+              <span>Produce Subtotal</span>
+              <span className="font-extrabold text-[#211A12]">{formatGHS(subtotalEstimate || 34.0)}</span>
+            </div>
+            <div className="flex justify-between font-semibold text-[#5C5247]">
+              <span>Cold-Chain Courier Fee</span>
+              <span className="font-extrabold text-[#211A12]">{formatGHS(deliveryFee)}</span>
+            </div>
+            <div className="flex justify-between font-semibold text-[#0B3B25]">
+              <span>Farm Direct Coupon</span>
+              <span className="font-extrabold">-{formatGHS(discount)}</span>
+            </div>
+            <div className="flex justify-between text-[16px] font-black text-[#211A12] pt-2.5 border-t border-[rgba(33,26,18,0.08)]">
+              <span>Final Total</span>
+              <span className="text-[#0B3B25] text-[18px]">{formatGHS(finalTotal)}</span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Sticky Bottom Action Bar */}
-      <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md border-t border-[#E0DACB] bg-[#FAF7F0]/95 p-3 backdrop-blur-md">
+      {/* Sticky Bottom Place Order Action Bar */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95 px-5 pt-3 pb-[clamp(18px,2.8vh,24px)] backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]">
         <button
           type="button"
           onClick={handlePlaceOrder}
           disabled={busy}
-          className="ga-press flex h-13 w-full items-center justify-center gap-2 rounded-2xl bg-[#0F7A43] text-sm font-bold text-white shadow-md hover:bg-[#0B3B25] disabled:opacity-50"
+          className="flex w-full items-center justify-between rounded-full bg-[#0B3B25] px-6 py-4 text-white shadow-md active:scale-[0.98] transition-transform disabled:opacity-75"
         >
-          {busy ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <span>Prompting MoMo Wallet...</span>
-            </>
-          ) : (
-            <span>Pay {formatGHS(finalTotal)} via Mobile Money</span>
-          )}
+          <div className="text-left">
+            <span className="text-[10px] font-black uppercase tracking-wider text-white/80">
+              Confirm &amp; Authorize
+            </span>
+            <p className="text-[16px] font-black leading-none">{formatGHS(finalTotal)}</p>
+          </div>
+          <div className="flex items-center gap-2 text-[14px] font-black">
+            {busy ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                <span>Authorizing MoMo...</span>
+              </>
+            ) : (
+              <>
+                <span>Place Order</span>
+                <ChevronRight className="h-4 w-4 stroke-[3]" />
+              </>
+            )}
+          </div>
         </button>
       </div>
     </div>

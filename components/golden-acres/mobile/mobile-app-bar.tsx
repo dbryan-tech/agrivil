@@ -45,22 +45,22 @@ export function MobileAppBar({
   return (
     <header
       className={cn(
-        'sticky top-0 z-30 flex h-14 items-center justify-between px-3 sm:px-4 transition-colors',
+        'sticky top-0 z-30 flex h-14 items-center justify-between px-4 transition-colors backdrop-blur-md',
         transparent
           ? 'bg-transparent'
-          : 'border-b border-[#E0DACB] bg-[#FAF7F0]',
+          : 'border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95',
         className
       )}
       style={{ paddingTop: 'env(safe-area-inset-top)' }}
     >
       {/* Left side: Back or Title */}
-      <div className="flex items-center gap-2.5 overflow-hidden">
+      <div className="flex items-center gap-3 overflow-hidden">
         {showBack && (
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Go back"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
@@ -68,11 +68,11 @@ export function MobileAppBar({
 
         {title && (
           <div className="flex flex-col truncate">
-            <h1 className="truncate text-base font-bold tracking-tight text-[#2B1F17]">
+            <h1 className="truncate text-[16px] font-extrabold tracking-tight text-[#211A12]">
               {title}
             </h1>
             {subtitle && (
-              <span className="truncate text-xs text-[#6E6A63]">{subtitle}</span>
+              <span className="truncate text-[11px] font-semibold text-[#5C5247]">{subtitle}</span>
             )}
           </div>
         )}
@@ -84,7 +84,7 @@ export function MobileAppBar({
           <Link
             href="/m/search"
             aria-label="Search"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#FAF7F0]"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-xs border border-[rgba(33,26,18,0.10)] active:scale-95"
           >
             <Search className="h-4 w-4" />
           </Link>
@@ -94,10 +94,10 @@ export function MobileAppBar({
           <Link
             href="/m/account/notifications"
             aria-label="Notifications"
-            className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#FAF7F0]"
+            className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-xs border border-[rgba(33,26,18,0.10)] active:scale-95"
           >
             <Bell className="h-4 w-4" />
-            <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-[#E67A2E]" />
+            <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-[#7A3F1C]" />
           </Link>
         )}
 
@@ -106,12 +106,12 @@ export function MobileAppBar({
             type="button"
             onClick={onFavoriteToggle}
             aria-label="Save item"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#FAF7F0]"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-xs border border-[rgba(33,26,18,0.10)] active:scale-95"
           >
             <Heart
               className={cn(
                 'h-4 w-4',
-                isFavorite ? 'fill-[#DC2626] text-[#DC2626]' : 'text-[#2B1F17]'
+                isFavorite ? 'fill-[#7A3F1C] text-[#7A3F1C]' : 'text-[#211A12]'
               )}
             />
           </button>
@@ -122,7 +122,7 @@ export function MobileAppBar({
             type="button"
             onClick={onShare}
             aria-label="Share"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#FAF7F0]"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-xs border border-[rgba(33,26,18,0.10)] active:scale-95"
           >
             <Share2 className="h-4 w-4" />
           </button>
@@ -132,11 +132,11 @@ export function MobileAppBar({
           <Link
             href="/m/cart"
             aria-label="Shopping Cart"
-            className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+            className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-sm active:scale-95 transition-transform"
           >
-            <ShoppingBag className="h-4 w-4 text-[#0F7A43]" />
+            <ShoppingBag className="h-4 w-4" />
             {count > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#0F7A43] px-1 text-[9px] font-bold text-white shadow-xs">
+              <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#7A3F1C] px-1 text-[9px] font-black text-white shadow-xs">
                 {count > 9 ? '9+' : count}
               </span>
             )}
@@ -148,3 +148,4 @@ export function MobileAppBar({
     </header>
   )
 }
+

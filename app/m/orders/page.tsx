@@ -2,174 +2,262 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import {
-  Package,
-  Truck,
-  CheckCircle2,
-  Clock,
-  ChevronRight,
-  ArrowRight,
-  RotateCcw,
+  Search,
+  MoreVertical,
 } from 'lucide-react'
-import { seedOrders } from '@/lib/golden-acres/data'
 import { formatGHS } from '@/lib/golden-acres/format'
-import { MobileAppBar } from '@/components/golden-acres/mobile/mobile-app-bar'
-import { MobileBottomNav } from '@/components/golden-acres/mobile/mobile-bottom-nav'
 import { cn } from '@/lib/utils'
+import { MobileBottomNav } from '@/components/golden-acres/mobile/mobile-bottom-nav'
+import {
+  StatusRibbon,
+  PackageBoxes3D,
+  DottedProgressTrack,
+  ProductImageShell,
+  type RibbonTone,
+} from '@/app/preview/_lib/premium'
+
+type Tab = 'all' | 'transit' | 'process' | 'delivered'
+
+type RealOrder = {
+  id: string
+  trackingCode: string
+  title: string
+  farmerName: string
+  ribbon: string
+  ribbonTone: RibbonTone
+  away?: string
+  truckIndex?: number
+  steps: { done: boolean }[]
+  from: string
+  fromDate: string
+  to: string
+  toDate: string
+  image: string
+  totalGHS: number
+}
+
+const ORDERS: RealOrder[] = [
+  {
+    id: 'GA-24817',
+    trackingCode: 'SWFT-7781294',
+    title: 'Organic Roma Tomatoes & Garden Eggs',
+    farmerName: "Auntie Ama's Certified Farm (Koforidua)",
+    ribbon: 'IN TRANSIT',
+    ribbonTone: 'copper',
+    away: '4 hours away',
+    truckIndex: 2,
+    steps: [{ done: true }, { done: true }, { done: false }, { done: false }],
+    from: 'Koforidua Hub, Eastern Region',
+    fromDate: 'Dawn Picked · 6:40 AM',
+    to: 'East Legon, GA-183-4250, Accra',
+    toDate: 'Est. 4:00 PM Today',
+    image: '/golden-acres/produce/roma-tomatoes-1.png',
+    totalGHS: 68.2,
+  },
+  {
+    id: 'GA-24804',
+    trackingCode: 'SWFT-6540192',
+    title: 'Fresh Pona Yam Tuber & Scotch Bonnet',
+    farmerName: 'Kwame Mensah Agro Collective (Ejisu)',
+    ribbon: 'DISPATCH READY',
+    ribbonTone: 'green',
+    away: 'Departs 2:30 PM',
+    truckIndex: 1,
+    steps: [{ done: true }, { done: false }, { done: false }, { done: false }],
+    from: 'Ejisu Aggregation Center, Ashanti',
+    fromDate: 'FEFO Checked · 9:15 AM',
+    to: 'KNUST Campus Gate, Kumasi',
+    toDate: 'Tomorrow 9:00 AM',
+    image: '/golden-acres/produce/white-yam.png',
+    totalGHS: 54.0,
+  },
+  {
+    id: 'GA-24761',
+    trackingCode: 'SWFT-4491028',
+    title: 'Sugarloaf Sweet Pineapple & Ginger Box',
+    farmerName: 'Volta Green Smallholders (Ho)',
+    ribbon: 'DELIVERED',
+    ribbonTone: 'charcoal',
+    truckIndex: 3,
+    steps: [{ done: true }, { done: true }, { done: true }, { done: true }],
+    from: 'Ho Central Depot, Volta',
+    fromDate: 'Harvested May 18',
+    to: 'Airport Residential, Accra',
+    toDate: 'Signed by Kofi · May 19',
+    image: '/golden-acres/produce/sweet-pineapple-1.png',
+    totalGHS: 82.5,
+  },
+]
 
 export default function MobileOrdersScreen() {
-  const [tab, setTab] = useState<'all' | 'ongoing' | 'completed' | 'cancelled'>('all')
+  const [activeTab, setActiveTab] = useState<Tab>('all')
 
-  const orders = [
-    {
-      id: 'AG-12345678',
-      date: 'May 22, 2026',
-      status: 'out_for_delivery',
-      statusLabel: 'Out for Delivery',
-      eta: 'Arriving 11:30 AM',
-      itemsCount: 3,
-      total: 42.0,
-      image: '/golden-acres/produce/roma-tomatoes-1.png',
-      isOngoing: true,
-    },
-    {
-      id: 'AG-12345610',
-      date: 'May 20, 2026',
-      status: 'delivered',
-      statusLabel: 'Delivered',
-      eta: 'Delivered May 20',
-      itemsCount: 2,
-      total: 38.5,
-      image: '/golden-acres/produce/sweet-pineapple-1.png',
-      isOngoing: false,
-    },
-    {
-      id: 'AG-12345590',
-      date: 'May 18, 2026',
-      status: 'delivered',
-      statusLabel: 'Delivered',
-      eta: 'Delivered May 18',
-      itemsCount: 4,
-      total: 27.0,
-      image: '/golden-acres/produce/white-yam.png',
-      isOngoing: false,
-    },
-    {
-      id: 'AG-12345560',
-      date: 'May 16, 2026',
-      status: 'cancelled',
-      statusLabel: 'Cancelled',
-      eta: 'Cancelled by user',
-      itemsCount: 1,
-      total: 18.0,
-      image: '/golden-acres/produce/avocado.png',
-      isOngoing: false,
-    },
-  ]
-
-  const filteredOrders = orders.filter((o) => {
-    if (tab === 'ongoing') return o.isOngoing
-    if (tab === 'completed') return o.status === 'delivered'
-    if (tab === 'cancelled') return o.status === 'cancelled'
+  const filtered = ORDERS.filter((o) => {
+    if (activeTab === 'transit') return o.ribbonTone === 'copper'
+    if (activeTab === 'process') return o.ribbonTone === 'green'
+    if (activeTab === 'delivered') return o.ribbonTone === 'charcoal'
     return true
   })
 
   return (
-    <div className="min-h-dvh bg-[#F4F1EA] pb-24 text-[#2B1F17]">
-      <MobileAppBar title="My Orders" showSearch showCart />
+    <div className="relative min-h-dvh w-full bg-[#F7F5F0] pb-28 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Zero Scrollbar Global Styles */}
+      <style jsx global>{`
+        * {
+          scrollbar-width: none !important;
+          -ms-overflow-style: none !important;
+        }
+        *::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+        }
+      `}</style>
 
-      {/* Tabs */}
-      <div className="flex border-b border-[#E0DACB]/80 bg-[#F4F1EA] px-4 pt-2">
-        {(['all', 'ongoing', 'completed', 'cancelled'] as const).map((t) => (
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
+      {/* Header Bar */}
+      <header className="relative flex items-center justify-between px-5 pt-4 pb-2">
+        <h1 className="text-[26px] font-extrabold tracking-tight text-[#211A12]">
+          My Shipping
+        </h1>
+        <div className="flex items-center gap-2">
           <button
-            key={t}
             type="button"
-            onClick={() => setTab(t)}
-            className={cn(
-              'flex-1 py-3 text-xs font-bold capitalize transition-colors border-b-2',
-              tab === t
-                ? 'border-[#1E5D3B] text-[#1E5D3B]'
-                : 'border-transparent text-[#6E6A63] hover:text-[#2B1F17]'
-            )}
+            aria-label="Search Orders"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
-            {t}
+            <Search className="h-4 w-4 stroke-[2.4]" />
           </button>
-        ))}
+          <button
+            type="button"
+            aria-label="Menu"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+          >
+            <MoreVertical className="h-4 w-4" />
+          </button>
+        </div>
+      </header>
+
+      {/* Filter Tabs */}
+      <div className="relative px-5 pt-2">
+        <div className="flex gap-2 rounded-2xl bg-[#FAF9F6] p-1 shadow-2xs border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+          {(
+            [
+              { key: 'all', label: 'All Orders' },
+              { key: 'transit', label: 'In Transit' },
+              { key: 'process', label: 'Processing' },
+              { key: 'delivered', label: 'Delivered' },
+            ] as const
+          ).map((t) => (
+            <button
+              key={t.key}
+              type="button"
+              onClick={() => setActiveTab(t.key)}
+              className={cn(
+                'flex-1 rounded-xl py-2 text-center text-[12px] font-bold transition-all',
+                activeTab === t.key
+                  ? 'bg-white text-[#211A12] shadow-xs'
+                  : 'text-[#5C5247] hover:text-[#211A12]'
+              )}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Orders List */}
-      <div className="px-4 py-4 space-y-3">
-        {filteredOrders.length === 0 ? (
-          <div className="mt-16 text-center">
-            <Package className="mx-auto h-12 w-12 text-[#6E6A63]/50" />
-            <h3 className="mt-3 text-sm font-bold text-[#2B1F17]">No {tab} orders</h3>
-            <p className="mt-1 text-xs text-[#6E6A63]">Orders you place will appear here in real-time.</p>
-          </div>
-        ) : (
-          filteredOrders.map((order) => {
-            const isOut = order.status === 'out_for_delivery'
-            const isDelivered = order.status === 'delivered'
+      <div className="relative px-5 pt-4 space-y-4">
+        {filtered.map((order) => (
+          <Link
+            key={order.id}
+            href={`/m/orders/track`}
+            className="group relative block overflow-hidden rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.985] transition-all"
+          >
+            {/* Top-Right Diagonal Ribbon */}
+            <StatusRibbon text={order.ribbon} tone={order.ribbonTone} />
 
-            return (
-              <Link
-                key={order.id}
-                href={`/m/orders/${order.id}`}
-                className="ga-press block rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs hover:border-[#1E5D3B]/40"
-              >
-                <div className="flex items-center justify-between border-b border-[#E0DACB]/60 pb-3">
+            {/* Header: Tracking Code & Away ETA */}
+            <div className="flex items-center gap-2 pr-24">
+              <span className="text-[12px] font-extrabold tracking-wide text-[#211A12]">
+                {order.trackingCode}
+              </span>
+              <span className="text-[12px] text-[#5C5247]">·</span>
+              <span className="text-[12px] font-bold text-[#7A3F1C]">
+                {order.id}
+              </span>
+            </div>
+
+            {/* Produce Title & Farm Attribution */}
+            <div className="mt-2.5 pr-20">
+              <h3 className="text-[15px] font-extrabold leading-snug text-[#211A12]">
+                {order.title}
+              </h3>
+              <p className="mt-0.5 text-[11.5px] font-semibold text-[#5C5247]">
+                {order.farmerName}
+              </p>
+            </div>
+
+            {/* Dotted Cold-Chain Progress Track */}
+            <div className="mt-4 pt-1">
+              <DottedProgressTrack
+                awayText={order.away}
+                steps={order.steps}
+                activeTruckIndex={order.truckIndex}
+              />
+            </div>
+
+            {/* Origin & Destination Information */}
+            <div className="mt-4 border-t border-[rgba(33,26,18,0.06)] pt-3.5">
+              <div className="flex items-end justify-between">
+                <div className="min-w-0 flex-1 space-y-2.5 pr-3">
                   <div>
-                    <span className="text-xs font-extrabold text-[#2B1F17]">
-                      #{order.id}
+                    <span className="text-[9.5px] font-black uppercase tracking-[0.16em] text-[#5C5247]">
+                      FROM (COLD HUB)
                     </span>
-                    <p className="text-[10px] text-[#6E6A63]">{order.date}</p>
-                  </div>
-                  <span className="text-sm font-extrabold text-[#1E5D3B]">
-                    {formatGHS(order.total)}
-                  </span>
-                </div>
-
-                <div className="mt-3 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-[#F4F1EA]">
-                      <Image
-                        src={order.image}
-                        alt="Produce"
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="flex flex-col">
-                      <div className="flex items-center gap-1.5">
-                        {isOut && <Truck className="h-3.5 w-3.5 text-[#E67A2E] animate-bounce" />}
-                        {isDelivered && <CheckCircle2 className="h-3.5 w-3.5 text-[#1E5D3B]" />}
-                        <span
-                          className={cn(
-                            'text-xs font-bold',
-                            isOut && 'text-[#E67A2E]',
-                            isDelivered && 'text-[#1E5D3B]',
-                            order.status === 'cancelled' && 'text-[#DC2626]'
-                          )}
-                        >
-                          {order.statusLabel}
-                        </span>
-                      </div>
-                      <span className="text-[10px] text-[#6E6A63]">{order.eta}</span>
-                    </div>
+                    <h4 className="mt-0.5 truncate text-[13px] font-bold text-[#211A12]">
+                      {order.from}
+                    </h4>
+                    <p className="mt-0.5 text-[11.5px] font-semibold text-[#5C5247]">
+                      {order.fromDate}
+                    </p>
                   </div>
 
-                  <div className="flex items-center gap-1 text-xs font-bold text-[#1E5D3B]">
-                    <span>Track</span>
-                    <ChevronRight className="h-4 w-4" />
+                  <div>
+                    <span className="text-[9.5px] font-black uppercase tracking-[0.16em] text-[#5C5247]">
+                      DELIVERY DESTINATION
+                    </span>
+                    <h4 className="mt-0.5 truncate text-[13px] font-bold text-[#211A12]">
+                      {order.to}
+                    </h4>
+                    <p className="mt-0.5 text-[11.5px] font-semibold text-[#5C5247]">
+                      {order.toDate}
+                    </p>
                   </div>
                 </div>
-              </Link>
-            )
-          })
-        )}
+
+                {/* 3D Stacked Cardboard Packaging Boxes */}
+                <div className="shrink-0 -mb-2 -mr-2">
+                  <PackageBoxes3D size={84} />
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
       </div>
 
+      {/* Bottom Navigation */}
       <MobileBottomNav />
     </div>
   )
 }
+

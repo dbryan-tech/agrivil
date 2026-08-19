@@ -22,13 +22,14 @@ import {
   LayoutGrid,
   SlidersHorizontal,
   Star,
+  ShieldCheck,
+  Truck,
 } from 'lucide-react'
 import { products, farmers, bundles, recipes } from '@/lib/golden-acres/data'
 import { formatGHS } from '@/lib/golden-acres/format'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { MobileBottomNav } from '@/components/golden-acres/mobile/mobile-bottom-nav'
 import { MobileProductCard } from '@/components/golden-acres/mobile/mobile-product-card'
-import { CustomValueStrip } from '@/components/golden-acres/mobile/custom-value-strip'
 import { cn } from '@/lib/utils'
 
 const CATEGORY_CHIPS = [
@@ -53,20 +54,42 @@ export default function MobileHomeScreen() {
   const popular = products.slice(4, 8)
 
   return (
-    <div className="min-h-dvh bg-[#FAF7F0] pb-24 text-[#2B1F17]">
+    <div className="relative min-h-dvh bg-[#F7F5F0] pb-28 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Zero Scrollbar Global Styles */}
+      <style jsx global>{`
+        * {
+          scrollbar-width: none !important;
+          -ms-overflow-style: none !important;
+        }
+        *::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+        }
+      `}</style>
+
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
       {/* 1. Header Bar: Greeting, Location & Action Badges */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[#E0DACB] bg-[#FAF7F0] px-3 sm:px-4 py-2.5"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-5 py-3 backdrop-blur-md"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
       >
-        <Link href="/m/onboarding/gps" className="ga-press flex flex-col">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-[#6E6A63]">
+        <Link href="/m/onboarding/gps" className="flex flex-col active:scale-95 transition-transform">
+          <div className="flex items-center gap-1 text-[11px] font-bold text-[#5C5247]">
             <span>Hi, Ewoke</span>
           </div>
-          <div className="flex items-center gap-1 text-sm font-extrabold text-[#2B1F17]">
-            <MapPin className="h-3.5 w-3.5 text-[#0F7A43]" />
-            <span>Delivering to KNUST, Kumasi</span>
-            <ChevronDown className="h-3 w-3 text-[#6E6A63]" />
+          <div className="flex items-center gap-1.5 text-[13.5px] font-extrabold text-[#211A12]">
+            <MapPin className="h-3.5 w-3.5 text-[#0B3B25]" />
+            <span>KNUST, Kumasi</span>
+            <ChevronDown className="h-3 w-3 text-[#5C5247]" />
           </div>
         </Link>
 
@@ -74,20 +97,20 @@ export default function MobileHomeScreen() {
           <Link
             href="/m/account/notifications"
             aria-label="Notifications"
-            className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+            className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95"
           >
-            <Bell className="h-4 w-4" />
-            <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-[#E67A2E]" />
+            <Bell className="h-4 w-4 stroke-[2.2]" />
+            <span className="absolute top-2.5 right-2.5 h-2 w-2 rounded-full bg-[#7A3F1C]" />
           </Link>
 
           <Link
             href="/m/cart"
             aria-label="Basket"
-            className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full bg-[#0F7A43] text-white shadow-sm"
+            className="relative flex h-10 w-10 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-sm active:scale-95 transition-transform"
           >
-            <ShoppingBag className="h-4 w-4" />
+            <ShoppingBag className="h-4 w-4 stroke-[2.2]" />
             {count > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#A3E635] px-1 text-[9px] font-extrabold text-[#0B3B25]">
+              <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#7A3F1C] px-1 text-[9px] font-black text-white shadow-xs">
                 {count > 9 ? '9+' : count}
               </span>
             )}
@@ -95,46 +118,45 @@ export default function MobileHomeScreen() {
         </div>
       </header>
 
-      {/* 2. Compact Search Bar with Filter Trigger */}
-      <div className="px-3 sm:px-4 pt-2.5">
+      {/* 2. Search Bar */}
+      <div className="relative px-5 pt-3">
         <Link
           href="/m/search"
-          className="ga-press flex h-11 w-full items-center justify-between rounded-2xl border border-[#E0DACB] bg-white px-3.5 text-xs font-medium text-[#6E6A63] shadow-xs"
+          className="flex h-[46px] w-full items-center justify-between rounded-full border border-[rgba(33,26,18,0.10)] bg-white px-4 text-[13px] font-medium text-[#5C5247] shadow-2xs active:scale-[0.99] transition-transform"
         >
           <div className="flex items-center gap-2.5">
-            <Search className="h-4 w-4 text-[#0F7A43]" />
-            <span>Search products, farmers, recipes...</span>
+            <Search className="h-4 w-4 text-[#0B3B25] stroke-[2.4]" />
+            <span className="text-[#8A8175]">Search fresh produce, yam, farmers...</span>
           </div>
-          <div className="rounded-lg p-1 text-[#6E6A63] hover:bg-[#FAF7F0]">
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#F7F5F0] text-[#211A12]">
             <SlidersHorizontal className="h-3.5 w-3.5" />
           </div>
         </Link>
       </div>
 
-      {/* 3. Hero Promo Banner Card with Real Farm Visuals */}
-      <div className="px-3 sm:px-4 pt-3">
-        {/* 3. Hero Promo Banner */}
-        <div className="relative overflow-hidden rounded-3xl bg-[#0F7A43] p-4 text-white shadow-sm">
-          <div className="relative z-10 max-w-[200px]">
-            <span className="inline-block rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider backdrop-blur-xs">
-              Morning Harvest
+      {/* 3. Hero Promo Banner Card */}
+      <div className="relative px-5 pt-3.5">
+        <div className="relative overflow-hidden rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+          <div className="relative z-10 max-w-[210px]">
+            <span className="inline-block rounded-full bg-[#0B3B25]/10 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-[#0B3B25]">
+              Dawn Harvest
             </span>
-            <h2 className="ga-headline mt-1.5 text-base font-extrabold leading-snug">
+            <h2 className="mt-1.5 text-[18px] font-black leading-tight text-[#211A12]">
               Fresh From The Farm
             </h2>
-            <p className="mt-0.5 text-[11px] text-white/90">
-              Harvested at sunrise in Ashanti &amp; Eastern regions.
+            <p className="mt-1 text-[11.5px] font-semibold text-[#5C5247] leading-relaxed">
+              Harvested at sunrise in Ashanti &amp; Eastern hills. Dispatched cold.
             </p>
             <Link
               href="/m/categories"
-              className="ga-press mt-3 inline-flex items-center gap-1.5 rounded-xl bg-white px-3.5 py-1.5 text-xs font-bold text-[#0F7A43] shadow-xs hover:bg-[#FAF7F0]"
+              className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-[#0B3B25] px-4 py-2 text-[12px] font-extrabold text-white shadow-xs active:scale-95 transition-transform"
             >
-              <span>Shop Now</span>
-              <ArrowRight className="h-3.5 w-3.5" />
+              <span>Shop Harvest</span>
+              <ArrowRight className="h-3.5 w-3.5 stroke-[2.5]" />
             </Link>
           </div>
 
-          <div className="absolute -right-4 -bottom-4 h-36 w-36 overflow-hidden">
+          <div className="absolute -right-2 -bottom-2 h-36 w-36 overflow-hidden pointer-events-none">
             <Image
               src="/golden-acres/bundle-box.png"
               alt="Produce crate"
@@ -144,25 +166,40 @@ export default function MobileHomeScreen() {
           </div>
         </div>
 
-        {/* 4. Custom Value Badges Strip (Reliable delivery, Support local, Secure & private) */}
-        <CustomValueStrip />
+        {/* Value Badges Strip */}
+        <div className="mt-3 flex items-center justify-between rounded-2xl bg-white/80 p-3 shadow-2xs border border-[rgba(33,26,18,0.06)] text-[11px] font-bold text-[#5C5247]">
+          <div className="flex items-center gap-1.5">
+            <Truck className="h-4 w-4 text-[#0B3B25]" />
+            <span>Chilled Cold-Chain</span>
+          </div>
+          <div className="h-3 w-px bg-[rgba(33,26,18,0.12)]" />
+          <div className="flex items-center gap-1.5">
+            <ShieldCheck className="h-4 w-4 text-[#0B3B25]" />
+            <span>Direct Fair Trade</span>
+          </div>
+          <div className="h-3 w-px bg-[rgba(33,26,18,0.12)]" />
+          <div className="flex items-center gap-1.5">
+            <Sparkles className="h-4 w-4 text-[#7A3F1C]" />
+            <span>FEFO Quality</span>
+          </div>
+        </div>
       </div>
 
       {/* 4. Category Chips Scroller */}
-      <div className="pt-4">
-        <div className="flex items-center justify-between px-3 sm:px-4 pb-2">
-          <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#2B1F17]">
+      <div className="relative pt-4">
+        <div className="flex items-center justify-between px-5 pb-2">
+          <h3 className="text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Shop by category
           </h3>
           <Link
             href="/m/categories"
-            className="text-xs font-bold text-[#7A3F1C] hover:underline"
+            className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
           >
             View all
           </Link>
         </div>
 
-        <div className="no-scrollbar flex gap-2 overflow-x-auto px-3 sm:px-4 py-0.5">
+        <div className="flex gap-2 overflow-x-auto px-5 py-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {CATEGORY_CHIPS.map((cat) => {
             const active = activeCategory === cat.slug
             const Icon = cat.icon
@@ -172,13 +209,13 @@ export default function MobileHomeScreen() {
                 type="button"
                 onClick={() => setActiveCategory(cat.slug)}
                 className={cn(
-                  'ga-press flex shrink-0 items-center gap-1.5 rounded-2xl border px-3 py-1.5 text-xs font-bold shadow-xs transition-all',
+                  'flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-[12px] font-extrabold shadow-2xs transition-all active:scale-95',
                   active
-                    ? 'border-[#0F7A43] bg-[#0F7A43] text-white'
-                    : 'border-[#E0DACB] bg-white text-[#2B1F17] hover:bg-[#FAF7F0]'
+                    ? 'bg-[#0B3B25] text-white shadow-xs'
+                    : 'bg-white text-[#211A12] border border-[rgba(33,26,18,0.08)]'
                 )}
               >
-                <Icon className={cn('h-3.5 w-3.5', active ? 'text-[#A3E635]' : 'text-[#0F7A43]')} />
+                <Icon className={cn('h-3.5 w-3.5', active ? 'text-white' : 'text-[#0B3B25]')} />
                 <span>{cat.label}</span>
               </button>
             )
@@ -186,21 +223,21 @@ export default function MobileHomeScreen() {
         </div>
       </div>
 
-      {/* 5. Recommended Produce (2-Column Grid with Slim Margins) */}
-      <div className="px-3 sm:px-4 pt-5">
+      {/* 5. Recommended Produce (2-Column Grid with -20% Card Height) */}
+      <div className="relative px-5 pt-4">
         <div className="flex items-center justify-between pb-2.5">
-          <h3 className="text-sm font-extrabold text-[#2B1F17]">
+          <h3 className="text-[15px] font-extrabold text-[#211A12]">
             Recommended for you
           </h3>
           <Link
             href="/m/categories"
-            className="text-xs font-bold text-[#7A3F1C] hover:underline"
+            className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
           >
             See all
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 gap-3">
           {recommended.map((product, idx) => (
             <MobileProductCard
               key={product.id}
@@ -212,23 +249,23 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 6. Popular This Week Grid */}
-      <div className="px-3 sm:px-4 pt-6">
+      <div className="relative px-5 pt-5">
         <div className="flex items-center justify-between pb-2.5">
           <div>
-            <h3 className="text-sm font-extrabold text-[#2B1F17]">
+            <h3 className="text-[15px] font-extrabold text-[#211A12]">
               Popular this week
             </h3>
-            <p className="text-[10px] text-[#6E6A63]">Top harvested favorites in Ashanti</p>
+            <p className="text-[11px] font-semibold text-[#5C5247]">Top harvested favorites in Ashanti</p>
           </div>
           <Link
             href="/m/categories"
-            className="text-xs font-bold text-[#7A3F1C] hover:underline"
+            className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
           >
             See all
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 gap-3">
           {popular.map((product) => (
             <MobileProductCard key={product.id} product={product} />
           ))}
@@ -236,49 +273,49 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 7. Bundles & Subscriptions Preview */}
-      <div className="pt-6">
-        <div className="flex items-center justify-between px-3 sm:px-4 pb-2.5">
+      <div className="relative pt-5">
+        <div className="flex items-center justify-between px-5 pb-2.5">
           <div>
-            <h3 className="text-sm font-extrabold text-[#2B1F17]">
+            <h3 className="text-[15px] font-extrabold text-[#211A12]">
               Bundles &amp; subscriptions
             </h3>
-            <p className="text-[10px] text-[#6E6A63]">Weekly curated boxes delivered direct</p>
+            <p className="text-[11px] font-semibold text-[#5C5247]">Weekly curated boxes delivered direct</p>
           </div>
           <Link
             href="/m/bundles"
-            className="text-xs font-bold text-[#7A3F1C] hover:underline"
+            className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
           >
             View all
           </Link>
         </div>
 
-        <div className="no-scrollbar flex gap-3 overflow-x-auto px-3 sm:px-4 py-0.5">
+        <div className="flex gap-3 overflow-x-auto px-5 py-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {bundles.map((bundle) => (
             <Link
               key={bundle.id}
               href="/m/bundles"
-              className="ga-press flex w-60 shrink-0 flex-col overflow-hidden rounded-3xl border border-[#E0DACB] bg-white p-3 shadow-xs"
+              className="flex w-64 shrink-0 flex-col overflow-hidden rounded-[26px] bg-[#FAF9F6] p-3.5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.98] transition-transform"
             >
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#FAF7F0]">
+              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#F7F5F0]">
                 <Image
                   src={bundle.image}
                   alt={bundle.name}
                   fill
                   className="object-cover"
                 />
-                <span className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-full bg-[#0F7A43] px-2 py-0.5 text-[9px] font-extrabold text-white">
-                  <Repeat className="h-2.5 w-2.5 text-[#A3E635]" /> {bundle.frequency}
+                <span className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[9.5px] font-extrabold text-white shadow-xs">
+                  <Repeat className="h-2.5 w-2.5" /> {bundle.frequency}
                 </span>
               </div>
-              <h4 className="mt-2 text-xs font-extrabold text-[#2B1F17]">
+              <h4 className="mt-2.5 text-[13px] font-extrabold text-[#211A12]">
                 {bundle.name}
               </h4>
-              <p className="mt-0.5 line-clamp-1 text-[10px] text-[#6E6A63]">
+              <p className="mt-0.5 line-clamp-1 text-[11px] font-semibold text-[#5C5247]">
                 {bundle.description}
               </p>
-              <div className="mt-2 flex items-center justify-between border-t border-[#E0DACB] pt-2 text-xs font-extrabold text-[#0F7A43]">
+              <div className="mt-2.5 flex items-center justify-between border-t border-[rgba(33,26,18,0.06)] pt-2 text-[13px] font-black text-[#0B3B25]">
                 <span>{formatGHS(bundle.price)}</span>
-                <span className="text-[10px] font-semibold text-[#7A3F1C]">
+                <span className="text-[10.5px] font-bold text-[#7A3F1C]">
                   {bundle.items.length} items
                 </span>
               </div>
@@ -288,15 +325,15 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 8. Recipes Inspiration */}
-      <div className="px-3 sm:px-4 pt-6">
+      <div className="relative px-5 pt-5">
         <div className="flex items-center justify-between pb-2.5">
           <div>
-            <h3 className="text-sm font-extrabold text-[#2B1F17]">Recipes inspiration</h3>
-            <p className="text-[10px] text-[#6E6A63]">Cook authentic Ghanaian dishes</p>
+            <h3 className="text-[15px] font-extrabold text-[#211A12]">Recipes inspiration</h3>
+            <p className="text-[11px] font-semibold text-[#5C5247]">Cook authentic Ghanaian dishes</p>
           </div>
           <Link
             href="/m/recipes"
-            className="text-xs font-bold text-[#7A3F1C] hover:underline"
+            className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
           >
             See all
           </Link>
@@ -307,9 +344,9 @@ export default function MobileHomeScreen() {
             <Link
               key={recipe.id}
               href={`/m/recipes/${recipe.id}`}
-              className="ga-press flex items-center gap-3 overflow-hidden rounded-3xl border border-[#E0DACB] bg-white p-2.5 shadow-xs"
+              className="flex items-center gap-3.5 overflow-hidden rounded-[26px] bg-[#FAF9F6] p-3 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.98] transition-transform"
             >
-              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-[#FAF7F0]">
+              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs border border-[rgba(33,26,18,0.08)]">
                 <Image
                   src={recipe.image}
                   alt={recipe.name}
@@ -318,23 +355,23 @@ export default function MobileHomeScreen() {
                 />
               </div>
               <div className="flex flex-1 flex-col">
-                <span className="text-[9px] font-extrabold uppercase tracking-wider text-[#7A3F1C]">
+                <span className="text-[9.5px] font-black uppercase tracking-wider text-[#7A3F1C]">
                   {recipe.category}
                 </span>
-                <h4 className="text-xs font-extrabold text-[#2B1F17]">
+                <h4 className="text-[13px] font-extrabold text-[#211A12]">
                   {recipe.name}
                 </h4>
-                <div className="mt-1 flex items-center gap-3 text-[10px] font-semibold text-[#6E6A63]">
+                <div className="mt-1 flex items-center gap-3 text-[10.5px] font-semibold text-[#5C5247]">
                   <span className="flex items-center gap-1">
-                    <Clock className="h-3 w-3 text-[#0F7A43]" /> {recipe.time}
+                    <Clock className="h-3 w-3 text-[#0B3B25]" /> {recipe.time}
                   </span>
                   <span className="flex items-center gap-1">
-                    <UtensilsCrossed className="h-3 w-3 text-[#0F7A43]" /> {recipe.productIds.length} items
+                    <UtensilsCrossed className="h-3 w-3 text-[#0B3B25]" /> {recipe.productIds.length} items
                   </span>
                 </div>
               </div>
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FAF7F0] text-[#0F7A43]">
-                <ArrowRight className="h-3.5 w-3.5" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0B3B25]/10 text-[#0B3B25]">
+                <ArrowRight className="h-4 w-4 stroke-[2.5]" />
               </div>
             </Link>
           ))}
@@ -342,28 +379,28 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 9. Meet Local Ghanaian Farmers */}
-      <div className="px-3 sm:px-4 pt-6">
+      <div className="relative px-5 pt-5">
         <div className="flex items-center justify-between pb-2.5">
           <div>
-            <h3 className="text-sm font-extrabold text-[#2B1F17]">Meet your farmers</h3>
-            <p className="text-[10px] text-[#6E6A63]">Know the hands that grow your food</p>
+            <h3 className="text-[15px] font-extrabold text-[#211A12]">Meet your farmers</h3>
+            <p className="text-[11px] font-semibold text-[#5C5247]">Know the hands that grow your food</p>
           </div>
           <Link
             href="/m/farmers"
-            className="text-xs font-bold text-[#7A3F1C] hover:underline"
+            className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
           >
             See all
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 gap-3">
           {farmers.slice(0, 2).map((farmer) => (
             <Link
               key={farmer.id}
               href={`/m/farmers/${farmer.slug}`}
-              className="ga-press flex flex-col overflow-hidden rounded-3xl border border-[#E0DACB] bg-white p-2.5 shadow-xs"
+              className="flex flex-col overflow-hidden rounded-[26px] bg-[#FAF9F6] p-3 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 active:scale-[0.98] transition-transform"
             >
-              <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-[#FAF7F0]">
+              <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white shadow-2xs border border-[rgba(33,26,18,0.08)]">
                 <Image
                   src={farmer.photo}
                   alt={farmer.name}
@@ -371,18 +408,18 @@ export default function MobileHomeScreen() {
                   className="object-cover"
                 />
               </div>
-              <h4 className="mt-2 truncate text-xs font-extrabold text-[#2B1F17]">
+              <h4 className="mt-2 truncate text-[13px] font-extrabold text-[#211A12]">
                 {farmer.name}
               </h4>
-              <p className="truncate text-[10px] font-medium text-[#7A3F1C]">
+              <p className="truncate text-[11px] font-bold text-[#7A3F1C]">
                 {farmer.farmName}
               </p>
-              <div className="mt-1.5 flex items-center justify-between border-t border-[#E0DACB] pt-1.5 text-[10px] text-[#6E6A63]">
-                <span className="flex items-center gap-1 font-semibold text-[#0F7A43]">
-                  <MapPin className="h-2.5 w-2.5" /> {farmer.town}
+              <div className="mt-1.5 flex items-center justify-between border-t border-[rgba(33,26,18,0.06)] pt-1.5 text-[10.5px] text-[#5C5247]">
+                <span className="flex items-center gap-1 font-semibold text-[#0B3B25]">
+                  <MapPin className="h-3 w-3" /> {farmer.town}
                 </span>
-                <span className="flex items-center gap-0.5 font-bold text-[#2B1F17]">
-                  <Star className="h-2.5 w-2.5 fill-[#FBBF24] text-[#FBBF24]" /> {farmer.rating}
+                <span className="flex items-center gap-0.5 font-black text-[#211A12]">
+                  <Star className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" /> {farmer.rating}
                 </span>
               </div>
             </Link>
@@ -394,3 +431,4 @@ export default function MobileHomeScreen() {
     </div>
   )
 }
+

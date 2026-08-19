@@ -1,140 +1,183 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import {
   ArrowLeft,
   Trash2,
   Plus,
   Minus,
-  ShoppingBag,
-  ArrowRight,
+  Truck,
   ShieldCheck,
+  MapPin,
+  ArrowRight,
+  ShoppingBag,
   Info,
 } from 'lucide-react'
 import { useCart, unitEstimate } from '@/components/golden-acres/cart-context'
-import { formatGHS, weight } from '@/lib/golden-acres/format'
+import { formatGHS } from '@/lib/golden-acres/format'
+import { cn } from '@/lib/utils'
+import { ProductImageShell } from '@/app/preview/_lib/premium'
 
 export default function MobileCartScreen() {
   const router = useRouter()
   const { lines, count, subtotalEstimate, setQty, remove, clear } = useCart()
+  const [deliverySlot, setDeliverySlot] = useState<'today-pm' | 'tomorrow-am'>('today-pm')
 
   const deliveryFee = subtotalEstimate > 150 ? 0 : 8
-  const total = subtotalEstimate + deliveryFee
+  const discount = subtotalEstimate > 0 ? 5.0 : 0
+  const total = Math.max(0, subtotalEstimate + deliveryFee - discount)
 
   return (
-    <div className="min-h-dvh bg-[#FAF7F0] pb-32 text-[#2B1F17]">
-      {/* App Bar */}
-      <header
-        className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[#E0DACB] bg-[#FAF7F0] px-3 sm:px-4"
-        style={{ paddingTop: 'env(safe-area-inset-top)' }}
-      >
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => router.back()}
-            aria-label="Back"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </button>
-          <h1 className="text-base font-extrabold text-[#2B1F17]">
-            My Basket ({count})
-          </h1>
-        </div>
+    <div className="relative min-h-dvh w-full bg-[#F7F5F0] pb-32 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Zero Scrollbar Global Styles */}
+      <style jsx global>{`
+        * {
+          scrollbar-width: none !important;
+          -ms-overflow-style: none !important;
+        }
+        *::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+        }
+      `}</style>
 
-        {lines.length > 0 && (
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
+      {/* Header */}
+      <header
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-5 py-3 backdrop-blur-md"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
+      >
+        <button
+          type="button"
+          onClick={() => router.back()}
+          aria-label="Back"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </button>
+        <div className="text-center">
+          <h1 className="text-[17px] font-extrabold tracking-tight text-[#211A12]">
+            My Farm Basket
+          </h1>
+          <p className="text-[11px] font-bold text-[#5C5247]">
+            {count} items · Dawn harvested
+          </p>
+        </div>
+        {lines.length > 0 ? (
           <button
             type="button"
             onClick={clear}
-            className="text-xs font-bold text-[#DC2626] hover:underline"
+            className="text-[11px] font-extrabold text-[#7A3F1C] hover:underline"
           >
-            Clear All
+            Clear
           </button>
+        ) : (
+          <div className="w-10" />
         )}
       </header>
 
-      {/* Cart Body */}
-      <div className="px-3 sm:px-4 pt-3.5">
+      <div className="relative px-5 pt-3 space-y-4">
         {lines.length === 0 ? (
           <div className="mt-20 flex flex-col items-center justify-center text-center">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#FAF7F0] text-[#6E6A63] border border-[#E0DACB]">
-              <ShoppingBag className="h-10 w-10 text-[#0F7A43]" />
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#FAF9F6] text-[#5C5247] shadow-sm border border-[rgba(33,26,18,0.08)]">
+              <ShoppingBag className="h-10 w-10 text-[#0B3B25]" />
             </div>
-            <h2 className="mt-4 text-base font-extrabold text-[#2B1F17]">
+            <h2 className="mt-4 text-[18px] font-black text-[#211A12]">
               Your basket is empty
             </h2>
-            <p className="mt-1 max-w-xs text-xs text-[#6E6A63]">
+            <p className="mt-1 max-w-xs text-[12px] font-semibold text-[#5C5247]">
               Explore freshly harvested produce directly from local Ghanaian farms.
             </p>
             <Link
               href="/m"
-              className="ga-press mt-6 flex h-12 items-center justify-center rounded-2xl bg-[#0F7A43] px-6 text-xs font-bold text-white shadow-md hover:bg-[#0B3B25]"
+              className="mt-6 flex h-12 items-center justify-center rounded-full bg-[#0B3B25] px-6 text-[13px] font-extrabold text-white shadow-md active:scale-95 transition-transform"
             >
               Start Shopping
             </Link>
           </div>
         ) : (
-          <div className="space-y-3.5">
-            {/* Line Items List */}
-            <div className="space-y-2.5">
+          <>
+            {/* Delivery Address Pill */}
+            <div className="flex items-center justify-between rounded-2xl bg-white/80 p-3 shadow-2xs border border-[rgba(33,26,18,0.08)]">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
+                  <MapPin className="h-4 w-4 stroke-[2.5]" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-[#5C5247]">
+                    Delivering to
+                  </span>
+                  <p className="text-[13px] font-extrabold text-[#211A12]">
+                    KNUST Campus, Kumasi (GA-183-4250)
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/m/onboarding/gps"
+                className="text-[11px] font-bold text-[#7A3F1C] hover:underline"
+              >
+                Change
+              </Link>
+            </div>
+
+            {/* Cart Items List */}
+            <div className="space-y-3">
               {lines.map(({ product, qty }) => {
                 const itemTotal = unitEstimate(product) * qty
                 return (
                   <div
                     key={product.id}
-                    className="flex items-center justify-between gap-3 rounded-3xl border border-[#E0DACB] bg-white p-3 shadow-xs"
+                    className="relative flex items-center justify-between overflow-hidden rounded-[24px] bg-[#FAF9F6] p-4 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90"
                   >
-                    <div className="relative h-15 w-15 shrink-0 overflow-hidden rounded-2xl bg-[#FAF7F0]">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        className="object-cover"
-                      />
+                    <div className="flex items-center gap-3.5 flex-1 pr-2">
+                      <ProductImageShell src={product.image} alt={product.name} />
+                      <div className="min-w-0 flex-1">
+                        <h4 className="text-[14px] font-extrabold text-[#211A12] truncate">
+                          {product.name}
+                        </h4>
+                        <p className="text-[11px] font-bold text-[#7A3F1C]">
+                          {product.farmerName}
+                        </p>
+                        <p className="text-[11px] font-semibold text-[#5C5247]">
+                          {product.unit} · {formatGHS(unitEstimate(product))} each
+                        </p>
+                        <p className="mt-1 text-[13px] font-black text-[#0B3B25]">
+                          {formatGHS(itemTotal)}
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="flex flex-1 flex-col truncate">
-                      <h3 className="truncate text-xs font-extrabold text-[#2B1F17]">
-                        {product.name}
-                      </h3>
-                      <span className="text-[10px] text-[#6E6A63]">
-                        {product.farmerName}
-                      </span>
-                      <span className="mt-0.5 text-xs font-bold text-[#0F7A43]">
-                        {formatGHS(itemTotal)}
-                        {product.variableWeight && (
-                          <span className="text-[9px] text-[#6E6A63] font-normal">
-                            {' '}
-                            (est)
-                          </span>
-                        )}
-                      </span>
-                    </div>
-
-                    {/* Stepper Controls */}
-                    <div className="flex items-center gap-2">
+                    {/* Quantity Stepper */}
+                    <div className="flex items-center gap-2 rounded-full bg-white px-2.5 py-1 shadow-2xs border border-[rgba(33,26,18,0.10)]">
                       <button
                         type="button"
                         onClick={() => (qty <= 1 ? remove(product.id) : setQty(product.id, qty - 1))}
-                        className="ga-press flex h-7 w-7 items-center justify-center rounded-full border border-[#E0DACB] bg-[#FAF7F0] text-[#2B1F17]"
-                        aria-label="Decrease quantity"
+                        className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FAF9F6] text-[#211A12] active:scale-90"
                       >
-                        {qty <= 1 ? (
-                          <Trash2 className="h-3 w-3 text-[#DC2626]" />
+                        {qty === 1 ? (
+                          <Trash2 className="h-3 w-3 text-[#7A3F1C]" />
                         ) : (
                           <Minus className="h-3 w-3" />
                         )}
                       </button>
-                      <span className="min-w-4 text-center text-xs font-bold text-[#2B1F17]">
+                      <span className="min-w-4 text-center text-[12px] font-black text-[#211A12]">
                         {qty}
                       </span>
                       <button
                         type="button"
                         onClick={() => setQty(product.id, qty + 1)}
-                        className="ga-press flex h-7 w-7 items-center justify-center rounded-full bg-[#0F7A43] text-white"
-                        aria-label="Increase quantity"
+                        className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FAF9F6] text-[#211A12] active:scale-90"
                       >
                         <Plus className="h-3 w-3" />
                       </button>
@@ -144,54 +187,111 @@ export default function MobileCartScreen() {
               })}
             </div>
 
-            {/* Variable Weight Notice */}
-            <div className="flex items-start gap-2 rounded-2xl bg-[#0F7A43]/10 p-3 text-[11px] font-medium text-[#2B1F17]">
-              <Info className="h-4 w-4 shrink-0 text-[#0F7A43]" />
-              <span>
-                Perishable variable-weight items are weighed at packing. Final exact weight will be confirmed before dispatch.
-              </span>
+            {/* Cold-Chain Guarantee Card */}
+            <div className="rounded-[28px] bg-[#FAF9F6] p-4 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#0B3B25]/10 text-[#0B3B25]">
+                  <Truck className="h-5 w-5 stroke-[2.2]" />
+                </div>
+                <div>
+                  <h4 className="text-[13px] font-extrabold text-[#211A12]">
+                    Insulated Cold-Chain Packaging
+                  </h4>
+                  <p className="text-[11px] font-semibold text-[#5C5247]">
+                    Produce packed with reusable gel ice packs. Delivered at &lt; 8°C.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            {/* Price Breakdown */}
-            <div className="rounded-3xl border border-[#E0DACB] bg-white p-3.5 space-y-2.5 shadow-xs text-xs">
-              <div className="flex justify-between text-[#6E6A63]">
-                <span>Items Subtotal</span>
-                <span className="font-bold text-[#2B1F17]">
-                  {formatGHS(subtotalEstimate)}
-                </span>
-              </div>
-              <div className="flex justify-between text-[#6E6A63]">
-                <span>Delivery Fee (Cold-Chain)</span>
-                <span className="font-bold text-[#2B1F17]">
-                  {deliveryFee === 0 ? (
-                    <span className="text-[#0F7A43] font-bold">FREE</span>
-                  ) : (
-                    formatGHS(deliveryFee)
+            {/* Delivery Slot Selector */}
+            <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90">
+              <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+                Select Delivery Window
+              </span>
+              <div className="mt-3 grid grid-cols-2 gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setDeliverySlot('today-pm')}
+                  className={cn(
+                    'rounded-2xl p-3 text-left transition-all border',
+                    deliverySlot === 'today-pm'
+                      ? 'bg-[#211A12] text-white border-[#211A12] shadow-sm'
+                      : 'bg-white text-[#211A12] border-[rgba(33,26,18,0.10)]'
                   )}
-                </span>
-              </div>
-              <div className="border-t border-[#E0DACB]/60 pt-2 flex justify-between text-sm font-extrabold text-[#2B1F17]">
-                <span>Estimated Total</span>
-                <span className="text-base text-[#0F7A43]">{formatGHS(total)}</span>
+                >
+                  <p className="text-[12px] font-extrabold">Today Afternoon</p>
+                  <p
+                    className={cn(
+                      'text-[11px] mt-0.5',
+                      deliverySlot === 'today-pm' ? 'text-white/80' : 'text-[#5C5247]'
+                    )}
+                  >
+                    2:00 PM – 5:00 PM
+                  </p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setDeliverySlot('tomorrow-am')}
+                  className={cn(
+                    'rounded-2xl p-3 text-left transition-all border',
+                    deliverySlot === 'tomorrow-am'
+                      ? 'bg-[#211A12] text-white border-[#211A12] shadow-sm'
+                      : 'bg-white text-[#211A12] border-[rgba(33,26,18,0.10)]'
+                  )}
+                >
+                  <p className="text-[12px] font-extrabold">Tomorrow Dawn</p>
+                  <p
+                    className={cn(
+                      'text-[11px] mt-0.5',
+                      deliverySlot === 'tomorrow-am' ? 'text-white/80' : 'text-[#5C5247]'
+                    )}
+                  >
+                    8:00 AM – 11:00 AM
+                  </p>
+                </button>
               </div>
             </div>
-          </div>
+
+            {/* Price Breakdown Summary */}
+            <div className="rounded-[28px] bg-[#FAF9F6] p-5 shadow-[0_2px_10px_-2px_rgba(33,26,18,0.05),0_8px_20px_-6px_rgba(33,26,18,0.08)] border border-[rgba(33,26,18,0.08)] ring-1 ring-white/90 space-y-2">
+              <div className="flex justify-between text-[13px] font-semibold text-[#5C5247]">
+                <span>Produce Subtotal</span>
+                <span className="font-extrabold text-[#211A12]">{formatGHS(subtotalEstimate)}</span>
+              </div>
+              <div className="flex justify-between text-[13px] font-semibold text-[#5C5247]">
+                <span>Cold-Chain Delivery</span>
+                <span className="font-extrabold text-[#211A12]">{formatGHS(deliveryFee)}</span>
+              </div>
+              <div className="flex justify-between text-[13px] font-semibold text-[#0B3B25]">
+                <span>Direct Farm Promo Discount</span>
+                <span className="font-extrabold">-{formatGHS(discount)}</span>
+              </div>
+              <div className="flex justify-between text-[16px] font-black text-[#211A12] pt-2 border-t border-[rgba(33,26,18,0.08)]">
+                <span>Total to Pay</span>
+                <span className="text-[#0B3B25] text-[18px]">{formatGHS(total)}</span>
+              </div>
+            </div>
+          </>
         )}
       </div>
 
-      {/* Sticky Bottom Action */}
+      {/* Sticky Bottom Checkout Bar */}
       {lines.length > 0 && (
-        <div
-          className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t border-[#E0DACB] bg-[#FAF7F0]/95 p-3 backdrop-blur-md"
-          style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 14px)' }}
-        >
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95 px-5 pt-3 pb-[clamp(18px,2.8vh,24px)] backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]">
           <Link
             href="/m/checkout"
-            className="ga-press flex h-13 w-full items-center justify-between rounded-2xl bg-[#0F7A43] px-5 text-sm font-bold text-white shadow-md hover:bg-[#0B3B25]"
+            className="flex w-full items-center justify-between rounded-full bg-[#0B3B25] px-6 py-3.5 text-white shadow-md active:scale-[0.98] transition-transform"
           >
-            <span>Proceed to Checkout</span>
-            <div className="flex items-center gap-1.5">
-              <span>{formatGHS(total)}</span>
+            <div className="text-left">
+              <span className="text-[10px] font-black uppercase tracking-wider text-white/80">
+                Total ({count} items)
+              </span>
+              <p className="text-[16px] font-black leading-none">{formatGHS(total)}</p>
+            </div>
+            <div className="flex items-center gap-1.5 text-[14px] font-black">
+              <span>Proceed to Checkout</span>
               <ArrowRight className="h-4 w-4" />
             </div>
           </Link>
@@ -200,3 +300,4 @@ export default function MobileCartScreen() {
     </div>
   )
 }
+

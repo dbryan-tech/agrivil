@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0F7A43',
+  themeColor: '#0B3B25',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -26,8 +26,8 @@ export default function MobileAppLayout({
   return (
     <CartProvider>
       <CompareProvider>
-        <div className="min-h-dvh bg-[#FAF7F0] text-[#2B1F17] antialiased selection:bg-[#0F7A43]/20 selection:text-[#0F7A43]">
-          <div className="mx-auto min-h-dvh max-w-md bg-[#FAF7F0] shadow-2xl sm:border-x sm:border-[#E0DACB]">
+        <div className="min-h-dvh bg-[#F7F5F0] text-[#211A12] antialiased selection:bg-[#0B3B25]/20 selection:text-[#0B3B25] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="mx-auto min-h-dvh max-w-md bg-[#F7F5F0] shadow-2xl sm:border-x sm:border-[rgba(33,26,18,0.08)]">
             {children}
           </div>
         </div>
@@ -35,3 +35,4 @@ export default function MobileAppLayout({
     </CartProvider>
   )
 }
+

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, Grid, MapPin, ShoppingBag, User } from 'lucide-react'
+import { Home, FileText, ShoppingBag, User, LayoutGrid } from 'lucide-react'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { cn } from '@/lib/utils'
 
@@ -10,20 +10,19 @@ export function MobileBottomNav() {
   const pathname = usePathname()
   const { count } = useCart()
 
-  // Define the 5 primary tabs matching the mockups and IA specs
   const TABS = [
     { href: '/m', label: 'Home', icon: Home, match: (p: string) => p === '/m' },
-    { href: '/m/categories', label: 'Categories', icon: Grid, match: (p: string) => p.startsWith('/m/categories') },
-    { href: '/m/local', label: 'Shop Local', icon: MapPin, match: (p: string) => p.startsWith('/m/local') },
-    { href: '/m/orders', label: 'Orders', icon: ShoppingBag, badge: count, match: (p: string) => p.startsWith('/m/orders') },
+    { href: '/m/categories', label: 'Categories', icon: LayoutGrid, match: (p: string) => p.startsWith('/m/categories') },
+    { href: '/m/orders', label: 'Shipping', icon: FileText, match: (p: string) => p.startsWith('/m/orders') },
+    { href: '/m/cart', label: 'Basket', icon: ShoppingBag, badge: count, match: (p: string) => p.startsWith('/m/cart') },
     { href: '/m/account', label: 'Account', icon: User, match: (p: string) => p.startsWith('/m/account') },
   ]
 
   return (
     <nav
       aria-label="Mobile Navigation"
-      className="fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around border-t border-[#E0DACB] bg-[#FAF7F0] px-2 shadow-xs"
-      style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 8px)', paddingTop: '6px' }}
+      className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-[rgba(33,26,18,0.08)] bg-[#FAF9F6]/95 px-3 backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]"
+      style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 12px)', paddingTop: '8px' }}
     >
       {TABS.map((tab) => {
         const active = tab.match(pathname)
@@ -34,22 +33,22 @@ export function MobileBottomNav() {
             key={tab.label}
             href={tab.href}
             className={cn(
-              'ga-press relative flex flex-1 flex-col items-center justify-center py-1 transition-colors',
-              active ? 'text-[#0F7A43]' : 'text-[#6E6A63] hover:text-[#2B1F17]'
+              'relative flex flex-1 flex-col items-center justify-center py-1 transition-all active:scale-95',
+              active ? 'text-[#0B3B25]' : 'text-[#5C5247] hover:text-[#211A12]'
             )}
           >
             <div className="relative">
-              <Icon className={cn('h-5 w-5', active && 'stroke-[2.4]')} />
+              <Icon className={cn('h-5 w-5', active ? 'stroke-[2.6] text-[#0B3B25]' : 'stroke-[2] text-[#5C5247]')} />
               {Boolean(tab.badge && tab.badge > 0) && (
-                <span className="absolute -top-1 -right-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#0F7A43] px-1 text-[9px] font-bold text-white shadow-xs">
+                <span className="absolute -top-1 -right-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#0B3B25] px-1 text-[9px] font-black text-white shadow-xs">
                   {tab.badge! > 9 ? '9+' : tab.badge}
                 </span>
               )}
             </div>
             <span
               className={cn(
-                'mt-1 text-[11px] font-semibold tracking-tight',
-                active ? 'text-[#0F7A43] font-bold' : 'text-[#6E6A63]'
+                'mt-1 text-[10.5px] tracking-tight',
+                active ? 'text-[#0B3B25] font-black' : 'text-[#5C5247] font-semibold'
               )}
             >
               {tab.label}
@@ -60,3 +59,4 @@ export function MobileBottomNav() {
     </nav>
   )
 }
+
