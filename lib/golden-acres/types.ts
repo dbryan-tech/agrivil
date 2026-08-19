@@ -38,7 +38,7 @@ export type ProduceCategory =
 
 export type ProductUnit = 'kg' | 'bunch' | 'each' | 'crate' | 'basket'
 
-export type StockStatus = 'in-stock' | 'low' | 'delisted'
+export type StockStatus = 'in-stock' | 'low' | 'delisted' | 'out-of-stock'
 
 export interface Farmer {
   id: string
@@ -71,6 +71,7 @@ export interface Product {
   name: string
   category: ProduceCategory
   farmerId: string
+  farmerName?: string
   image: string
   unit: ProductUnit
   // Variable-weight pricing: an estimate + price range reconciled post-pick.
@@ -92,6 +93,8 @@ export interface Product {
   // Moderation: farmer-submitted listings start 'pending' and only appear in
   // the storefront once a staff member approves them. Seed catalog = 'live'.
   reviewStatus?: ProductReviewStatus
+  rating?: number
+  reviewCount?: number
 }
 
 export type ProductReviewStatus = 'live' | 'pending' | 'rejected'

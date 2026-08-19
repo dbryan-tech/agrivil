@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   Camera,
   Star,
+  Check,
 } from 'lucide-react'
 import { formatGHS } from '@/lib/golden-acres/format'
 
@@ -35,159 +36,120 @@ export default function MobileOrderTrackingScreen() {
   ]
 
   return (
-    <div className="min-h-dvh bg-[#F4F1EA] pb-24 text-[#2B1F17]">
-      {/* App Bar */}
+    <div className="min-h-dvh bg-[#FAF7F0] pb-24 text-[#2B1F17]">
+      {/* Header */}
       <header
-        className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-[#E0DACB] bg-[#F4F1EA] px-4"
-        style={{ paddingTop: 'env(safe-area-inset-top)' }}
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[#E0DACB] bg-[#FAF7F0] px-3 sm:px-4 py-2.5"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
-        <button
-          type="button"
-          onClick={() => router.back()}
-          aria-label="Back"
-          className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </button>
-        <div className="flex flex-col">
-          <h1 className="text-sm font-extrabold text-[#2B1F17]">
-            Order Tracking
-          </h1>
-          <span className="text-[10px] text-[#6E6A63]">#{orderId}</span>
+        <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            aria-label="Back"
+            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </button>
+          <div>
+            <h1 className="text-base font-extrabold text-[#2B1F17]">Order Details</h1>
+            <p className="text-[10px] text-[#6E6A63]">#{orderId}</p>
+          </div>
         </div>
       </header>
 
-      <div className="px-4 py-4 space-y-4">
-        {/* 1. Status Banner */}
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-5 shadow-xs">
-          <div className="flex items-center gap-2 text-[#E67A2E]">
-            <Truck className="h-5 w-5 animate-bounce" />
-            <span className="text-xs font-extrabold uppercase tracking-wider">
-              Out for Delivery
+      <div className="px-3 sm:px-4 pt-3.5 space-y-3.5">
+        {/* Status Card */}
+        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#6E6A63]">
+              Estimated Delivery
+            </span>
+            <span className="rounded-full bg-[#0F7A43]/10 px-2.5 py-0.5 text-[10px] font-extrabold text-[#0F7A43]">
+              En Route
             </span>
           </div>
-          <h2 className="mt-1 text-lg font-extrabold text-[#2B1F17]">
-            Arriving between 11:00 AM – 12:00 PM
-          </h2>
-          <p className="mt-0.5 text-xs text-[#6E6A63]">
-            Your rider is on the way in a temperature-controlled cold vehicle.
-          </p>
 
-          {/* Stepper Progress */}
-          <div className="mt-6 flex items-center justify-between relative">
-            <div className="absolute top-4 left-4 right-4 h-0.5 bg-[#E0DACB] -z-0" />
-            <div className="absolute top-4 left-4 right-1/3 h-0.5 bg-[#1E5D3B] -z-0" />
+          <div className="mt-2 flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#0F7A43]/10 text-[#0F7A43]">
+              <Truck className="h-6 w-6" />
+            </div>
+            <div>
+              <h2 className="text-sm font-extrabold text-[#2B1F17]">
+                Arriving in 35 mins
+              </h2>
+              <p className="text-[10px] text-[#6E6A63]">Courier on the way to KNUST</p>
+            </div>
+          </div>
+        </div>
 
+        {/* Timeline */}
+        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs">
+          <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#6E6A63] pb-3">
+            Progress
+          </h3>
+
+          <div className="space-y-4">
             {steps.map((step, idx) => (
-              <div key={step.label} className="relative z-10 flex flex-col items-center">
-                <div
-                  className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
-                    step.done
-                      ? 'bg-[#1E5D3B] text-white'
-                      : 'border-2 border-[#E0DACB] bg-white text-[#6E6A63]'
-                  }`}
-                >
-                  {step.done ? (
-                    <CheckCircle2 className="h-4 w-4 stroke-[3]" />
-                  ) : (
-                    <span>{idx + 1}</span>
+              <div key={idx} className="flex items-start gap-3">
+                <div className="flex flex-col items-center">
+                  <div
+                    className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${
+                      step.done
+                        ? 'bg-[#0F7A43] text-white'
+                        : step.current
+                        ? 'border-2 border-[#0F7A43] bg-white text-[#0F7A43]'
+                        : 'bg-[#FAF7F0] text-[#6E6A63] border border-[#E0DACB]'
+                    }`}
+                  >
+                    {step.done ? <Check className="h-3.5 w-3.5 stroke-[3]" /> : idx + 1}
+                  </div>
+                  {idx < steps.length - 1 && (
+                    <div
+                      className={`h-6 w-0.5 ${
+                        step.done ? 'bg-[#0F7A43]' : 'bg-[#E0DACB]'
+                      }`}
+                    />
                   )}
                 </div>
-                <span className="mt-1.5 text-[10px] font-bold text-[#2B1F17]">
-                  {step.label}
-                </span>
-                <span className="text-[9px] text-[#6E6A63]">{step.time}</span>
+
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <h4
+                      className={`text-xs font-bold ${
+                        step.current ? 'text-[#0F7A43]' : 'text-[#2B1F17]'
+                      }`}
+                    >
+                      {step.label}
+                    </h4>
+                    <span className="text-[10px] text-[#6E6A63]">{step.time}</span>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* 2. Driver & Logistics Partner Card */}
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs">
+        {/* Ordered Items Summary */}
+        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs space-y-2 text-xs">
+          <h3 className="text-[10px] font-extrabold uppercase tracking-wider text-[#6E6A63]">
+            Items in this Order
+          </h3>
+
+          <div className="flex items-center justify-between pt-1">
+            <span className="text-[#2B1F17] font-semibold">Fresh Roma Tomatoes (1.0 kg)</span>
+            <span className="font-bold text-[#0F7A43]">{formatGHS(12.0)}</span>
+          </div>
+
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="relative h-12 w-12 overflow-hidden rounded-full border border-[#E0DACB] bg-[#1E5D3B]/10">
-                <Image
-                  src="/golden-acres/hero-farmer.jpg"
-                  alt="Driver Kofi Addo"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div>
-                <h3 className="text-xs font-extrabold text-[#2B1F17]">Kofi Addo</h3>
-                <p className="text-[10px] text-[#6E6A63]">AgriVil Logistics Partner</p>
-                <div className="mt-0.5 flex items-center gap-1 text-[10px] text-[#8A6B3D] font-bold">
-                  <Star className="h-3 w-3 fill-[#FBBF24] text-[#FBBF24]" />
-                  <span>4.9 (142 deliveries)</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <a
-                href="tel:+233241234567"
-                className="ga-press flex h-10 w-10 items-center justify-center rounded-full bg-[#1E5D3B] text-white shadow-xs"
-                title="Call rider"
-              >
-                <Phone className="h-4 w-4" />
-              </a>
-              <a
-                href="https://wa.me/233241234567"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ga-press flex h-10 w-10 items-center justify-center rounded-full border border-[#E0DACB] bg-white text-[#2B1F17]"
-                title="WhatsApp rider"
-              >
-                <MessageSquare className="h-4 w-4 text-[#1E5D3B]" />
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* 3. Simulated Live Route Map */}
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs">
-          <div className="flex items-center justify-between pb-3">
-            <span className="text-xs font-extrabold uppercase tracking-wider text-[#6E6A63]">
-              Live Delivery Route
-            </span>
-            <span className="text-[10px] font-bold text-[#1E5D3B] flex items-center gap-1">
-              <span className="h-2 w-2 rounded-full bg-[#1E5D3B] animate-ping" />
-              GPS Connected
-            </span>
+            <span className="text-[#2B1F17] font-semibold">White Yam (2.0 kg est)</span>
+            <span className="font-bold text-[#0F7A43]">{formatGHS(20.0)}</span>
           </div>
 
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-[#EBE6DA]">
-            <Image
-              src="/golden-acres/delivery.png"
-              alt="Live route map"
-              fill
-              className="object-cover"
-            />
-            {/* Dynamic Rider Pin */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 rounded-full bg-[#1E5D3B] px-3 py-1 text-[10px] font-extrabold text-white shadow-xl animate-pulse">
-              <Truck className="h-3.5 w-3.5" />
-              <span>Rider 4 mins away</span>
-            </div>
+          <div className="flex items-center justify-between border-t border-[#E0DACB]/60 pt-2 text-sm font-extrabold text-[#2B1F17]">
+            <span>Total Paid</span>
+            <span className="text-[#0F7A43]">{formatGHS(39.0)}</span>
           </div>
-        </div>
-
-        {/* 4. Proof of Delivery & Security Guarantee */}
-        <div className="flex items-center gap-3 rounded-2xl bg-[#DDE4C5]/50 p-3.5 text-xs font-semibold text-[#144028]">
-          <ShieldCheck className="h-5 w-5 shrink-0 text-[#1E5D3B]" />
-          <span>
-            Contactless delivery with geo-tagged Proof of Delivery (POD) photo capture upon handover.
-          </span>
-        </div>
-
-        {/* 5. Help & Support Link */}
-        <div className="pt-2 text-center">
-          <Link
-            href="/help"
-            className="text-xs font-bold text-[#6E6A63] hover:text-[#1E5D3B]"
-          >
-            Need help with this delivery? Contact Support
-          </Link>
         </div>
       </div>
     </div>

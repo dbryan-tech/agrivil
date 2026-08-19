@@ -3,8 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { MapPin, Crosshair, ArrowLeft, Loader2, CheckCircle2 } from 'lucide-react'
-import { CornerProduceOrnaments } from '@/components/golden-acres/mobile/corner-produce-ornaments'
+import { Crosshair, ArrowLeft, Loader2 } from 'lucide-react'
 import { validateGhanaPostGPS } from '@/lib/golden-acres/api'
 
 export default function GpsSetupScreen() {
@@ -28,11 +27,11 @@ export default function GpsSetupScreen() {
     if (res.valid) {
       if (typeof window !== 'undefined') {
         localStorage.setItem('ga_user_gps', gpsCode.trim())
-        localStorage.setItem('ga_user_area', res.area || 'KNUST, Kumasi')
+        localStorage.setItem('ga_user_area', res.area || 'KNUST, Kumasi, Ashanti Region')
       }
-      router.push(`/m/onboarding/confirm-area?code=${encodeURIComponent(gpsCode.trim())}&area=${encodeURIComponent(res.area || 'KNUST, Kumasi')}`)
+      router.push(`/m/onboarding/confirm-area?code=${encodeURIComponent(gpsCode.trim())}&area=${encodeURIComponent(res.area || 'KNUST, Kumasi, Ashanti Region')}`)
     } else {
-      setError('Invalid GhanaPostGPS code. Example: GA-143-3586 or AK-039-5028')
+      setError('Invalid GhanaPostGPS code. Example: GA-143-3586')
     }
   }
 
@@ -42,23 +41,21 @@ export default function GpsSetupScreen() {
   }
 
   return (
-    <div className="relative flex min-h-dvh flex-col justify-between overflow-hidden bg-[#F4F1EA] px-6 py-6 sm:px-8">
-      <CornerProduceOrnaments preset="categories" corners={['tl', 'br']} delayMs={100} />
-
+    <div className="relative flex min-h-dvh flex-col justify-between overflow-hidden bg-[#FAF7F0] px-6 py-6 sm:px-8">
       {/* Top Header Bar */}
       <div className="relative z-10 flex items-center justify-between pt-2">
         <button
           type="button"
           onClick={() => router.back()}
           aria-label="Back"
-          className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-[#2B1F17] shadow-xs border border-[#E0DACB]/60"
+          className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
         >
           <ArrowLeft className="h-4 w-4" />
         </button>
 
         <Link
           href="/m"
-          className="text-xs font-bold text-[#6E6A63] hover:text-[#1E5D3B]"
+          className="text-sm font-bold text-[#6E6A63] transition-colors hover:text-[#7A3F1C]"
         >
           Skip
         </Link>
@@ -67,18 +64,19 @@ export default function GpsSetupScreen() {
       {/* Center Body Content */}
       <div className="relative z-10 my-auto flex flex-col pt-4">
         <div className="max-w-xs">
-          <h1 className="ga-headline text-3xl font-extrabold tracking-tight text-[#2B1F17]">
+          <h1 className="ga-headline text-3xl font-extrabold tracking-tight text-[#2B1F17] sm:text-4xl">
             Add your <br />
-            <span className="text-[#1E5D3B]">GhanaPostGPS</span>
+            <span className="text-[#0F7A43]">GhanaPostGPS</span>
           </h1>
           <p className="mt-2 text-sm font-medium leading-relaxed text-[#6E6A63]">
-            This helps our delivery riders find your exact doorstep accurately.
+            This helps our riders find you accurately.
           </p>
         </div>
 
-        <form onSubmit={handleContinue} className="mt-8 space-y-4">
+        {/* Input Card Container */}
+        <form onSubmit={handleContinue} className="mt-8 rounded-3xl border border-[#E0DACB] bg-white p-5 shadow-xs">
           <div>
-            <label className="text-xs font-bold uppercase tracking-wider text-[#6E6A63]">
+            <label className="text-xs font-semibold text-[#6E6A63]">
               Enter GhanaPostGPS address
             </label>
             <div className="relative mt-2">
@@ -89,14 +87,14 @@ export default function GpsSetupScreen() {
                   setGpsCode(e.target.value.toUpperCase())
                   if (error) setError(null)
                 }}
-                placeholder="e.g. GA-143-3586"
-                className="h-14 w-full rounded-2xl border border-[#E0DACB] bg-white px-4 pr-12 text-base font-bold tracking-wider text-[#2B1F17] shadow-xs outline-none transition-all focus:border-[#1E5D3B] focus:ring-2 focus:ring-[#1E5D3B]/20 uppercase"
+                placeholder="GA-143-3586"
+                className="h-14 w-full rounded-2xl border border-[#E0DACB] bg-[#FAF7F0]/40 px-4 pr-12 text-base font-bold tracking-wider text-[#2B1F17] outline-none transition-all focus:border-[#0F7A43] focus:ring-2 focus:ring-[#0F7A43]/20 uppercase"
               />
               <button
                 type="button"
                 onClick={handleAutoLocate}
-                title="Detect location"
-                className="ga-press absolute top-1/2 right-3 -translate-y-1/2 rounded-xl p-2 text-[#1E5D3B] hover:bg-[#EBE6DA]"
+                title="Detect GPS location"
+                className="ga-press absolute top-1/2 right-3 -translate-y-1/2 rounded-xl p-2 text-[#0F7A43] hover:bg-[#FAF7F0]"
               >
                 <Crosshair className="h-5 w-5" />
               </button>
@@ -106,31 +104,33 @@ export default function GpsSetupScreen() {
             )}
           </div>
 
-          <a
-            href="https://ghanapostgps.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-xs font-bold text-[#1E5D3B] underline underline-offset-2 hover:opacity-80"
-          >
-            How do I get my GhanaPostGPS?
-          </a>
+          <div className="mt-4 pt-1">
+            <a
+              href="https://ghanapostgps.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block text-xs font-bold text-[#7A3F1C] underline underline-offset-2 hover:opacity-80"
+            >
+              How do I get my GhanaPostGPS?
+            </a>
+          </div>
         </form>
       </div>
 
       {/* Bottom CTA Actions */}
-      <div className="relative z-10 space-y-3 pb-6">
+      <div className="relative z-10 space-y-3 pb-4">
         <button
           type="button"
           onClick={handleContinue}
           disabled={loading}
-          className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#1E5D3B] text-base font-bold text-white shadow-md hover:bg-[#144028] disabled:opacity-50"
+          className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#0F7A43] text-base font-bold text-white shadow-md transition-all hover:bg-[#0B3B25] disabled:opacity-50"
         >
           {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Continue'}
         </button>
 
         <Link
           href="/m"
-          className="ga-press flex h-12 w-full items-center justify-center text-sm font-bold text-[#6E6A63] hover:text-[#2B1F17]"
+          className="ga-press flex h-12 w-full items-center justify-center text-sm font-bold text-[#7A3F1C] transition-colors hover:text-[#2B1F17]"
         >
           I&apos;ll do this later
         </Link>

@@ -145,7 +145,7 @@ export async function unlinkProvider(
 ): Promise<{ ok: boolean; error?: string }> {
   const { h } = await requireSession()
   try {
-    await auth.api.unlinkAccount({ headers: h, body: { providerId: provider, accountId } })
+    await auth.api.unlinkAccount({ headers: h, body: { providerId: provider, accountId } as any })
     return { ok: true }
   } catch (err) {
     const msg = (err as { message?: string })?.message || ""

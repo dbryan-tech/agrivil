@@ -45,16 +45,16 @@ export function MobileAppBar({
   return (
     <header
       className={cn(
-        'sticky top-0 z-30 flex h-14 items-center justify-between px-4 transition-colors',
+        'sticky top-0 z-30 flex h-14 items-center justify-between px-3 sm:px-4 transition-colors',
         transparent
           ? 'bg-transparent'
-          : 'border-b border-[#E0DACB] bg-[#F4F1EA]',
+          : 'border-b border-[#E0DACB] bg-[#FAF7F0]',
         className
       )}
       style={{ paddingTop: 'env(safe-area-inset-top)' }}
     >
       {/* Left side: Back or Title */}
-      <div className="flex items-center gap-3 overflow-hidden">
+      <div className="flex items-center gap-2.5 overflow-hidden">
         {showBack && (
           <button
             type="button"
@@ -84,7 +84,7 @@ export function MobileAppBar({
           <Link
             href="/m/search"
             aria-label="Search"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#EBE6DA]"
+            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#FAF7F0]"
           >
             <Search className="h-4 w-4" />
           </Link>
@@ -94,7 +94,7 @@ export function MobileAppBar({
           <Link
             href="/m/account/notifications"
             aria-label="Notifications"
-            className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#EBE6DA]"
+            className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#FAF7F0]"
           >
             <Bell className="h-4 w-4" />
             <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-[#E67A2E]" />
@@ -106,7 +106,7 @@ export function MobileAppBar({
             type="button"
             onClick={onFavoriteToggle}
             aria-label="Save item"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#EBE6DA]"
+            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#FAF7F0]"
           >
             <Heart
               className={cn(
@@ -122,7 +122,7 @@ export function MobileAppBar({
             type="button"
             onClick={onShare}
             aria-label="Share"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#EBE6DA]"
+            className="ga-press flex h-9 w-9 items-center justify-center rounded-full text-[#2B1F17] hover:bg-[#FAF7F0]"
           >
             <Share2 className="h-4 w-4" />
           </button>
@@ -134,9 +134,9 @@ export function MobileAppBar({
             aria-label="Shopping Cart"
             className="ga-press relative flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
           >
-            <ShoppingBag className="h-4 w-4 text-[#1E5D3B]" />
+            <ShoppingBag className="h-4 w-4 text-[#0F7A43]" />
             {count > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#1E5D3B] px-1 text-[9px] font-bold text-white shadow-xs">
+              <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#0F7A43] px-1 text-[9px] font-bold text-white shadow-xs">
                 {count > 9 ? '9+' : count}
               </span>
             )}

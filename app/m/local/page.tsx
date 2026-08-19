@@ -3,188 +3,172 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { MapPin, Navigation, Star, Map as MapIcon, List, CheckCircle2, ChevronRight, Phone } from 'lucide-react'
-import { farmers, products } from '@/lib/golden-acres/data'
-import { formatGHS } from '@/lib/golden-acres/format'
-import { MobileAppBar } from '@/components/golden-acres/mobile/mobile-app-bar'
+import { ArrowLeft, Star, CheckCircle2, ChevronRight, Navigation } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { MobileBottomNav } from '@/components/golden-acres/mobile/mobile-bottom-nav'
 import { cn } from '@/lib/utils'
 
-export default function MobileShopLocalScreen() {
-  const [viewMode, setViewMode] = useState<'list' | 'map'>('list')
-  const [filterTab, setFilterTab] = useState<'all' | 'farmers' | 'products'>('all')
+const LOCAL_FARMS = [
+  {
+    name: 'Adwoa Sarpong Farms',
+    slug: 'adwoa-sarpong',
+    distance: '0.8 km away',
+    rating: 4.7,
+    reviews: 32,
+    image: '/golden-acres/farmers/adwoa-sarpong.jpg',
+    specialty: 'Fresh Roma Tomatoes, Plantain & Onions',
+  },
+  {
+    name: 'Nyamekye Greens',
+    slug: 'esi-boateng',
+    distance: '1.2 km away',
+    rating: 4.6,
+    reviews: 18,
+    image: '/golden-acres/farmers/esi-boateng.jpg',
+    specialty: 'Kontomire, Spinach & Green Leafy Greens',
+  },
+  {
+    name: 'Baffour Organic Farm',
+    slug: 'kwame-mensah',
+    distance: '2.1 km away',
+    rating: 4.8,
+    reviews: 27,
+    image: '/golden-acres/farmers/kwame-mensah.jpg',
+    specialty: 'Yam, Cassava & Organic Roots',
+  },
+]
 
-  const nearbyFarms = farmers.slice(0, 4)
-  const nearbyProducts = products.slice(0, 6)
+export default function MobileShopLocalScreen() {
+  const router = useRouter()
+  const [viewMode, setViewMode] = useState<'map' | 'list'>('map')
+  const [showNearMe, setShowNearMe] = useState(true)
 
   return (
-    <div className="min-h-dvh bg-[#F4F1EA] pb-24 text-[#2B1F17]">
-      <MobileAppBar
-        title="Shop Local"
-        subtitle="Farmers &amp; produce near KNUST, Kumasi"
-        showSearch
-        showCart
-        rightSlot={
+    <div className="min-h-dvh bg-[#FAF7F0] pb-24 text-[#2B1F17]">
+      {/* 1. Header (Matching Screen 11) */}
+      <header
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[#E0DACB] bg-[#FAF7F0] px-3 sm:px-4 py-2.5"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
+      >
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
-            onClick={() => setViewMode(viewMode === 'list' ? 'map' : 'list')}
-            aria-label="Toggle map view"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#1E5D3B] shadow-xs border border-[#E0DACB]"
+            onClick={() => router.back()}
+            aria-label="Back"
+            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
           >
-            {viewMode === 'list' ? <MapIcon className="h-4 w-4" /> : <List className="h-4 w-4" />}
+            <ArrowLeft className="h-4 w-4" />
           </button>
-        }
-      />
+          <h1 className="text-base font-extrabold text-[#2B1F17]">Shop Local</h1>
+        </div>
 
-      {/* Filter Tabs (All / Farmers / Products) */}
-      <div className="flex gap-2 border-b border-[#E0DACB]/80 bg-[#F4F1EA] px-4 py-3">
-        {(['all', 'farmers', 'products'] as const).map((tab) => (
-          <button
-            key={tab}
-            type="button"
-            onClick={() => setFilterTab(tab)}
-            className={cn(
-              'ga-press rounded-full px-4 py-1.5 text-xs font-bold capitalize transition-all',
-              filterTab === tab
-                ? 'bg-[#1E5D3B] text-white shadow-xs'
-                : 'bg-white border border-[#E0DACB] text-[#2B1F17]'
-            )}
-          >
-            {tab}
-          </button>
-        ))}
+        <button
+          type="button"
+          onClick={() => setViewMode(viewMode === 'map' ? 'list' : 'map')}
+          className="ga-press rounded-full border border-[#E0DACB] bg-white px-3 py-1 text-xs font-bold text-[#2B1F17] shadow-xs hover:border-[#0F7A43]"
+        >
+          {viewMode === 'map' ? 'List view' : 'Map view'}
+        </button>
+      </header>
+
+      {/* 2. Map Radar Graphic Section (Screen 11) */}
+      <div className="relative h-64 w-full overflow-hidden bg-[#E7E2D5]">
+        {/* Map Grid Pattern & Roads */}
+        <div className="absolute inset-0 bg-[radial-gradient(#D5CEBD_1px,transparent_1px)] [background-size:16px_16px] opacity-70" />
+
+        {/* Pulsating User Location Dot */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+          <div className="h-10 w-10 rounded-full bg-[#0F7A43]/20 animate-ping" />
+          <div className="absolute h-5 w-5 rounded-full border-2 border-white bg-[#0F7A43] shadow-md flex items-center justify-center text-white">
+            <Navigation className="h-2.5 w-2.5 fill-white" />
+          </div>
+        </div>
+
+        {/* Nearby Farm Location Pins */}
+        <div className="absolute top-1/4 left-1/4 flex flex-col items-center">
+          <span className="rounded-md bg-[#0F7A43] px-2 py-0.5 text-[9px] font-extrabold text-white shadow-md">
+            Adwoa (0.8km)
+          </span>
+          <div className="mt-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0F7A43] shadow-md" />
+        </div>
+
+        <div className="absolute top-1/3 right-1/4 flex flex-col items-center">
+          <span className="rounded-md bg-[#0F7A43] px-2 py-0.5 text-[9px] font-extrabold text-white shadow-md">
+            Nyamekye (1.2km)
+          </span>
+          <div className="mt-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0F7A43] shadow-md" />
+        </div>
+
+        <div className="absolute bottom-1/4 left-1/3 flex flex-col items-center">
+          <span className="rounded-md bg-[#0F7A43] px-2 py-0.5 text-[9px] font-extrabold text-white shadow-md">
+            Baffour (2.1km)
+          </span>
+          <div className="mt-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0F7A43] shadow-md" />
+        </div>
       </div>
 
-      {viewMode === 'map' ? (
-        /* Map View Graphic */
-        <div className="relative h-[65vh] w-full overflow-hidden bg-[#EBE6DA]">
-          <div className="absolute inset-0 opacity-40">
-            <Image
-              src="/golden-acres/hero-farmer.jpg"
-              alt="Map area"
-              fill
-              className="object-cover"
-            />
-          </div>
+      {/* 3. "Show products near me" Toggle Bar */}
+      <div className="border-b border-[#E0DACB] bg-[#FAF7F0] px-3 sm:px-4 py-2.5">
+        <label className="flex items-center justify-between cursor-pointer">
+          <span className="text-xs font-bold text-[#2B1F17]">Show products near me</span>
+          <input
+            type="checkbox"
+            checked={showNearMe}
+            onChange={(e) => setShowNearMe(e.target.checked)}
+            className="h-5 w-5 rounded-md accent-[#0F7A43]"
+          />
+        </label>
+      </div>
 
-          {/* Interactive Radar Pins */}
-          <div className="absolute top-1/3 left-1/4 flex flex-col items-center">
-            <span className="rounded-md bg-[#1E5D3B] px-2 py-0.5 text-[10px] font-bold text-white shadow-md">
-              Adwoa Farms (0.8km)
-            </span>
-            <div className="h-6 w-6 rounded-full border-2 border-white bg-[#1E5D3B] shadow-lg animate-bounce" />
-          </div>
-
-          <div className="absolute top-1/2 right-1/4 flex flex-col items-center">
-            <span className="rounded-md bg-[#1E5D3B] px-2 py-0.5 text-[10px] font-bold text-white shadow-md">
-              Nyamekye Greens (1.2km)
-            </span>
-            <div className="h-6 w-6 rounded-full border-2 border-white bg-[#1E5D3B] shadow-lg" />
-          </div>
-
-          <div className="absolute bottom-1/4 left-1/2 flex flex-col items-center">
-            <span className="rounded-md bg-[#1E5D3B] px-2 py-0.5 text-[10px] font-bold text-white shadow-md">
-              Baffour Organic (2.1km)
-            </span>
-            <div className="h-6 w-6 rounded-full border-2 border-white bg-[#1E5D3B] shadow-lg" />
-          </div>
+      {/* 4. Farmers & Products List (Matching Screen 11) */}
+      <div className="px-3 sm:px-4 pt-3.5 space-y-3">
+        <div className="pb-1">
+          <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#6E6A63]">
+            Farmers &amp; products near KNUST, Kumasi
+          </h2>
         </div>
-      ) : (
-        /* List View */
-        <div className="px-4 py-4 space-y-6">
-          {/* Nearby Farmers Section */}
-          {(filterTab === 'all' || filterTab === 'farmers') && (
-            <div>
-              <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#6E6A63]">
-                Closest Participating Farms
-              </h2>
 
-              <div className="mt-3 space-y-3">
-                {nearbyFarms.map((farm, idx) => {
-                  const dist = (0.8 + idx * 0.4).toFixed(1)
-                  return (
-                    <Link
-                      key={farm.id}
-                      href={`/m/farmers/${farm.slug}`}
-                      className="ga-press flex items-center justify-between rounded-3xl border border-[#E0DACB] bg-white p-3.5 shadow-xs hover:border-[#1E5D3B]/40"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-[#E0DACB]">
-                          <Image
-                            src={farm.photo}
-                            alt={farm.name}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="flex flex-col">
-                          <div className="flex items-center gap-1.5">
-                            <h3 className="text-xs font-extrabold text-[#2B1F17]">
-                              {farm.name}
-                            </h3>
-                            <CheckCircle2 className="h-3 w-3 fill-[#1E5D3B] text-white" />
-                          </div>
-                          <span className="text-[10px] text-[#6E6A63]">
-                            {farm.region} · <strong className="text-[#1E5D3B]">{dist} km away</strong>
-                          </span>
-                          <div className="mt-1 flex items-center gap-1 text-[10px] font-semibold">
-                            <Star className="h-3 w-3 fill-[#FBBF24] text-[#FBBF24]" />
-                            <span>{farm.rating}</span>
-                            <span className="text-[#6E6A63]">({farm.reviewCount})</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex h-8 w-8 items-center justify-center text-[#6E6A63]">
-                        <ChevronRight className="h-5 w-5" />
-                      </div>
-                    </Link>
-                  )
-                })}
+        <div className="space-y-2.5">
+          {LOCAL_FARMS.map((farm) => (
+            <Link
+              key={farm.name}
+              href={`/m/farmers/${farm.slug}`}
+              className="ga-press flex items-center justify-between rounded-3xl border border-[#E0DACB] bg-white p-3 shadow-xs hover:border-[#0F7A43]/40 transition-all"
+            >
+              <div className="flex items-center gap-3">
+                <div className="relative h-13 w-13 shrink-0 overflow-hidden rounded-2xl border border-[#E0DACB] bg-[#FAF7F0]">
+                  <Image
+                    src={farm.image}
+                    alt={farm.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-1.5">
+                    <h3 className="text-xs font-extrabold text-[#2B1F17]">
+                      {farm.name}
+                    </h3>
+                    <CheckCircle2 className="h-3 w-3 fill-[#0F7A43] text-white" />
+                  </div>
+                  <span className="text-[10px] font-semibold text-[#0F7A43]">
+                    {farm.distance}
+                  </span>
+                  <div className="mt-0.5 flex items-center gap-1 text-[10px] text-[#6E6A63]">
+                    <Star className="h-2.5 w-2.5 fill-[#FBBF24] text-[#FBBF24]" />
+                    <span className="font-bold text-[#2B1F17]">{farm.rating}</span>
+                    <span>({farm.reviews})</span>
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
 
-          {/* Local Produce Section */}
-          {(filterTab === 'all' || filterTab === 'products') && (
-            <div>
-              <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#6E6A63]">
-                Harvested Within 5km
-              </h2>
-
-              <div className="mt-3 grid grid-cols-2 gap-3">
-                {nearbyProducts.map((p) => (
-                  <Link
-                    key={p.id}
-                    href={`/m/product/${p.slug}`}
-                    className="ga-press group flex flex-col justify-between overflow-hidden rounded-3xl border border-[#E0DACB] bg-white p-3 shadow-xs"
-                  >
-                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-[#F4F1EA]">
-                      <Image
-                        src={p.image}
-                        alt={p.name}
-                        fill
-                        className="object-cover transition-transform group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="mt-2.5">
-                      <h4 className="truncate text-xs font-extrabold text-[#2B1F17]">
-                        {p.name}
-                      </h4>
-                      <p className="truncate text-[10px] text-[#6E6A63]">
-                        {p.farmerName}
-                      </p>
-                      <span className="mt-1 block text-xs font-bold text-[#1E5D3B]">
-                        {formatGHS(p.priceMin)} / {p.variableWeight ? 'kg' : p.unit}
-                      </span>
-                    </div>
-                  </Link>
-                ))}
+              <div className="flex h-7 w-7 items-center justify-center text-[#6E6A63]">
+                <ChevronRight className="h-4 w-4" />
               </div>
-            </div>
-          )}
+            </Link>
+          ))}
         </div>
-      )}
+      </div>
 
       <MobileBottomNav />
     </div>

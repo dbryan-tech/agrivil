@@ -435,7 +435,15 @@ const baseProducts: Product[] = [
 // Full catalog = hand-authored anchors + deterministically generated farmer
 // offers (the same product sold by several farmers competing on price/freshness).
 // ~45 canonical items × multiple sellers ≈ 200+ live listings.
-export const products: Product[] = [...baseProducts, ...generateOffers()]
+export const products: Product[] = [...baseProducts, ...generateOffers()].map((p) => {
+  const f = farmers.find((farm) => farm.id === p.farmerId) || farmers[0]
+  return {
+    ...p,
+    farmerName: p.farmerName || f?.name || f?.farmName || 'Ghana Local Farm',
+    rating: p.rating ?? f?.rating ?? 4.8,
+    reviewCount: p.reviewCount ?? f?.reviewCount ?? 28,
+  }
+})
 
 export const bundles: Bundle[] = [
   {
@@ -771,6 +779,9 @@ export const orders: Order[] = [
     ],
   },
 ]
+
+export const seedOrders = orders
+export const seedFarmers = farmers
 
 // ---- Farmer ledger (Auntie Ama) ----
 export const ledger: LedgerEntry[] = [

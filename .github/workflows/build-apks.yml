@@ -1,16 +1,26 @@
 name: Build AgriVil Android APKs
 
+# Builds the native Android APKs on GitHub's Linux runners (which have the
+# Android SDK + Java that the local machine is missing) and publishes them as
+# downloadable GitHub Release assets so they can be sideloaded for testing.
+#
+# The APKs are Capacitor WebView shells: capacitor.config.json sets
+# server.url -> https://agrivil1.vercel.app/m, so the app loads the live /m
+# site. No web build is baked in; only the native Gradle project is compiled.
+
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: write   # needed to create the GitHub Release + upload APK assets
 
 jobs:
-  build:
+  build-and-release:
     runs-on: ubuntu-latest
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -29,25 +39,64 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - name: Install Android platform + build-tools and accept licenses
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
-      - name: Build Consumer APK (AgriVil Marketplace)
+      - name: Ensure gradlew is executable
+        run: chmod +x mobile/android/gradlew
+
+      - name: Install mobile native deps (Capacitor CLI + plugins)
+        working-directory: mobile
+        run: npm ci
+
+      - name: Create webDir stub (Capacitor requires ../out to exist for sync)
+        run: |
+          mkdir -p out
+          printf '<!doctype html><html><head><title>AgriVil</title></head><body></body></html>' > out/index.html
+
+      - name: Sync Capacitor native glue (symlinks android/app -> consumer, copies to admin)
+        working-directory: mobile
+        run: node scripts/sync-android.mjs
+
+      - name: Build Consumer APK (marketplace, /m)
         working-directory: mobile/android
-        run: ./gradlew :consumer:assembleDebug
+        run: ./gradlew :consumer:assembleDebug --no-daemon
 
-      - name: Build Farmer APK (AgriVil Farmer Cockpit)
+      - name: Build Farmer APK (farmer cockpit, /m/farmer)
         working-directory: mobile/android
-        run: ./gradlew :admin:assembleDebug
+        run: ./gradlew :admin:assembleDebug --no-daemon
 
-      - name: Upload Consumer APK
+      - name: Upload Consumer APK artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: AgriVil-Consumer-Debug
           path: mobile/android/consumer/build/outputs/apk/debug/*.apk
 
-      - name: Upload Farmer APK
+      - name: Upload Farmer APK artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: AgriVil-Farmer-Debug
-          path: mobile/android/admin/build/outputs/apk/debug/*.apk
+          path: mobile/android/admin/build/outputs/**/*.apk
+
+      - name: Create GitHub Release with APKs
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-build-${{ github.run_number }}
+          name: AgriVil APK Build ${{ github.run_number }}
+          body: |
+            Automated Android debug APK build from commit `${{ github.sha }}`.
+
+            - **AgriVil-Consumer-Debug.apk** — marketplace app (loads `/m`)
+            - **AgriVil-Farmer-Debug.apk** — farmer cockpit (loads `/m/farmer`)
+
+            These are WebView shells pointed at the live site
+            (https://agrivil1.vercel.app/m). Sideload and test on Android.
+          files: |
+            mobile/android/consumer/build/outputs/apk/debug/*.apk
+            mobile/android/admin/build/outputs/apk/debug/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

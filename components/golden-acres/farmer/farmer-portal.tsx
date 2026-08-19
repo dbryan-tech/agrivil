@@ -918,6 +918,7 @@ function StockBadge({ status }: { status: StockStatus }) {
     'in-stock': { label: 'In stock', cls: 'bg-[var(--ga-leaf)]/15 text-[var(--ga-leaf)]' },
     low: { label: 'Low', cls: 'bg-[var(--ga-gold)]/15 text-[var(--ga-gold)]' },
     delisted: { label: 'Sold out', cls: 'bg-[var(--ga-terracotta)]/15 text-[var(--ga-terracotta)]' },
+    'out-of-stock': { label: 'Out of stock', cls: 'bg-[var(--ga-terracotta)]/15 text-[var(--ga-terracotta)]' },
   }
   const s = map[status]
   return (
