@@ -216,25 +216,25 @@ export default function MobileCategoryDetailScreen() {
 
       {/* 1. Header Bar */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-4 py-3 backdrop-blur-md"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
         <div className="flex items-center gap-2.5">
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
-          <h1 className="text-[17px] font-extrabold text-[#211A12]">{meta.title}</h1>
+          <h1 className="text-[16px] font-black text-[#211A12]">{meta.title}</h1>
         </div>
 
         <Link
           href="/m/cart"
           aria-label="Basket"
-          className="relative flex h-10 w-10 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-sm active:scale-95 transition-transform"
+          className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-sm active:scale-95 transition-transform"
         >
           <ShoppingBag className="h-4 w-4" />
           {count > 0 && (
@@ -246,8 +246,8 @@ export default function MobileCategoryDetailScreen() {
       </header>
 
       {/* 2. Category Hero Image Banner */}
-      <div className="relative px-5 pt-3">
-        <div className="relative aspect-[16/8] w-full overflow-hidden rounded-[26px] bg-[#211A12] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.08)]">
+      <div className="relative px-3 pt-2.5">
+        <div className="relative aspect-[16/8] w-full overflow-hidden rounded-[24px] bg-[#211A12] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.08)]">
           <Image
             src={meta.bannerImage}
             alt={meta.title}
@@ -256,11 +256,11 @@ export default function MobileCategoryDetailScreen() {
             className="object-cover opacity-90"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-          <div className="absolute bottom-3.5 left-4 right-4 text-white">
-            <span className="inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[9.5px] font-black uppercase tracking-wider text-white shadow-xs">
+          <div className="absolute bottom-3 left-3.5 right-3.5 text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-xs">
               <Sparkles className="h-2.5 w-2.5" /> Farm Fresh
             </span>
-            <h2 className="mt-1 text-[20px] font-black tracking-tight text-white sm:text-2xl">
+            <h2 className="mt-1 text-[18px] font-black tracking-tight text-white sm:text-xl">
               {meta.title}
             </h2>
           </div>
@@ -268,12 +268,12 @@ export default function MobileCategoryDetailScreen() {
       </div>
 
       {/* 3. Subtitle & Filter Trigger Bar */}
-      <div className="px-5 py-3">
+      <div className="px-3 py-2.5">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1">
-            <h3 className="text-[14px] font-extrabold text-[#211A12]">{meta.title}</h3>
-            <p className="mt-0.5 text-[11.5px] font-medium text-[#5C5247]">{meta.subtitle}</p>
-            <span className="mt-1 inline-block text-[11px] font-extrabold text-[#0B3B25]">
+            <h3 className="text-[13.5px] font-extrabold text-[#211A12]">{meta.title}</h3>
+            <p className="mt-0.5 text-[11px] font-medium text-[#5C5247]">{meta.subtitle}</p>
+            <span className="mt-0.5 inline-block text-[10.5px] font-extrabold text-[#0B3B25]">
               {meta.count}
             </span>
           </div>
@@ -282,7 +282,7 @@ export default function MobileCategoryDetailScreen() {
             <button
               type="button"
               onClick={() => setSortOpen(true)}
-              className="flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.08)]"
+              className="flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[10.5px] font-extrabold text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.08)]"
             >
               <span>Sort</span>
             </button>
@@ -290,9 +290,9 @@ export default function MobileCategoryDetailScreen() {
             <button
               type="button"
               onClick={() => setFilterOpen(true)}
-              className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.08)] hover:border-[#0B3B25]"
+              className="flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[10.5px] font-extrabold text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.08)] hover:border-[#0B3B25]"
             >
-              <SlidersHorizontal className="h-3.5 w-3.5 text-[#0B3B25]" />
+              <SlidersHorizontal className="h-3 w-3 text-[#0B3B25]" />
               <span>Filter</span>
             </button>
           </div>
@@ -300,22 +300,22 @@ export default function MobileCategoryDetailScreen() {
       </div>
 
       {/* 4. Product List with Dynamic ProductImageShell */}
-      <div className="px-5 space-y-3">
+      <div className="px-3 space-y-2">
         {meta.canonicalItems.map((item) => {
           const isAdded = addedItem === item.name
           return (
             <div
               key={item.name}
-              className="flex items-center justify-between overflow-hidden rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.99] transition-all"
+              className="flex items-center justify-between overflow-hidden rounded-[22px] bg-[#FDFDFB] p-3 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.99] transition-all"
             >
               <div className="flex items-center gap-3">
                 <ProductImageShell
                   src={item.image}
                   alt={item.name}
-                  className="h-14 w-14 rounded-2xl"
+                  className="h-12 w-12 rounded-xl"
                 />
                 <div className="flex flex-col">
-                  <h4 className="text-[13.5px] font-extrabold text-[#211A12]">
+                  <h4 className="text-[13px] font-extrabold text-[#211A12]">
                     {item.name}
                   </h4>
                   <span className="text-[12px] font-black text-[#0B3B25]">

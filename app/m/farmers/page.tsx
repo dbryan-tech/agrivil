@@ -57,17 +57,18 @@ export default function MobileFarmersScreen() {
       />
 
       {/* Header Bar */}
-      <header className="relative flex items-center justify-between px-5 pt-4 pb-2">
-        <h1 className="text-[26px] font-extrabold tracking-tight text-[#211A12]">
+      {/* Header */}
+      <header className="relative flex items-center justify-between px-3 pt-3 pb-1.5">
+        <h1 className="text-[22px] font-black tracking-tight text-[#211A12]">
           Our Growers
         </h1>
-        <div className="flex items-center gap-1 text-[11px] font-black text-[#0B3B25]">
-          <CheckCircle2 className="h-4 w-4" />
+        <div className="flex items-center gap-1 text-[10.5px] font-black text-[#0B3B25]">
+          <CheckCircle2 className="h-3.5 w-3.5" />
           <span>Fair Trade 100%</span>
         </div>
       </header>
 
-      <div className="relative px-5 pt-2 space-y-4">
+      <div className="relative px-3 pt-2 space-y-2.5">
         {/* 1. Search Bar */}
         <div className="relative">
           <input
@@ -75,20 +76,20 @@ export default function MobileFarmersScreen() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search growers by name, town, or region..."
-            className="h-11 w-full rounded-full border border-[rgba(33,26,18,0.10)] bg-white pl-10 pr-4 text-[13px] font-semibold text-[#211A12] shadow-2xs outline-none focus:border-[#0B3B25]"
+            className="h-10 w-full rounded-full border border-[rgba(33,26,18,0.10)] bg-white pl-9 pr-3 text-[12.5px] font-semibold text-[#211A12] shadow-2xs outline-none focus:border-[#0B3B25]"
           />
-          <Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#0B3B25] stroke-[2.4]" />
+          <Search className="absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-[#0B3B25] stroke-[2.4]" />
         </div>
 
         {/* 2. Region Pills Scroller */}
-        <div className="flex gap-2 overflow-x-auto py-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-1.5 overflow-x-auto py-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {REGION_FILTERS.map((reg) => (
             <button
               key={reg}
               type="button"
               onClick={() => setSelectedRegion(reg)}
               className={cn(
-                'flex shrink-0 items-center rounded-full px-4 py-1.5 text-[12px] font-extrabold transition-all active:scale-95 shadow-2xs',
+                'flex shrink-0 items-center rounded-full px-3 py-1 text-[11.5px] font-extrabold transition-all active:scale-95 shadow-2xs',
                 selectedRegion === reg
                   ? 'bg-[#0B3B25] text-white shadow-xs'
                   : 'border border-[rgba(33,26,18,0.08)] bg-white text-[#211A12]'
@@ -103,7 +104,7 @@ export default function MobileFarmersScreen() {
         {selectedRegion === 'All' && !search && featuredFarmer && (
           <Link
             href={`/m/farmers/${featuredFarmer.slug}`}
-            className="group block overflow-hidden rounded-[28px] bg-[#FDFDFB] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-transform"
+            className="group block overflow-hidden rounded-[24px] bg-[#FDFDFB] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-transform"
           >
             <div className="relative aspect-[16/9] w-full overflow-hidden bg-white">
               <Image
@@ -113,30 +114,30 @@ export default function MobileFarmersScreen() {
                 priority
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-3 py-1 text-[10.5px] font-black text-white shadow-md">
+              <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[10px] font-black text-white shadow-md">
                 <Sparkles className="h-3 w-3 text-[#F0A81E]" /> Featured Farm
               </span>
             </div>
 
-            <div className="p-4">
+            <div className="p-3.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
-                  <h2 className="text-[15px] font-extrabold text-[#211A12]">
+                  <h2 className="text-[14.5px] font-extrabold text-[#211A12]">
                     {featuredFarmer.name}
                   </h2>
-                  <CheckCircle2 className="h-4 w-4 fill-[#0B3B25] text-white" />
+                  <CheckCircle2 className="h-3.5 w-3.5 fill-[#0B3B25] text-white" />
                 </div>
-                <div className="flex items-center gap-1 text-[12px] font-black text-[#211A12]">
-                  <Star className="h-3.5 w-3.5 fill-[#F0A81E] text-[#F0A81E]" />
+                <div className="flex items-center gap-1 text-[11.5px] font-black text-[#211A12]">
+                  <Star className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
                   <span>{featuredFarmer.rating}</span>
                   <span className="text-[#5C5247] font-semibold">({featuredFarmer.reviewCount})</span>
                 </div>
               </div>
 
-              <p className="mt-0.5 text-[12px] font-bold text-[#7A3F1C]">
+              <p className="mt-0.5 text-[11.5px] font-bold text-[#7A3F1C]">
                 {featuredFarmer.farmName} · {featuredFarmer.town}, {featuredFarmer.region}
               </p>
-              <p className="mt-2 line-clamp-2 text-[12px] leading-relaxed text-[#5C5247] font-semibold">
+              <p className="mt-1.5 line-clamp-2 text-[11.5px] leading-relaxed text-[#5C5247] font-semibold">
                 {featuredFarmer.bio}
               </p>
             </div>
@@ -145,23 +146,23 @@ export default function MobileFarmersScreen() {
 
         {/* 4. Farmers Directory List */}
         <div>
-          <div className="flex items-center justify-between pb-2.5">
-            <h3 className="text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+          <div className="flex items-center justify-between pb-2">
+            <h3 className="text-[10.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
               Participating Growers ({filteredFarmers.length})
             </h3>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             {filteredFarmers.map((farmer, idx) => {
               const distance = (0.8 + idx * 0.5).toFixed(1)
               return (
                 <Link
                   key={farmer.id}
                   href={`/m/farmers/${farmer.slug}`}
-                  className="flex items-center justify-between rounded-[26px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
+                  className="flex items-center justify-between rounded-[22px] bg-[#FDFDFB] p-3 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
                 >
-                  <div className="flex items-center gap-3.5 flex-1 min-w-0 pr-2">
-                    <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs">
+                  <div className="flex items-center gap-3 flex-1 min-w-0 pr-2">
+                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-white shadow-2xs">
                       <Image
                         src={farmer.photo}
                         alt={farmer.name}
@@ -171,27 +172,27 @@ export default function MobileFarmersScreen() {
                     </div>
                     <div className="flex flex-col min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <h4 className="text-[14px] font-extrabold text-[#211A12] truncate">
+                        <h4 className="text-[13.5px] font-extrabold text-[#211A12] truncate">
                           {farmer.name}
                         </h4>
-                        <CheckCircle2 className="h-3.5 w-3.5 fill-[#0B3B25] text-white shrink-0" />
+                        <CheckCircle2 className="h-3 w-3 fill-[#0B3B25] text-white shrink-0" />
                       </div>
-                      <span className="text-[11px] font-semibold text-[#5C5247] truncate">
+                      <span className="text-[10.5px] font-semibold text-[#5C5247] truncate">
                         {farmer.farmName} · <strong className="text-[#0B3B25]">{distance} km away</strong>
                       </span>
-                      <div className="mt-1 flex items-center gap-2 text-[11px]">
+                      <div className="mt-0.5 flex items-center gap-1.5 text-[10.5px]">
                         <span className="flex items-center gap-0.5 font-black text-[#211A12]">
-                          <Star className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
+                          <Star className="h-2.5 w-2.5 fill-[#F0A81E] text-[#F0A81E]" />
                           <span>{farmer.rating}</span>
                         </span>
-                        <span className="text-[#5C5247] font-semibold">({farmer.reviewCount} reviews)</span>
+                        <span className="text-[#5C5247] font-semibold">({farmer.reviewCount})</span>
                         <span className="text-[#7A3F1C] font-bold truncate">· {farmer.town}</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0B3B25]/10 text-[#0B3B25] shrink-0">
-                    <ChevronRight className="h-4 w-4 stroke-[2.5]" />
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0B3B25]/10 text-[#0B3B25] shrink-0">
+                    <ChevronRight className="h-3.5 w-3.5 stroke-[2.5]" />
                   </div>
                 </Link>
               )

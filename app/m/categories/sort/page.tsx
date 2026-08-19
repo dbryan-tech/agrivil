@@ -24,37 +24,46 @@ export default function MobileCategoriesSortScreen() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#FAF7F0] p-4 text-[#2B1F17] flex flex-col justify-between">
-      <div>
+    <div className="relative min-h-dvh bg-[#F7F5F0] p-3 text-[#211A12] flex flex-col justify-between select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
+      <div className="relative">
         {/* Header */}
-        <header className="flex items-center gap-2.5 pb-3">
+        <header className="flex items-center gap-2.5 pb-2.5">
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
-          <h1 className="text-base font-extrabold text-[#2B1F17]">Sort by</h1>
+          <h1 className="text-[16px] font-black text-[#211A12]">Sort by</h1>
         </header>
 
         {/* Sort Options List */}
-        <div className="mt-3 rounded-3xl border border-[#E0DACB] bg-white p-2 shadow-xs divide-y divide-[#E0DACB]/60">
+        <div className="mt-2.5 rounded-[24px] bg-[#FDFDFB] p-2 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] divide-y divide-[rgba(33,26,18,0.06)]">
           {sortOptions.map((opt) => (
             <button
               key={opt.key}
               type="button"
               onClick={() => setSelectedSort(opt.key)}
-              className="ga-press flex w-full items-center justify-between p-3.5 text-xs font-bold text-[#2B1F17]"
+              className="flex w-full items-center justify-between p-3 text-[12.5px] font-extrabold text-[#211A12] active:scale-[0.99] transition-transform"
             >
               <span>{opt.label}</span>
               <div
                 className={cn(
                   'flex h-5 w-5 items-center justify-center rounded-full border transition-all',
                   selectedSort === opt.key
-                    ? 'border-[#0F7A43] bg-[#0F7A43] text-white'
-                    : 'border-[#E0DACB] bg-[#FAF7F0]'
+                    ? 'border-[#0B3B25] bg-[#0B3B25] text-white'
+                    : 'border-[rgba(33,26,18,0.15)] bg-white'
                 )}
               >
                 {selectedSort === opt.key && <div className="h-2 w-2 rounded-full bg-white" />}
@@ -65,11 +74,11 @@ export default function MobileCategoriesSortScreen() {
       </div>
 
       {/* Apply Button */}
-      <div className="pt-6">
+      <div className="relative pt-4">
         <button
           type="button"
           onClick={handleApply}
-          className="ga-press flex h-13 w-full items-center justify-center rounded-2xl bg-[#0F7A43] text-sm font-bold text-white shadow-md hover:bg-[#0B3B25]"
+          className="flex h-12 w-full items-center justify-center rounded-full bg-[#0B3B25] text-[13.5px] font-extrabold text-white shadow-md active:scale-[0.98] transition-transform"
         >
           Apply Sort
         </button>

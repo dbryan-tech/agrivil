@@ -55,19 +55,19 @@ export default function MobileCartScreen() {
 
       {/* Header */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-5 py-3 backdrop-blur-md"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
         <button
           type="button"
           onClick={() => router.back()}
           aria-label="Back"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
         >
-          <ArrowLeft className="h-5 w-5" />
+          <ArrowLeft className="h-4 w-4" />
         </button>
         <div className="text-center">
-          <h1 className="text-[17px] font-extrabold tracking-tight text-[#211A12]">
+          <h1 className="text-[16px] font-black tracking-tight text-[#211A12]">
             My Farm Basket
           </h1>
           <p className="text-[11px] font-bold text-[#5C5247]">
@@ -83,25 +83,25 @@ export default function MobileCartScreen() {
             Clear
           </button>
         ) : (
-          <div className="w-10" />
+          <div className="w-9" />
         )}
       </header>
 
-      <div className="relative px-5 pt-3 space-y-4">
+      <div className="relative px-3 pt-2.5 space-y-2.5">
         {lines.length === 0 ? (
-          <div className="mt-20 flex flex-col items-center justify-center text-center">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#FDFDFB] text-[#5C5247] shadow-sm">
-              <ShoppingBag className="h-10 w-10 text-[#0B3B25]" />
+          <div className="mt-16 flex flex-col items-center justify-center text-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#FDFDFB] text-[#5C5247] shadow-sm">
+              <ShoppingBag className="h-8 w-8 text-[#0B3B25]" />
             </div>
-            <h2 className="mt-4 text-[18px] font-black text-[#211A12]">
+            <h2 className="mt-3 text-[17px] font-black text-[#211A12]">
               Your basket is empty
             </h2>
-            <p className="mt-1 max-w-xs text-[12px] font-semibold text-[#5C5247]">
+            <p className="mt-1 max-w-xs text-[11.5px] font-semibold text-[#5C5247]">
               Explore freshly harvested produce directly from local Ghanaian farms.
             </p>
             <Link
               href="/m"
-              className="mt-6 flex h-12 items-center justify-center rounded-full bg-[#0B3B25] px-6 text-[13px] font-extrabold text-white shadow-md active:scale-95 transition-transform"
+              className="mt-5 flex h-11 items-center justify-center rounded-full bg-[#0B3B25] px-6 text-[12.5px] font-extrabold text-white shadow-md active:scale-95 transition-transform"
             >
               Start Shopping
             </Link>
@@ -109,16 +109,16 @@ export default function MobileCartScreen() {
         ) : (
           <>
             {/* Delivery Address Pill */}
-            <div className="flex items-center justify-between rounded-2xl bg-white/80 p-3 shadow-2xs border border-[rgba(33,26,18,0.08)]">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
-                  <MapPin className="h-4 w-4 stroke-[2.5]" />
+            <div className="flex items-center justify-between rounded-2xl bg-white/80 p-2.5 shadow-2xs border border-[rgba(33,26,18,0.08)]">
+              <div className="flex items-center gap-2">
+                <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
+                  <MapPin className="h-3.5 w-3.5 stroke-[2.5]" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-[#5C5247]">
+                  <span className="text-[9.5px] font-black uppercase tracking-wider text-[#5C5247]">
                     Delivering to
                   </span>
-                  <p className="text-[13px] font-extrabold text-[#211A12]">
+                  <p className="text-[12px] font-extrabold text-[#211A12]">
                     KNUST Campus, Kumasi (GA-183-4250)
                   </p>
                 </div>
@@ -132,38 +132,38 @@ export default function MobileCartScreen() {
             </div>
 
             {/* Cart Items List */}
-            <div className="space-y-3">
+            <div className="space-y-2">
               {lines.map(({ product, qty }) => {
                 const itemTotal = unitEstimate(product) * qty
                 return (
                   <div
                     key={product.id}
-                    className="relative flex items-center justify-between overflow-hidden rounded-[24px] bg-[#FDFDFB] p-4 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]"
+                    className="relative flex items-center justify-between overflow-hidden rounded-[22px] bg-[#FDFDFB] p-3 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]"
                   >
-                    <div className="flex items-center gap-3.5 flex-1 pr-2">
+                    <div className="flex items-center gap-3 flex-1 pr-2">
                       <ProductImageShell src={product.image} alt={product.name} />
                       <div className="min-w-0 flex-1">
-                        <h4 className="text-[14px] font-extrabold text-[#211A12] truncate">
+                        <h4 className="text-[13.5px] font-extrabold text-[#211A12] truncate">
                           {product.name}
                         </h4>
-                        <p className="text-[11px] font-bold text-[#7A3F1C]">
+                        <p className="text-[10.5px] font-bold text-[#7A3F1C]">
                           {product.farmerName}
                         </p>
-                        <p className="text-[11px] font-semibold text-[#5C5247]">
+                        <p className="text-[10.5px] font-semibold text-[#5C5247]">
                           {product.unit} · {formatGHS(unitEstimate(product))} each
                         </p>
-                        <p className="mt-1 text-[13px] font-black text-[#0B3B25]">
+                        <p className="mt-0.5 text-[12.5px] font-black text-[#0B3B25]">
                           {formatGHS(itemTotal)}
                         </p>
                       </div>
                     </div>
 
                     {/* Quantity Stepper */}
-                    <div className="flex items-center gap-2 rounded-full bg-white px-2.5 py-1 shadow-2xs border border-[rgba(33,26,18,0.10)]">
+                    <div className="flex items-center gap-1.5 rounded-full bg-white px-2 py-0.5 shadow-2xs border border-[rgba(33,26,18,0.10)]">
                       <button
                         type="button"
                         onClick={() => (qty <= 1 ? remove(product.id) : setQty(product.id, qty - 1))}
-                        className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FDFDFB] text-[#211A12] active:scale-90"
+                        className="flex h-5 w-5 items-center justify-center rounded-full bg-[#FDFDFB] text-[#211A12] active:scale-90"
                       >
                         {qty === 1 ? (
                           <Trash2 className="h-3 w-3 text-[#7A3F1C]" />
@@ -171,13 +171,13 @@ export default function MobileCartScreen() {
                           <Minus className="h-3 w-3" />
                         )}
                       </button>
-                      <span className="min-w-4 text-center text-[12px] font-black text-[#211A12]">
+                      <span className="min-w-4 text-center text-[11.5px] font-black text-[#211A12]">
                         {qty}
                       </span>
                       <button
                         type="button"
                         onClick={() => setQty(product.id, qty + 1)}
-                        className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FDFDFB] text-[#211A12] active:scale-90"
+                        className="flex h-5 w-5 items-center justify-center rounded-full bg-[#FDFDFB] text-[#211A12] active:scale-90"
                       >
                         <Plus className="h-3 w-3" />
                       </button>
@@ -188,16 +188,16 @@ export default function MobileCartScreen() {
             </div>
 
             {/* Cold-Chain Guarantee Card */}
-            <div className="rounded-[28px] bg-[#FDFDFB] p-4 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#0B3B25]/10 text-[#0B3B25]">
-                  <Truck className="h-5 w-5 stroke-[2.2]" />
+            <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
+                  <Truck className="h-4 w-4 stroke-[2.2]" />
                 </div>
                 <div>
-                  <h4 className="text-[13px] font-extrabold text-[#211A12]">
+                  <h4 className="text-[12.5px] font-extrabold text-[#211A12]">
                     Insulated Cold-Chain Packaging
                   </h4>
-                  <p className="text-[11px] font-semibold text-[#5C5247]">
+                  <p className="text-[10.5px] font-semibold text-[#5C5247]">
                     Produce packed with reusable gel ice packs. Delivered at &lt; 8°C.
                   </p>
                 </div>
@@ -205,25 +205,25 @@ export default function MobileCartScreen() {
             </div>
 
             {/* Delivery Slot Selector */}
-            <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-              <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+            <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+              <span className="text-[9.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
                 Select Delivery Window
               </span>
-              <div className="mt-3 grid grid-cols-2 gap-2.5">
+              <div className="mt-2 grid grid-cols-2 gap-2">
                 <button
                   type="button"
                   onClick={() => setDeliverySlot('today-pm')}
                   className={cn(
-                    'rounded-2xl p-3 text-left transition-all border',
+                    'rounded-2xl p-2.5 text-left transition-all border',
                     deliverySlot === 'today-pm'
                       ? 'bg-[#211A12] text-white border-[#211A12] shadow-sm'
                       : 'bg-white text-[#211A12] border-[rgba(33,26,18,0.10)]'
                   )}
                 >
-                  <p className="text-[12px] font-extrabold">Today Afternoon</p>
+                  <p className="text-[11.5px] font-extrabold">Today Afternoon</p>
                   <p
                     className={cn(
-                      'text-[11px] mt-0.5',
+                      'text-[10.5px] mt-0.5',
                       deliverySlot === 'today-pm' ? 'text-white/80' : 'text-[#5C5247]'
                     )}
                   >
@@ -235,16 +235,16 @@ export default function MobileCartScreen() {
                   type="button"
                   onClick={() => setDeliverySlot('tomorrow-am')}
                   className={cn(
-                    'rounded-2xl p-3 text-left transition-all border',
+                    'rounded-2xl p-2.5 text-left transition-all border',
                     deliverySlot === 'tomorrow-am'
                       ? 'bg-[#211A12] text-white border-[#211A12] shadow-sm'
                       : 'bg-white text-[#211A12] border-[rgba(33,26,18,0.10)]'
                   )}
                 >
-                  <p className="text-[12px] font-extrabold">Tomorrow Dawn</p>
+                  <p className="text-[11.5px] font-extrabold">Tomorrow Dawn</p>
                   <p
                     className={cn(
-                      'text-[11px] mt-0.5',
+                      'text-[10.5px] mt-0.5',
                       deliverySlot === 'tomorrow-am' ? 'text-white/80' : 'text-[#5C5247]'
                     )}
                   >
@@ -255,22 +255,22 @@ export default function MobileCartScreen() {
             </div>
 
             {/* Price Breakdown Summary */}
-            <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] space-y-2">
-              <div className="flex justify-between text-[13px] font-semibold text-[#5C5247]">
+            <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] space-y-1.5">
+              <div className="flex justify-between text-[12.5px] font-semibold text-[#5C5247]">
                 <span>Produce Subtotal</span>
                 <span className="font-extrabold text-[#211A12]">{formatGHS(subtotalEstimate)}</span>
               </div>
-              <div className="flex justify-between text-[13px] font-semibold text-[#5C5247]">
+              <div className="flex justify-between text-[12.5px] font-semibold text-[#5C5247]">
                 <span>Cold-Chain Delivery</span>
                 <span className="font-extrabold text-[#211A12]">{formatGHS(deliveryFee)}</span>
               </div>
-              <div className="flex justify-between text-[13px] font-semibold text-[#0B3B25]">
+              <div className="flex justify-between text-[12.5px] font-semibold text-[#0B3B25]">
                 <span>Direct Farm Promo Discount</span>
                 <span className="font-extrabold">-{formatGHS(discount)}</span>
               </div>
-              <div className="flex justify-between text-[16px] font-black text-[#211A12] pt-2 border-t border-[rgba(33,26,18,0.08)]">
+              <div className="flex justify-between text-[15px] font-black text-[#211A12] pt-1.5 border-t border-[rgba(33,26,18,0.08)]">
                 <span>Total to Pay</span>
-                <span className="text-[#0B3B25] text-[18px]">{formatGHS(total)}</span>
+                <span className="text-[#0B3B25] text-[17px]">{formatGHS(total)}</span>
               </div>
             </div>
           </>
@@ -279,18 +279,18 @@ export default function MobileCartScreen() {
 
       {/* Sticky Bottom Checkout Bar */}
       {lines.length > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95 px-5 pt-3 pb-[clamp(18px,2.8vh,24px)] backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]">
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95 px-3 pt-2.5 pb-[clamp(16px,2.5vh,22px)] backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]">
           <Link
             href="/m/checkout"
-            className="flex w-full items-center justify-between rounded-full bg-[#0B3B25] px-6 py-3.5 text-white shadow-md active:scale-[0.98] transition-transform"
+            className="flex w-full items-center justify-between rounded-full bg-[#0B3B25] px-5 py-3 text-white shadow-md active:scale-[0.98] transition-transform"
           >
             <div className="text-left">
-              <span className="text-[10px] font-black uppercase tracking-wider text-white/80">
+              <span className="text-[9.5px] font-black uppercase tracking-wider text-white/80">
                 Total ({count} items)
               </span>
-              <p className="text-[16px] font-black leading-none">{formatGHS(total)}</p>
+              <p className="text-[15px] font-black leading-none">{formatGHS(total)}</p>
             </div>
-            <div className="flex items-center gap-1.5 text-[14px] font-black">
+            <div className="flex items-center gap-1.5 text-[13px] font-black">
               <span>Proceed to Checkout</span>
               <ArrowRight className="h-4 w-4" />
             </div>
@@ -300,4 +300,3 @@ export default function MobileCartScreen() {
     </div>
   )
 }
-

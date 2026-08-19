@@ -37,58 +37,67 @@ export default function MobileSignupScreen() {
   }
 
   return (
-    <div className="relative flex min-h-dvh flex-col justify-between overflow-hidden bg-[#FAF7F0] px-6 py-6 sm:px-8">
+    <div className="relative flex min-h-dvh flex-col justify-between overflow-hidden bg-[#F7F5F0] px-3 py-4 text-[#211A12] select-none antialiased">
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
       {/* Top Bar */}
-      <div className="relative z-10 flex items-center justify-between pt-2">
+      <div className="relative z-10 flex items-center justify-between pt-1">
         <button
           type="button"
           onClick={() => router.back()}
           aria-label="Back"
-          className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
         >
           <ArrowLeft className="h-4 w-4" />
         </button>
 
         <Link
           href="/m"
-          className="text-sm font-bold text-[#6E6A63] transition-colors hover:text-[#7A3F1C]"
+          className="text-[12px] font-extrabold text-[#5C5247] transition-colors hover:text-[#7A3F1C]"
         >
           Skip
         </Link>
       </div>
 
       {/* Center Form */}
-      <div className="relative z-10 my-auto flex flex-col pt-2 pb-2">
-        <h1 className="ga-headline text-3xl font-extrabold tracking-tight text-[#2B1F17]">
-          Create your <span className="text-[#0F7A43]">Agrivil</span> account
+      <div className="relative z-10 my-auto flex flex-col pt-1 pb-2">
+        <h1 className="text-[24px] font-black tracking-tight text-[#211A12]">
+          Create your <span className="text-[#0B3B25]">Agrivil</span> account
         </h1>
-        <p className="mt-1 text-xs font-medium text-[#6E6A63]">
+        <p className="mt-0.5 text-[12px] font-semibold text-[#5C5247]">
           Sign up to start shopping fresh from local farmers.
         </p>
 
         {error && (
-          <div className="mt-3 rounded-xl bg-[#DC2626]/10 p-3 text-xs font-semibold text-[#DC2626]">
+          <div className="mt-2.5 rounded-2xl bg-[#DC2626]/10 p-2.5 text-[11.5px] font-semibold text-[#DC2626]">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="mt-5 space-y-3.5">
+        <form onSubmit={handleSubmit} className="mt-3.5 space-y-2.5">
           <div>
-            <label className="text-xs font-semibold text-[#6E6A63]">Full name</label>
+            <label className="text-[10px] font-black uppercase tracking-wider text-[#5C5247]">Full name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter your full name"
               required
-              className="mt-1 h-12 w-full rounded-2xl border border-[#E0DACB] bg-white px-4 text-sm font-medium text-[#2B1F17] shadow-xs outline-none transition-all focus:border-[#0F7A43] focus:ring-2 focus:ring-[#0F7A43]/20"
+              className="mt-0.5 h-10 w-full rounded-2xl border border-[rgba(33,26,18,0.10)] bg-white px-3.5 text-[12.5px] font-semibold text-[#211A12] shadow-2xs outline-none transition-all focus:border-[#0B3B25]"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-[#6E6A63]">Phone number</label>
-            <div className="relative mt-1 flex items-center">
-              <div className="absolute left-3.5 flex items-center gap-1 border-r border-[#E0DACB] pr-2 text-xs font-bold text-[#2B1F17]">
+            <label className="text-[10px] font-black uppercase tracking-wider text-[#5C5247]">Phone number</label>
+            <div className="relative mt-0.5 flex items-center">
+              <div className="absolute left-3 flex items-center gap-1 border-r border-[rgba(33,26,18,0.10)] pr-2 text-[12px] font-black text-[#211A12]">
                 <span>+233</span>
               </div>
               <input
@@ -97,37 +106,37 @@ export default function MobileSignupScreen() {
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="Enter your phone number"
                 required
-                className="h-12 w-full rounded-2xl border border-[#E0DACB] bg-white pl-20 pr-4 text-sm font-medium text-[#2B1F17] shadow-xs outline-none transition-all focus:border-[#0F7A43] focus:ring-2 focus:ring-[#0F7A43]/20"
+                className="h-10 w-full rounded-2xl border border-[rgba(33,26,18,0.10)] bg-white pl-18 pr-3 text-[12.5px] font-semibold text-[#211A12] shadow-2xs outline-none transition-all focus:border-[#0B3B25]"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-[#6E6A63]">Email (optional)</label>
+            <label className="text-[10px] font-black uppercase tracking-wider text-[#5C5247]">Email (optional)</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="mt-1 h-12 w-full rounded-2xl border border-[#E0DACB] bg-white px-4 text-sm font-medium text-[#2B1F17] shadow-xs outline-none transition-all focus:border-[#0F7A43] focus:ring-2 focus:ring-[#0F7A43]/20"
+              className="mt-0.5 h-10 w-full rounded-2xl border border-[rgba(33,26,18,0.10)] bg-white px-3.5 text-[12.5px] font-semibold text-[#211A12] shadow-2xs outline-none transition-all focus:border-[#0B3B25]"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-[#6E6A63]">Password</label>
-            <div className="relative mt-1">
+            <label className="text-[10px] font-black uppercase tracking-wider text-[#5C5247]">Password</label>
+            <div className="relative mt-0.5">
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 required
-                className="h-12 w-full rounded-2xl border border-[#E0DACB] bg-white px-4 pr-12 text-sm font-medium text-[#2B1F17] shadow-xs outline-none transition-all focus:border-[#0F7A43] focus:ring-2 focus:ring-[#0F7A43]/20"
+                className="h-10 w-full rounded-2xl border border-[rgba(33,26,18,0.10)] bg-white px-3.5 pr-11 text-[12.5px] font-semibold text-[#211A12] shadow-2xs outline-none transition-all focus:border-[#0B3B25]"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute top-1/2 right-3.5 -translate-y-1/2 text-[#6E6A63] hover:text-[#2B1F17]"
+                className="absolute top-1/2 right-3 -translate-y-1/2 text-[#5C5247] hover:text-[#211A12]"
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
@@ -137,52 +146,52 @@ export default function MobileSignupScreen() {
           <button
             type="submit"
             disabled={busy}
-            className="ga-press mt-2 flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#0F7A43] text-base font-bold text-white shadow-md transition-all hover:bg-[#0B3B25] disabled:opacity-50"
+            className="mt-1 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#0B3B25] text-[13.5px] font-extrabold text-white shadow-md active:scale-[0.98] transition-transform disabled:opacity-50"
           >
-            {busy ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Sign Up'}
+            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Sign Up'}
           </button>
         </form>
 
         {/* Social Logins */}
-        <div className="mt-4 flex items-center justify-center gap-2 text-xs font-medium text-[#6E6A63]">
-          <div className="h-px flex-1 bg-[#E0DACB]" />
+        <div className="mt-3 flex items-center justify-center gap-2 text-[11px] font-semibold text-[#5C5247]">
+          <div className="h-px flex-1 bg-[rgba(33,26,18,0.08)]" />
           <span>or</span>
-          <div className="h-px flex-1 bg-[#E0DACB]" />
+          <div className="h-px flex-1 bg-[rgba(33,26,18,0.08)]" />
         </div>
 
-        <div className="mt-3 flex items-center justify-center gap-4">
+        <div className="mt-2 flex items-center justify-center gap-3">
           <button
             type="button"
-            className="ga-press flex h-11 w-11 items-center justify-center rounded-full border border-[#E0DACB] bg-white shadow-xs hover:bg-[#FAF7F0]"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(33,26,18,0.10)] bg-white shadow-2xs active:scale-95 transition-transform"
           >
-            <span className="font-bold text-[#EA4335]">G</span>
+            <span className="font-black text-[#EA4335]">G</span>
           </button>
           <button
             type="button"
-            className="ga-press flex h-11 w-11 items-center justify-center rounded-full border border-[#E0DACB] bg-white shadow-xs hover:bg-[#FAF7F0]"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(33,26,18,0.10)] bg-white shadow-2xs active:scale-95 transition-transform"
           >
-            <span className="font-bold text-[#2B1F17]"></span>
+            <span className="font-black text-[#211A12]"></span>
           </button>
           <button
             type="button"
-            className="ga-press flex h-11 w-11 items-center justify-center rounded-full border border-[#E0DACB] bg-white shadow-xs hover:bg-[#FAF7F0]"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(33,26,18,0.10)] bg-white shadow-2xs active:scale-95 transition-transform"
           >
-            <span className="font-bold text-[#1877F2]">f</span>
+            <span className="font-black text-[#1877F2]">f</span>
           </button>
         </div>
 
-        <p className="mt-3 text-center text-[11px] text-[#6E6A63]">
+        <p className="mt-2.5 text-center text-[10.5px] text-[#5C5247]">
           By signing up, you agree to our{' '}
-          <Link href="/terms" className="text-[#7A3F1C] underline hover:text-[#0F7A43]">Terms</Link> and{' '}
-          <Link href="/privacy" className="text-[#7A3F1C] underline hover:text-[#0F7A43]">Privacy Policy</Link>.
+          <Link href="/terms" className="text-[#7A3F1C] underline hover:text-[#0B3B25]">Terms</Link> and{' '}
+          <Link href="/privacy" className="text-[#7A3F1C] underline hover:text-[#0B3B25]">Privacy Policy</Link>.
         </p>
       </div>
 
       {/* Bottom Switch */}
-      <div className="relative z-10 text-center pb-3">
-        <p className="text-xs font-semibold text-[#6E6A63]">
+      <div className="relative z-10 text-center pb-2">
+        <p className="text-[11.5px] font-semibold text-[#5C5247]">
           Already have an account?{' '}
-          <Link href="/m/auth/login" className="font-bold text-[#0F7A43] hover:underline">
+          <Link href="/m/auth/login" className="font-bold text-[#0B3B25] hover:underline">
             Log In
           </Link>
         </p>

@@ -45,27 +45,36 @@ export default function MobileNotificationsScreen() {
   ]
 
   return (
-    <div className="min-h-dvh bg-[#FAF7F0] pb-12 text-[#2B1F17]">
+    <div className="relative min-h-dvh bg-[#F7F5F0] pb-16 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
       <MobileAppBar title="Notifications" showBack showCart={false} />
 
-      <div className="px-3 sm:px-4 py-3.5 space-y-2.5">
+      <div className="relative px-3 py-2.5 space-y-2">
         {notifications.map((n) => {
           const Icon = n.icon
           return (
             <Link
               key={n.id}
               href={n.href}
-              className="ga-press flex items-start gap-3 rounded-3xl border border-[#E0DACB] bg-white p-3.5 shadow-xs hover:border-[#0F7A43]/40"
+              className="flex items-start gap-3 rounded-[22px] bg-[#FDFDFB] p-3 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-transform"
             >
-              <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl ${n.color}`}>
-                <Icon className="h-5 w-5" />
+              <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl ${n.color}`}>
+                <Icon className="h-4.5 w-4.5" />
               </div>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xs font-extrabold text-[#2B1F17]">{n.title}</h2>
-                  <span className="text-[9px] text-[#6E6A63]">{n.time}</span>
+                  <h2 className="text-[13px] font-extrabold text-[#211A12] truncate">{n.title}</h2>
+                  <span className="text-[10px] font-semibold text-[#5C5247] shrink-0 ml-1">{n.time}</span>
                 </div>
-                <p className="mt-1 text-[11px] text-[#6E6A63] leading-snug">{n.desc}</p>
+                <p className="mt-0.5 text-[11px] text-[#5C5247] leading-snug font-medium">{n.desc}</p>
               </div>
             </Link>
           )

@@ -42,49 +42,58 @@ export default function MobileDeliveryScheduleScreen() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#FAF7F0] p-4 text-[#2B1F17] flex flex-col justify-between">
-      <div>
+    <div className="relative min-h-dvh bg-[#F7F5F0] p-3 text-[#211A12] flex flex-col justify-between select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
+      <div className="relative">
         {/* Header */}
-        <header className="flex items-center gap-2.5 pb-3">
+        <header className="flex items-center gap-2.5 pb-2.5">
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
-          <h1 className="text-base font-extrabold text-[#2B1F17]">Choose Delivery Window</h1>
+          <h1 className="text-[16px] font-black text-[#211A12]">Choose Delivery Window</h1>
         </header>
 
         {/* Day Selector */}
-        <div className="mt-3 grid grid-cols-3 gap-2">
+        <div className="mt-2.5 grid grid-cols-3 gap-2">
           {days.map((d) => (
             <button
               key={d.key}
               type="button"
               onClick={() => setSelectedDay(d.key)}
               className={cn(
-                'ga-press flex flex-col items-center justify-center rounded-2xl p-3 border transition-all',
+                'flex flex-col items-center justify-center rounded-[20px] p-2.5 transition-all shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-95',
                 selectedDay === d.key
-                  ? 'border-[#0F7A43] bg-[#0F7A43] text-white shadow-xs'
-                  : 'border border-[#E0DACB] bg-white text-[#2B1F17]'
+                  ? 'bg-[#0B3B25] text-white shadow-md'
+                  : 'bg-[#FDFDFB] text-[#211A12]'
               )}
             >
               <Calendar className="h-4 w-4" />
-              <span className="mt-1 text-xs font-extrabold">{d.label}</span>
-              <span className="text-[9px] opacity-80">{d.sub}</span>
+              <span className="mt-1 text-[12px] font-extrabold">{d.label}</span>
+              <span className="text-[9.5px] opacity-80 font-medium">{d.sub}</span>
             </button>
           ))}
         </div>
 
         {/* Time Slots List */}
-        <div className="mt-4 space-y-2.5">
-          <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#6E6A63]">
+        <div className="mt-3.5 space-y-2">
+          <h2 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Available Time Slots
           </h2>
 
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             {slots.map((s) => {
               const isSelected = selectedSlot === s.key
               return (
@@ -93,24 +102,24 @@ export default function MobileDeliveryScheduleScreen() {
                   type="button"
                   onClick={() => setSelectedSlot(s.key)}
                   className={cn(
-                    'ga-press flex w-full flex-col text-left rounded-3xl border p-3.5 transition-all',
+                    'flex w-full flex-col text-left rounded-[22px] p-3 transition-all shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.99]',
                     isSelected
-                      ? 'border-[#0F7A43] bg-white shadow-xs ring-2 ring-[#0F7A43]/20'
-                      : 'border-[#E0DACB] bg-white shadow-xs'
+                      ? 'bg-[#FDFDFB] ring-2 ring-[#0B3B25]'
+                      : 'bg-[#FDFDFB]'
                   )}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-[#0F7A43]" />
-                      <span className="text-xs font-extrabold text-[#2B1F17]">{s.time}</span>
+                      <Clock className="h-4 w-4 text-[#0B3B25]" />
+                      <span className="text-[12.5px] font-extrabold text-[#211A12]">{s.time}</span>
                     </div>
 
-                    <span className="rounded-full bg-[#0F7A43]/10 px-2 py-0.5 text-[9px] font-bold text-[#0F7A43]">
+                    <span className="rounded-full bg-[#0B3B25]/10 px-2 py-0.5 text-[9px] font-black text-[#0B3B25]">
                       {s.tag}
                     </span>
                   </div>
 
-                  <p className="mt-1.5 text-[10px] text-[#6E6A63]">{s.desc}</p>
+                  <p className="mt-1 text-[10.5px] font-semibold text-[#5C5247]">{s.desc}</p>
                 </button>
               )
             })}
@@ -119,11 +128,11 @@ export default function MobileDeliveryScheduleScreen() {
       </div>
 
       {/* Action CTA */}
-      <div className="pt-6">
+      <div className="relative pt-4">
         <button
           type="button"
           onClick={handleConfirm}
-          className="ga-press flex h-13 w-full items-center justify-center rounded-2xl bg-[#0F7A43] text-sm font-bold text-white shadow-md hover:bg-[#0B3B25]"
+          className="flex h-12 w-full items-center justify-center rounded-full bg-[#0B3B25] text-[13.5px] font-extrabold text-white shadow-md active:scale-[0.98] transition-transform"
         >
           Confirm Delivery Window
         </button>

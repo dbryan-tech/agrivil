@@ -56,31 +56,31 @@ export default function MobileAccountScreen() {
       />
 
       {/* Header */}
-      <header className="relative flex items-center justify-between px-5 pt-4 pb-2">
-        <h1 className="text-[26px] font-extrabold tracking-tight text-[#211A12]">
+      <header className="relative flex items-center justify-between px-3 pt-3 pb-1.5">
+        <h1 className="text-[22px] font-black tracking-tight text-[#211A12]">
           My Profile
         </h1>
-        <div className="flex items-center gap-1.5 rounded-full bg-[#0B3B25]/10 px-3 py-1 text-[11px] font-black text-[#0B3B25]">
+        <div className="flex items-center gap-1.5 rounded-full bg-[#0B3B25]/10 px-2.5 py-0.5 text-[10.5px] font-black text-[#0B3B25]">
           <ShieldCheck className="h-3.5 w-3.5" />
           <span>Verified Buyer</span>
         </div>
       </header>
 
-      <div className="relative px-5 pt-3 space-y-4">
+      <div className="relative px-3 pt-2.5 space-y-2.5">
         {/* 1. Profile Member Card */}
-        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-          <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0B3B25] text-xl font-black text-white shadow-sm">
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+          <div className="flex items-center gap-3.5">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0B3B25] text-lg font-black text-white shadow-sm">
               {userName.charAt(0)}
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
-                <h2 className="text-[17px] font-extrabold text-[#211A12] truncate">
+                <h2 className="text-[16px] font-black text-[#211A12] truncate">
                   {userName}
                 </h2>
               </div>
-              <p className="text-[12px] font-semibold text-[#5C5247] truncate">{userEmail}</p>
-              <div className="mt-1.5 flex items-center gap-1 text-[11px] font-black text-[#7A3F1C]">
+              <p className="text-[11.5px] font-semibold text-[#5C5247] truncate">{userEmail}</p>
+              <div className="mt-1 flex items-center gap-1 text-[10.5px] font-black text-[#7A3F1C]">
                 <Award className="h-3.5 w-3.5" />
                 <span>Gold Harvest Member · 140 pts</span>
               </div>
@@ -89,39 +89,39 @@ export default function MobileAccountScreen() {
         </div>
 
         {/* 2. Quick Action Grid */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2">
           <Link
             href="/m/orders"
-            className="flex flex-col rounded-[26px] bg-[#FDFDFB] p-4 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
+            className="flex flex-col rounded-[22px] bg-[#FDFDFB] p-3 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#0B3B25]/10 text-[#0B3B25]">
-              <Package className="h-5 w-5 stroke-[2.2]" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#0B3B25]/10 text-[#0B3B25]">
+              <Package className="h-4.5 w-4.5 stroke-[2.2]" />
             </div>
-            <span className="mt-3 text-[14px] font-extrabold text-[#211A12]">My Shipping</span>
-            <span className="text-[11px] font-semibold text-[#5C5247]">Live track &amp; history</span>
+            <span className="mt-2.5 text-[13.5px] font-extrabold text-[#211A12]">My Shipping</span>
+            <span className="text-[10.5px] font-semibold text-[#5C5247]">Live track &amp; history</span>
           </Link>
 
           <Link
             href="/m/farmers"
-            className="flex flex-col rounded-[26px] bg-[#FDFDFB] p-4 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
+            className="flex flex-col rounded-[22px] bg-[#FDFDFB] p-3 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
-              <Store className="h-5 w-5 stroke-[2.2]" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
+              <Store className="h-4.5 w-4.5 stroke-[2.2]" />
             </div>
-            <span className="mt-3 text-[14px] font-extrabold text-[#211A12]">Local Growers</span>
-            <span className="text-[11px] font-semibold text-[#5C5247]">Smallholder farms</span>
+            <span className="mt-2.5 text-[13.5px] font-extrabold text-[#211A12]">Local Growers</span>
+            <span className="text-[10.5px] font-semibold text-[#5C5247]">Smallholder farms</span>
           </Link>
         </div>
 
         {/* 3. Account Menu */}
-        <div className="overflow-hidden rounded-[28px] bg-[#FDFDFB] p-2 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] divide-y divide-[rgba(33,26,18,0.06)]">
+        <div className="overflow-hidden rounded-[24px] bg-[#FDFDFB] p-1.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] divide-y divide-[rgba(33,26,18,0.06)]">
           <Link
             href="/m/onboarding/gps"
-            className="flex items-center justify-between p-3.5 text-[13px] font-extrabold text-[#211A12] active:bg-black/5 rounded-2xl transition-colors"
+            className="flex items-center justify-between p-3 text-[12.5px] font-extrabold text-[#211A12] active:bg-black/5 rounded-2xl transition-colors"
           >
-            <div className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
-                <MapPin className="h-4 w-4 stroke-[2.4]" />
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
+                <MapPin className="h-3.5 w-3.5 stroke-[2.4]" />
               </div>
               <span>Delivery Addresses &amp; GPS</span>
             </div>
@@ -130,11 +130,11 @@ export default function MobileAccountScreen() {
 
           <Link
             href="/m/account/notifications"
-            className="flex items-center justify-between p-3.5 text-[13px] font-extrabold text-[#211A12] active:bg-black/5 rounded-2xl transition-colors"
+            className="flex items-center justify-between p-3 text-[12.5px] font-extrabold text-[#211A12] active:bg-black/5 rounded-2xl transition-colors"
           >
-            <div className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
-                <Bell className="h-4 w-4 stroke-[2.4]" />
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
+                <Bell className="h-3.5 w-3.5 stroke-[2.4]" />
               </div>
               <span>Notifications &amp; Harvest Alerts</span>
             </div>
@@ -143,11 +143,11 @@ export default function MobileAccountScreen() {
 
           <Link
             href="/m/cart/promo"
-            className="flex items-center justify-between p-3.5 text-[13px] font-extrabold text-[#211A12] active:bg-black/5 rounded-2xl transition-colors"
+            className="flex items-center justify-between p-3 text-[12.5px] font-extrabold text-[#211A12] active:bg-black/5 rounded-2xl transition-colors"
           >
-            <div className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
-                <CreditCard className="h-4 w-4 stroke-[2.4]" />
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
+                <CreditCard className="h-3.5 w-3.5 stroke-[2.4]" />
               </div>
               <span>Coupons &amp; Direct Vouchers</span>
             </div>
@@ -156,11 +156,11 @@ export default function MobileAccountScreen() {
 
           <Link
             href="/m/farmer"
-            className="flex items-center justify-between p-3.5 text-[13px] font-extrabold text-[#0B3B25] active:bg-black/5 rounded-2xl transition-colors"
+            className="flex items-center justify-between p-3 text-[12.5px] font-extrabold text-[#0B3B25] active:bg-black/5 rounded-2xl transition-colors"
           >
-            <div className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
-                <Store className="h-4 w-4 stroke-[2.4]" />
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
+                <Store className="h-3.5 w-3.5 stroke-[2.4]" />
               </div>
               <span>Grower Portal (Sell on AgriVil)</span>
             </div>
@@ -172,7 +172,7 @@ export default function MobileAccountScreen() {
         <button
           type="button"
           onClick={handleSignOut}
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-full border border-[rgba(220,38,38,0.25)] bg-white text-[13px] font-extrabold text-[#DC2626] shadow-2xs active:scale-[0.98] transition-transform"
+          className="flex h-11 w-full items-center justify-center gap-2 rounded-full border border-[rgba(220,38,38,0.25)] bg-white text-[12.5px] font-extrabold text-[#DC2626] shadow-2xs active:scale-[0.98] transition-transform"
         >
           <LogOut className="h-4 w-4" /> Sign Out
         </button>

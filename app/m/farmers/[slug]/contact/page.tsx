@@ -24,36 +24,47 @@ export default function MobileContactFarmerScreen() {
   // Screen 9: Message Sent Confirmation View
   if (sent) {
     return (
-      <div className="min-h-dvh bg-[#FAF7F0] p-4 text-[#2B1F17] flex flex-col justify-between">
-        <header className="flex items-center">
-          <button
-            type="button"
-            onClick={() => router.push(`/m/farmers/${farmer.slug}`)}
-            aria-label="Back"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </button>
-        </header>
+      <div className="relative min-h-dvh bg-[#F7F5F0] p-3 text-[#211A12] flex flex-col justify-between select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        {/* Top warm brand gradient backdrop */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+          style={{
+            background:
+              'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+          }}
+        />
 
-        <div className="flex flex-col items-center justify-center text-center px-4">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#0F7A43] text-white shadow-lg animate-bounce">
-            <Check className="h-10 w-10 stroke-[3]" />
+        <div className="relative">
+          <header className="flex items-center pb-2.5">
+            <button
+              type="button"
+              onClick={() => router.push(`/m/farmers/${farmer.slug}`)}
+              aria-label="Back"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+          </header>
+
+          <div className="mt-12 flex flex-col items-center justify-center text-center px-4">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-lg animate-bounce">
+              <Check className="h-8 w-8 stroke-[3]" />
+            </div>
+
+            <h1 className="mt-4 text-[22px] font-black text-[#211A12]">
+              Message Sent!
+            </h1>
+            <p className="mt-1.5 text-[12px] font-semibold text-[#5C5247] max-w-xs">
+              {farmer.name} has received your inquiry and will reply via your in-app notifications.
+            </p>
           </div>
-
-          <h1 className="ga-headline mt-5 text-2xl font-extrabold text-[#2B1F17]">
-            Message Sent!
-          </h1>
-          <p className="mt-2 text-xs text-[#6E6A63] max-w-xs">
-            {farmer.name} has received your inquiry and will reply via your in-app notifications.
-          </p>
         </div>
 
-        <div>
+        <div className="relative pt-4">
           <button
             type="button"
             onClick={() => router.push(`/m/farmers/${farmer.slug}`)}
-            className="ga-press flex h-13 w-full items-center justify-center rounded-2xl bg-[#0F7A43] text-sm font-bold text-white shadow-md hover:bg-[#0B3B25]"
+            className="flex h-12 w-full items-center justify-center rounded-full bg-[#0B3B25] text-[13.5px] font-extrabold text-white shadow-md active:scale-[0.98] transition-transform"
           >
             Back to Farm Profile
           </button>
@@ -64,10 +75,19 @@ export default function MobileContactFarmerScreen() {
 
   // Screen 8: Contact Form View
   return (
-    <div className="min-h-dvh bg-[#FAF7F0] pb-24 text-[#2B1F17]">
+    <div className="relative min-h-dvh bg-[#F7F5F0] pb-24 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
       {/* Header */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[#E0DACB] bg-[#FAF7F0] px-3 sm:px-4 py-2.5"
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.06)] bg-[#F7F5F0]/90 backdrop-blur-md px-3 py-2.5"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
         <div className="flex items-center gap-2.5">
@@ -75,33 +95,33 @@ export default function MobileContactFarmerScreen() {
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
           <div>
-            <h1 className="text-base font-extrabold text-[#2B1F17]">Contact Farmer</h1>
-            <p className="text-[10px] text-[#6E6A63]">{farmer.farmName || farmer.name}</p>
+            <h1 className="text-[16px] font-black text-[#211A12]">Contact Farmer</h1>
+            <p className="text-[10.5px] font-semibold text-[#5C5247]">{farmer.farmName || farmer.name}</p>
           </div>
         </div>
       </header>
 
       {/* Form Body */}
-      <div className="px-3 sm:px-4 pt-3.5 space-y-3.5">
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs">
-          <p className="text-xs text-[#6E6A63]">
+      <div className="relative px-3 pt-3 space-y-2.5">
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+          <p className="text-[12px] font-medium text-[#5C5247]">
             Send a direct message regarding custom harvests, upcoming produce availability, or bulk orders.
           </p>
 
-          <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+          <form onSubmit={handleSubmit} className="mt-3.5 space-y-2.5">
             <div>
-              <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#6E6A63]">
+              <label className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
                 Inquiry Topic
               </label>
               <select
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                className="mt-1 h-11 w-full rounded-2xl border border-[#E0DACB] bg-[#FAF7F0] px-3 text-xs font-bold text-[#2B1F17] outline-none focus:border-[#0F7A43]"
+                className="mt-1 h-11 w-full rounded-2xl border border-[rgba(33,26,18,0.10)] bg-white px-3 text-[12.5px] font-extrabold text-[#211A12] outline-none focus:border-[#0B3B25]"
               >
                 <option value="Bulk Order Inquiry">Bulk / Crate Order Inquiry</option>
                 <option value="Harvest Schedule">Upcoming Harvest Schedule</option>
@@ -111,7 +131,7 @@ export default function MobileContactFarmerScreen() {
             </div>
 
             <div>
-              <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#6E6A63]">
+              <label className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
                 Your Message
               </label>
               <textarea
@@ -120,13 +140,13 @@ export default function MobileContactFarmerScreen() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Write your message here..."
-                className="mt-1 w-full rounded-2xl border border-[#E0DACB] bg-[#FAF7F0] p-3 text-xs outline-none focus:border-[#0F7A43]"
+                className="mt-1 w-full rounded-2xl border border-[rgba(33,26,18,0.10)] bg-white p-3 text-[12.5px] text-[#211A12] outline-none focus:border-[#0B3B25]"
               />
             </div>
 
             <button
               type="submit"
-              className="ga-press mt-2 flex h-13 w-full items-center justify-center gap-2 rounded-2xl bg-[#0F7A43] text-sm font-bold text-white shadow-md hover:bg-[#0B3B25]"
+              className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#0B3B25] text-[13.5px] font-extrabold text-white shadow-md active:scale-[0.98] transition-transform"
             >
               <Send className="h-4 w-4" /> Send Message
             </button>

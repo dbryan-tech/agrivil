@@ -45,7 +45,7 @@ export function MobileAppBar({
   return (
     <header
       className={cn(
-        'sticky top-0 z-30 flex h-14 items-center justify-between px-4 transition-colors backdrop-blur-md',
+        'sticky top-0 z-30 flex h-14 items-center justify-between px-3 transition-colors backdrop-blur-md',
         transparent
           ? 'bg-transparent'
           : 'border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95',

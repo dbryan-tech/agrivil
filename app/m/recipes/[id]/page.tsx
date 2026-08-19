@@ -46,19 +46,19 @@ export default function MobileRecipeDetailScreen() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#F4F1EA] pb-32 text-[#2B1F17]">
+    <div className="relative min-h-dvh bg-[#F7F5F0] pb-32 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
       {/* Floating Back Bar */}
       <div
-        className="fixed inset-x-0 top-0 z-40 mx-auto flex max-w-md items-center justify-between p-4"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 16px)' }}
+        className="fixed inset-x-0 top-0 z-40 mx-auto flex max-w-md items-center justify-between px-3 py-2.5"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
         <button
           type="button"
           onClick={() => router.back()}
           aria-label="Back"
-          className="ga-press flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-sm border border-[#E0DACB]"
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
         >
-          <ArrowLeft className="h-5 w-5" />
+          <ArrowLeft className="h-4 w-4" />
         </button>
       </div>
 
@@ -71,16 +71,16 @@ export default function MobileRecipeDetailScreen() {
           priority
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20" />
 
-        <div className="absolute bottom-4 left-4 right-4 text-white">
-          <span className="inline-flex items-center gap-1 rounded-full bg-[#1E5D3B] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+        <div className="absolute bottom-3.5 left-3.5 right-3.5 text-white">
+          <span className="inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[9.5px] font-black uppercase tracking-wider text-white shadow-xs">
             {recipe.category}
           </span>
-          <h1 className="mt-1 text-2xl font-extrabold text-white">
+          <h1 className="mt-1 text-[22px] font-black text-white sm:text-2xl">
             {recipe.name}
           </h1>
-          <div className="mt-1 flex items-center gap-3 text-xs text-white/90">
+          <div className="mt-1 flex items-center gap-3 text-[11.5px] text-white/90 font-semibold">
             <span className="flex items-center gap-1">
               <Clock className="h-3.5 w-3.5" /> {recipe.time}
             </span>
@@ -90,34 +90,34 @@ export default function MobileRecipeDetailScreen() {
         </div>
       </div>
 
-      <div className="px-4 pt-5 space-y-4">
+      <div className="relative px-3 pt-2.5 space-y-2.5">
         {/* 2. Recipe Story / Description */}
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-5 shadow-xs">
-          <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#8A6B3D]">
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+          <h2 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#7A3F1C]">
             Recipe Note
           </h2>
-          <p className="mt-1 text-xs leading-relaxed text-[#2B1F17]">
+          <p className="mt-1 text-[12px] leading-relaxed text-[#211A12] font-semibold">
             {recipe.description ||
               'A beloved staple in Ghanaian homes. Authentic, deeply flavorful, and made using only fresh, locally harvested produce.'}
           </p>
         </div>
 
         {/* 3. Ingredient Produce Checklist */}
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-5 shadow-xs">
-          <div className="flex items-center justify-between pb-3">
-            <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#2B1F17]">
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+          <div className="flex items-center justify-between pb-2 border-b border-[rgba(33,26,18,0.06)]">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
               Farm Ingredients ({recipeProducts.length})
             </h3>
-            <span className="text-xs font-bold text-[#1E5D3B]">
+            <span className="text-[12.5px] font-black text-[#0B3B25]">
               Total: {formatGHS(totalIngredientsPrice)}
             </span>
           </div>
 
-          <div className="space-y-3 divide-y divide-[#E0DACB]/60">
+          <div className="space-y-2 divide-y divide-[rgba(33,26,18,0.06)]">
             {recipeProducts.map((p) => (
-              <div key={p.id} className="flex items-center justify-between pt-3">
-                <div className="flex items-center gap-3">
-                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-[#F4F1EA]">
+              <div key={p.id} className="flex items-center justify-between pt-2">
+                <div className="flex items-center gap-2.5">
+                  <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl bg-white shadow-2xs">
                     <Image
                       src={p.image}
                       alt={p.name}
@@ -126,8 +126,8 @@ export default function MobileRecipeDetailScreen() {
                     />
                   </div>
                   <div>
-                    <h4 className="text-xs font-extrabold text-[#2B1F17]">{p.name}</h4>
-                    <p className="text-[10px] text-[#6E6A63]">
+                    <h4 className="text-[12.5px] font-extrabold text-[#211A12]">{p.name}</h4>
+                    <p className="text-[10px] font-semibold text-[#5C5247]">
                       {p.farmerName || 'Ghana Local Farm'} · {formatGHS(p.priceMin)} / {p.unit}
                     </p>
                   </div>
@@ -136,10 +136,10 @@ export default function MobileRecipeDetailScreen() {
                 <button
                   type="button"
                   onClick={() => add(p, 1)}
-                  className="ga-press flex h-8 w-8 items-center justify-center rounded-full bg-[#1E5D3B] text-white shadow-xs hover:bg-[#144028]"
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-xs active:scale-90 transition-transform"
                   aria-label={`Add ${p.name} to cart`}
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-3.5 w-3.5" />
                 </button>
               </div>
             ))}
@@ -148,17 +148,17 @@ export default function MobileRecipeDetailScreen() {
 
         {/* 4. Steps Section */}
         {recipe.steps && recipe.steps.length > 0 && (
-          <div className="rounded-3xl border border-[#E0DACB] bg-white p-5 shadow-xs">
-            <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#8A6B3D]">
+          <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#7A3F1C]">
               Cooking Instructions
             </h3>
-            <ol className="mt-3 space-y-3 text-xs text-[#2B1F17]">
+            <ol className="mt-2 space-y-2 text-[12px] text-[#211A12] font-semibold">
               {recipe.steps.map((step, idx) => (
-                <li key={idx} className="flex gap-2.5 leading-relaxed">
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1E5D3B]/10 text-[10px] font-bold text-[#1E5D3B]">
+                <li key={idx} className="flex gap-2 leading-relaxed">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#0B3B25]/10 text-[10px] font-black text-[#0B3B25]">
                     {idx + 1}
                   </span>
-                  <span className="text-[#6E6A63]">{step}</span>
+                  <span className="text-[#5C5247]">{step}</span>
                 </li>
               ))}
             </ol>
@@ -168,19 +168,19 @@ export default function MobileRecipeDetailScreen() {
 
       {/* Sticky Bottom 1-Tap Add All Action */}
       <div
-        className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t border-[#E0DACB] bg-white p-4 shadow-md"
+        className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95 px-3 pt-2.5 backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]"
         style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 14px)' }}
       >
         <button
           type="button"
           onClick={handleAddAll}
-          className="ga-press flex h-14 w-full items-center justify-between rounded-2xl bg-[#1E5D3B] px-5 text-sm font-bold text-white shadow-sm hover:bg-[#144028]"
+          className="flex h-12 w-full items-center justify-between rounded-full bg-[#0B3B25] px-5 text-[13px] font-extrabold text-white shadow-md active:scale-[0.98] transition-transform"
         >
           <div className="flex items-center gap-2">
             <ShoppingBag className="h-4 w-4" />
             <span>{allAdded ? 'Added All to Cart!' : 'Add All Ingredients'}</span>
           </div>
-          <span>{formatGHS(totalIngredientsPrice)}</span>
+          <span className="text-[15px] font-black">{formatGHS(totalIngredientsPrice)}</span>
         </button>
       </div>
     </div>

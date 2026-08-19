@@ -69,98 +69,98 @@ export default function MobileShopLocalScreen() {
 
       {/* 1. Header */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-5 py-3 backdrop-blur-md"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-4 w-4" />
           </button>
-          <h1 className="text-[17px] font-extrabold text-[#211A12]">Shop Local</h1>
+          <h1 className="text-[16px] font-black text-[#211A12]">Shop Local</h1>
         </div>
 
         <button
           type="button"
           onClick={() => setViewMode(viewMode === 'map' ? 'list' : 'map')}
-          className="rounded-full border border-[rgba(33,26,18,0.10)] bg-white px-3.5 py-1.5 text-[11px] font-extrabold text-[#211A12] shadow-2xs active:scale-95 transition-transform"
+          className="rounded-full border border-[rgba(33,26,18,0.10)] bg-white px-3 py-1 text-[11px] font-extrabold text-[#211A12] shadow-2xs active:scale-95 transition-transform"
         >
           {viewMode === 'map' ? 'List View' : 'Map View'}
         </button>
       </header>
 
       {/* 2. Map Radar Graphic Section */}
-      <div className="relative h-60 w-full overflow-hidden bg-[#EAE5DC] border-b border-[rgba(33,26,18,0.10)]">
+      <div className="relative h-52 w-full overflow-hidden bg-[#EAE5DC] border-b border-[rgba(33,26,18,0.10)]">
         <div className="absolute inset-0 bg-[radial-gradient(rgba(122,63,28,0.12)_1.5px,transparent_1.5px)] [background-size:20px_20px] opacity-70" />
 
         {/* Pulsating User Location Dot */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
-          <div className="h-12 w-12 rounded-full bg-[#0B3B25]/20 animate-ping" />
-          <div className="absolute h-6 w-6 rounded-full border-2 border-white bg-[#0B3B25] shadow-md flex items-center justify-center text-white">
-            <Navigation className="h-3 w-3 fill-white" />
+          <div className="h-10 w-10 rounded-full bg-[#0B3B25]/20 animate-ping" />
+          <div className="absolute h-5 w-5 rounded-full border-2 border-white bg-[#0B3B25] shadow-md flex items-center justify-center text-white">
+            <Navigation className="h-2.5 w-2.5 fill-white" />
           </div>
         </div>
 
         {/* Nearby Farm Location Pins */}
         <div className="absolute top-1/4 left-1/4 flex flex-col items-center">
-          <span className="rounded-md bg-[#0B3B25] px-2 py-0.5 text-[9px] font-black text-white shadow-md">
+          <span className="rounded-md bg-[#0B3B25] px-1.5 py-0.5 text-[8.5px] font-black text-white shadow-md">
             Adwoa (0.8km)
           </span>
-          <div className="mt-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0B3B25] shadow-md" />
+          <div className="mt-0.5 h-3 w-3 rounded-full border-2 border-white bg-[#0B3B25] shadow-md" />
         </div>
 
         <div className="absolute top-1/3 right-1/4 flex flex-col items-center">
-          <span className="rounded-md bg-[#0B3B25] px-2 py-0.5 text-[9px] font-black text-white shadow-md">
+          <span className="rounded-md bg-[#0B3B25] px-1.5 py-0.5 text-[8.5px] font-black text-white shadow-md">
             Nyamekye (1.2km)
           </span>
-          <div className="mt-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0B3B25] shadow-md" />
+          <div className="mt-0.5 h-3 w-3 rounded-full border-2 border-white bg-[#0B3B25] shadow-md" />
         </div>
 
         <div className="absolute bottom-1/4 left-1/3 flex flex-col items-center">
-          <span className="rounded-md bg-[#0B3B25] px-2 py-0.5 text-[9px] font-black text-white shadow-md">
+          <span className="rounded-md bg-[#0B3B25] px-1.5 py-0.5 text-[8.5px] font-black text-white shadow-md">
             Baffour (2.1km)
           </span>
-          <div className="mt-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#0B3B25] shadow-md" />
+          <div className="mt-0.5 h-3 w-3 rounded-full border-2 border-white bg-[#0B3B25] shadow-md" />
         </div>
       </div>
 
       {/* 3. "Show products near me" Toggle Bar */}
-      <div className="border-b border-[rgba(33,26,18,0.06)] bg-white/70 px-5 py-3 backdrop-blur-xs">
+      <div className="border-b border-[rgba(33,26,18,0.06)] bg-white/70 px-3 py-2.5 backdrop-blur-xs">
         <label className="flex items-center justify-between cursor-pointer">
           <div className="flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-[#0B3B25]" />
-            <span className="text-[13px] font-extrabold text-[#211A12]">Show growers near KNUST</span>
+            <MapPin className="h-3.5 w-3.5 text-[#0B3B25]" />
+            <span className="text-[12.5px] font-extrabold text-[#211A12]">Show growers near KNUST</span>
           </div>
           <input
             type="checkbox"
             checked={showNearMe}
             onChange={(e) => setShowNearMe(e.target.checked)}
-            className="h-5 w-5 rounded-md accent-[#0B3B25]"
+            className="h-4.5 w-4.5 rounded-md accent-[#0B3B25]"
           />
         </label>
       </div>
 
       {/* 4. Farmers & Products List */}
-      <div className="relative px-5 pt-4 space-y-3">
-        <div className="pb-1">
-          <h2 className="text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+      <div className="relative px-3 pt-2.5 space-y-2">
+        <div className="pb-0.5">
+          <h2 className="text-[10.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Farmers &amp; produce near KNUST, Kumasi
           </h2>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           {LOCAL_FARMS.map((farm) => (
             <Link
               key={farm.name}
               href={`/m/farmers/${farm.slug}`}
-              className="flex items-center justify-between rounded-[26px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
+              className="flex items-center justify-between rounded-[22px] bg-[#FDFDFB] p-3 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
             >
-              <div className="flex items-center gap-3.5 flex-1 min-w-0 pr-2">
-                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs">
+              <div className="flex items-center gap-3 flex-1 min-w-0 pr-2">
+                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-white shadow-2xs">
                   <Image
                     src={farm.image}
                     alt={farm.name}
@@ -170,24 +170,24 @@ export default function MobileShopLocalScreen() {
                 </div>
                 <div className="flex flex-col min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <h3 className="text-[14px] font-extrabold text-[#211A12] truncate">
+                    <h3 className="text-[13.5px] font-extrabold text-[#211A12] truncate">
                       {farm.name}
                     </h3>
-                    <CheckCircle2 className="h-3.5 w-3.5 fill-[#0B3B25] text-white shrink-0" />
+                    <CheckCircle2 className="h-3 w-3 fill-[#0B3B25] text-white shrink-0" />
                   </div>
-                  <span className="text-[11px] font-extrabold text-[#0B3B25]">
+                  <span className="text-[10.5px] font-extrabold text-[#0B3B25]">
                     {farm.distance}
                   </span>
-                  <div className="mt-1 flex items-center gap-1 text-[11px] text-[#5C5247]">
-                    <Star className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
+                  <div className="mt-0.5 flex items-center gap-1 text-[10.5px] text-[#5C5247]">
+                    <Star className="h-2.5 w-2.5 fill-[#F0A81E] text-[#F0A81E]" />
                     <span className="font-black text-[#211A12]">{farm.rating}</span>
                     <span className="font-semibold">({farm.reviews} reviews)</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0B3B25]/10 text-[#0B3B25] shrink-0">
-                <ChevronRight className="h-4 w-4 stroke-[2.5]" />
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0B3B25]/10 text-[#0B3B25] shrink-0">
+                <ChevronRight className="h-3.5 w-3.5 stroke-[2.5]" />
               </div>
             </Link>
           ))}

@@ -32,22 +32,22 @@ export default function MobileRecipesScreen() {
       />
 
       {/* Header */}
-      <header className="relative flex items-center justify-between px-5 pt-4 pb-2">
-        <h1 className="text-[26px] font-extrabold tracking-tight text-[#211A12]">
+      <header className="relative flex items-center justify-between px-3 pt-3 pb-1.5">
+        <h1 className="text-[22px] font-black tracking-tight text-[#211A12]">
           Cook &amp; Shop
         </h1>
-        <div className="flex items-center gap-1 text-[11px] font-black text-[#7A3F1C]">
-          <Sparkles className="h-4 w-4" />
+        <div className="flex items-center gap-1 text-[10.5px] font-black text-[#7A3F1C]">
+          <Sparkles className="h-3.5 w-3.5" />
           <span>Farm to Pot</span>
         </div>
       </header>
 
-      <div className="relative px-5 pt-2 space-y-4">
+      <div className="relative px-3 pt-2 space-y-2.5">
         {recipes.map((recipe) => (
           <Link
             key={recipe.id}
             href={`/m/recipes/${recipe.id}`}
-            className="group block overflow-hidden rounded-[28px] bg-[#FDFDFB] p-4 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-transform"
+            className="group block overflow-hidden rounded-[24px] bg-[#FDFDFB] p-3 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-transform"
           >
             <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-white shadow-2xs">
               <Image
@@ -56,30 +56,30 @@ export default function MobileRecipesScreen() {
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <span className="absolute top-2.5 left-2.5 rounded-full bg-white/95 px-3 py-1 text-[10.5px] font-black text-[#0B3B25] shadow-xs backdrop-blur-xs">
+              <span className="absolute top-2 left-2 rounded-full bg-white/95 px-2.5 py-0.5 text-[10px] font-black text-[#0B3B25] shadow-xs backdrop-blur-xs">
                 {recipe.category || 'Traditional Ghanaian'}
               </span>
             </div>
 
-            <div className="mt-3.5">
-              <h2 className="text-[15px] font-extrabold text-[#211A12]">
+            <div className="mt-2.5">
+              <h2 className="text-[14px] font-extrabold text-[#211A12]">
                 {recipe.name}
               </h2>
-              <p className="mt-1 line-clamp-2 text-[12px] font-semibold text-[#5C5247]">
+              <p className="mt-0.5 line-clamp-2 text-[11.5px] font-semibold text-[#5C5247]">
                 {recipe.description}
               </p>
 
-              <div className="mt-3 flex items-center justify-between border-t border-[rgba(33,26,18,0.06)] pt-2.5 text-[11.5px] font-bold text-[#5C5247]">
-                <div className="flex items-center gap-3">
-                  <span className="flex items-center gap-1.5">
+              <div className="mt-2.5 flex items-center justify-between border-t border-[rgba(33,26,18,0.06)] pt-2 text-[11px] font-bold text-[#5C5247]">
+                <div className="flex items-center gap-2.5">
+                  <span className="flex items-center gap-1">
                     <Clock className="h-3.5 w-3.5 text-[#0B3B25]" /> {recipe.time}
                   </span>
-                  <span className="flex items-center gap-1.5">
+                  <span className="flex items-center gap-1">
                     <UtensilsCrossed className="h-3.5 w-3.5 text-[#0B3B25]" /> {recipe.productIds.length} ingredients
                   </span>
                 </div>
                 <span className="font-extrabold text-[#0B3B25] flex items-center gap-0.5">
-                  Shop ingredients <ChevronRight className="h-4 w-4 stroke-[2.5]" />
+                  Shop ingredients <ChevronRight className="h-3.5 w-3.5 stroke-[2.5]" />
                 </span>
               </div>
             </div>

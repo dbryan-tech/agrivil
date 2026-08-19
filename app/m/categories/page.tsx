@@ -92,42 +92,42 @@ export default function MobileCategoriesScreen() {
 
       {/* 1. Header with Back Arrow & Title */}
       <header
-        className="sticky top-0 z-30 border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-5 py-3 backdrop-blur-md"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
+        className="sticky top-0 z-30 border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-4 w-4" />
           </button>
-          <h1 className="text-[17px] font-extrabold text-[#211A12]">Categories</h1>
+          <h1 className="text-[16px] font-black text-[#211A12]">Categories</h1>
         </div>
 
         {/* Search Bar */}
-        <div className="relative mt-3">
+        <div className="relative mt-2.5">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search produce categories..."
-            className="h-11 w-full rounded-full border border-[rgba(33,26,18,0.10)] bg-white pl-10 pr-4 text-[13px] font-semibold text-[#211A12] shadow-2xs outline-none focus:border-[#0B3B25]"
+            className="h-10 w-full rounded-full border border-[rgba(33,26,18,0.10)] bg-white pl-9 pr-3 text-[12.5px] font-semibold text-[#211A12] shadow-2xs outline-none focus:border-[#0B3B25]"
           />
-          <Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#0B3B25] stroke-[2.4]" />
+          <Search className="absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-[#0B3B25] stroke-[2.4]" />
         </div>
       </header>
 
       {/* 2. 2-Column Category Grid */}
-      <div className="relative px-5 pt-4 space-y-4">
-        <div className="grid grid-cols-2 gap-3">
+      <div className="relative px-3 pt-2.5 space-y-2.5">
+        <div className="grid grid-cols-2 gap-2">
           {filteredCategories.map((cat) => (
             <Link
               key={cat.slug}
               href={`/m/categories/${encodeURIComponent(cat.slug)}`}
-              className="group flex flex-col overflow-hidden rounded-[26px] bg-[#FDFDFB] p-3 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
+              className="group flex flex-col overflow-hidden rounded-[22px] bg-[#FDFDFB] p-2.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
             >
               {/* Category Photo Container */}
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-white shadow-2xs">
@@ -135,16 +135,16 @@ export default function MobileCategoriesScreen() {
                   src={cat.image}
                   alt={cat.name}
                   fill
-                  className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+                  className="object-contain p-1.5 transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
 
               {/* Title & Count */}
-              <div className="mt-2.5 px-1">
-                <h2 className="text-[13px] font-extrabold text-[#211A12]">
+              <div className="mt-2 px-0.5">
+                <h2 className="text-[12.5px] font-extrabold text-[#211A12]">
                   {cat.name}
                 </h2>
-                <span className="text-[11px] font-bold text-[#7A3F1C]">
+                <span className="text-[10.5px] font-bold text-[#7A3F1C]">
                   {cat.count}
                 </span>
               </div>
@@ -155,18 +155,18 @@ export default function MobileCategoriesScreen() {
         {/* 3. Shop Local Banner CTA */}
         <Link
           href="/m/farmers"
-          className="flex items-center justify-between rounded-[28px] bg-[#0B3B25] p-5 text-white shadow-md active:scale-[0.98] transition-transform"
+          className="flex items-center justify-between rounded-[24px] bg-[#0B3B25] p-4 text-white shadow-md active:scale-[0.98] transition-transform"
         >
           <div>
-            <span className="text-[10px] font-black uppercase tracking-wider text-white/80">
+            <span className="text-[9.5px] font-black uppercase tracking-wider text-white/80">
               Community Supported Agriculture
             </span>
-            <h3 className="mt-0.5 text-[16px] font-black text-white">Meet Smallholder Growers</h3>
-            <p className="mt-0.5 text-[12px] font-semibold text-white/80">
+            <h3 className="mt-0.5 text-[15px] font-black text-white">Meet Smallholder Growers</h3>
+            <p className="mt-0.5 text-[11.5px] font-semibold text-white/80">
               Support 200+ local Ghanaian family farms
             </p>
           </div>
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#0B3B25] shadow-sm">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#0B3B25] shadow-sm">
             <ArrowRight className="h-4 w-4 stroke-[3]" />
           </div>
         </Link>

@@ -61,15 +61,15 @@ export default function MobileSearchScreen() {
 
       {/* Search Header */}
       <div
-        className="sticky top-0 z-30 flex items-center gap-3 border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-5 py-3 backdrop-blur-md"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
+        className="sticky top-0 z-30 flex items-center gap-2.5 border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
         <Link
           href="/m"
           aria-label="Back"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
         >
-          <ArrowLeft className="h-5 w-5" />
+          <ArrowLeft className="h-4 w-4" />
         </Link>
 
         <div className="relative flex-1">
@@ -79,14 +79,14 @@ export default function MobileSearchScreen() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search produce, farmers, recipes..."
             autoFocus
-            className="h-11 w-full rounded-full border border-[rgba(33,26,18,0.10)] bg-white pl-10 pr-9 text-[13px] font-semibold text-[#211A12] shadow-2xs outline-none focus:border-[#0B3B25]"
+            className="h-10 w-full rounded-full border border-[rgba(33,26,18,0.10)] bg-white pl-9 pr-8 text-[12.5px] font-semibold text-[#211A12] shadow-2xs outline-none focus:border-[#0B3B25]"
           />
-          <Search className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#0B3B25] stroke-[2.4]" />
+          <Search className="absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-[#0B3B25] stroke-[2.4]" />
           {query && (
             <button
               type="button"
               onClick={() => setQuery('')}
-              className="absolute top-1/2 right-3 -translate-y-1/2 rounded-full p-1 text-[#5C5247] hover:bg-black/5"
+              className="absolute top-1/2 right-2.5 -translate-y-1/2 rounded-full p-1 text-[#5C5247] hover:bg-black/5"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -95,20 +95,20 @@ export default function MobileSearchScreen() {
       </div>
 
       {/* Query Content */}
-      <div className="relative px-5 pt-4">
+      <div className="relative px-3 pt-2.5">
         {query.trim().length === 0 ? (
-          <div className="space-y-5">
+          <div className="space-y-4">
             {/* Recent Searches */}
             {recent.length > 0 && (
               <div>
-                <h3 className="text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+                <h3 className="text-[10.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
                   Recent Searches
                 </h3>
-                <div className="mt-2.5 flex flex-wrap gap-2">
+                <div className="mt-2 flex flex-wrap gap-1.5">
                   {recent.map((term) => (
                     <div
                       key={term}
-                      className="inline-flex items-center gap-2 rounded-full bg-[#FDFDFB] px-3.5 py-1.5 text-[12px] font-extrabold text-[#211A12] shadow-2xs"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-[#FDFDFB] px-3 py-1 text-[11.5px] font-extrabold text-[#211A12] shadow-2xs"
                     >
                       <button
                         type="button"
@@ -132,17 +132,17 @@ export default function MobileSearchScreen() {
 
             {/* Popular Searches */}
             <div>
-              <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-[0.14em] text-[#7A3F1C]">
+              <div className="flex items-center gap-1.5 text-[10.5px] font-black uppercase tracking-[0.14em] text-[#7A3F1C]">
                 <TrendingUp className="h-3.5 w-3.5" />
                 <span>Trending Searches</span>
               </div>
-              <div className="mt-2.5 flex flex-wrap gap-2">
+              <div className="mt-2 flex flex-wrap gap-1.5">
                 {POPULAR_SEARCHES.map((term) => (
                   <button
                     key={term}
                     type="button"
                     onClick={() => handleSelectTag(term)}
-                    className="rounded-full border border-[rgba(33,26,18,0.08)] bg-white px-3.5 py-1.5 text-[12px] font-extrabold text-[#211A12] shadow-2xs hover:border-[#0B3B25] hover:text-[#0B3B25] active:scale-95 transition-all"
+                    className="rounded-full border border-[rgba(33,26,18,0.08)] bg-white px-3 py-1 text-[11.5px] font-extrabold text-[#211A12] shadow-2xs hover:border-[#0B3B25] hover:text-[#0B3B25] active:scale-95 transition-all"
                   >
                     {term}
                   </button>
@@ -152,17 +152,17 @@ export default function MobileSearchScreen() {
           </div>
         ) : (
           <div>
-            <p className="text-[12px] font-bold text-[#5C5247] mb-3">
+            <p className="text-[11.5px] font-bold text-[#5C5247] mb-2.5">
               {results.length} result{results.length === 1 ? '' : 's'} for &ldquo;{query}&rdquo;
             </p>
 
             {results.length === 0 ? (
-              <div className="mt-12 text-center">
-                <p className="text-[15px] font-extrabold text-[#211A12]">No harvest found for &ldquo;{query}&rdquo;</p>
-                <p className="mt-1 text-[12px] font-semibold text-[#5C5247]">Try searching for &quot;Tomatoes&quot;, &quot;Yam&quot;, or &quot;Plantain&quot;</p>
+              <div className="mt-10 text-center">
+                <p className="text-[14px] font-extrabold text-[#211A12]">No harvest found for &ldquo;{query}&rdquo;</p>
+                <p className="mt-0.5 text-[11.5px] font-semibold text-[#5C5247]">Try searching for &quot;Tomatoes&quot;, &quot;Yam&quot;, or &quot;Plantain&quot;</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2">
                 {results.map((product) => (
                   <MobileProductCard key={product.id} product={product} />
                 ))}

@@ -43,10 +43,19 @@ export default function MobileFarmerReviewsScreen() {
   ]
 
   return (
-    <div className="min-h-dvh bg-[#FAF7F0] pb-24 text-[#2B1F17]">
+    <div className="relative min-h-dvh bg-[#F7F5F0] pb-24 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
       {/* Header */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[#E0DACB] bg-[#FAF7F0] px-3 sm:px-4 py-2.5"
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.06)] bg-[#F7F5F0]/90 backdrop-blur-md px-3 py-2.5"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
         <div className="flex items-center gap-2.5">
@@ -54,53 +63,53 @@ export default function MobileFarmerReviewsScreen() {
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
           <div>
-            <h1 className="text-base font-extrabold text-[#2B1F17]">Reviews &amp; Ratings</h1>
-            <p className="text-[10px] text-[#6E6A63]">{farmer.farmName || farmer.name}</p>
+            <h1 className="text-[16px] font-black text-[#211A12]">Reviews &amp; Ratings</h1>
+            <p className="text-[10.5px] font-semibold text-[#5C5247]">{farmer.farmName || farmer.name}</p>
           </div>
         </div>
       </header>
 
       {/* Review Breakdown Summary */}
-      <div className="px-3 sm:px-4 pt-3.5 space-y-3.5">
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs">
+      <div className="relative px-3 pt-3 space-y-2.5">
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-3xl font-extrabold text-[#2B1F17]">{farmer.rating}</h2>
+              <h2 className="text-3xl font-black text-[#211A12]">{farmer.rating}</h2>
               <div className="mt-1 flex items-center gap-1 text-xs text-[#7A3F1C]">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-[#FBBF24] text-[#FBBF24]" />
+                  <Star key={i} className="h-3.5 w-3.5 fill-[#F0A81E] text-[#F0A81E]" />
                 ))}
               </div>
-              <p className="mt-1 text-[10px] text-[#6E6A63]">
+              <p className="mt-1 text-[10.5px] font-medium text-[#5C5247]">
                 {farmer.reviewCount} verified buyer reviews
               </p>
             </div>
 
             {/* Rating distribution bar chart */}
-            <div className="space-y-1 text-[10px] font-bold text-[#6E6A63] w-36">
+            <div className="space-y-1 text-[10px] font-bold text-[#5C5247] w-36">
               <div className="flex items-center gap-1.5">
-                <span className="flex items-center gap-0.5">5 <Star className="h-2.5 w-2.5 fill-[#FBBF24] text-[#FBBF24]" /></span>
-                <div className="h-2 flex-1 rounded-full bg-[#FAF7F0] overflow-hidden">
-                  <div className="h-full bg-[#0F7A43] w-[88%]" />
+                <span className="flex items-center gap-0.5">5 <Star className="h-2.5 w-2.5 fill-[#F0A81E] text-[#F0A81E]" /></span>
+                <div className="h-1.5 flex-1 rounded-full bg-[#F7F5F0] overflow-hidden">
+                  <div className="h-full bg-[#0B3B25] w-[88%]" />
                 </div>
                 <span>88%</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="flex items-center gap-0.5">4 <Star className="h-2.5 w-2.5 fill-[#FBBF24] text-[#FBBF24]" /></span>
-                <div className="h-2 flex-1 rounded-full bg-[#FAF7F0] overflow-hidden">
-                  <div className="h-full bg-[#0F7A43] w-[10%]" />
+                <span className="flex items-center gap-0.5">4 <Star className="h-2.5 w-2.5 fill-[#F0A81E] text-[#F0A81E]" /></span>
+                <div className="h-1.5 flex-1 rounded-full bg-[#F7F5F0] overflow-hidden">
+                  <div className="h-full bg-[#0B3B25] w-[10%]" />
                 </div>
                 <span>10%</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="flex items-center gap-0.5">3 <Star className="h-2.5 w-2.5 fill-[#FBBF24] text-[#FBBF24]" /></span>
-                <div className="h-2 flex-1 rounded-full bg-[#FAF7F0] overflow-hidden">
-                  <div className="h-full bg-[#0F7A43] w-[2%]" />
+                <span className="flex items-center gap-0.5">3 <Star className="h-2.5 w-2.5 fill-[#F0A81E] text-[#F0A81E]" /></span>
+                <div className="h-1.5 flex-1 rounded-full bg-[#F7F5F0] overflow-hidden">
+                  <div className="h-full bg-[#0B3B25] w-[2%]" />
                 </div>
                 <span>2%</span>
               </div>
@@ -109,27 +118,27 @@ export default function MobileFarmerReviewsScreen() {
         </div>
 
         {/* Customer Reviews List */}
-        <div className="space-y-2.5">
+        <div className="space-y-2">
           {reviews.map((rev, i) => (
-            <div key={i} className="rounded-3xl border border-[#E0DACB] bg-white p-3.5 shadow-xs">
+            <div key={i} className="rounded-[22px] bg-[#FDFDFB] p-3 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-extrabold text-[#2B1F17]">{rev.author}</span>
-                  <CheckCircle2 className="h-3 w-3 fill-[#0F7A43] text-white" />
+                  <span className="text-[12.5px] font-extrabold text-[#211A12]">{rev.author}</span>
+                  <CheckCircle2 className="h-3 w-3 fill-[#0B3B25] text-white" />
                 </div>
-                <span className="text-[10px] text-[#6E6A63]">{rev.date}</span>
+                <span className="text-[10px] font-semibold text-[#5C5247]">{rev.date}</span>
               </div>
 
               <div className="mt-1 flex items-center justify-between">
-                <span className="text-[10px] font-semibold text-[#0F7A43]">{rev.location}</span>
+                <span className="text-[10.5px] font-bold text-[#0B3B25]">{rev.location}</span>
                 <div className="flex items-center gap-0.5">
                   {[...Array(rev.rating)].map((_, idx) => (
-                    <Star key={idx} className="h-2.5 w-2.5 fill-[#FBBF24] text-[#FBBF24]" />
+                    <Star key={idx} className="h-2.5 w-2.5 fill-[#F0A81E] text-[#F0A81E]" />
                   ))}
                 </div>
               </div>
 
-              <p className="mt-2 text-xs leading-relaxed text-[#2B1F17]">{rev.comment}</p>
+              <p className="mt-1.5 text-[12px] leading-relaxed text-[#211A12] font-medium">{rev.comment}</p>
             </div>
           ))}
         </div>

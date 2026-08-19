@@ -34,48 +34,53 @@ export default function MobileOrderTrackingScreen() {
 
   return (
     <div className="relative min-h-dvh bg-[#F7F5F0] pb-24 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-      {/* Header */}
+      {/* Header Bar */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-5 py-3 backdrop-blur-md"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-4 w-4" />
           </button>
           <div>
-            <h1 className="text-[17px] font-extrabold text-[#211A12]">Order Details</h1>
-            <p className="text-[11px] font-bold text-[#5C5247]">#{orderId}</p>
+            <h1 className="text-[16px] font-black tracking-tight text-[#211A12]">
+              Order Details
+            </h1>
+            <p className="text-[11px] font-bold text-[#5C5247]">
+              {orderId} · May 19, 2026
+            </p>
           </div>
         </div>
+
         <Link
-          href="/m/orders/track"
-          className="rounded-full bg-[#7A3F1C]/10 px-3 py-1 text-[11px] font-black text-[#7A3F1C]"
+          href={`/m/orders/track`}
+          className="rounded-full bg-[#0B3B25] px-3 py-1 text-[11px] font-extrabold text-white shadow-xs active:scale-95 transition-transform"
         >
           Live Map →
         </Link>
       </header>
 
-      <div className="relative px-5 pt-4 space-y-4">
+      <div className="relative px-3 pt-2.5 space-y-2.5">
         {/* Status Card */}
-        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
-              <Truck className="h-6 w-6 stroke-[2.4]" />
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
+              <Truck className="h-5 w-5 stroke-[2.4]" />
             </div>
             <div className="min-w-0 flex-1">
-              <span className="text-[11px] font-black uppercase tracking-[0.14em] text-[#7A3F1C]">
+              <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#7A3F1C]">
                 In Transit · Cold-Chain Active
               </span>
-              <h2 className="text-[17px] font-extrabold leading-tight text-[#211A12]">
+              <h2 className="text-[16px] font-black leading-tight text-[#211A12]">
                 Arriving Today by 4:00 PM
               </h2>
-              <p className="mt-0.5 text-[12px] font-semibold text-[#5C5247]">
+              <p className="mt-0.5 text-[11.5px] font-semibold text-[#5C5247]">
                 Refrigerated Van · East Legon Gate
               </p>
             </div>
@@ -83,27 +88,27 @@ export default function MobileOrderTrackingScreen() {
         </div>
 
         {/* Timeline */}
-        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-          <h3 className="pb-3 text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+          <h3 className="pb-2.5 text-[10.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Progress Timeline
           </h3>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {steps.map((step, idx) => (
-              <div key={idx} className="flex items-start gap-3.5">
+              <div key={idx} className="flex items-start gap-3">
                 <div className="flex flex-col items-center">
                   <div
                     className={cn(
-                      'flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-black',
+                      'flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black',
                       step.done && !step.current && 'bg-[#0B3B25] text-white',
                       step.current && 'bg-[#7A3F1C] text-white shadow-sm ring-2 ring-[#7A3F1C]/20',
                       !step.done && !step.current && 'border border-[rgba(33,26,18,0.18)] bg-[#FDFDFB] text-[#5C5247]'
                     )}
                   >
                     {step.done && !step.current ? (
-                      <Check className="h-3.5 w-3.5 stroke-[3]" />
+                      <Check className="h-3 w-3 stroke-[3]" />
                     ) : step.current ? (
-                      <Truck className="h-3.5 w-3.5 stroke-[2.5]" />
+                      <Truck className="h-3 w-3 stroke-[2.5]" />
                     ) : (
                       idx + 1
                     )}
@@ -111,7 +116,7 @@ export default function MobileOrderTrackingScreen() {
                   {idx < steps.length - 1 && (
                     <div
                       className={cn(
-                        'h-6 w-0.5',
+                        'h-5 w-0.5',
                         step.done ? 'bg-[#0B3B25]' : 'bg-[rgba(33,26,18,0.18)]'
                       )}
                     />
@@ -121,13 +126,13 @@ export default function MobileOrderTrackingScreen() {
                 <div className="flex flex-1 items-center justify-between pt-0.5">
                   <h4
                     className={cn(
-                      'text-[14px] font-bold tracking-tight',
+                      'text-[13px] font-bold tracking-tight',
                       step.current ? 'text-[#7A3F1C]' : step.done ? 'text-[#211A12]' : 'text-[#5C5247]'
                     )}
                   >
                     {step.label}
                   </h4>
-                  <span className="text-[12px] font-bold text-[#5C5247]">{step.time}</span>
+                  <span className="text-[11px] font-bold text-[#5C5247]">{step.time}</span>
                 </div>
               </div>
             ))}
@@ -135,45 +140,45 @@ export default function MobileOrderTrackingScreen() {
         </div>
 
         {/* Ordered Items Summary */}
-        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] space-y-3">
-          <div className="flex items-center justify-between pb-2 border-b border-[rgba(33,26,18,0.06)]">
-            <h3 className="text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] space-y-2.5">
+          <div className="flex items-center justify-between pb-1.5 border-b border-[rgba(33,26,18,0.06)]">
+            <h3 className="text-[10.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
               Items in this Order
             </h3>
-            <PackageBoxes3D size={48} />
+            <PackageBoxes3D size={42} />
           </div>
 
           <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               <ProductImageShell
                 src="/golden-acres/produce/roma-tomatoes-1.png"
                 alt="Roma Tomatoes"
-                className="h-12 w-12 rounded-xl"
+                className="h-11 w-11 rounded-xl"
               />
               <div>
-                <h4 className="text-[13.5px] font-extrabold text-[#211A12]">Roma Tomatoes</h4>
-                <p className="text-[11px] font-semibold text-[#5C5247]">1.0 kg · Auntie Ama</p>
+                <h4 className="text-[13px] font-extrabold text-[#211A12]">Roma Tomatoes</h4>
+                <p className="text-[10.5px] font-semibold text-[#5C5247]">1.0 kg · Auntie Ama</p>
               </div>
             </div>
-            <span className="font-extrabold text-[13px] text-[#0B3B25]">{formatGHS(12.0)}</span>
+            <span className="font-extrabold text-[12.5px] text-[#0B3B25]">{formatGHS(12.0)}</span>
           </div>
 
           <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               <ProductImageShell
                 src="/golden-acres/produce/white-yam.png"
                 alt="White Yam"
-                className="h-12 w-12 rounded-xl"
+                className="h-11 w-11 rounded-xl"
               />
               <div>
-                <h4 className="text-[13.5px] font-extrabold text-[#211A12]">White Yam</h4>
-                <p className="text-[11px] font-semibold text-[#5C5247]">2.0 kg est · Kwame Mensah</p>
+                <h4 className="text-[13px] font-extrabold text-[#211A12]">White Yam</h4>
+                <p className="text-[10.5px] font-semibold text-[#5C5247]">2.0 kg est · Kwame Mensah</p>
               </div>
             </div>
-            <span className="font-extrabold text-[13px] text-[#0B3B25]">{formatGHS(20.0)}</span>
+            <span className="font-extrabold text-[12.5px] text-[#0B3B25]">{formatGHS(20.0)}</span>
           </div>
 
-          <div className="flex items-center justify-between border-t border-[rgba(33,26,18,0.08)] pt-2.5 text-[15px] font-black text-[#211A12]">
+          <div className="flex items-center justify-between border-t border-[rgba(33,26,18,0.08)] pt-2 text-[14px] font-black text-[#211A12]">
             <span>Total Paid</span>
             <span className="text-[#0B3B25]">{formatGHS(39.0)}</span>
           </div>
@@ -182,4 +187,3 @@ export default function MobileOrderTrackingScreen() {
     </div>
   )
 }
-

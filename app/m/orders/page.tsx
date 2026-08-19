@@ -125,22 +125,22 @@ export default function MobileOrdersScreen() {
       />
 
       {/* Header Bar */}
-      <header className="relative flex items-center justify-between px-5 pt-4 pb-2">
-        <h1 className="text-[26px] font-extrabold tracking-tight text-[#211A12]">
+      <header className="relative flex items-center justify-between px-3 pt-3 pb-1.5">
+        <h1 className="text-[22px] font-black tracking-tight text-[#211A12]">
           My Shipping
         </h1>
         <div className="flex items-center gap-2">
           <button
             type="button"
             aria-label="Search Orders"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
             <Search className="h-4 w-4 stroke-[2.4]" />
           </button>
           <button
             type="button"
             aria-label="Menu"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
             <MoreVertical className="h-4 w-4" />
           </button>
@@ -148,8 +148,8 @@ export default function MobileOrdersScreen() {
       </header>
 
       {/* Filter Tabs */}
-      <div className="relative px-5 pt-2">
-        <div className="flex gap-2 rounded-2xl bg-[#FDFDFB] p-1 shadow-2xs">
+      <div className="relative px-3 pt-1.5">
+        <div className="flex gap-1.5 rounded-2xl bg-[#FDFDFB] p-1 shadow-2xs">
           {(
             [
               { key: 'all', label: 'All Orders' },
@@ -163,7 +163,7 @@ export default function MobileOrdersScreen() {
               type="button"
               onClick={() => setActiveTab(t.key)}
               className={cn(
-                'flex-1 rounded-xl py-2 text-center text-[12px] font-bold transition-all',
+                'flex-1 rounded-xl py-1.5 text-center text-[11.5px] font-bold transition-all',
                 activeTab === t.key
                   ? 'bg-white text-[#211A12] shadow-xs'
                   : 'text-[#5C5247] hover:text-[#211A12]'
@@ -176,18 +176,18 @@ export default function MobileOrdersScreen() {
       </div>
 
       {/* Orders List */}
-      <div className="relative px-5 pt-4 space-y-4">
+      <div className="relative px-3 pt-2.5 space-y-2.5">
         {filtered.map((order) => (
           <Link
             key={order.id}
             href={`/m/orders/track`}
-            className="group relative block overflow-hidden rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-all"
+            className="group relative block overflow-hidden rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-all"
           >
             {/* Top-Right Diagonal Ribbon */}
             <StatusRibbon text={order.ribbon} tone={order.ribbonTone} />
 
             {/* Top Row: +40% Borderless Dynamic Product Image Shell + ID + Title + Farmer */}
-            <div className="flex items-center gap-[clamp(12px,2vw,16px)] pr-16">
+            <div className="flex items-center gap-3 pr-14">
               <ProductImageShell
                 src={order.image}
                 alt={order.title}
@@ -195,25 +195,25 @@ export default function MobileOrdersScreen() {
               />
 
               <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5 text-[12px] font-bold text-[#5C5247]">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#5C5247]">
                   <span className="text-[#211A12] font-extrabold">{order.trackingCode}</span>
                   <span>·</span>
                   <span className="text-[#7A3F1C]">{order.id}</span>
                 </div>
-                <h3 className="mt-0.5 truncate text-[14.5px] font-black text-[#211A12] leading-tight">
+                <h3 className="mt-0.5 truncate text-[14px] font-black text-[#211A12] leading-tight">
                   {order.title}
                 </h3>
-                <p className="truncate text-[11.5px] font-semibold text-[#5C5247]">
+                <p className="truncate text-[11px] font-semibold text-[#5C5247]">
                   {order.farmerName}
                 </p>
-                <p className="mt-0.5 text-[12.5px] font-black text-[#0B3B25]">
+                <p className="mt-0.5 text-[12px] font-black text-[#0B3B25]">
                   {formatGHS(order.totalGHS)}
                 </p>
               </div>
             </div>
 
             {/* Dotted Cold-Chain Progress Track */}
-            <div className="mt-4 pt-1">
+            <div className="mt-3 pt-1">
               <DottedProgressTrack
                 awayText={order.away}
                 steps={order.steps}
@@ -222,37 +222,37 @@ export default function MobileOrdersScreen() {
             </div>
 
             {/* Origin & Destination Information */}
-            <div className="mt-4 border-t border-[rgba(33,26,18,0.06)] pt-3.5">
+            <div className="mt-3 border-t border-[rgba(33,26,18,0.06)] pt-2.5">
               <div className="flex items-end justify-between">
-                <div className="min-w-0 flex-1 space-y-2.5 pr-3">
+                <div className="min-w-0 flex-1 space-y-2 pr-2">
                   <div>
-                    <span className="text-[9.5px] font-black uppercase tracking-[0.16em] text-[#5C5247]">
+                    <span className="text-[9px] font-black uppercase tracking-[0.16em] text-[#5C5247]">
                       FROM (COLD HUB)
                     </span>
-                    <h4 className="mt-0.5 truncate text-[13px] font-bold text-[#211A12]">
+                    <h4 className="mt-0.5 truncate text-[12.5px] font-bold text-[#211A12]">
                       {order.from}
                     </h4>
-                    <p className="mt-0.5 text-[11.5px] font-semibold text-[#5C5247]">
+                    <p className="mt-0.5 text-[11px] font-semibold text-[#5C5247]">
                       {order.fromDate}
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-black uppercase tracking-[0.16em] text-[#5C5247]">
+                    <span className="text-[9px] font-black uppercase tracking-[0.16em] text-[#5C5247]">
                       DELIVERY DESTINATION
                     </span>
-                    <h4 className="mt-0.5 truncate text-[13px] font-bold text-[#211A12]">
+                    <h4 className="mt-0.5 truncate text-[12.5px] font-bold text-[#211A12]">
                       {order.to}
                     </h4>
-                    <p className="mt-0.5 text-[11.5px] font-semibold text-[#5C5247]">
+                    <p className="mt-0.5 text-[11px] font-semibold text-[#5C5247]">
                       {order.toDate}
                     </p>
                   </div>
                 </div>
 
                 {/* 3D Stacked Cardboard Packaging Boxes */}
-                <div className="shrink-0 -mb-2 -mr-2">
-                  <PackageBoxes3D size={84} />
+                <div className="shrink-0 -mb-2 -mr-1">
+                  <PackageBoxes3D size={74} />
                 </div>
               </div>
             </div>

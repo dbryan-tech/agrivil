@@ -39,10 +39,19 @@ export default function MobileFarmerCertificationsScreen() {
   ]
 
   return (
-    <div className="min-h-dvh bg-[#FAF7F0] pb-24 text-[#2B1F17]">
+    <div className="relative min-h-dvh bg-[#F7F5F0] pb-24 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
       {/* Header */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[#E0DACB] bg-[#FAF7F0] px-3 sm:px-4 py-2.5"
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.06)] bg-[#F7F5F0]/90 backdrop-blur-md px-3 py-2.5"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
         <div className="flex items-center gap-2.5">
@@ -50,42 +59,42 @@ export default function MobileFarmerCertificationsScreen() {
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
           <div>
-            <h1 className="text-base font-extrabold text-[#2B1F17]">Farming Standards</h1>
-            <p className="text-[10px] text-[#6E6A63]">{farmer.farmName || farmer.name}</p>
+            <h1 className="text-[16px] font-black text-[#211A12]">Farming Standards</h1>
+            <p className="text-[10.5px] font-semibold text-[#5C5247]">{farmer.farmName || farmer.name}</p>
           </div>
         </div>
       </header>
 
       {/* Standards List */}
-      <div className="px-3 sm:px-4 pt-3.5 space-y-3">
-        <p className="text-xs text-[#6E6A63]">
+      <div className="relative px-3 pt-3 space-y-2.5">
+        <p className="text-[12px] font-medium text-[#5C5247]">
           All verified badges and quality protocols enforced across {farmer.name}&apos;s farm plots.
         </p>
 
-        <div className="space-y-2.5">
+        <div className="space-y-2">
           {standards.map((std, i) => {
             const Icon = std.icon
             return (
-              <div key={i} className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs">
+              <div key={i} className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0F7A43]/10 text-[#0F7A43]">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0B3B25]/10 text-[#0B3B25]">
                       <Icon className="h-4 w-4" />
                     </div>
-                    <h3 className="text-xs font-extrabold text-[#2B1F17]">{std.title}</h3>
+                    <h3 className="text-[13px] font-extrabold text-[#211A12]">{std.title}</h3>
                   </div>
 
-                  <span className="rounded-full bg-[#0F7A43]/10 px-2 py-0.5 text-[9px] font-bold text-[#0F7A43]">
+                  <span className="rounded-full bg-[#0B3B25]/10 px-2 py-0.5 text-[9.5px] font-black text-[#0B3B25]">
                     {std.badge}
                   </span>
                 </div>
 
-                <p className="mt-2 text-xs text-[#6E6A63] leading-relaxed">
+                <p className="mt-2 text-[12px] text-[#5C5247] leading-relaxed">
                   {std.desc}
                 </p>
               </div>

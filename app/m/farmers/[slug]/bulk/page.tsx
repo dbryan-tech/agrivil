@@ -23,36 +23,47 @@ export default function MobileFarmerBulkOrderScreen() {
 
   if (submitted) {
     return (
-      <div className="min-h-dvh bg-[#FAF7F0] p-4 text-[#2B1F17] flex flex-col justify-between">
-        <header className="flex items-center">
-          <button
-            type="button"
-            onClick={() => router.push(`/m/farmers/${farmer.slug}`)}
-            aria-label="Back"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </button>
-        </header>
+      <div className="relative min-h-dvh bg-[#F7F5F0] p-3 text-[#211A12] flex flex-col justify-between select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        {/* Top warm brand gradient backdrop */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+          style={{
+            background:
+              'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+          }}
+        />
 
-        <div className="flex flex-col items-center justify-center text-center px-4">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#0F7A43] text-white shadow-lg animate-bounce">
-            <Check className="h-10 w-10 stroke-[3]" />
+        <div className="relative">
+          <header className="flex items-center pb-2.5">
+            <button
+              type="button"
+              onClick={() => router.push(`/m/farmers/${farmer.slug}`)}
+              aria-label="Back"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+          </header>
+
+          <div className="mt-12 flex flex-col items-center justify-center text-center px-4">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-lg animate-bounce">
+              <Check className="h-8 w-8 stroke-[3]" />
+            </div>
+
+            <h1 className="mt-4 text-[22px] font-black text-[#211A12]">
+              Bulk Quote Requested!
+            </h1>
+            <p className="mt-1.5 text-[12px] font-semibold text-[#5C5247] max-w-xs">
+              {farmer.name} will prepare a wholesale dispatch invoice and confirm harvest schedule.
+            </p>
           </div>
-
-          <h1 className="ga-headline mt-5 text-2xl font-extrabold text-[#2B1F17]">
-            Bulk Quote Requested!
-          </h1>
-          <p className="mt-2 text-xs text-[#6E6A63] max-w-xs">
-            {farmer.name} will prepare a wholesale dispatch invoice and confirm harvest schedule.
-          </p>
         </div>
 
-        <div>
+        <div className="relative pt-4">
           <button
             type="button"
             onClick={() => router.push(`/m/farmers/${farmer.slug}`)}
-            className="ga-press flex h-13 w-full items-center justify-center rounded-2xl bg-[#0F7A43] text-sm font-bold text-white shadow-md hover:bg-[#0B3B25]"
+            className="flex h-12 w-full items-center justify-center rounded-full bg-[#0B3B25] text-[13.5px] font-extrabold text-white shadow-md active:scale-[0.98] transition-transform"
           >
             Return to Farm Profile
           </button>
@@ -62,10 +73,19 @@ export default function MobileFarmerBulkOrderScreen() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#FAF7F0] pb-24 text-[#2B1F17]">
+    <div className="relative min-h-dvh bg-[#F7F5F0] pb-24 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
       {/* Header */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[#E0DACB] bg-[#FAF7F0] px-3 sm:px-4 py-2.5"
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.06)] bg-[#F7F5F0]/90 backdrop-blur-md px-3 py-2.5"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
         <div className="flex items-center gap-2.5">
@@ -73,25 +93,25 @@ export default function MobileFarmerBulkOrderScreen() {
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="ga-press flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#2B1F17] shadow-xs border border-[#E0DACB]"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
           <div>
-            <h1 className="text-base font-extrabold text-[#2B1F17]">Bulk &amp; Crate Order</h1>
-            <p className="text-[10px] text-[#6E6A63]">{farmer.farmName || farmer.name}</p>
+            <h1 className="text-[16px] font-black text-[#211A12]">Bulk &amp; Crate Order</h1>
+            <p className="text-[10.5px] font-semibold text-[#5C5247]">{farmer.farmName || farmer.name}</p>
           </div>
         </div>
       </header>
 
       {/* Form Content */}
-      <div className="px-3 sm:px-4 pt-3.5 space-y-3.5">
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs">
-          <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#6E6A63]">
+      <div className="relative px-3 pt-3 space-y-2.5">
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+          <h2 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Select Crate / Sack Size
           </h2>
 
-          <div className="mt-3 grid grid-cols-3 gap-2">
+          <div className="mt-2.5 grid grid-cols-3 gap-2">
             {[
               { size: '10kg' as const, label: '10 kg Crate', price: 110 },
               { size: '25kg' as const, label: '25 kg Sack', price: 250 },
@@ -102,35 +122,35 @@ export default function MobileFarmerBulkOrderScreen() {
                 type="button"
                 onClick={() => setCrateSize(opt.size)}
                 className={cn(
-                  'ga-press flex flex-col items-center justify-center rounded-2xl p-3 border transition-all',
+                  'flex flex-col items-center justify-center rounded-2xl p-2.5 transition-all active:scale-95 shadow-2xs',
                   crateSize === opt.size
-                    ? 'border-[#0F7A43] bg-[#0F7A43] text-white shadow-xs'
-                    : 'border-[#E0DACB] bg-[#FAF7F0] text-[#2B1F17]'
+                    ? 'bg-[#0B3B25] text-white'
+                    : 'border border-[rgba(33,26,18,0.08)] bg-white text-[#211A12]'
                 )}
               >
                 <Package className="h-4 w-4" />
-                <span className="mt-1 text-xs font-extrabold">{opt.size}</span>
-                <span className="text-[9px] opacity-80">{formatGHS(opt.price)}</span>
+                <span className="mt-1 text-[12px] font-black">{opt.size}</span>
+                <span className="text-[9.5px] font-semibold opacity-80">{formatGHS(opt.price)}</span>
               </button>
             ))}
           </div>
 
           {/* Crate Count Stepper */}
-          <div className="mt-4 flex items-center justify-between border-t border-[#E0DACB]/60 pt-3">
-            <span className="text-xs font-bold text-[#2B1F17]">Number of Crates/Bags</span>
+          <div className="mt-3.5 flex items-center justify-between border-t border-[rgba(33,26,18,0.06)] pt-2.5">
+            <span className="text-[12px] font-extrabold text-[#211A12]">Number of Crates/Bags</span>
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setCrateCount(Math.max(1, crateCount - 1))}
-                className="ga-press flex h-8 w-8 items-center justify-center rounded-full border border-[#E0DACB] bg-[#FAF7F0] text-[#2B1F17]"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-[rgba(33,26,18,0.10)] bg-white text-[#211A12] active:scale-95 font-bold"
               >
                 -
               </button>
-              <span className="text-sm font-extrabold text-[#2B1F17]">{crateCount}</span>
+              <span className="text-[14px] font-black text-[#211A12]">{crateCount}</span>
               <button
                 type="button"
                 onClick={() => setCrateCount(crateCount + 1)}
-                className="ga-press flex h-8 w-8 items-center justify-center rounded-full border border-[#E0DACB] bg-[#FAF7F0] text-[#2B1F17]"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-[rgba(33,26,18,0.10)] bg-white text-[#211A12] active:scale-95 font-bold"
               >
                 +
               </button>
@@ -139,18 +159,18 @@ export default function MobileFarmerBulkOrderScreen() {
         </div>
 
         {/* Pricing Summary */}
-        <div className="rounded-3xl border border-[#E0DACB] bg-white p-4 shadow-xs space-y-2 text-xs">
-          <div className="flex justify-between text-[#6E6A63]">
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] space-y-1.5 text-xs">
+          <div className="flex justify-between text-[#5C5247] text-[11.5px] font-semibold">
             <span>Unit Wholesale Rate</span>
-            <span className="font-bold text-[#2B1F17]">{formatGHS(pricePerCrate)} / unit</span>
+            <span className="font-bold text-[#211A12]">{formatGHS(pricePerCrate)} / unit</span>
           </div>
-          <div className="flex justify-between text-[#6E6A63]">
+          <div className="flex justify-between text-[#5C5247] text-[11.5px] font-semibold">
             <span>Total Units</span>
-            <span className="font-bold text-[#2B1F17]">{crateCount} {crateSize} units</span>
+            <span className="font-bold text-[#211A12]">{crateCount} {crateSize} units</span>
           </div>
-          <div className="flex justify-between font-extrabold text-[#2B1F17] border-t border-[#E0DACB]/60 pt-2 text-sm">
+          <div className="flex justify-between font-black text-[#211A12] border-t border-[rgba(33,26,18,0.06)] pt-2 text-[13.5px]">
             <span>Estimated Wholesale Total</span>
-            <span className="text-[#0F7A43]">{formatGHS(estimatedTotal)}</span>
+            <span className="text-[#0B3B25]">{formatGHS(estimatedTotal)}</span>
           </div>
         </div>
 
@@ -158,7 +178,7 @@ export default function MobileFarmerBulkOrderScreen() {
         <button
           type="button"
           onClick={() => setSubmitted(true)}
-          className="ga-press flex h-13 w-full items-center justify-center rounded-2xl bg-[#0F7A43] text-sm font-bold text-white shadow-md hover:bg-[#0B3B25]"
+          className="flex h-12 w-full items-center justify-center rounded-full bg-[#0B3B25] text-[13.5px] font-extrabold text-white shadow-md active:scale-[0.98] transition-transform"
         >
           Request Bulk Quote ({formatGHS(estimatedTotal)})
         </button>

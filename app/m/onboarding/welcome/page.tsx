@@ -119,42 +119,51 @@ export default function MobileOnboardingScreen() {
 
   return (
     <div
-      className="relative flex min-h-dvh flex-col justify-between overflow-hidden bg-[#FAF7F0] px-5 py-6 sm:px-8 text-[#2B1F17] select-none"
+      className="relative flex min-h-dvh flex-col justify-between overflow-hidden bg-[#F7F5F0] px-3 py-4 text-[#211A12] select-none antialiased"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       style={{
-        paddingTop: 'max(env(safe-area-inset-top), 20px)',
-        paddingBottom: 'max(env(safe-area-inset-bottom), 24px)',
+        paddingTop: 'max(env(safe-area-inset-top), 12px)',
+        paddingBottom: 'max(env(safe-area-inset-bottom), 16px)',
       }}
     >
+      {/* Top warm brand gradient backdrop */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+        }}
+      />
+
       {/* 1. Top Bar with Skip */}
       <div className="relative z-20 flex items-center justify-end">
         <Link
           href="/m"
-          className="ga-press text-xs font-bold tracking-wide text-[#6E6A63] transition-colors hover:text-[#2B1F17]"
+          className="text-[12px] font-extrabold tracking-wide text-[#5C5247] transition-colors hover:text-[#211A12]"
         >
           Skip
         </Link>
       </div>
 
       {/* 2. Slide Show Hero Content */}
-      <div className="relative z-10 my-auto flex flex-col items-start text-left pt-2">
+      <div className="relative z-10 my-auto flex flex-col items-start text-left pt-1">
         {/* Animated Headline & Subtitle */}
         <div key={`text-${currentSlide}`} className="animate-in fade-in slide-in-from-right-4 duration-300">
-          <h1 className="ga-headline text-3xl font-extrabold tracking-tight text-[#2B1F17] sm:text-4xl">
+          <h1 className="text-[28px] font-black tracking-tight text-[#211A12] sm:text-3xl leading-tight">
             {activeSlide.titlePrefix} <br />
-            <span className="text-[#0F7A43]">{activeSlide.titleHighlight}</span>
+            <span className="text-[#0B3B25]">{activeSlide.titleHighlight}</span>
           </h1>
-          <p className="mt-2 text-xs font-medium leading-relaxed text-[#6E6A63] max-w-xs sm:text-sm">
+          <p className="mt-1 text-[12px] font-semibold leading-relaxed text-[#5C5247] max-w-xs sm:text-sm">
             {activeSlide.subtitle}
           </p>
         </div>
 
         {/* Hero Visual Area with Warm Glow */}
-        <div className="relative mx-auto mt-6 flex h-64 w-full max-w-xs items-center justify-center sm:h-72">
+        <div className="relative mx-auto mt-4 flex h-60 w-full max-w-xs items-center justify-center sm:h-64">
           {/* Ambient Glow */}
-          <div className="absolute inset-4 rounded-full bg-[#0F7A43]/5 blur-2xl" />
+          <div className="absolute inset-4 rounded-full bg-[#0B3B25]/5 blur-2xl" />
 
           {/* Slide Visual Transition */}
           <div
@@ -162,7 +171,7 @@ export default function MobileOnboardingScreen() {
             className="relative h-full w-full flex items-center justify-center animate-in zoom-in-95 fade-in duration-300"
           >
             {activeSlide.id === 3 ? (
-              <div className="relative h-56 w-56 overflow-hidden rounded-3xl border-2 border-[#E0DACB] shadow-xl">
+              <div className="relative h-52 w-52 overflow-hidden rounded-3xl border border-[rgba(33,26,18,0.10)] shadow-md">
                 <Image
                   src={activeSlide.image}
                   alt={activeSlide.imageAlt}
@@ -170,17 +179,17 @@ export default function MobileOnboardingScreen() {
                   className="object-cover"
                   priority
                 />
-                <span className="absolute bottom-3 left-3 rounded-full bg-[#0F7A43] px-2.5 py-0.5 text-[9px] font-bold text-white shadow-xs">
+                <span className="absolute bottom-2.5 left-2.5 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[9px] font-black text-white shadow-xs">
                   {activeSlide.badge}
                 </span>
               </div>
             ) : (
-              <div className="relative h-56 w-56 sm:h-64 sm:w-64 flex items-center justify-center">
+              <div className="relative h-52 w-52 sm:h-56 sm:w-56 flex items-center justify-center">
                 <Image
                   src={activeSlide.image}
                   alt={activeSlide.imageAlt}
                   fill
-                  className="object-contain drop-shadow-xl"
+                  className="object-contain drop-shadow-lg"
                   priority
                 />
               </div>
@@ -190,9 +199,9 @@ export default function MobileOnboardingScreen() {
       </div>
 
       {/* 3. Indicators & Action Footer */}
-      <div className="relative z-20 space-y-4 pt-2">
+      <div className="relative z-20 space-y-3 pt-2">
         {/* 4 Indicators Dots (Slideshow Pagination) */}
-        <div className="flex items-center justify-center gap-2 pb-1">
+        <div className="flex items-center justify-center gap-1.5 pb-1">
           {ONBOARDING_SLIDES.map((_, idx) => (
             <button
               key={idx}
@@ -204,21 +213,21 @@ export default function MobileOnboardingScreen() {
               }}
               aria-label={`Go to slide ${idx + 1}`}
               className={cn(
-                'h-2 rounded-full transition-all duration-300',
+                'h-1.5 rounded-full transition-all duration-300',
                 currentSlide === idx
-                  ? 'w-6 bg-[#0F7A43]'
-                  : 'w-2 bg-[#D5CEBD] hover:bg-[#A8A294]'
+                  ? 'w-5 bg-[#0B3B25]'
+                  : 'w-1.5 bg-[rgba(33,26,18,0.15)] hover:bg-[rgba(33,26,18,0.3)]'
               )}
             />
           ))}
         </div>
 
         {/* Action Buttons */}
-        <div className="space-y-2.5">
+        <div className="space-y-2">
           <button
             type="button"
             onClick={() => router.push('/m/onboarding/how-it-works')}
-            className="ga-press flex h-13 w-full items-center justify-center rounded-2xl bg-[#0F7A43] text-sm font-bold text-white shadow-md transition-all hover:bg-[#0B3B25]"
+            className="flex h-12 w-full items-center justify-center rounded-full bg-[#0B3B25] text-[13.5px] font-extrabold text-white shadow-md active:scale-[0.98] transition-transform"
           >
             Get Started
           </button>
@@ -226,7 +235,7 @@ export default function MobileOnboardingScreen() {
           <button
             type="button"
             onClick={() => router.push('/m/auth/login')}
-            className="ga-press flex h-12 w-full items-center justify-center rounded-2xl border border-[#E0DACB] bg-white text-xs font-bold text-[#2B1F17] shadow-xs hover:bg-[#FAF7F0]"
+            className="flex h-11 w-full items-center justify-center rounded-full border border-[rgba(33,26,18,0.12)] bg-white text-[12px] font-extrabold text-[#211A12] shadow-2xs active:scale-[0.98] transition-transform"
           >
             I have an account
           </button>

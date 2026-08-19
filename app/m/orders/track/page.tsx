@@ -54,48 +54,48 @@ export default function MobileOrderLiveTrackingScreen() {
 
       {/* Header */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-5 py-3 backdrop-blur-md"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
+        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-4 w-4" />
           </button>
           <div>
-            <h1 className="text-[17px] font-extrabold tracking-tight text-[#211A12]">
+            <h1 className="text-[16px] font-black tracking-tight text-[#211A12]">
               Live Tracking
             </h1>
-            <p className="text-[12px] font-bold text-[#5C5247]">
+            <p className="text-[11px] font-bold text-[#5C5247]">
               Order ID: GA-24817 (SWFT-7781294)
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 rounded-full bg-[#7A3F1C]/10 px-3 py-1 text-[11px] font-black text-[#7A3F1C]">
+        <div className="flex items-center gap-1.5 rounded-full bg-[#7A3F1C]/10 px-2.5 py-0.5 text-[10px] font-black text-[#7A3F1C]">
           <span className="h-2 w-2 rounded-full bg-[#7A3F1C] animate-pulse" />
           IN TRANSIT
         </div>
       </header>
 
-      <div className="relative px-5 pt-4 space-y-4">
+      <div className="relative px-3 pt-2.5 space-y-2.5">
         {/* Estimated Arrival Hero */}
-        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
-              <Truck className="h-6 w-6 stroke-[2.4]" />
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
+              <Truck className="h-5 w-5 stroke-[2.4]" />
             </div>
             <div className="min-w-0 flex-1">
-              <span className="text-[11px] font-black uppercase tracking-[0.14em] text-[#7A3F1C]">
+              <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#7A3F1C]">
                 4 Hours Away · Cold-Chain Active
               </span>
-              <h2 className="text-[17px] font-extrabold leading-tight tracking-tight text-[#211A12]">
+              <h2 className="text-[16px] font-black leading-tight tracking-tight text-[#211A12]">
                 Arriving Today by 4:00 PM
               </h2>
-              <p className="mt-0.5 text-[12px] font-semibold text-[#5C5247]">
+              <p className="mt-0.5 text-[11.5px] font-semibold text-[#5C5247]">
                 East Legon, GA-183-4250 (3 stops ahead)
               </p>
             </div>
@@ -103,7 +103,7 @@ export default function MobileOrderLiveTrackingScreen() {
         </div>
 
         {/* Visual GPS Route Representation */}
-        <div className="relative h-56 w-full overflow-hidden rounded-[28px] bg-[#EAE5DC] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.08)]">
+        <div className="relative h-48 w-full overflow-hidden rounded-[24px] bg-[#EAE5DC] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.08)]">
           {/* Map Grid Pattern */}
           <div className="absolute inset-0 bg-[radial-gradient(rgba(122,63,28,0.12)_1.5px,transparent_1.5px)] [background-size:22px_22px] opacity-70" />
           
@@ -132,7 +132,7 @@ export default function MobileOrderLiveTrackingScreen() {
             <span className="rounded-md bg-white/95 px-2 py-0.5 text-[9px] font-black text-[#3D332A] shadow-sm">
               Tema Hub
             </span>
-            <div className="mt-1 h-3.5 w-3.5 rounded-full bg-[#5C5247] ring-4 ring-white shadow-sm" />
+            <div className="mt-1 h-3 w-3 rounded-full bg-[#5C5247] ring-4 ring-white shadow-sm" />
           </div>
 
           {/* Active Courier Delivery Marker */}
@@ -142,7 +142,7 @@ export default function MobileOrderLiveTrackingScreen() {
             </span>
             <div className="relative mt-1">
               <span className="absolute -inset-1 rounded-full bg-[#7A3F1C]/40 animate-ping" />
-              <div className="relative h-4 w-4 rounded-full border-2 border-white bg-[#7A3F1C] shadow-sm" />
+              <div className="relative h-3.5 w-3.5 rounded-full border-2 border-white bg-[#7A3F1C] shadow-sm" />
             </div>
           </div>
 
@@ -151,31 +151,31 @@ export default function MobileOrderLiveTrackingScreen() {
             <span className="rounded-md bg-[#0B3B25] px-2 py-0.5 text-[9px] font-black text-white shadow-md">
               East Legon (GA-183)
             </span>
-            <div className="mt-1 h-4 w-4 rounded-full bg-[#0B3B25] ring-4 ring-white shadow-sm" />
+            <div className="mt-1 h-3.5 w-3.5 rounded-full bg-[#0B3B25] ring-4 ring-white shadow-sm" />
           </div>
         </div>
 
         {/* Step-by-Step Delivery Timeline */}
-        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-          <h3 className="pb-3 text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+          <h3 className="pb-2.5 text-[10.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Cold-Chain Dispatch Timeline
           </h3>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {steps.map((step, idx) => (
-              <div key={idx} className="flex items-start gap-3.5">
+              <div key={idx} className="flex items-start gap-3">
                 <div className="flex flex-col items-center">
                   <div
                     className={cn(
-                      'flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-black',
+                      'flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-black',
                       step.done && !step.current && 'bg-[#0B3B25] text-white',
                       step.current && 'bg-[#7A3F1C] text-white shadow-sm ring-2 ring-[#7A3F1C]/20',
                       !step.done && !step.current && 'border border-[rgba(33,26,18,0.18)] bg-[#FDFDFB] text-[#5C5247]'
                     )}
                   >
                     {step.done && !step.current ? (
-                      <Check className="h-3.5 w-3.5 stroke-[3]" />
+                      <Check className="h-3 w-3 stroke-[3]" />
                     ) : step.current ? (
-                      <Truck className="h-3.5 w-3.5 stroke-[2.5]" />
+                      <Truck className="h-3 w-3 stroke-[2.5]" />
                     ) : (
                       idx + 1
                     )}
@@ -183,7 +183,7 @@ export default function MobileOrderLiveTrackingScreen() {
                   {idx < steps.length - 1 && (
                     <div
                       className={cn(
-                        'h-6 w-0.5',
+                        'h-5 w-0.5',
                         step.done ? 'bg-[#0B3B25]' : 'bg-[rgba(33,26,18,0.18)]'
                       )}
                     />
@@ -192,13 +192,13 @@ export default function MobileOrderLiveTrackingScreen() {
                 <div className="flex flex-1 items-center justify-between pt-0.5">
                   <h4
                     className={cn(
-                      'text-[14px] font-bold tracking-tight',
+                      'text-[13px] font-bold tracking-tight',
                       step.current ? 'text-[#7A3F1C]' : step.done ? 'text-[#211A12]' : 'text-[#5C5247]'
                     )}
                   >
                     {step.label}
                   </h4>
-                  <span className="text-[12px] font-bold text-[#5C5247]">
+                  <span className="text-[11px] font-bold text-[#5C5247]">
                     {step.time}
                   </span>
                 </div>
@@ -208,13 +208,13 @@ export default function MobileOrderLiveTrackingScreen() {
         </div>
 
         {/* Assigned Driver Card */}
-        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-          <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+          <span className="text-[9.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Assigned Cold-Chain Driver
           </span>
-          <div className="mt-2.5 flex items-center justify-between">
+          <div className="mt-2 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs">
+              <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs">
                 <Image
                   src="/golden-acres/farmers/kwame-mensah.jpg"
                   alt="Ibrahim Salifu"
@@ -223,10 +223,10 @@ export default function MobileOrderLiveTrackingScreen() {
                 />
               </div>
               <div>
-                <h4 className="text-[14px] font-extrabold tracking-tight text-[#211A12]">
+                <h4 className="text-[13.5px] font-extrabold tracking-tight text-[#211A12]">
                   Ibrahim Salifu
                 </h4>
-                <p className="mt-0.5 flex items-center gap-1.5 text-[11px] font-semibold text-[#5C5247]">
+                <p className="mt-0.5 flex items-center gap-1.5 text-[10.5px] font-semibold text-[#5C5247]">
                   Refrigerated Van · GR 4821-22
                   <span className="flex items-center gap-0.5 text-[#7A3F1C] font-black">
                     <Star className="h-3 w-3 fill-[#7A3F1C]" /> 4.9
@@ -237,14 +237,14 @@ export default function MobileOrderLiveTrackingScreen() {
             <div className="flex items-center gap-2">
               <a
                 href="tel:0245550142"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(11,59,37,0.12)] text-[#0B3B25] active:scale-95 transition-transform"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-[rgba(11,59,37,0.12)] text-[#0B3B25] active:scale-95 transition-transform"
                 aria-label="Call Driver"
               >
                 <Phone className="h-4 w-4" />
               </a>
               <a
                 href="sms:0245550142"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#211A12] shadow-sm active:scale-95 transition-transform"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-sm active:scale-95 transition-transform"
                 aria-label="Message Driver"
               >
                 <MessageSquare className="h-4 w-4" />
@@ -254,46 +254,46 @@ export default function MobileOrderLiveTrackingScreen() {
         </div>
 
         {/* Real Produce Package Summary with Product Image Shell */}
-        <div className="rounded-[28px] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+        <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3.5">
+            <div className="flex items-center gap-3">
               <ProductImageShell
                 src="/golden-acres/produce/roma-tomatoes-1.png"
                 alt="Roma Tomatoes"
               />
               <div>
-                <span className="text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+                <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
                   Produce Box Details
                 </span>
-                <h4 className="text-[15px] font-extrabold text-[#211A12]">
+                <h4 className="text-[14px] font-extrabold text-[#211A12]">
                   Fresh Farm Box (4.2 kg)
                 </h4>
-                <p className="text-[12px] font-semibold text-[#7A3F1C]">
+                <p className="text-[11.5px] font-semibold text-[#7A3F1C]">
                   3 items · Insulated packaging
                 </p>
               </div>
             </div>
-            <PackageBoxes3D size={64} />
+            <PackageBoxes3D size={58} />
           </div>
         </div>
 
         {/* Support & Rider Tip */}
-        <div className="flex items-center justify-between gap-3 pt-2">
+        <div className="flex items-center justify-between gap-2.5 pt-1">
           <button
             type="button"
             onClick={() => setTipped(!tipped)}
             className={cn(
-              'flex-1 rounded-full py-3 text-center text-[13px] font-extrabold transition-all shadow-2xs active:scale-95',
+              'flex-1 rounded-full py-2.5 text-center text-[12px] font-extrabold transition-all shadow-2xs active:scale-95',
               tipped
                 ? 'bg-[#0B3B25] text-white'
                 : 'bg-white text-[#211A12]'
             )}
           >
-            {tipped ? '✓ GH₵5 Rider Tip Added' : '+ Add GH₵5 Rider Tip'}
+            {tipped ? '✓ GH₵5 Tip Added' : '+ GH₵5 Rider Tip'}
           </button>
           <a
             href="tel:0302000000"
-            className="rounded-full bg-white px-5 py-3 text-[13px] font-extrabold text-[#5C5247] shadow-2xs active:scale-95 transition-transform"
+            className="rounded-full bg-white px-4 py-2.5 text-[12px] font-extrabold text-[#5C5247] shadow-2xs active:scale-95 transition-transform"
           >
             Need Help?
           </a>
