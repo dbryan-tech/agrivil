@@ -45,3 +45,10 @@ mobile/android/*.aab
 
 # git worktree (embedded repo)
 .worktrees/
+
+# python cache
+__pycache__/
+*.pyc
+# temp previews
+scripts/_preview_*.png
+scripts/previews/
