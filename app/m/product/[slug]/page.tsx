@@ -106,9 +106,19 @@ export default function MobileProductDetailScreen() {
       `}</style>
 
       {/* ========================================================
-          1. FULL-BLEED TOP HERO IMAGE (Bleeds to edges & top)
+          1. FULL-BLEED TOP HERO IMAGE SHELL (Auto-fills the whole card)
          ======================================================== */}
-      <div className="relative w-full overflow-hidden rounded-b-[32px] bg-white shadow-xs">
+      <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] overflow-hidden rounded-b-[32px] bg-white shadow-xs">
+        {/* Full Image Auto-Fill with scale & object-cover */}
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center scale-[1.05] transition-transform select-none"
+        />
+
         {/* Floating Top Navigation Header */}
         <header
           className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-3.5 pt-3"
@@ -162,17 +172,6 @@ export default function MobileProductDetailScreen() {
             />
             {activeOffer.freshness}
           </span>
-        </div>
-
-        {/* Big Immersive Produce Photo */}
-        <div className="relative mx-auto my-6 mt-14 flex h-60 w-60 sm:h-72 sm:w-72 items-center justify-center">
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            className="object-contain filter drop-shadow-lg select-none scale-[1.08]"
-            priority
-          />
         </div>
       </div>
 
@@ -231,36 +230,34 @@ export default function MobileProductDetailScreen() {
           </p>
         </div>
 
-        {/* Feature Badges Strip (Direct on background) */}
-        <div className="flex flex-wrap gap-1.5 pt-1">
+        {/* Feature Badges Strip (Clean text, zero bubble wraps) */}
+        <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1.5 pt-0.5 text-[11.5px] font-bold text-[#5C5247]">
           {product.organic && (
-            <div className="flex items-center gap-1 rounded-full bg-white px-3 py-1 text-[10.5px] font-extrabold text-[#0B3B25] border border-[rgba(33,26,18,0.08)] shadow-2xs">
-              <Leaf className="h-3 w-3" />
+            <span className="inline-flex items-center gap-1 text-[#0B3B25]">
+              <Leaf className="h-3.5 w-3.5" />
               <span>100% Certified Organic</span>
-            </div>
+            </span>
           )}
           {product.refrigerationRequired && (
-            <div className="flex items-center gap-1 rounded-full bg-white px-3 py-1 text-[10.5px] font-extrabold text-[#7A3F1C] border border-[rgba(33,26,18,0.08)] shadow-2xs">
-              <Snowflake className="h-3 w-3" />
+            <span className="inline-flex items-center gap-1 text-[#7A3F1C]">
+              <Snowflake className="h-3.5 w-3.5" />
               <span>Chilled Cold-Chain Van</span>
-            </div>
+            </span>
           )}
-          <div className="flex items-center gap-1 rounded-full bg-white px-3 py-1 text-[10.5px] font-extrabold text-[#211A12] border border-[rgba(33,26,18,0.08)] shadow-2xs">
-            <ShieldCheck className="h-3 w-3 text-[#0B3B25]" />
+          <span className="inline-flex items-center gap-1 text-[#211A12]">
+            <ShieldCheck className="h-3.5 w-3.5 text-[#0B3B25]" />
             <span>GhanaGAP Verified</span>
-          </div>
+          </span>
         </div>
 
-        {/* Variable-Weight Pricing Explainer (Direct inline on background) */}
+        {/* Variable-Weight Pricing Explainer (Clean inline text, zero card wrapper) */}
         {product.variableWeight && (
-          <div className="rounded-2xl bg-white/90 p-3 border border-[rgba(33,26,18,0.08)] shadow-2xs">
-            <div className="flex items-start gap-2">
-              <Info className="h-4 w-4 text-[#7A3F1C] shrink-0 mt-0.5" />
-              <p className="text-[11.5px] font-medium leading-relaxed text-[#5C5247]">
-                <strong className="text-[#211A12] font-black">Priced by weight:</strong> You are charged an estimate of{' '}
-                <strong className="text-[#211A12] font-black">{formatGHS(activePrice)}</strong> now; the final total is reconciled to the exact weight picked (typically {formatGHS(product.priceMin)}–{formatGHS(product.priceMax)}). You only pay for what you receive.
-              </p>
-            </div>
+          <div className="flex items-start gap-2 pt-0.5 text-[11.5px] font-medium leading-relaxed text-[#5C5247]">
+            <Info className="h-4 w-4 text-[#7A3F1C] shrink-0 mt-0.5" />
+            <p>
+              <strong className="text-[#211A12] font-black">Priced by weight:</strong> You are charged an estimate of{' '}
+              <strong className="text-[#211A12] font-black">{formatGHS(activePrice)}</strong> now; the final total is reconciled to the exact weight picked (typically {formatGHS(product.priceMin)}–{formatGHS(product.priceMax)}). You only pay for what you receive.
+            </p>
           </div>
         )}
 
@@ -364,47 +361,47 @@ export default function MobileProductDetailScreen() {
           </p>
         </div>
 
-        {/* Farm-to-Door Specifications (Direct on background) */}
-        <div className="pt-2">
+        {/* Farm-to-Door Specifications (Clean 2-column grid, zero cards) */}
+        <div className="pt-1">
           <h3 className="pb-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
             Farm-to-Door Specifications
           </h3>
-          <div className="grid grid-cols-2 gap-1.5">
-            <div className="rounded-2xl bg-white p-3 border border-[rgba(33,26,18,0.06)] shadow-2xs">
-              <span className="text-[9.5px] font-bold uppercase tracking-wider text-[#8A7E72]">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#8A7E72]">
                 Harvest Date
               </span>
-              <p className="mt-0.5 text-[12px] font-black text-[#211A12]">
+              <p className="mt-0.5 text-[13px] font-black text-[#211A12]">
                 {product.harvestDate}
               </p>
             </div>
-            <div className="rounded-2xl bg-white p-3 border border-[rgba(33,26,18,0.06)] shadow-2xs">
-              <span className="text-[9.5px] font-bold uppercase tracking-wider text-[#8A7E72]">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#8A7E72]">
                 Shelf Life
               </span>
-              <p className="mt-0.5 text-[12px] font-black text-[#211A12]">
+              <p className="mt-0.5 text-[13px] font-black text-[#211A12]">
                 {product.shelfLifeDays} Days (FEFO)
               </p>
             </div>
-            <div className="rounded-2xl bg-white p-3 border border-[rgba(33,26,18,0.06)] shadow-2xs">
-              <span className="text-[9.5px] font-bold uppercase tracking-wider text-[#8A7E72]">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#8A7E72]">
                 Storage
               </span>
-              <p className="mt-0.5 text-[12px] font-black text-[#211A12]">
+              <p className="mt-0.5 text-[13px] font-black text-[#211A12]">
                 {product.refrigerationRequired ? 'Refrigerated < 8°C' : 'Cool dry place'}
               </p>
             </div>
-            <div className="rounded-2xl bg-white p-3 border border-[rgba(33,26,18,0.06)] shadow-2xs">
-              <span className="text-[9.5px] font-bold uppercase tracking-wider text-[#8A7E72]">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#8A7E72]">
                 Origin
               </span>
-              <p className="mt-0.5 text-[12px] font-black text-[#211A12]">
+              <p className="mt-0.5 text-[13px] font-black text-[#211A12]">
                 {farmer.region}
               </p>
             </div>
           </div>
 
-          <div className="mt-2.5 flex items-center gap-1.5 text-[11.5px] font-bold text-[#0B3B25] pt-1">
+          <div className="mt-3 flex items-center gap-1.5 text-[11.5px] font-bold text-[#0B3B25]">
             <ShieldCheck className="h-4 w-4 shrink-0" />
             <span>Freshness Promise: Instant MoMo refund on any bad batch.</span>
           </div>
