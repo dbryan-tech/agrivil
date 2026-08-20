@@ -88,7 +88,7 @@ export default function MobileRecipesScreen() {
         </div>
       </div>
 
-      <div className="relative px-3.5 pt-3 space-y-3">
+      <div className="relative px-1.5 pt-3 space-y-2">
         {recipes.map((recipe) => (
           <Link
             key={recipe.id}

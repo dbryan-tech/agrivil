@@ -195,7 +195,7 @@ export default function MobileProductDetailScreen() {
 
       {/* Floating Top Navigation Header */}
       <header
-        className="fixed inset-x-0 top-0 z-40 mx-auto flex max-w-md items-center justify-between px-3.5 pt-3"
+        className="fixed inset-x-0 top-0 z-40 mx-auto flex max-w-md items-center justify-between px-1.5 pt-3"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
       >
         <button
@@ -269,7 +269,7 @@ export default function MobileProductDetailScreen() {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/30 to-transparent" />
       </div>
 
-      <div className="relative px-3.5 pt-4 space-y-4">
+      <div className="relative px-1.5 pt-3.5 space-y-3.5">
         {/* 2. Product Name, Price & Description */}
         <div className="space-y-1.5">
           <Link

@@ -57,8 +57,7 @@ export default function MobileFarmersScreen() {
       />
 
       {/* Header Bar */}
-      {/* Header */}
-      <header className="relative flex items-center justify-between px-3 pt-3 pb-1.5">
+      <header className="relative flex items-center justify-between px-1.5 pt-3 pb-1.5">
         <h1 className="text-[22px] font-black tracking-tight text-[#211A12]">
           Our Growers
         </h1>
@@ -68,7 +67,7 @@ export default function MobileFarmersScreen() {
         </div>
       </header>
 
-      <div className="relative px-3 pt-2 space-y-2.5">
+      <div className="relative px-1.5 pt-2 space-y-2.5">
         {/* 1. Search Bar */}
         <div className="relative">
           <input
@@ -102,7 +101,7 @@ export default function MobileFarmersScreen() {
 
         {/* 3. Featured Hero Grower Card (Bleeds to left & right edges) */}
         {selectedRegion === 'All' && !search && featuredFarmer && (
-          <div className="-mx-3 pt-1 pb-1">
+          <div className="-mx-1.5 pt-1 pb-1">
             <Link
               href={`/m/farmers/${featuredFarmer.slug}`}
               className="group block overflow-hidden bg-white shadow-xs active:scale-[0.99] transition-transform"
@@ -154,7 +153,7 @@ export default function MobileFarmersScreen() {
             </h3>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {filteredFarmers.map((farmer, idx) => {
               const distance = (0.8 + idx * 0.5).toFixed(1)
               return (

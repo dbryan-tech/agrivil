@@ -120,11 +120,11 @@ export default function MobileHomeScreen() {
       </header>
 
       {/* 2. Search Bar (Halved spacing) */}
-      <div className="relative px-3 pt-1.5">
+      <div className="relative px-1.5 pt-1.5">
         <Link
           href="/m/search"
           prefetch={true}
-          className="flex h-[42px] w-full items-center justify-between rounded-full border border-[rgba(33,26,18,0.10)] bg-white px-3.5 text-[13px] font-medium text-[#5C5247] shadow-2xs active:scale-[0.99] transition-transform"
+          className="flex h-[42px] w-full items-center justify-between rounded-full border border-[rgba(33,26,18,0.10)] bg-white px-3 text-[13px] font-medium text-[#5C5247] shadow-2xs active:scale-[0.99] transition-transform"
         >
           <div className="flex items-center gap-2.5">
             <Search className="h-4 w-4 text-[#0B3B25] stroke-[2.4]" />
@@ -137,13 +137,13 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 3. Scaled-down Real Web Hero Banner (Side margins reduced to 10% of previous state) */}
-      <div className="relative px-0.5 sm:px-1 pt-1.5">
+      <div className="relative px-1 pt-1.5">
         <MobileHeroBanner />
       </div>
 
       {/* 4. Category Chips Scroller (Halved spacing, clicks navigate to dedicated category page) */}
       <div className="relative pt-2">
-        <div className="flex items-center justify-between px-3 pb-1">
+        <div className="flex items-center justify-between px-1.5 pb-1">
           <h3 className="text-[10.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Shop by category
           </h3>
@@ -156,7 +156,7 @@ export default function MobileHomeScreen() {
           </Link>
         </div>
 
-        <div className="flex gap-1.5 overflow-x-auto px-3 py-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-1.5 overflow-x-auto px-1.5 py-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {CATEGORY_CHIPS.map((cat) => {
             const Icon = cat.icon
             return (
@@ -175,7 +175,7 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 5. Recommended Produce (Halved spacing, 2-Column Grid with gap-1.5) */}
-      <div className="relative px-3 pt-2">
+      <div className="relative px-1.5 pt-2">
         <div className="flex items-center justify-between pb-1.5">
           <h3 className="text-[14px] font-black text-[#211A12]">
             Recommended for you
@@ -201,7 +201,7 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 6. Popular This Week Grid */}
-      <div className="relative px-3 pt-3">
+      <div className="relative px-1.5 pt-3">
         <div className="flex items-center justify-between pb-1.5">
           <div>
             <h3 className="text-[14px] font-black text-[#211A12]">
@@ -227,7 +227,7 @@ export default function MobileHomeScreen() {
 
       {/* 7. Bundles & Subscriptions Preview */}
       <div className="relative pt-3">
-        <div className="flex items-center justify-between px-3 pb-1.5">
+        <div className="flex items-center justify-between px-1.5 pb-1.5">
           <div>
             <h3 className="text-[14px] font-black text-[#211A12]">
               Bundles &amp; subscriptions
@@ -243,7 +243,7 @@ export default function MobileHomeScreen() {
           </Link>
         </div>
 
-        <div className="flex gap-2 overflow-x-auto px-3 py-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-1.5 overflow-x-auto px-1.5 py-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {bundles.map((bundle) => (
             <Link
               key={bundle.id}
@@ -283,7 +283,7 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 8. Recipes Inspiration */}
-      <div className="relative px-3 pt-3">
+      <div className="relative px-1.5 pt-3">
         <div className="flex items-center justify-between pb-1.5">
           <div>
             <h3 className="text-[14px] font-black text-[#211A12]">Recipes inspiration</h3>
@@ -298,7 +298,7 @@ export default function MobileHomeScreen() {
           </Link>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {recipes.slice(0, 2).map((recipe) => (
             <Link
               key={recipe.id}
@@ -339,7 +339,7 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 9. Meet Local Ghanaian Farmers */}
-      <div className="relative px-3 pt-3">
+      <div className="relative px-1.5 pt-3">
         <div className="flex items-center justify-between pb-1.5">
           <div>
             <h3 className="text-[14px] font-black text-[#211A12]">Meet your farmers</h3>
@@ -354,7 +354,7 @@ export default function MobileHomeScreen() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-1.5">
           {farmers.slice(0, 2).map((farmer) => (
             <Link
               key={farmer.id}
@@ -394,7 +394,7 @@ export default function MobileHomeScreen() {
          ======================================================== */}
 
       {/* 10. Fresh Vegetables & Greens */}
-      <div className="relative px-3 pt-3.5">
+      <div className="relative px-1.5 pt-3.5">
         <div className="flex items-center justify-between pb-1.5">
           <div>
             <h3 className="text-[14px] font-black text-[#211A12]">
@@ -418,7 +418,7 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 11. Roots, Tubers & Plantain */}
-      <div className="relative px-3 pt-3.5">
+      <div className="relative px-1.5 pt-3.5">
         <div className="flex items-center justify-between pb-1.5">
           <div>
             <h3 className="text-[14px] font-black text-[#211A12]">
@@ -442,7 +442,7 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 12. Orchard Fresh Fruits */}
-      <div className="relative px-3 pt-3.5">
+      <div className="relative px-1.5 pt-3.5">
         <div className="flex items-center justify-between pb-1.5">
           <div>
             <h3 className="text-[14px] font-black text-[#211A12]">
@@ -466,7 +466,7 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 13. Grains, Legumes & Staples */}
-      <div className="relative px-3 pt-3.5">
+      <div className="relative px-1.5 pt-3.5">
         <div className="flex items-center justify-between pb-1.5">
           <div>
             <h3 className="text-[14px] font-black text-[#211A12]">
@@ -490,7 +490,7 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 14. Aromatic Herbs & Hot Peppers */}
-      <div className="relative px-3 pt-3.5">
+      <div className="relative px-1.5 pt-3.5">
         <div className="flex items-center justify-between pb-1.5">
           <div>
             <h3 className="text-[14px] font-black text-[#211A12]">

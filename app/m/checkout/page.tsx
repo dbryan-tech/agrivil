@@ -69,10 +69,10 @@ export default function MobileCheckoutScreen() {
 
       {/* Header Bar */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-1.5 py-2.5 backdrop-blur-md"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => router.back()}
@@ -96,7 +96,7 @@ export default function MobileCheckoutScreen() {
         </div>
       </header>
 
-      <div className="relative px-3 pt-2.5 space-y-2.5">
+      <div className="relative px-1.5 pt-2.5 space-y-2">
         {/* 1. Delivery Address Card */}
         <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
           <div className="flex items-center justify-between pb-1.5 border-b border-[rgba(33,26,18,0.06)]">
@@ -255,7 +255,7 @@ export default function MobileCheckoutScreen() {
       </div>
 
       {/* Sticky Bottom Place Order Action Bar */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95 px-3 pt-2.5 pb-[clamp(16px,2.5vh,22px)] backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95 px-1.5 pt-2.5 pb-[clamp(16px,2.5vh,22px)] backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]">
         <button
           type="button"
           onClick={handlePlaceOrder}

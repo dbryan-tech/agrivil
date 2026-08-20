@@ -57,7 +57,7 @@ export default function MobileBundlesScreen() {
 
         {/* Floating Top Navigation Header */}
         <header
-          className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-3.5 pt-3"
+          className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-1.5 pt-3"
           style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
         >
           <button
@@ -69,7 +69,7 @@ export default function MobileBundlesScreen() {
             <ArrowLeft className="h-4 w-4 stroke-[2.4]" />
           </button>
 
-          <div className="flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1.5 text-[11px] font-black uppercase tracking-wider text-[#211A12] shadow-sm border border-[rgba(33,26,18,0.08)] backdrop-blur-xs">
+          <div className="flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1.5 text-[11px] font-black uppercase tracking-wider text-[#211A12] shadow-sm border border-[rgba(33,26,18,0.08)] backdrop-blur-xs">
             <Repeat className="h-3 w-3 text-[#0B3B25]" />
             <span>Farm Boxes</span>
           </div>
@@ -102,7 +102,7 @@ export default function MobileBundlesScreen() {
         </div>
       </div>
 
-      <div className="relative px-3.5 pt-3 space-y-3">
+      <div className="relative px-1.5 pt-3 space-y-2">
         {/* Bundles List */}
         <div className="space-y-3">
           {bundles.map((bundle) => {

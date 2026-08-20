@@ -69,10 +69,10 @@ export default function MobileShopLocalScreen() {
 
       {/* 1. Header */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-1.5 py-2.5 backdrop-blur-md"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => router.back()}
@@ -99,10 +99,11 @@ export default function MobileShopLocalScreen() {
 
         {/* Pulsating User Location Dot */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
-          <div className="h-10 w-10 rounded-full bg-[#0B3B25]/20 animate-ping" />
-          <div className="absolute h-5 w-5 rounded-full border-2 border-white bg-[#0B3B25] shadow-md flex items-center justify-center text-white">
-            <Navigation className="h-2.5 w-2.5 fill-white" />
-          </div>
+          <span className="absolute h-16 w-16 animate-ping rounded-full bg-[#0B3B25]/20" />
+          <span className="absolute h-8 w-8 rounded-full bg-[#0B3B25]/30" />
+          <span className="relative flex h-4 w-4 items-center justify-center rounded-full bg-[#0B3B25] ring-2 ring-white shadow-md">
+            <Navigation className="h-2 w-2 text-white fill-white" />
+          </span>
         </div>
 
         {/* Nearby Farm Location Pins */}

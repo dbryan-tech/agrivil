@@ -119,10 +119,10 @@ function CategoriesContent() {
 
       {/* 1. Header with Back Arrow & Title */}
       <header
-        className="sticky top-0 z-30 border-b border-[rgba(33,26,18,0.08)] bg-white/95 px-3 py-2.5 backdrop-blur-md"
+        className="sticky top-0 z-30 border-b border-[rgba(33,26,18,0.08)] bg-white/95 px-1.5 py-2.5 backdrop-blur-md"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => router.back()}
@@ -150,7 +150,7 @@ function CategoriesContent() {
         </div>
       </header>
 
-      <div className="relative px-3 pt-3 space-y-4">
+      <div className="relative px-1.5 pt-3 space-y-3">
         {/* 2. 2-Column Category Grid */}
         <div>
           <div className="flex items-center justify-between pb-2">
@@ -195,11 +195,11 @@ function CategoriesContent() {
         </div>
 
         {/* 3. Cross-Discovery Cards: Recipes & Bundles */}
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-1.5">
           <Link
             href="/m/recipes"
             prefetch={true}
-            className="flex flex-col justify-between rounded-[22px] bg-[#7A3F1C] p-3.5 text-white shadow-xs active:scale-[0.98] transition-transform"
+            className="flex flex-col justify-between rounded-[22px] bg-[#7A3F1C] p-3 text-white shadow-xs active:scale-[0.98] transition-transform"
           >
             <div>
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">
@@ -219,7 +219,7 @@ function CategoriesContent() {
           <Link
             href="/m/bundles"
             prefetch={true}
-            className="flex flex-col justify-between rounded-[22px] bg-[#0B3B25] p-3.5 text-white shadow-xs active:scale-[0.98] transition-transform"
+            className="flex flex-col justify-between rounded-[22px] bg-[#0B3B25] p-3 text-white shadow-xs active:scale-[0.98] transition-transform"
           >
             <div>
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">

@@ -41,7 +41,7 @@ const ORDERS: OrderItem[] = [
     title: 'Organic Roma Tomatoes & Garden Eggs',
     farmerName: "Auntie Ama's Certified Farm",
     status: 'TRANSIT',
-    ribbonColor: '#E86328', // Reference orange
+    ribbonColor: '#E86328',
     awayText: '4h Away',
     truckIndex: 2,
     steps: [{ done: true }, { done: true }, { done: false }, { done: false }],
@@ -58,7 +58,7 @@ const ORDERS: OrderItem[] = [
     title: 'Fresh Pona Yam Tuber & Scotch Bonnet',
     farmerName: 'Kwame Mensah Agro Collective',
     status: 'PROCESS',
-    ribbonColor: '#211A12', // Reference dark/black
+    ribbonColor: '#211A12',
     awayText: '2d Away',
     truckIndex: 1,
     steps: [{ done: true }, { done: false }, { done: false }, { done: false }],
@@ -75,7 +75,7 @@ const ORDERS: OrderItem[] = [
     title: 'Sugarloaf Sweet Pineapple & Ginger Box',
     farmerName: 'Volta Green Smallholders',
     status: 'DELIVERED',
-    ribbonColor: '#16A34A', // Reference green
+    ribbonColor: '#16A34A',
     awayText: 'Delivered',
     truckIndex: 3,
     steps: [{ done: true }, { done: true }, { done: true }, { done: true }],
@@ -99,25 +99,26 @@ export default function MobileOrdersScreen() {
     delivered: ORDERS.filter((o) => o.status === 'DELIVERED').length,
   }
 
-  const filtered = ORDERS.filter((o) => {
-    if (activeTab === 'transit' && o.status !== 'TRANSIT') return false
-    if (activeTab === 'process' && o.status !== 'PROCESS') return false
-    if (activeTab === 'delivered' && o.status !== 'DELIVERED') return false
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase()
-      return (
-        o.id.toLowerCase().includes(q) ||
-        o.trackingCode.toLowerCase().includes(q) ||
-        o.title.toLowerCase().includes(q) ||
-        o.from.toLowerCase().includes(q) ||
-        o.to.toLowerCase().includes(q)
-      )
-    }
-    return true
+  const filtered = ORDERS.filter((order) => {
+    const matchesTab =
+      activeTab === 'all' ||
+      (activeTab === 'transit' && order.status === 'TRANSIT') ||
+      (activeTab === 'process' && order.status === 'PROCESS') ||
+      (activeTab === 'delivered' && order.status === 'DELIVERED')
+
+    const q = searchQuery.trim().toLowerCase()
+    const matchesSearch =
+      !q ||
+      order.id.toLowerCase().includes(q) ||
+      order.trackingCode.toLowerCase().includes(q) ||
+      order.title.toLowerCase().includes(q) ||
+      order.farmerName.toLowerCase().includes(q)
+
+    return matchesTab && matchesSearch
   })
 
   return (
-    <div className="relative min-h-dvh w-full bg-[#F7F5F0] pb-24 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+    <div className="relative min-h-dvh w-full bg-[#F7F5F0] pb-28 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
       {/* Zero Scrollbar Global Styles */}
       <style jsx global>{`
         * {
@@ -131,7 +132,7 @@ export default function MobileOrdersScreen() {
         }
       `}</style>
 
-      {/* Top warm brand gradient backdrop matching reference */}
+      {/* Top warm brand gradient backdrop */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(260px,45vh,380px)]"
         style={{
@@ -142,7 +143,7 @@ export default function MobileOrdersScreen() {
 
       {/* Header Bar */}
       <header
-        className="relative flex items-center justify-between px-3.5 pt-3 pb-1"
+        className="relative flex items-center justify-between px-1.5 pt-3 pb-1"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
       >
         <h1 className="text-[26px] font-black tracking-tight text-[#211A12]">
@@ -157,8 +158,8 @@ export default function MobileOrdersScreen() {
         </button>
       </header>
 
-      {/* Search Bar matching reference */}
-      <div className="relative px-3.5 pt-2">
+      {/* Search Bar */}
+      <div className="relative px-1.5 pt-2">
         <div className="flex h-11 w-full items-center gap-2.5 rounded-full bg-white px-4 shadow-2xs border border-[rgba(33,26,18,0.06)]">
           <Search className="h-4 w-4 text-[#5C5247] stroke-[2.2]" />
           <input
@@ -171,9 +172,9 @@ export default function MobileOrdersScreen() {
         </div>
       </div>
 
-      {/* Filter Tabs matching reference (All 5, Transit 2, On Process 2, Delivered 1) */}
-      <div className="relative px-3.5 pt-2.5 overflow-x-auto no-scrollbar">
-        <div className="flex gap-2 min-w-max pb-1">
+      {/* Filter Tabs */}
+      <div className="relative px-1.5 pt-2.5 overflow-x-auto [scrollbar-width:none]">
+        <div className="flex gap-1.5 min-w-max pb-1">
           {[
             { key: 'all' as const, label: 'All', count: counts.all },
             { key: 'transit' as const, label: 'Transit', count: counts.transit },
@@ -187,7 +188,7 @@ export default function MobileOrdersScreen() {
                 type="button"
                 onClick={() => setActiveTab(t.key)}
                 className={cn(
-                  'flex items-center gap-1.5 rounded-full px-4 py-2 text-[12px] font-extrabold transition-all active:scale-95 shadow-2xs',
+                  'flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[11.5px] font-extrabold transition-all active:scale-95 shadow-2xs',
                   isActive
                     ? 'bg-[#211A12] text-white shadow-xs'
                     : 'bg-white text-[#5C5247] border border-[rgba(33,26,18,0.08)] hover:text-[#211A12]'
@@ -208,8 +209,8 @@ export default function MobileOrdersScreen() {
         </div>
       </div>
 
-      {/* Orders List (Compact, 2.5 visible on screen!) */}
-      <div className="relative px-3.5 pt-2 space-y-2.5">
+      {/* Orders List */}
+      <div className="relative px-1.5 pt-2 space-y-2">
         {filtered.map((order) => (
           <Link
             key={order.id}
@@ -250,14 +251,12 @@ export default function MobileOrdersScreen() {
               </div>
             </div>
 
-            {/* Middle Row: Dotted Progress Track matching reference */}
+            {/* Middle Row: Dotted Progress Track */}
             <div className="relative mt-2.5 pt-4 pb-1">
-              {/* Dotted Line */}
               <div className="absolute left-3 right-3 top-[23px] flex items-center">
                 <div className="h-[2px] w-full border-t-2 border-dotted border-[rgba(33,26,18,0.22)]" />
               </div>
 
-              {/* Step Circles */}
               <div className="relative flex items-center justify-between">
                 {order.steps.map((step, idx) => {
                   const isTruck = idx === order.truckIndex
@@ -266,7 +265,6 @@ export default function MobileOrdersScreen() {
 
                   return (
                     <div key={idx} className="relative flex flex-col items-center">
-                      {/* Floating Time Pill above truck */}
                       {isTruck && order.awayText && (
                         <div className="absolute -top-4.5 whitespace-nowrap">
                           <span className="text-[10px] font-black text-[#211A12]">
@@ -298,46 +296,39 @@ export default function MobileOrdersScreen() {
               </div>
             </div>
 
-            {/* Bottom Row: FROM / TO + 3D Packaging Boxes */}
+            {/* Bottom Row: FROM / TO */}
             <div className="mt-2.5 border-t border-[rgba(33,26,18,0.06)] pt-2.5">
               <div className="flex items-end justify-between">
-                {/* FROM column */}
-                <div className="min-w-0 flex-1 pr-2">
-                  <span className="text-[9px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
+                <div>
+                  <span className="text-[9.5px] font-black uppercase tracking-wider text-[#8A7E72]">
                     FROM
                   </span>
-                  <h4 className="mt-0.5 truncate text-[12px] font-black text-[#211A12]">
+                  <p className="text-[12.5px] font-black text-[#211A12] leading-tight">
                     {order.from}
-                  </h4>
-                  <p className="text-[10px] font-medium text-[#8A7E72]">
-                    {order.fromDate}
                   </p>
+                  <span className="text-[10px] text-[#5C5247] font-semibold">{order.fromDate}</span>
                 </div>
 
-                {/* TO column */}
-                <div className="min-w-0 flex-1 pr-2">
-                  <span className="text-[9px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
+                <div className="text-right">
+                  <span className="text-[9.5px] font-black uppercase tracking-wider text-[#8A7E72]">
                     TO
                   </span>
-                  <h4 className="mt-0.5 truncate text-[12px] font-black text-[#211A12]">
+                  <p className="text-[12.5px] font-black text-[#211A12] leading-tight">
                     {order.to}
-                  </h4>
-                  <p className="text-[10px] font-medium text-[#8A7E72]">
-                    {order.toDate}
                   </p>
+                  <span className="text-[10px] text-[#5C5247] font-semibold">{order.toDate}</span>
                 </div>
+              </div>
 
-                {/* 3D Stacked Cardboard Packaging Boxes Illustration */}
-                <div className="shrink-0 -mb-1 -mr-1">
-                  <PackageBoxes3D size={64} />
-                </div>
+              <div className="mt-2 flex items-center justify-between border-t border-[rgba(33,26,18,0.04)] pt-1.5 text-[11.5px]">
+                <span className="text-[#5C5247] font-bold">Total Bill</span>
+                <span className="font-black text-[#0B3B25]">{formatGHS(order.totalGHS)}</span>
               </div>
             </div>
           </Link>
         ))}
       </div>
 
-      {/* Bottom Navigation */}
       <MobileBottomNav />
     </div>
   )

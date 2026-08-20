@@ -111,7 +111,7 @@ export default function MobileFarmerProfileScreen() {
 
         {/* Floating Top Navigation Header */}
         <header
-          className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-3.5 pt-3"
+          className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-1.5 pt-3"
           style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
         >
           <button
@@ -184,7 +184,7 @@ export default function MobileFarmerProfileScreen() {
 
       {/* 3. Interactive Tab Navigation (No visible bottom divider line) */}
       <div className="sticky top-0 z-30 bg-[#FAF9F6]/95 backdrop-blur-md pt-2">
-        <div className="flex gap-1.5 overflow-x-auto px-3 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-1.5 overflow-x-auto px-1.5 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {[
             { key: 'overview', label: 'Overview' },
             { key: 'harvest', label: `Harvest (${farmProducts.length || 4})` },
@@ -210,7 +210,7 @@ export default function MobileFarmerProfileScreen() {
       </div>
 
       {/* 4. Tab Contents */}
-      <div className="px-3 pt-2.5 space-y-2.5">
+      <div className="px-1.5 pt-2.5 space-y-2.5">
         {/* OVERVIEW TAB */}
         {activeTab === 'overview' && (
           <div className="space-y-2.5">
@@ -427,7 +427,7 @@ export default function MobileFarmerProfileScreen() {
       </div>
 
       {/* 5. Sticky Action Footer */}
-      <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md border-t border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95 px-3 pt-2.5 pb-[clamp(16px,2.5vh,22px)] backdrop-blur-md">
+      <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md border-t border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95 px-1.5 pt-2.5 pb-[clamp(16px,2.5vh,22px)] backdrop-blur-md">
         <button
           type="button"
           onClick={() => setShowContactModal(true)}

@@ -76,9 +76,9 @@ export default function MobileRecipeDetailScreen() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20" />
 
-        {/* Floating Top Navigation Header */}
+        {/* Floating Top Nav */}
         <header
-          className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-3.5 pt-3"
+          className="fixed inset-x-0 top-0 z-40 mx-auto flex max-w-md items-center justify-between px-1.5 pt-3"
           style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
         >
           <button
@@ -89,11 +89,6 @@ export default function MobileRecipeDetailScreen() {
           >
             <ArrowLeft className="h-4 w-4 stroke-[2.4]" />
           </button>
-
-          <div className="flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1.5 text-[11px] font-black uppercase tracking-wider text-[#211A12] shadow-sm border border-[rgba(33,26,18,0.08)] backdrop-blur-xs">
-            <ChefHat className="h-3 w-3 text-[#7A3F1C]" />
-            <span>{recipe.category}</span>
-          </div>
 
           <Link
             href="/m/cart"
@@ -129,7 +124,7 @@ export default function MobileRecipeDetailScreen() {
         </div>
       </div>
 
-      <div className="relative px-3.5 pt-4 space-y-4">
+      <div className="relative px-1.5 pt-3.5 space-y-3.5">
         {/* 2. Recipe Story / Description (Direct on background, zero card wrapper) */}
         <div className="space-y-1">
           <h2 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">

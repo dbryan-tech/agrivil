@@ -55,7 +55,7 @@ export default function MobileCartScreen() {
 
       {/* Header */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-1.5 py-2.5 backdrop-blur-md"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
         <button
@@ -87,7 +87,7 @@ export default function MobileCartScreen() {
         )}
       </header>
 
-      <div className="relative px-3 pt-2.5 space-y-2.5">
+      <div className="relative px-1.5 pt-2.5 space-y-2">
         {lines.length === 0 ? (
           <div className="mt-16 flex flex-col items-center justify-center text-center">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#FDFDFB] text-[#5C5247] shadow-sm">
@@ -132,7 +132,7 @@ export default function MobileCartScreen() {
             </div>
 
             {/* Cart Items List */}
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {lines.map(({ product, qty }) => {
                 const itemTotal = unitEstimate(product) * qty
                 return (
@@ -209,7 +209,7 @@ export default function MobileCartScreen() {
               <span className="text-[9.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
                 Select Delivery Window
               </span>
-              <div className="mt-2 grid grid-cols-2 gap-2">
+              <div className="mt-2 grid grid-cols-2 gap-1.5">
                 <button
                   type="button"
                   onClick={() => setDeliverySlot('today-pm')}
@@ -279,7 +279,7 @@ export default function MobileCartScreen() {
 
       {/* Sticky Bottom Checkout Bar */}
       {lines.length > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95 px-3 pt-2.5 pb-[clamp(16px,2.5vh,22px)] backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]">
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95 px-1.5 pt-2.5 pb-[clamp(16px,2.5vh,22px)] backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]">
           <Link
             href="/m/checkout"
             className="flex w-full items-center justify-between rounded-full bg-[#0B3B25] px-5 py-3 text-white shadow-md active:scale-[0.98] transition-transform"

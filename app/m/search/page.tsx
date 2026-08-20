@@ -61,7 +61,7 @@ export default function MobileSearchScreen() {
 
       {/* Search Header */}
       <div
-        className="sticky top-0 z-30 flex items-center gap-2.5 border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
+        className="sticky top-0 z-30 flex items-center gap-2 border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-1.5 py-2.5 backdrop-blur-md"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
         <Link
@@ -95,7 +95,7 @@ export default function MobileSearchScreen() {
       </div>
 
       {/* Query Content */}
-      <div className="relative px-3 pt-2.5">
+      <div className="relative px-1.5 pt-2.5">
         {query.trim().length === 0 ? (
           <div className="space-y-4">
             {/* Recent Searches */}

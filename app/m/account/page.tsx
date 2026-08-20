@@ -47,7 +47,7 @@ export default function MobileAccountScreen() {
       `}</style>
 
       {/* Header */}
-      <header className="relative flex items-center justify-between px-3.5 pt-4 pb-2 border-b border-[rgba(33,26,18,0.06)] bg-white/95 backdrop-blur-md">
+      <header className="relative flex items-center justify-between px-1.5 pt-3.5 pb-2 border-b border-[rgba(33,26,18,0.06)] bg-white/95 backdrop-blur-md">
         <h1 className="text-[20px] font-black tracking-tight text-[#211A12]">
           My Profile
         </h1>
@@ -57,9 +57,9 @@ export default function MobileAccountScreen() {
         </div>
       </header>
 
-      <div className="relative px-3.5 pt-4 space-y-4">
+      <div className="relative px-1.5 pt-3.5 space-y-3.5">
         {/* 1. Profile Member Header (Direct on background, circular avatar, zero card box) */}
-        <div className="flex items-center gap-3.5">
+        <div className="flex items-center gap-3">
           <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#0B3B25] text-xl font-black text-white shadow-sm">
             {userName.charAt(0)}
           </div>
@@ -76,7 +76,7 @@ export default function MobileAccountScreen() {
         </div>
 
         {/* 2. Quick Action Links (Direct on background, zero card box, zero borders) */}
-        <div className="grid grid-cols-2 gap-3 pt-1">
+        <div className="grid grid-cols-2 gap-1.5 pt-1">
           <Link
             href="/m/orders"
             className="flex items-center gap-2.5 py-1 active:opacity-75 transition-opacity"
