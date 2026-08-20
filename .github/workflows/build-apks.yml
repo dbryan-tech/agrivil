@@ -60,10 +60,9 @@ jobs:
         working-directory: mobile
         run: node scripts/sync-android.mjs
 
-      - name: Generate brand vector drawables and sync mobile assets
+      - name: Generate brand vector drawables
         run: |
           node scripts/generate_android_vector_drawables.mjs
-          node scripts/sync_mobile_brand_assets.mjs
 
       - name: Build Consumer APK (marketplace, /m)
         working-directory: mobile/android
