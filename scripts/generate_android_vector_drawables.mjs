@@ -151,6 +151,16 @@ for (const dir of targets) {
   
   // 4. Adaptive Icon Background
   fs.writeFileSync(path.join(dir, 'ic_launcher_background.xml'), generateBackgroundXml())
+
+  // 5. Update values/ic_launcher_background.xml
+  const valuesDir = path.join(path.dirname(dir), 'values')
+  if (fs.existsSync(valuesDir)) {
+    fs.writeFileSync(
+      path.join(valuesDir, 'ic_launcher_background.xml'),
+      `<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_background">${C_CREAM}</color>\n</resources>\n`
+    )
+  }
 }
 
 console.log('Android vector drawables successfully generated!')
+
