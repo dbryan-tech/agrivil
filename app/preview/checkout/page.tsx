@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import {
   ArrowLeft,
+  ArrowRight,
   MapPin,
   Phone,
   CreditCard,
@@ -232,8 +233,10 @@ export default function MobileCheckoutScreen() {
               <h4 className="mt-1 text-[14px] font-extrabold text-[#211A12]">
                 3 Produce Items (4.6 kg)
               </h4>
-              <p className="text-[12px] font-semibold text-[#5C5247]">
-                Tema Cold Hub ➔ East Legon
+              <p className="flex items-center gap-1 text-[12px] font-semibold text-[#5C5247]">
+                <span>Tema Cold Hub</span>
+                <ArrowRight className="h-3 w-3 text-[#7A3F1C]" />
+                <span>East Legon</span>
               </p>
             </div>
             <PackageBoxes3D size={68} />

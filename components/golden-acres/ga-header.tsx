@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { NotificationBell } from '@/components/golden-acres/notifications/notification-bell'
 import { SearchAutocomplete } from '@/components/golden-acres/search/search-autocomplete'
@@ -9,7 +10,6 @@ import {
   MapPin,
   Menu,
   X,
-  Wheat,
   User,
   Package,
   Repeat,
@@ -88,15 +88,24 @@ export function GaHeader() {
       <div className="border-b border-border/40 bg-card/95 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:gap-6">
           <Link href="/" className="group flex shrink-0 items-center gap-2.5" aria-label="AgriVil home">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground ga-elev-1 transition-transform duration-300 group-hover:-rotate-6">
-              <Wheat className="h-5 w-5" strokeWidth={2.2} />
-            </span>
-            <span className="flex flex-col leading-none">
-              <span className="ga-headline text-xl leading-none text-foreground">AgriVil</span>
-              <span className="ga-kicker mt-1 text-[8px] tracking-[0.16em] text-muted-foreground">
-                by Golden Acres
+            <div className="relative h-10 w-10 shrink-0 overflow-hidden transition-transform duration-300 group-hover:scale-105">
+              <Image
+                src="/agrivil-mark.svg"
+                alt="AgriVil"
+                width={40}
+                height={40}
+                className="h-full w-full object-contain"
+                priority
+              />
+            </div>
+            <div className="flex flex-col leading-none">
+              <span className="text-[20px] font-black tracking-[0.2em] text-[#0B3B25]">
+                AGRIVIL
               </span>
-            </span>
+              <span className="mt-0.5 text-[8.5px] font-extrabold tracking-[0.14em] uppercase text-[#7A3F1C]">
+                Farm Fresh · Market Smart
+              </span>
+            </div>
           </Link>
 
           {/* Search with typeahead */}

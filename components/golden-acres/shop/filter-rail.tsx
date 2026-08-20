@@ -72,8 +72,8 @@ export function FilterRail({ filters, facets, onChange, sellerLimit = 6 }: Filte
                           key={i}
                           className="h-3.5 w-3.5"
                           style={{
-                            fill: i < Math.round(val) ? 'var(--ga-star)' : 'transparent',
-                            color: i < Math.round(val) ? 'var(--ga-star)' : 'var(--border)',
+                            fill: i < Math.round(val) ? '#F0A81E' : 'transparent',
+                            color: i < Math.round(val) ? '#F0A81E' : '#EAE5DB',
                           }}
                         />
                       ))}

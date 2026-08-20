@@ -41,11 +41,11 @@ export function ProductListRow({
   }
 
   return (
-    <div className="ga-card-hover group flex gap-4 overflow-hidden rounded-2xl border border-border bg-card p-3 sm:gap-5 sm:p-4">
+    <div className="ga-card-hover group flex gap-4 overflow-hidden rounded-[20px] border border-black/[0.04] bg-[#FDFDFB] p-3 sm:gap-5 sm:p-4 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
       {/* image */}
       <Link
         href={`/shop/${product.slug}`}
-        className="relative block aspect-square w-28 shrink-0 overflow-hidden rounded-xl bg-secondary/40 sm:w-40"
+        className="relative block aspect-square w-28 shrink-0 overflow-hidden rounded-2xl bg-[#EDE8DF]/40 sm:w-40"
       >
         <SmartImage
           src={product.image}
@@ -54,7 +54,7 @@ export function ProductListRow({
           className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
         />
         {product.organic && (
-          <span className="absolute left-1.5 top-1.5 inline-flex items-center gap-1 rounded-full bg-primary/95 px-1.5 py-[2px] text-[9px] font-bold uppercase tracking-wide text-primary-foreground shadow-sm">
+          <span className="absolute left-1.5 top-1.5 inline-flex items-center gap-1 rounded-full bg-[#0B3B25]/95 px-2 py-[2px] text-[9.5px] font-black uppercase tracking-wider text-white shadow-xs">
             <Leaf className="h-2.5 w-2.5" strokeWidth={2.5} />
             Organic
           </span>
@@ -67,13 +67,13 @@ export function ProductListRow({
           <div className="min-w-0">
             <Link
               href={`/farmers/${farmer.slug}`}
-              className="flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary"
+              className="flex items-center gap-1 text-xs font-semibold text-[#5C5247] transition-colors hover:text-[#0B3B25]"
             >
               <MapPin className="h-3 w-3" />
               <span className="truncate">{farmer.farmName} · {farmer.region}</span>
             </Link>
             <Link href={`/shop/${product.slug}`}>
-              <h3 className="mt-0.5 line-clamp-1 text-base font-bold leading-tight text-foreground transition-colors group-hover:text-primary sm:text-lg">
+              <h3 className="mt-0.5 line-clamp-1 text-base font-black leading-tight text-[#211A12] transition-colors group-hover:text-[#0B3B25] sm:text-lg">
                 {product.name}
               </h3>
             </Link>
@@ -84,27 +84,27 @@ export function ProductListRow({
                     key={i}
                     className="h-3.5 w-3.5"
                     style={{
-                      fill: i < rounded ? 'var(--ga-star)' : 'transparent',
-                      color: i < rounded ? 'var(--ga-star)' : 'var(--border)',
+                      fill: i < rounded ? '#F0A81E' : 'transparent',
+                      color: i < rounded ? '#F0A81E' : '#EAE5DB',
                     }}
                   />
                 ))}
               </div>
-              <span className="text-xs font-semibold text-foreground">{farmer.rating.toFixed(1)}</span>
-              <span className="text-xs text-muted-foreground">({farmer.reviewCount})</span>
+              <span className="text-xs font-bold text-[#211A12]">{farmer.rating.toFixed(1)}</span>
+              <span className="text-xs text-[#5C5247]">({farmer.reviewCount})</span>
             </div>
           </div>
 
           {/* freshness chip */}
           {fresh && (
-            <span className="hidden shrink-0 items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-foreground sm:inline-flex">
-              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: fresh.color }} />
+            <span className="hidden shrink-0 items-center gap-1.5 rounded-full bg-[#EDE8DF] px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-wide text-[#211A12] sm:inline-flex">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: fresh.color || '#0B3B25' }} />
               {fresh.label}
             </span>
           )}
         </div>
 
-        <p className="mt-2 line-clamp-2 hidden text-sm leading-relaxed text-muted-foreground sm:block">
+        <p className="mt-2 line-clamp-2 hidden text-sm leading-relaxed text-[#5C5247] sm:block">
           {product.description}
         </p>
 
@@ -112,14 +112,14 @@ export function ProductListRow({
         <div className="mt-auto flex flex-wrap items-end justify-between gap-3 pt-3">
           <div>
             <div className="flex items-baseline gap-1.5">
-              {multi && <span className="text-xs font-medium text-muted-foreground">from</span>}
-              <span className="ga-price text-[1.4rem] leading-none text-foreground">
+              {multi && <span className="text-xs font-medium text-[#5C5247]">from</span>}
+              <span className="ga-price text-[1.4rem] font-black leading-none text-[#211A12]">
                 {formatGHS(estimate)}
               </span>
-              <span className="text-xs text-muted-foreground">/ {unitLabel}</span>
+              <span className="text-xs font-medium text-[#5C5247]">/ {unitLabel}</span>
             </div>
             {multi && (
-              <span className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-[var(--ga-copper)]">
+              <span className="mt-1 inline-flex items-center gap-1 text-[11px] font-bold text-[#7A3F1C]">
                 <Users className="h-3 w-3" />
                 Compare {group.count} farmer prices
               </span>
@@ -131,7 +131,7 @@ export function ProductListRow({
               <button
                 type="button"
                 onClick={() => onQuickView(group)}
-                className="ga-press inline-flex h-10 items-center gap-1.5 rounded-full border border-border bg-card px-3.5 text-sm font-semibold text-foreground hover:border-primary/40"
+                className="ga-press inline-flex h-10 items-center gap-1.5 rounded-full border border-black/[0.08] bg-white px-3.5 text-sm font-bold text-[#211A12] hover:bg-[#F7F5F0]"
               >
                 <Eye className="h-4 w-4" />
                 <span className="hidden sm:inline">Quick view</span>
@@ -142,10 +142,10 @@ export function ProductListRow({
               onClick={handleAdd}
               aria-label={`Add ${product.name} to cart`}
               className={[
-                'ga-press ga-sheen inline-flex h-10 items-center justify-center gap-2 rounded-full px-4 text-sm font-bold transition-colors duration-300',
+                'ga-press ga-sheen inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-sm font-extrabold transition-all duration-300',
                 added
-                  ? 'bg-primary/12 text-primary ring-1 ring-primary/30'
-                  : 'bg-primary text-primary-foreground hover:bg-field-deep ga-elev-1',
+                  ? 'bg-[#0B3B25]/12 text-[#0B3B25] ring-1 ring-[#0B3B25]/30'
+                  : 'bg-[#0B3B25] text-white hover:bg-[#072618] shadow-sm',
               ].join(' ')}
             >
               {added ? (

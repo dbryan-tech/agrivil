@@ -1,0 +1,342 @@
+[
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_app_icon.png",
+    "bytes": 22545
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_app_icon.svg",
+    "bytes": 2546
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_app_icon_dark.png",
+    "bytes": 22397
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_app_icon_dark.svg",
+    "bytes": 2546
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_logo_black.png",
+    "bytes": 15854
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_logo_black.svg",
+    "bytes": 2642
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_logo_primary_horizontal.png",
+    "bytes": 30975
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_logo_primary_horizontal.svg",
+    "bytes": 2999
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_logo_primary_horizontal_notagline.png",
+    "bytes": 20953
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_logo_primary_horizontal_notagline.svg",
+    "bytes": 2642
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_logo_reverse.png",
+    "bytes": 16156
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_logo_reverse.svg",
+    "bytes": 2642
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_logo_stacked.png",
+    "bytes": 52362
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_logo_stacked.svg",
+    "bytes": 3063
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_logo_stacked_notagline.png",
+    "bytes": 39012
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_logo_stacked_notagline.svg",
+    "bytes": 2664
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_mark_black.png",
+    "bytes": 21902
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_mark_black.svg",
+    "bytes": 2400
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_mark_color.png",
+    "bytes": 28588
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_mark_color.svg",
+    "bytes": 2400
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_mark_white.png",
+    "bytes": 21715
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_mark_white.svg",
+    "bytes": 2400
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_round_stamp_badge.png",
+    "bytes": 95760
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_round_stamp_badge.svg",
+    "bytes": 7641
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_social_avatar_circle.png",
+    "bytes": 58698
+  },
+  {
+    "path": "01_LOGO_SYSTEM/agrivil_social_avatar_circle.svg",
+    "bytes": 2616
+  },
+  {
+    "path": "01_LOGO_SYSTEM/logo_usage_board.png",
+    "bytes": 279430
+  },
+  {
+    "path": "02_ICONS/bag.png",
+    "bytes": 3498
+  },
+  {
+    "path": "02_ICONS/bag.svg",
+    "bytes": 362
+  },
+  {
+    "path": "02_ICONS/bell.png",
+    "bytes": 5410
+  },
+  {
+    "path": "02_ICONS/bell.svg",
+    "bytes": 390
+  },
+  {
+    "path": "02_ICONS/cart.png",
+    "bytes": 2763
+  },
+  {
+    "path": "02_ICONS/cart.svg",
+    "bytes": 391
+  },
+  {
+    "path": "02_ICONS/farmer.png",
+    "bytes": 5677
+  },
+  {
+    "path": "02_ICONS/farmer.svg",
+    "bytes": 375
+  },
+  {
+    "path": "02_ICONS/heart.png",
+    "bytes": 6583
+  },
+  {
+    "path": "02_ICONS/heart.svg",
+    "bytes": 432
+  },
+  {
+    "path": "02_ICONS/home.png",
+    "bytes": 2880
+  },
+  {
+    "path": "02_ICONS/home.svg",
+    "bytes": 327
+  },
+  {
+    "path": "02_ICONS/location.png",
+    "bytes": 6739
+  },
+  {
+    "path": "02_ICONS/location.svg",
+    "bytes": 326
+  },
+  {
+    "path": "02_ICONS/package.png",
+    "bytes": 3661
+  },
+  {
+    "path": "02_ICONS/package.svg",
+    "bytes": 380
+  },
+  {
+    "path": "02_ICONS/recipe.png",
+    "bytes": 3281
+  },
+  {
+    "path": "02_ICONS/recipe.svg",
+    "bytes": 376
+  },
+  {
+    "path": "02_ICONS/search.png",
+    "bytes": 5238
+  },
+  {
+    "path": "02_ICONS/search.svg",
+    "bytes": 315
+  },
+  {
+    "path": "02_ICONS/settings.png",
+    "bytes": 9819
+  },
+  {
+    "path": "02_ICONS/settings.svg",
+    "bytes": 962
+  },
+  {
+    "path": "02_ICONS/user.png",
+    "bytes": 5095
+  },
+  {
+    "path": "02_ICONS/user.svg",
+    "bytes": 355
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/app-icon-1024.png",
+    "bytes": 58614
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/app-icon-128.png",
+    "bytes": 4386
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/app-icon-144.png",
+    "bytes": 5056
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/app-icon-16.png",
+    "bytes": 417
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/app-icon-180.png",
+    "bytes": 6395
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/app-icon-192.png",
+    "bytes": 6821
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/app-icon-256.png",
+    "bytes": 9402
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/app-icon-32.png",
+    "bytes": 854
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/app-icon-48.png",
+    "bytes": 1456
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/app-icon-512.png",
+    "bytes": 22545
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/app-icon-72.png",
+    "bytes": 2286
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/app-icon-96.png",
+    "bytes": 3131
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/facebook_post.jpg",
+    "bytes": 42109
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/favicon.ico",
+    "bytes": 854
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/instagram_portrait.jpg",
+    "bytes": 56402
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/linkedin_1200x627.jpg",
+    "bytes": 36037
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/mobile_banner_1290x600.jpg",
+    "bytes": 28506
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/og_social_1200x630.jpg",
+    "bytes": 28075
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/website_hero_1600x600.jpg",
+    "bytes": 30757
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/whatsapp_status.jpg",
+    "bytes": 63998
+  },
+  {
+    "path": "03_DIGITAL_ASSETS/x_twitter_1500x500.jpg",
+    "bytes": 26183
+  },
+  {
+    "path": "04_PRINT_ASSETS/business_card_back.png",
+    "bytes": 31622
+  },
+  {
+    "path": "04_PRINT_ASSETS/business_card_front.png",
+    "bytes": 40824
+  },
+  {
+    "path": "04_PRINT_ASSETS/email_signature.png",
+    "bytes": 17986
+  },
+  {
+    "path": "04_PRINT_ASSETS/invoice_header.png",
+    "bytes": 21489
+  },
+  {
+    "path": "04_PRINT_ASSETS/letterhead_A4.png",
+    "bytes": 29134
+  },
+  {
+    "path": "05_MOCKUPS/AI_10_concepts_reference.png",
+    "bytes": 2047157
+  },
+  {
+    "path": "05_MOCKUPS/brand_pattern_tile.png",
+    "bytes": 22922
+  },
+  {
+    "path": "06_BRAND_GUIDE/AGRIVIL_BRAND_IDENTITY_GUIDE.md",
+    "bytes": 4961
+  },
+  {
+    "path": "06_BRAND_GUIDE/AGRIVIL_BRAND_IDENTITY_GUIDE.pdf",
+    "bytes": 244354
+  },
+  {
+    "path": "06_BRAND_GUIDE/ASSET_MANIFEST.json",
+    "bytes": 6496
+  },
+  {
+    "path": "06_BRAND_GUIDE/logo_asset_contact_sheet.png",
+    "bytes": 150965
+  },
+  {
+    "path": "07_SOURCE_REFERENCES/concept_1_selected_reference.png",
+    "bytes": 2776523
+  },
+  {
+    "path": "README.md",
+    "bytes": 1059
+  }
+]

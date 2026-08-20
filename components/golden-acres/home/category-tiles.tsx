@@ -15,8 +15,8 @@ export function CategoryTiles() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-4 flex items-end justify-between">
-        <h2 className="ga-headline text-2xl text-foreground sm:text-3xl">Shop by category</h2>
-        <Link href="/shop" className="text-sm font-semibold text-primary hover:underline">
+        <h2 className="ga-headline text-2xl font-black text-[#211A12] sm:text-3xl">Shop by category</h2>
+        <Link href="/shop" className="text-sm font-extrabold text-[#0B3B25] hover:text-[#072618] hover:underline">
           View all
         </Link>
       </div>
@@ -25,7 +25,7 @@ export function CategoryTiles() {
           <Link
             key={t.label}
             href={`/shop?category=${encodeURIComponent(t.label)}`}
-            className="ga-card-hover group relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-2xl border border-border/50"
+            className="ga-card-hover group relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-[20px] border border-black/[0.04] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]"
             style={{ animationDelay: `${i * 0.08}s` }}
           >
             <SmartImage
@@ -37,17 +37,17 @@ export function CategoryTiles() {
             {/* legibility gradient — strong at the base, fades up */}
             <span
               aria-hidden
-              className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent transition-opacity duration-500 group-hover:from-black/80"
+              className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent transition-opacity duration-500 group-hover:from-black/85"
             />
             {/* arrow affordance */}
-            <span className="absolute right-3 top-3 z-[2] flex h-8 w-8 translate-y-1 items-center justify-center rounded-full bg-white/15 text-white opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-              <ArrowUpRight className="h-4 w-4" />
+            <span className="absolute right-3 top-3 z-[2] flex h-7 w-7 translate-y-1 items-center justify-center rounded-full bg-white/20 text-white opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+              <ArrowUpRight className="h-3.5 w-3.5" />
             </span>
             <span className="relative z-[2] p-3.5 text-left">
-              <span className="block text-pretty text-[15px] font-bold leading-tight text-white">
+              <span className="block text-pretty text-[15px] font-black leading-tight text-white">
                 {t.label}
               </span>
-              <span className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-[var(--ga-star)] transition-all duration-300 group-hover:gap-1.5">
+              <span className="mt-1 inline-flex items-center gap-1 text-[10.5px] font-extrabold uppercase tracking-wider text-[#F0A81E] transition-all duration-300 group-hover:gap-1.5">
                 Shop now
                 <ArrowUpRight className="h-3 w-3" />
               </span>

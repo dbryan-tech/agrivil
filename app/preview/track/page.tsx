@@ -292,7 +292,13 @@ export default function MobileOrderLiveTrackingScreen() {
                   : 'bg-white text-[#211A12] border border-[rgba(33,26,18,0.12)] hover:bg-[#FAF8F5]'
               )}
             >
-              {tipped ? 'GH₵5.00 Tipped ✓' : '+ GH₵5.00'}
+              {tipped ? (
+                <span className="inline-flex items-center gap-1">
+                  GH₵5.00 Tipped <Check className="h-3.5 w-3.5" />
+                </span>
+              ) : (
+                '+ GH₵5.00'
+              )}
             </button>
           </div>
         </div>

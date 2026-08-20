@@ -69,15 +69,15 @@ export function VideoHero() {
         {/* Search */}
         <form
           onSubmit={submit}
-          className="ga-fade-up mt-8 flex h-14 w-full max-w-2xl items-center overflow-hidden rounded-full bg-card shadow-2xl ring-1 ring-black/10 transition-shadow duration-300 focus-within:ring-2 focus-within:ring-primary/40"
+          className="ga-fade-up mt-8 flex h-14 w-full max-w-2xl items-center overflow-hidden rounded-full bg-white shadow-2xl ring-1 ring-black/10 transition-shadow duration-300 focus-within:ring-2 focus-within:ring-[#0B3B25]/40"
           style={{ animationDelay: '0.28s' }}
         >
-          <div className="relative hidden h-full items-center border-r border-border/60 sm:flex">
+          <div className="relative hidden h-full items-center border-r border-black/[0.08] sm:flex">
             <select
               value={cat}
               onChange={(e) => setCat(e.target.value)}
               aria-label="Search category"
-              className="h-full cursor-pointer appearance-none bg-transparent pl-5 pr-9 text-sm font-bold text-foreground outline-none transition-colors hover:bg-secondary/40"
+              className="h-full cursor-pointer appearance-none bg-transparent pl-5 pr-9 text-sm font-bold text-[#211A12] outline-none transition-colors hover:bg-black/[0.03]"
             >
               <option value="All">All</option>
               {CATEGORIES.map((c) => (
@@ -86,17 +86,17 @@ export function VideoHero() {
                 </option>
               ))}
             </select>
-            <ChevronDown className="pointer-events-none absolute right-3 h-4 w-4 text-muted-foreground" />
+            <ChevronDown className="pointer-events-none absolute right-3 h-4 w-4 text-[#5C5247]" />
           </div>
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search tomatoes, plantain, pepper, yam…"
-            className="h-full flex-1 bg-transparent px-5 text-sm text-foreground outline-none placeholder:text-muted-foreground/60 sm:text-base"
+            className="h-full flex-1 bg-transparent px-5 text-sm text-[#211A12] outline-none placeholder:text-[#5C5247]/70 sm:text-base font-medium"
           />
           <button
             type="submit"
-            className="ga-press ga-sheen flex h-full items-center gap-2 bg-primary px-6 font-bold text-primary-foreground hover:bg-field-deep"
+            className="ga-press ga-sheen flex h-full items-center gap-2 bg-[#0B3B25] px-6 font-extrabold text-white hover:bg-[#072618]"
           >
             <Search className="h-5 w-5" />
             <span className="hidden sm:inline">Search</span>
@@ -107,29 +107,29 @@ export function VideoHero() {
         <div className="ga-fade-up mt-6 flex flex-wrap items-center gap-3" style={{ animationDelay: '0.36s' }}>
           <Link
             href="/shop"
-            className="ga-press ga-sheen group inline-flex items-center gap-2 rounded-full bg-[var(--ga-star)] px-6 py-3 text-sm font-bold text-[var(--accent-foreground)] ga-elev-2"
+            className="ga-press ga-sheen group inline-flex items-center gap-2 rounded-full bg-[#F0A81E] px-6 py-3.5 text-sm font-black text-[#211A12] shadow-sm hover:bg-[#F59E0B]"
           >
             Shop today&apos;s harvest
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
           <Link
             href="/farmers"
-            className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur transition-colors duration-300 hover:bg-white/20 hover:border-white/55"
+            className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-bold text-white backdrop-blur transition-colors duration-300 hover:bg-white/20 hover:border-white/55"
           >
             Meet the farmers
           </Link>
         </div>
 
         {/* Trust chips */}
-        <div className="ga-fade-up mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-white/90" style={{ animationDelay: '0.44s' }}>
+        <div className="ga-fade-up mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-white/95" style={{ animationDelay: '0.44s' }}>
           <span className="inline-flex items-center gap-2">
-            <Leaf className="h-4 w-4 text-[var(--ga-star)]" /> Picked today
+            <Leaf className="h-4 w-4 text-[#F0A81E]" /> Picked today
           </span>
           <span className="inline-flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-[var(--ga-star)]" /> GhanaPostGPS delivery
+            <MapPin className="h-4 w-4 text-[#F0A81E]" /> GhanaPostGPS delivery
           </span>
           <span className="inline-flex items-center gap-2">
-            <Truck className="h-4 w-4 text-[var(--ga-star)]" /> Pay on delivery · MoMo
+            <Truck className="h-4 w-4 text-[#F0A81E]" /> Pay on delivery · MoMo
           </span>
         </div>
       </div>

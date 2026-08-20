@@ -77,22 +77,51 @@ const jakarta = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "AgriVil — Fresh From Ghana's Farms, To Your Door",
+  metadataBase: new URL('https://agrivil.com'),
+  title: "AgriVil — Farm Fresh. Market Smart. Delivered with care.",
   description:
-    "AgriVil, managed under Golden Acres Ghana, is Ghana's virtual farmers' market. Order fresh, perishable produce direct from local farmers with scheduled delivery, Mobile Money checkout, and farm-to-door reliability.",
-  generator: 'v0.app',
+    "AgriVil is Ghana's premier virtual farmers' market connecting consumers directly to smallholder farmers with transparent cold-chain distribution, FEFO batching, and fair farmer pricing.",
+  generator: 'AgriVil',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/icon.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
   openGraph: {
-    title: "AgriVil — Fresh From Ghana's Farms",
+    title: "AgriVil — Farm Fresh. Market Smart.",
     description:
-      "Ghana's virtual farmers' market. Fresh produce, direct from local farmers.",
+      "Ghana's premier cold-chain virtual farmers' marketplace. 100% verified local harvest delivered fresh.",
+    url: 'https://agrivil.com',
+    siteName: 'AgriVil',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'AgriVil — Farm Fresh. Market Smart.',
+      },
+    ],
+    locale: 'en_GH',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "AgriVil — Farm Fresh. Market Smart.",
+    description: "Ghana's premier cold-chain virtual farmers' marketplace.",
+    images: ['/og-image.jpg'],
   },
 }
 
 export const viewport: Viewport = {
   colorScheme: 'light dark',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#0f7a47' },
-    { media: '(prefers-color-scheme: dark)', color: '#08160f' },
+    { media: '(prefers-color-scheme: light)', color: '#0B3B25' },
+    { media: '(prefers-color-scheme: dark)', color: '#072618' },
   ],
 }
 

@@ -11,6 +11,7 @@ import {
   CreditCard,
   ShieldCheck,
   RotateCcw,
+  Check,
 } from 'lucide-react'
 import { formatGHS } from '@/lib/golden-acres/format'
 import { cn } from '@/lib/utils'
@@ -28,118 +29,134 @@ export default function MobileWalletScreen() {
       amount: -58.2,
       date: 'Today, 6:45 AM',
       type: 'debit',
+      badge: 'Cold-Chain Fulfilled',
     },
     {
       id: 'tx2',
-      title: 'MTN MoMo Top-Up',
-      desc: 'Auto-credited from +233 24 555 0142',
+      title: 'MoMo Wallet Auto Top-Up',
+      desc: 'MTN Mobile Money (055***4567)',
       amount: 100.0,
-      date: 'Yesterday, 4:20 PM',
+      date: 'Yesterday, 4:15 PM',
       type: 'credit',
+      badge: 'Instant',
     },
     {
       id: 'tx3',
-      title: 'Cold-Chain Partial Refund',
-      desc: 'Kontomire wilted transit protection',
-      amount: 12.0,
-      date: '16 Oct 25, 2:10 PM',
+      title: 'FEFO Weight Adjustment Refund',
+      desc: 'Cassava (Actual: 4.6kg vs Est: 5.0kg)',
+      amount: 4.8,
+      date: 'Aug 14, 2:30 PM',
       type: 'refund',
+      badge: 'Auto-Reconciled',
     },
     {
       id: 'tx4',
-      title: 'Produce Order #GA-24809',
-      desc: 'White Yam & Kontomire',
-      amount: -33.4,
-      date: '15 Oct 25, 8:00 AM',
+      title: 'Produce Order #GA-23901',
+      desc: 'Garden Eggs & Habanero Batch',
+      amount: -42.0,
+      date: 'Aug 10, 11:20 AM',
       type: 'debit',
+      badge: 'Delivered',
     },
   ]
 
-  const handleTopUp = (amt: number) => {
+  const handleTopup = (amt: number) => {
     setBalance((prev) => prev + amt)
     setTopupAmount(amt)
-    setTimeout(() => setTopupAmount(null), 2500)
+    setTimeout(() => setTopupAmount(null), 3000)
   }
 
   return (
-    <div className="relative min-h-dvh w-full bg-[#F7F5F0] pb-28 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-      {/* Zero Scrollbar Global Styles */}
-      <style jsx global>{`
-        * {
-          scrollbar-width: none !important;
-          -ms-overflow-style: none !important;
-        }
-        *::-webkit-scrollbar {
-          display: none !important;
-          width: 0 !important;
-          height: 0 !important;
-        }
-      `}</style>
-
-      {/* Top warm brand gradient backdrop */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(220px,38vh,340px)]"
-        style={{
-          background:
-            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
-        }}
-      />
-
-      {/* Header */}
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-5 py-3 backdrop-blur-md">
+    <div className="relative mx-auto flex min-h-screen max-w-md flex-col bg-[#F7F5F0] text-[#211A12] pb-24 [scrollbar-width:none]">
+      {/* Top Bar */}
+      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.06)] bg-[#FAF9F6]/95 px-4 py-3 backdrop-blur-md">
         <Link
-          href="/preview/home"
-          aria-label="Back"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-[0_1px_4px_rgba(33,26,18,0.06)] border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+          href="/preview/shop"
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.08)] active:scale-95 transition-transform"
         >
-          <ArrowLeft className="h-5 w-5" />
+          <ArrowLeft className="h-4 w-4" />
         </Link>
-        <h1 className="text-[17px] font-extrabold tracking-tight text-[#211A12]">
-          AgriVil Wallet
-        </h1>
-        <div className="flex items-center gap-1 text-[11px] font-bold text-[#0B3B25]">
-          <ShieldCheck className="h-4 w-4" />
-          <span>Protected</span>
+        <div className="text-center">
+          <span className="text-[10px] font-black uppercase tracking-[0.16em] text-[#7A3F1C]">
+            FARM DIRECT BALANCE
+          </span>
+          <h1 className="text-[16px] font-black tracking-tight text-[#211A12]">
+            AgriVil Wallet
+          </h1>
         </div>
+        <div className="h-9 w-9" />
       </header>
 
-      <div className="relative px-5 pt-3 space-y-4">
-        {/* Main Balance Hero Card */}
-        <div className="relative overflow-hidden rounded-[28px] bg-[#211A12] p-6 text-white shadow-lg">
-          <span className="text-[11px] font-black uppercase tracking-[0.14em] text-white/70">
-            Available Balance
-          </span>
-          <h2 className="mt-1 text-[32px] font-black tracking-tight text-white">
-            {formatGHS(balance)}
-          </h2>
-          <p className="mt-1 text-[12px] font-medium text-white/70">
-            Linked to MTN MoMo · 024 555 0142
-          </p>
+      <main className="flex-1 px-4 pt-4 space-y-4">
+        {/* Wallet Balance Hero Card */}
+        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#0B3B25] via-[#0D442B] to-[#082819] p-6 text-white shadow-[0_8px_30px_rgba(11,59,37,0.25)]">
+          {/* Subtle geometric pattern overlay */}
+          <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-[#F0A81E]/10 blur-2xl pointer-events-none" />
+          <div className="absolute -left-10 -bottom-10 h-44 w-44 rounded-full bg-[#7A3F1C]/15 blur-2xl pointer-events-none" />
 
-          {/* Quick Top-Up Pills */}
-          <div className="mt-5 border-t border-white/10 pt-4">
-            <span className="text-[10.5px] font-bold uppercase tracking-wider text-white/60">
-              Quick Top Up
+          <div className="relative z-10 space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold text-white/90 backdrop-blur-md">
+                <ShieldCheck className="h-3.5 w-3.5 text-[#F0A81E]" />
+                FEFO Escrow Protected
+              </span>
+              <span className="text-[11px] font-bold text-white/70">
+                Ghana MoMo Ready
+              </span>
+            </div>
+
+            <div className="space-y-1">
+              <span className="text-[12px] font-bold tracking-wider text-white/70 uppercase">
+                Available Produce Balance
+              </span>
+              <div className="text-[36px] font-black tracking-tight text-white leading-none">
+                {formatGHS(balance)}
+              </div>
+            </div>
+
+            <p className="text-[11px] font-medium text-white/80 leading-relaxed">
+              Instant 1-tap checkout for all harvest batches. Unpicked weight differences are automatically refunded back to this wallet upon doorstep delivery.
+            </p>
+          </div>
+        </div>
+
+        {/* Quick Top-Up Bar */}
+        <div className="rounded-[28px] bg-[#FDFDFB] p-4 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-[12px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+              Instant MoMo Top-Up
             </span>
-            <div className="mt-2 flex gap-2">
-              {[20, 50, 100].map((amt) => (
-                <button
-                  key={amt}
-                  type="button"
-                  onClick={() => handleTopUp(amt)}
-                  className="flex-1 rounded-full bg-white/15 py-2 text-[12px] font-extrabold text-white hover:bg-white/25 active:scale-95 transition-all"
-                >
-                  + GH₵{amt}
-                </button>
-              ))}
+            <span className="text-[11px] font-bold text-[#0B3B25]">
+              No Network Fees
+            </span>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2">
+            {[20, 50, 100].map((amt) => (
+              <button
+                key={amt}
+                type="button"
+                onClick={() => handleTopup(amt)}
+                className="flex flex-col items-center justify-center rounded-2xl bg-[#FAF9F6] py-3 border border-[rgba(33,26,18,0.06)] shadow-2xs hover:bg-white hover:border-[#0B3B25]/30 active:scale-95 transition-all"
+              >
+                <span className="text-[10px] font-bold text-[#5C5247]">Add</span>
+                <span className="text-[14px] font-black text-[#0B3B25]">+{formatGHS(amt)}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="pt-1">
+            <div className="flex items-center gap-2 rounded-2xl bg-[#EDE8DF]/50 p-2.5 text-[11px] font-semibold text-[#5C5247]">
+              <CreditCard className="h-4 w-4 text-[#7A3F1C] shrink-0" />
+              <span>Supports MTN MoMo, Telecel Cash, and Bank Cards</span>
             </div>
           </div>
         </div>
 
         {/* Top-up Notification Pill */}
         {topupAmount && (
-          <div className="rounded-2xl bg-[#0B3B25] p-3 text-center text-white font-extrabold text-[13px] shadow-sm animate-fade-in">
-            ✓ Added {formatGHS(topupAmount)} via MTN Mobile Money!
+          <div className="flex items-center justify-center gap-1.5 rounded-2xl bg-[#0B3B25] p-3 text-center text-white font-extrabold text-[13px] shadow-sm animate-fade-in">
+            <Check className="h-4 w-4" /> Added {formatGHS(topupAmount)} via MTN Mobile Money!
           </div>
         )}
 
@@ -196,7 +213,7 @@ export default function MobileWalletScreen() {
             ))}
           </div>
         </div>
-      </div>
+      </main>
 
       {/* Bottom Navigation */}
       <PreviewBottomNav active="wallet" />

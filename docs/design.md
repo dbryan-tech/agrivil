@@ -9,6 +9,7 @@
 | Token | Hex | Tailwind Equivalent / Usage | Purpose |
 |---|---|---|---|
 | **Forest Green** | `#0B3B25` | `bg-[#0B3B25]`, `text-[#0B3B25]` | Primary brand color, organic badges, primary CTAs, active states |
+| **Sun Ochre / Orange** | `#DF8821` | `bg-[#DF8821]`, `text-[#DF8821]` | Harvest sun arch & rays, highlight accents, vitality badges |
 | **Clay Rust** | `#7A3F1C` | `bg-[#7A3F1C]`, `text-[#7A3F1C]` | Secondary brand, farm attribution links, promo badges, discounts |
 | **Harvest Gold** | `#F0A81E` / `#F59E0B` | `fill-[#F0A81E]`, `text-[#F0A81E]` | Star ratings, highlighted farm tags, freshness markers |
 | **Canvas Off-White** | `#FAF9F6` / `#F7F5F0` | `bg-[#FAF9F6]`, `bg-[#F7F5F0]` | Primary mobile backgrounds, subtle card backgrounds |
@@ -17,7 +18,19 @@
 
 ---
 
-## 2. Layout, Margins & Compact Spacing
+## 2. Master Brand Asset System (Concept 01)
+
+All production logos, lockups, and digital/print stationery are maintained in vector and high-resolution raster formats in [`docs/brand-assets/`](docs/brand-assets/):
+- **Primary Horizontal Logo**: `public/agrivil-logo.svg` / `docs/brand-assets/01_LOGO_SYSTEM/agrivil_logo_primary_horizontal.svg`
+- **Primary Stacked Logo**: `docs/brand-assets/01_LOGO_SYSTEM/agrivil_logo_stacked.svg`
+- **Standalone Emblem Mark**: `public/agrivil-mark.svg` / `docs/brand-assets/01_LOGO_SYSTEM/agrivil_mark_color.svg`
+- **Round Farm Fresh Guarantee Stamp**: `public/agrivil-stamp.svg` / `docs/brand-assets/01_LOGO_SYSTEM/agrivil_round_stamp_badge.svg`
+- **Circular Social Avatar**: `docs/brand-assets/01_LOGO_SYSTEM/agrivil_social_avatar_circle.svg`
+- **App Icons & Favicons**: Multi-density suite (`16px` to `1024px`) in `docs/brand-assets/03_DIGITAL_ASSETS/` and `public/icon.png`
+
+---
+
+## 3. Layout, Margins & Compact Spacing
 
 ### A. The 10% Margin Standard
 Standard mobile web applications often use `px-3` (12px) to `px-4` (16px) margins. In AgriVil, all mobile screens adapt a **compact 10% margin standard**:

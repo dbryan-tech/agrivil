@@ -68,7 +68,7 @@ export function MobileHeroBanner({
           <div className="mt-2 max-w-[280px]">
             <h2 className="text-[19px] sm:text-[21px] font-black leading-[1.15] tracking-tight text-white">
               {data.title}{' '}
-              <span className="text-[#10B981]">{data.highlightText}</span>
+              <span className="text-[#DF8821]">{data.highlightText}</span>
             </h2>
             <p className="mt-1 line-clamp-2 text-[11px] font-medium leading-relaxed text-white/90">
               {data.description}
@@ -116,7 +116,7 @@ export function HeroPromo() {
                 <MapPin className="h-3.5 w-3.5" /> {data.badge}
               </span>
               <h1 className="ga-headline text-balance text-4xl text-white sm:text-5xl lg:text-6xl">
-                {data.title} <em className="text-[var(--ga-lime)]">{data.highlightText}</em>
+                {data.title} <em className="not-italic text-[#DF8821]">{data.highlightText}</em>
               </h1>
               <p className="max-w-md text-pretty text-sm leading-relaxed text-white/85 sm:text-base">
                 {data.description}

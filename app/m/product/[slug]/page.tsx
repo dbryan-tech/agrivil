@@ -399,8 +399,9 @@ export default function MobileProductDetailScreen() {
                           </span>
                         )}
                       </div>
-                      <p className="text-[11px] font-semibold text-[#5C5247]">
-                        {offer.region} · {offer.rating.toFixed(1)} ★
+                      <p className="flex items-center gap-1 text-[11px] font-semibold text-[#5C5247]">
+                        <span>{offer.region} · {offer.rating.toFixed(1)}</span>
+                        <Star className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
                       </p>
                     </div>
                   </div>
@@ -496,58 +497,56 @@ export default function MobileProductDetailScreen() {
           </div>
         </div>
 
-        {/* 6. Customer Reviews Section */}
-        <div className="pt-2 space-y-3 border-t border-[rgba(33,26,18,0.06)]">
-          <div className="flex items-center justify-between">
+        {/* 6. Farmer Trust & Customer Reviews Accordion/Card */}
+        <div className="rounded-[24px] border border-black/[0.04] bg-white p-4 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] space-y-3.5">
+          <div className="flex items-center justify-between border-b border-[rgba(33,26,18,0.06)] pb-3">
             <div>
-              <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
-                Verified Buyer Feedback
-              </span>
-              <h3 className="text-[16px] font-black text-[#211A12]">
-                Customer Reviews ({activeOffer.reviewCount})
+              <h3 className="text-[15px] font-black tracking-tight text-[#211A12]">
+                Customer Ratings &amp; Trust
               </h3>
+              <p className="text-[11px] font-semibold text-[#5C5247]">
+                Authentic feedback from verified buyers
+              </p>
             </div>
-            <button
-              type="button"
-              onClick={() => setShowAllReviews(true)}
-              className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
-            >
-              See all
-            </button>
+            <div className="flex items-center gap-1 rounded-full bg-[#0B3B25]/10 px-2.5 py-1 text-[11.5px] font-black text-[#0B3B25]">
+              <Star className="h-3.5 w-3.5 fill-[#F0A81E] text-[#F0A81E]" />
+              <span>{activeFarmer.rating.toFixed(1)}</span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4 rounded-2xl bg-white p-3.5 border border-[rgba(33,26,18,0.06)] shadow-2xs">
-            <div className="flex flex-col items-center justify-center border-r border-[rgba(33,26,18,0.08)] pr-4">
-              <span className="text-[28px] font-black text-[#211A12] leading-none">
-                {activeFarmer.rating}
+          {/* Rating summary bar breakdown */}
+          <div className="flex items-center gap-4 py-1">
+            <div className="flex flex-col items-center justify-center rounded-2xl bg-[#FAF9F6] p-3 text-center min-w-[76px] border border-[rgba(33,26,18,0.06)]">
+              <span className="text-[26px] font-black leading-none text-[#211A12]">
+                {activeFarmer.rating.toFixed(1)}
               </span>
-              <div className="mt-1 flex items-center">
+              <div className="flex items-center justify-center gap-0.5 my-1">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
+                  <Star key={i} className="h-2.5 w-2.5 fill-[#F0A81E] text-[#F0A81E]" />
                 ))}
               </div>
-              <span className="mt-0.5 text-[10px] font-bold text-[#5C5247]">
+              <span className="text-[9.5px] font-bold text-[#5C5247]">
                 {activeOffer.reviewCount} reviews
               </span>
             </div>
 
             <div className="flex-1 space-y-1 text-[10.5px] font-bold text-[#5C5247]">
               <div className="flex items-center gap-2">
-                <span className="w-3">5★</span>
+                <span className="w-4">5 Star</span>
                 <div className="h-1.5 flex-1 rounded-full bg-[#F7F5F0] overflow-hidden">
                   <div className="h-full w-[92%] rounded-full bg-[#0B3B25]" />
                 </div>
                 <span className="w-6 text-right">92%</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-3">4★</span>
+                <span className="w-4">4 Star</span>
                 <div className="h-1.5 flex-1 rounded-full bg-[#F7F5F0] overflow-hidden">
                   <div className="h-full w-[7%] rounded-full bg-[#0B3B25]" />
                 </div>
                 <span className="w-6 text-right">7%</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-3">3★</span>
+                <span className="w-4">3 Star</span>
                 <div className="h-1.5 flex-1 rounded-full bg-[#F7F5F0] overflow-hidden">
                   <div className="h-full w-[1%] rounded-full bg-[#0B3B25]" />
                 </div>
@@ -602,7 +601,7 @@ export default function MobileProductDetailScreen() {
           <button
             type="button"
             onClick={() => setShowAllReviews(true)}
-            className="flex w-full items-center justify-center gap-1.5 rounded-full border border-[rgba(33,26,18,0.12)] bg-white py-2.5 text-[12.5px] font-black text-[#211A12] shadow-2xs active:scale-[0.99] transition-transform hover:bg-[#FAF9F6]"
+            className="flex w-full items-center justify-center gap-1.5 rounded-full border border-[rgba(33,26,18,0.12)] bg-[#FAF9F6] py-2.5 text-[12.5px] font-black text-[#211A12] shadow-2xs active:scale-[0.99] transition-transform hover:bg-[#F0EFEA]"
           >
             <MessageSquare className="h-3.5 w-3.5 text-[#0B3B25]" />
             <span>See all {activeOffer.reviewCount} customer reviews</span>
@@ -667,8 +666,8 @@ export default function MobileProductDetailScreen() {
             <div className="flex gap-1.5 py-2.5 overflow-x-auto [scrollbar-width:none]">
               {[
                 { label: 'All Reviews', key: 'all' },
-                { label: '5 Stars ★', key: '5' },
-                { label: '4 Stars ★', key: '4' },
+                { label: '5 Stars', key: '5' },
+                { label: '4 Stars', key: '4' },
                 { label: 'Verified Buyers', key: 'verified' },
               ].map((pill) => (
                 <button

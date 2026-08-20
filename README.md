@@ -31,11 +31,17 @@ Agrivil utilizes an earthy, fresh, and modern organic palette tailored for the G
 | Color Role | Hex Code | Usage |
 |---|---|---|
 | **Brand Primary Green** | `#0B3B25` | Primary CTA buttons, key brand headings, active navigation states, verified badges |
-| **Brand Copper** | `#7A3F1C` | Accent links, secondary buttons, transit ribbons, warm icons, helper actions |
-| **General Background & Card (Clean Bright Tan)** | `#F7F5F0` | Canonical bright & clean warm porcelain tan canvas and card background for mobile (`/m` and `/preview`) screens |
+| **Sun Ochre / Orange** | `#DF8821` | Harvest sun emblem, energy rays, vitality markers |
+| **Brand Copper / Clay Rust** | `#7A3F1C` | Accent links, secondary buttons, transit ribbons, warm icons, helper actions |
+| **Harvest Gold** | `#F0A81E` | Star ratings, premium farmer highlights, featured freshness badges |
+| **General Background & Card (Warm Canvas)** | `#FAF7F2` / `#F7F5F0` | Canonical bright & clean warm porcelain tan canvas and card background |
 | **Text Dark Neutral / Ink** | `#211A12` | High-contrast headings, process badges, and body text |
-| **Text Muted** | `#8A8175` | Subtitles, secondary copy, and helper descriptions |
+| **Text Muted** | `#5C5247` | Subtitles, secondary copy, and helper descriptions |
 | **Surface White** | `#FFFFFF` | Search inputs, filter buttons, elevated dialogs, and action containers |
+
+### Documentation & Brand Assets
+- **Master Brand Assets**: [`docs/brand-assets/`](docs/brand-assets/) — Complete Concept 01 vector SVGs, high-res PNGs, brand guide, app icons, and print stationery.
+- **Mobile Design & Build Package**: [`docs/mobile-app-agent-package/`](docs/mobile-app-agent-package/) — Comprehensive screen behavior specifications, UX copy, and design token manifest.
 
 ### Mobile Flow Architecture (`/m`)
 

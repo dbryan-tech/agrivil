@@ -79,11 +79,11 @@ export default function OrdersIndexPage() {
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="text-center">
-        <p className="ga-eyebrow text-primary">Live Fulfillment</p>
-        <h1 className="ga-display mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        <p className="ga-kicker font-extrabold text-[#7A3F1C]">Live Fulfillment</p>
+        <h1 className="ga-headline mt-2 text-3xl font-black tracking-tight text-[#211A12] sm:text-4xl">
           Track your fresh harvest
         </h1>
-        <p className="mx-auto mt-3 max-w-xl text-pretty text-muted-foreground">
+        <p className="mx-auto mt-3 max-w-xl text-pretty text-sm sm:text-base text-[#5C5247]">
           Follow your perishable produce from farm harvest to hub cold-chain
           sorting, right to your doorstep.
         </p>
@@ -94,19 +94,19 @@ export default function OrdersIndexPage() {
           className="mx-auto mt-8 flex max-w-md items-center gap-2"
         >
           <div className="relative flex-1">
-            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#5C5247]" />
             <input
               type="text"
               value={lookupRef}
               onChange={(e) => setLookupRef(e.target.value)}
               placeholder="e.g. GA-24817"
               aria-label="Order reference number"
-              className="h-12 w-full rounded-full border border-border bg-card pl-10 pr-4 text-sm font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="h-12 w-full rounded-full border border-black/[0.08] bg-white pl-10 pr-4 text-sm font-medium text-[#211A12] outline-none transition-all placeholder:text-[#5C5247]/60 focus:border-[#0B3B25] focus:ring-2 focus:ring-[#0B3B25]/20 shadow-xs"
             />
           </div>
           <button
             type="submit"
-            className="ga-press inline-flex h-12 items-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
+            className="ga-press inline-flex h-12 items-center gap-1.5 rounded-full bg-[#0B3B25] px-6 text-sm font-black text-white shadow-sm transition-all hover:bg-[#072618]"
           >
             Track <ArrowRight className="h-4 w-4" />
           </button>
@@ -115,36 +115,36 @@ export default function OrdersIndexPage() {
 
       {/* Orders List */}
       <div className="mt-14 space-y-4">
-        <div className="flex items-center justify-between border-b border-border pb-4">
-          <h2 className="ga-display text-xl font-semibold text-foreground">
+        <div className="flex items-center justify-between border-b border-black/[0.06] pb-4">
+          <h2 className="ga-headline text-xl font-black text-[#211A12]">
             {session ? 'Your Recent Orders' : 'Recent Marketplace Deliveries'}
           </h2>
           <Link
             href="/shop"
-            className="text-xs font-semibold text-primary transition-colors hover:underline"
+            className="text-xs font-extrabold text-[#0B3B25] transition-colors hover:underline"
           >
             Shop more produce &rarr;
           </Link>
         </div>
 
         {myOrders.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-16 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-muted-foreground">
+          <div className="flex flex-col items-center justify-center rounded-[24px] border border-dashed border-black/[0.12] py-16 text-center bg-white/50">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#EDE8DF] text-[#5C5247]">
               <ShoppingBasket className="h-6 w-6" />
             </div>
-            <p className="mt-4 font-semibold text-foreground">No orders yet</p>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="mt-4 font-black text-[#211A12]">No orders yet</p>
+            <p className="mt-1 text-xs sm:text-sm text-[#5C5247]">
               Browse our fresh farm produce and place your first order.
             </p>
             <Link
               href="/shop"
-              className="ga-press mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-bold text-primary-foreground"
+              className="ga-press mt-5 inline-flex items-center gap-2 rounded-full bg-[#0B3B25] px-5 py-2.5 text-xs font-black text-white shadow-sm hover:bg-[#072618]"
             >
               Start shopping
             </Link>
           </div>
         ) : (
-          <div className="grid gap-4">
+          <div className="grid gap-3.5">
             {myOrders.map((order) => {
               const badge =
                 STATUS_BADGE[order.status] ?? STATUS_BADGE.placed
@@ -152,21 +152,21 @@ export default function OrdersIndexPage() {
               return (
                 <div
                   key={order.reference}
-                  className="ga-card-hover flex flex-col justify-between gap-4 rounded-2xl border border-border bg-card p-5 transition-all sm:flex-row sm:items-center"
+                  className="flex flex-col justify-between gap-4 rounded-[20px] border border-black/[0.04] bg-white p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] transition-all sm:flex-row sm:items-center"
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-sm font-bold text-foreground">
+                      <span className="font-mono text-sm font-black text-[#211A12]">
                         #{order.reference}
                       </span>
                       <span
-                        className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${badge.className}`}
+                        className={`rounded-full px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wide ${badge.className}`}
                       >
                         {badge.label}
                       </span>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[#5C5247]">
                       <span>Placed on {shortDate(order.placedAt)}</span>
                       <span>&bull;</span>
                       <span>
@@ -174,7 +174,7 @@ export default function OrdersIndexPage() {
                         {order.items.length === 1 ? '' : 's'}
                       </span>
                       <span>&bull;</span>
-                      <span className="font-semibold text-foreground">
+                      <span className="font-black text-[#211A12]">
                         {formatGHS(order.total)}
                       </span>
                       <span>&bull;</span>
@@ -185,9 +185,9 @@ export default function OrdersIndexPage() {
                   <div className="flex items-center gap-2">
                     <Link
                       href={`/orders/${order.reference}`}
-                      className="ga-press inline-flex h-9 items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-4 text-xs font-bold text-foreground transition-all hover:bg-secondary"
+                      className="ga-press inline-flex h-9 items-center gap-1.5 rounded-full border border-black/[0.06] bg-[#F7F5F0] px-4 text-xs font-black text-[#211A12] transition-all hover:bg-[#EDE8DF]"
                     >
-                      <Truck className="h-3.5 w-3.5 text-primary" /> Track
+                      <Truck className="h-3.5 w-3.5 text-[#0B3B25]" /> Track
                       Delivery
                     </Link>
                   </div>

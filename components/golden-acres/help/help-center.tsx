@@ -92,14 +92,14 @@ export function HelpCenter() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
       <header className="ga-rise max-w-2xl">
-        <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs font-bold text-secondary-foreground">
+        <span className="inline-flex items-center gap-2 rounded-full bg-[#F0A81E]/15 px-3 py-1 text-xs font-black uppercase tracking-wider text-[#7A3F1C]">
           <LifeBuoy className="h-3.5 w-3.5" />
           Help &amp; Support
         </span>
-        <h1 className="ga-display mt-4 text-pretty text-4xl font-semibold text-foreground sm:text-5xl">
+        <h1 className="ga-headline mt-3 text-pretty text-4xl font-black text-[#211A12] sm:text-5xl">
           How can we help?
         </h1>
-        <p className="mt-3 text-pretty leading-relaxed text-muted-foreground">
+        <p className="mt-3 text-pretty text-sm sm:text-base leading-relaxed text-[#5C5247]">
           Browse common questions, or send our Accra-based support team a message
           and we&apos;ll get back to you the same day.
         </p>
@@ -107,35 +107,35 @@ export function HelpCenter() {
 
       {/* Tabs (only show "My tickets" for signed-in customers) */}
       {customer && (
-        <div className="mt-8 inline-flex rounded-full border border-border bg-card p-1">
+        <div className="mt-8 inline-flex rounded-full border border-black/[0.08] bg-white p-1 shadow-xs">
           <button
             onClick={() => {
               setView('help')
               setActiveRef(null)
             }}
-            className={`ga-press rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+            className={`ga-press rounded-full px-5 py-2 text-xs font-black uppercase tracking-wider transition-all ${
               view === 'help'
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground'
+                ? 'bg-[#0B3B25] text-white shadow-xs'
+                : 'text-[#5C5247] hover:text-[#211A12]'
             }`}
           >
             Get help
           </button>
           <button
             onClick={() => setView('tickets')}
-            className={`ga-press inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+            className={`ga-press inline-flex items-center gap-2 rounded-full px-5 py-2 text-xs font-black uppercase tracking-wider transition-all ${
               view === 'tickets'
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground'
+                ? 'bg-[#0B3B25] text-white shadow-xs'
+                : 'text-[#5C5247] hover:text-[#211A12]'
             }`}
           >
             My tickets
             {myTickets && myTickets.length > 0 && (
               <span
-                className={`rounded-full px-1.5 text-[10px] font-bold ${
+                className={`rounded-full px-1.5 py-0.5 text-[10px] font-black ${
                   view === 'tickets'
-                    ? 'bg-primary-foreground/20 text-primary-foreground'
-                    : 'bg-secondary text-secondary-foreground'
+                    ? 'bg-white/20 text-white'
+                    : 'bg-[#EDE8DF] text-[#211A12]'
                 }`}
               >
                 {myTickets.length}

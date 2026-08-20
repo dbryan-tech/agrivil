@@ -52,6 +52,7 @@ import {
   UserCog,
   Hourglass,
   Save,
+  Snowflake,
 } from 'lucide-react'
 
 type Tab = 'today' | 'inventory' | 'add' | 'earnings' | 'reviews' | 'profile'
@@ -250,7 +251,7 @@ function TodayTab({ farmer }: { farmer: Farmer }) {
                     <span className="flex items-center gap-2 text-muted-foreground">
                       {weight(it.estWeightKg * it.qty)}
                       {it.refrigerationRequired && (
-                        <span className="text-[var(--ga-field)]">❄</span>
+                        <Snowflake className="h-3.5 w-3.5 text-[#0B3B25]" />
                       )}
                     </span>
                   </li>

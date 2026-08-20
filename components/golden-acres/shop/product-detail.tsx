@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-  import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import {
   Minus,
   Plus,
@@ -71,7 +72,7 @@ export function ProductDetail({
       </nav>
 
       <div className="mt-6 grid gap-8 lg:grid-cols-2">
-        <div className="ga-rise relative aspect-square overflow-hidden rounded-3xl border border-border bg-card">
+        <div className="ga-rise relative aspect-square overflow-hidden rounded-[28px] border border-black/[0.04] bg-[#EDE8DF]/30 shadow-sm">
           <SmartImage
             src={product.image}
             alt={product.name}
@@ -79,46 +80,43 @@ export function ProductDetail({
             className="object-cover"
             priority
           />
-          {fresh && (
-            <span
-              className="absolute right-4 top-4 rounded-full px-3 py-1.5 text-sm font-bold text-white"
-              style={{ backgroundColor: fresh.color }}
-            >
-              {fresh.label}
-            </span>
-          )}
         </div>
 
-        <div className="ga-rise" style={{ animationDelay: '80ms' }}>
-          <Link
-            href={`/farmers/${farmer.slug}`}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--ga-clay)] hover:underline"
-          >
-            <MapPin className="h-4 w-4" />
-            {farmer.farmName} · {farmer.region}
-          </Link>
-          <h1 className="ga-display mt-2 text-4xl font-semibold text-foreground">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2">
+            <span className="rounded-full bg-[#0B3B25]/10 px-3 py-1 text-xs font-black uppercase tracking-wider text-[#0B3B25]">
+              {product.category}
+            </span>
+            {fresh && (
+              <span className="flex items-center gap-1 text-xs font-bold text-[#7A3F1C]">
+                <Leaf className="h-3.5 w-3.5" />
+                {fresh.text}
+              </span>
+            )}
+          </div>
+
+          <h1 className="ga-headline mt-3 text-3xl sm:text-4xl text-[#211A12] font-black">
             {product.name}
           </h1>
-          <p className="mt-3 leading-relaxed text-muted-foreground">
+
+          <div className="mt-3 flex items-center gap-3">
+            <div className="flex items-center gap-1 text-sm font-black text-[#211A12]">
+              <Star className="h-4 w-4 fill-[#F0A81E] text-[#F0A81E]" />
+              <span>{product.rating}</span>
+            </div>
+            <span className="text-xs text-[#5C5247]">({product.reviewsCount} reviews)</span>
+          </div>
+
+          <p className="mt-4 text-sm leading-relaxed text-[#5C5247]">
             {product.description}
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-2">
-            {product.organic && (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--ga-leaf)]/12 px-3 py-1.5 text-sm font-semibold text-[var(--ga-leaf)]">
-                <Leaf className="h-4 w-4" /> Organic
-              </span>
-            )}
-            {product.refrigerationRequired && (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--ga-field)]/10 px-3 py-1.5 text-sm font-semibold text-[var(--ga-field)]">
-                <Snowflake className="h-4 w-4" /> Cold-chain
-              </span>
-            )}
+          {/* Tags */}
+          <div className="mt-4 flex flex-wrap gap-2">
             {product.tags.map((t) => (
               <span
                 key={t}
-                className="rounded-full bg-secondary px-3 py-1.5 text-sm font-semibold text-secondary-foreground"
+                className="rounded-full bg-[#EDE8DF] px-3 py-1.5 text-xs font-bold text-[#211A12]"
               >
                 {t}
               </span>
@@ -126,25 +124,25 @@ export function ProductDetail({
           </div>
 
           {/* Variable-weight pricing explainer */}
-          <div className="mt-6 rounded-2xl border border-border bg-card p-5">
+          <div className="mt-6 rounded-[24px] border border-black/[0.04] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-3xl font-extrabold text-foreground">
+                <span className="text-3xl font-black text-[#211A12]">
                   {formatGHS(estimateEach)}
                 </span>
-                <span className="text-muted-foreground">
+                <span className="text-sm font-medium text-[#5C5247]">
                   {' '}
                   / {product.variableWeight ? weight(product.estWeightKg) : product.unit}
                 </span>
               </div>
-              <span className="text-sm font-semibold text-[var(--ga-gold)]">
+              <span className="text-xs font-extrabold text-[#7A3F1C]">
                 {formatGHS(product.pricePerKg)}/kg
               </span>
             </div>
             {product.variableWeight && (
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-3 text-xs sm:text-sm leading-relaxed text-[#5C5247]">
                 Priced by weight. You&apos;re charged an estimate of{' '}
-                <strong className="text-foreground">{formatGHS(estimateEach)}</strong> now;
+                <strong className="text-[#211A12] font-black">{formatGHS(estimateEach)}</strong> now;
                 the final price is reconciled to the actual weight picked (typically{' '}
                 {formatGHS(product.priceMin)}–{formatGHS(product.priceMax)}). You only pay
                 for what you receive.
@@ -154,23 +152,23 @@ export function ProductDetail({
 
           {/* Quantity + add */}
           <div className="mt-6 flex flex-wrap items-center gap-4">
-            <div className="inline-flex items-center rounded-full border border-border bg-card">
+            <div className="inline-flex items-center rounded-full border border-black/[0.08] bg-white">
               <button
                 type="button"
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
                 aria-label="Decrease quantity"
-                className="flex h-12 w-12 items-center justify-center rounded-full text-foreground hover:bg-secondary"
+                className="flex h-12 w-12 items-center justify-center rounded-full text-[#211A12] hover:bg-[#EDE8DF]"
               >
                 <Minus className="h-4 w-4" />
               </button>
-              <span className="w-10 text-center text-lg font-bold text-foreground">
+              <span className="w-10 text-center text-base font-black text-[#211A12]">
                 {qty}
               </span>
               <button
                 type="button"
                 onClick={() => setQty((q) => q + 1)}
                 aria-label="Increase quantity"
-                className="flex h-12 w-12 items-center justify-center rounded-full text-foreground hover:bg-secondary"
+                className="flex h-12 w-12 items-center justify-center rounded-full text-[#211A12] hover:bg-[#EDE8DF]"
               >
                 <Plus className="h-4 w-4" />
               </button>
@@ -178,7 +176,7 @@ export function ProductDetail({
             <button
               type="button"
               onClick={handleAdd}
-              className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-primary px-6 text-base font-bold text-primary-foreground transition-transform hover:-translate-y-0.5 active:translate-y-0"
+              className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-[#0B3B25] px-6 text-sm font-black text-white shadow-sm hover:bg-[#072618] transition-all active:scale-[0.98]"
             >
               {added ? (
                 <>
@@ -190,23 +188,35 @@ export function ProductDetail({
             </button>
           </div>
 
-          <div className="mt-5 flex items-center gap-2 text-sm text-muted-foreground">
-            <ShieldCheck className="h-4 w-4 text-[var(--ga-leaf)]" />
-            Freshness promise — instant Mobile Money refund on any bad batch.
+          {/* Trust guarantee stamp */}
+          <div className="mt-5 flex items-center gap-3.5 rounded-2xl bg-[#FAF7F2] p-3.5 border border-black/[0.06]">
+            <Image
+              src="/agrivil-stamp.svg"
+              alt="AgriVil Farm Fresh Guarantee"
+              width={44}
+              height={44}
+              className="h-11 w-11 shrink-0"
+            />
+            <div className="text-xs">
+              <span className="font-extrabold text-[#0B3B25]">100% Farm-Fresh Quality Guarantee</span>
+              <p className="text-[11px] font-medium text-[#5C5247] mt-0.5">
+                Picked morning of dispatch. Instant Mobile Money refund on any damaged or delayed batch.
+              </p>
+            </div>
           </div>
 
           {/* Farmer mini-card */}
           <Link
             href={`/farmers/${farmer.slug}`}
-            className="mt-6 flex items-center gap-4 rounded-2xl border border-border bg-card p-4 transition-colors hover:border-[var(--ga-gold)]"
+            className="mt-6 flex items-center gap-4 rounded-[20px] border border-black/[0.04] bg-[#FDFDFB] p-4 shadow-xs transition-colors hover:border-[#0B3B25]/30"
           >
-            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full">
+            <div className="relative h-13 w-13 shrink-0 overflow-hidden rounded-full border border-black/[0.06]">
               <SmartImage src={farmer.photo} alt={farmer.name} fill className="object-cover" />
             </div>
             <div className="min-w-0">
-              <p className="truncate font-bold text-foreground">{farmer.name}</p>
-              <p className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Star className="h-3.5 w-3.5 fill-[var(--ga-gold)] text-[var(--ga-gold)]" />
+              <p className="truncate font-black text-[#211A12]">{farmer.name}</p>
+              <p className="flex items-center gap-1 text-xs text-[#5C5247] mt-0.5">
+                <Star className="h-3.5 w-3.5 fill-[#F0A81E] text-[#F0A81E]" />
                 {farmer.rating} · {farmer.reviewCount} reviews · since {farmer.joinedYear}
               </p>
             </div>

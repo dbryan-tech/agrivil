@@ -1,18 +1,26 @@
 {
-	"appId": "com.agrivil.farmer",
-	"appName": "AgriVil Farmer",
-	"webDir": "../out",
-	"server": {
-		"url": "https://agrivil1.vercel.app/m/farmer"
-	},
-	"plugins": {
-		"SplashScreen": {
-			"launchAutoHide": true,
-			"backgroundColor": "#1E5D3B",
-			"showSpinner": false,
-			"androidScaleType": "CENTER",
-			"splashFullScreen": true,
-			"splashImmersive": true
-		}
-	}
+  "appId": "com.agrivil.admin",
+  "appName": "AgriVil Admin",
+  "webDir": "../out",
+  "server": {
+    "url": "https://agrivil1.vercel.app/admin",
+    "cleartext": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2200,
+      "launchAutoHide": true,
+      "launchFadeOutDuration": 350,
+      "backgroundColor": "#0B3B25",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    },
+    "StatusBar": {
+      "backgroundColor": "#0B3B25",
+      "style": "DARK"
+    }
+  }
 }

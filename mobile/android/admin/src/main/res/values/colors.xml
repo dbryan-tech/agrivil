@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- AgriVil brand colors -->
-    <color name="colorPrimary">#0F7A43</color>
-    <color name="colorPrimaryDark">#0B5C33</color>
-    <color name="colorAccent">#F4C430</color>
+    <!-- AgriVil Concept 01 brand colors -->
+    <color name="colorPrimary">#0B3B25</color>
+    <color name="colorPrimaryDark">#072618</color>
+    <color name="colorAccent">#DF8821</color>
 
-    <!-- AgriVil brand colors (merged, do not remove existing above) -->
-    <color name="agrivil_green">#0F7A43</color>
-    <color name="agrivil_deep_green">#0B5C33</color>
-    <color name="agrivil_gold">#F4C430</color>
-    <color name="agrivil_notification_color">#0F7A43</color>
+    <!-- AgriVil brand colors -->
+    <color name="agrivil_green">#0B3B25</color>
+    <color name="agrivil_deep_green">#072618</color>
+    <color name="agrivil_gold">#DF8821</color>
+    <color name="agrivil_notification_color">#0B3B25</color>
 </resources>

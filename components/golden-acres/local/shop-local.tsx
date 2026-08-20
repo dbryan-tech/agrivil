@@ -53,36 +53,28 @@ export function ShopLocal() {
   }
 
   return (
-    <div className="ga-root min-h-screen bg-background">
+    <div className="min-h-screen bg-[#F7F5F0]">
       {/* Hero / search */}
-      <section
-        className="grain relative overflow-hidden border-b border-border text-cream"
-        style={{
-          backgroundColor: 'var(--ga-ink-deep)',
-          backgroundImage:
-            'radial-gradient(120% 90% at 50% -10%, color-mix(in oklab, var(--ga-field) 50%, transparent), transparent 60%)',
-        }}
-      >
+      <section className="relative overflow-hidden border-b border-black/[0.04] bg-[#1A0F06] text-white">
         <div className="relative z-[2] mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 lg:px-8">
-          <p className="ga-eyebrow text-[var(--ga-lime)]">MarketPlace Match</p>
-          <h1 className="ga-display mt-3 text-balance text-4xl sm:text-5xl">
-            Shop the farms{' '}
-            <span className="ga-serif font-normal text-[var(--ga-lime)]">closest</span> to you
+          <p className="ga-kicker font-extrabold text-[#F0A81E]">MarketPlace Match</p>
+          <h1 className="ga-headline mt-3 text-balance text-4xl font-black text-white sm:text-5xl">
+            Shop the farms <span className="text-[#F0A81E]">closest</span> to you
           </h1>
-          <p className="mx-auto mt-3 max-w-xl text-pretty text-lg leading-relaxed text-cream/80">
+          <p className="mx-auto mt-3 max-w-xl text-pretty text-sm sm:text-base leading-relaxed text-white/80">
             Enter your GhanaPostGPS address and we&apos;ll match you with the nearest farmers — for
             shorter trips, fresher produce, and lower delivery fees.
           </p>
 
           <div className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
-            <div className="flex flex-1 items-center gap-2 rounded-full bg-cream px-4 text-field">
-              <MapPin className="size-5 shrink-0 text-gold" />
+            <div className="flex flex-1 items-center gap-2 rounded-full bg-white px-4 text-[#211A12] shadow-sm">
+              <MapPin className="h-5 w-5 shrink-0 text-[#7A3F1C]" />
               <input
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
                 onKeyDown={(e) => e.key === 'Enter' && search()}
                 placeholder="GA-183-4250"
-                className="h-14 w-full bg-transparent font-semibold tracking-wide outline-none placeholder:text-field/40"
+                className="h-14 w-full bg-transparent font-black tracking-wider text-[#211A12] outline-none placeholder:text-[#5C5247]/50"
                 aria-label="GhanaPostGPS code"
               />
             </div>
@@ -90,18 +82,18 @@ export function ShopLocal() {
               type="button"
               onClick={search}
               disabled={stage === 'searching'}
-              className="ga-press flex h-14 items-center justify-center gap-2 rounded-full bg-[var(--ga-lime)] px-6 font-bold text-[var(--ga-ink-deep)] disabled:opacity-70"
+              className="ga-press flex h-14 items-center justify-center gap-2 rounded-full bg-[#F0A81E] px-7 text-sm font-black text-[#1A0F06] shadow-sm hover:bg-[#F0A81E]/90 disabled:opacity-70 transition-all"
             >
               {stage === 'searching' ? (
-                <Loader2 className="size-5 animate-spin" />
+                <Loader2 className="h-5 w-5 animate-spin" />
               ) : (
                 <>
-                  <Navigation className="size-4" /> Find farms
+                  <Navigation className="h-4 w-4" /> Find farms
                 </>
               )}
             </button>
           </div>
-          {error && <p className="mt-3 text-sm font-semibold text-gold-soft">{error}</p>}
+          {error && <p className="mt-3 text-xs font-bold text-[#F0A81E]">{error}</p>}
         </div>
       </section>
 
@@ -110,21 +102,21 @@ export function ShopLocal() {
 
         {stage === 'in-zone' && validation && quote && (
           <div className="ga-fade-up">
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-leaf/30 bg-leaf/10 px-5 py-4">
-              <p className="font-semibold text-foreground">
-                <span className="text-leaf">We deliver to {validation.area}.</span>{' '}
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-[20px] border border-[#0B3B25]/20 bg-[#0B3B25]/10 px-5 py-4">
+              <p className="text-sm font-bold text-[#211A12]">
+                <span className="font-black text-[#0B3B25]">We deliver to {validation.area}.</span>{' '}
                 {quote.distanceFromHubKm} km from {quote.hubName} · {quote.etaWindow} ·{' '}
                 {`GH\u20B5 ${quote.fee.toFixed(2)}`} delivery
               </p>
               <Link
                 href="/shop"
-                className="inline-flex items-center gap-1 text-sm font-bold text-field hover:underline"
+                className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider text-[#0B3B25] hover:underline"
               >
-                Browse everything <ArrowRight className="size-4" />
+                Browse everything <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
 
-            <h2 className="mt-8 font-serif text-2xl font-semibold text-foreground">
+            <h2 className="ga-headline mt-8 text-2xl font-black text-[#211A12]">
               {matches.length} farms near {validation.area}
             </h2>
             <div className="mt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -154,12 +146,12 @@ function IdleState() {
   return (
     <div className="ga-stagger grid gap-5 md:grid-cols-3">
       {steps.map((s) => (
-        <div key={s.title} className="rounded-2xl border border-border bg-card p-6">
-          <div className="flex size-11 items-center justify-center rounded-xl bg-gold/15 text-gold">
-            <s.icon className="size-5" />
+        <div key={s.title} className="rounded-[24px] border border-black/[0.04] bg-white p-6 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
+            <s.icon className="h-5 w-5" />
           </div>
-          <h3 className="mt-4 font-bold text-foreground">{s.title}</h3>
-          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+          <h3 className="ga-headline mt-4 text-base font-black text-[#211A12]">{s.title}</h3>
+          <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-[#5C5247]">{s.body}</p>
         </div>
       ))}
     </div>
@@ -171,37 +163,37 @@ function FarmerMatchCard({ match }: { match: ProximityMatch }) {
   return (
     <Link
       href={`/farmers/${farmer.slug}`}
-      className="ga-press group flex flex-col overflow-hidden rounded-2xl border border-border bg-card"
+      className="ga-press group flex flex-col overflow-hidden rounded-[24px] border border-black/[0.04] bg-[#FDFDFB] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] transition-all"
     >
       <div className="relative aspect-[16/10] overflow-hidden">
         <SmartImage
           src={farmer.cover || farmer.photo}
           alt={farmer.farmName}
-          className="h-full w-full transition-transform duration-500 group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-field px-2.5 py-1 text-xs font-bold text-cream">
-          <Navigation className="size-3" /> {distanceKm} km away
+        <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-1 text-[11px] font-black uppercase tracking-wide text-white shadow-xs">
+          <Navigation className="h-3 w-3" /> {distanceKm} km away
         </span>
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="font-serif text-lg font-semibold text-foreground">{farmer.farmName}</h3>
-        <p className="text-sm text-muted-foreground">
+        <h3 className="ga-headline text-base font-black text-[#211A12]">{farmer.farmName}</h3>
+        <p className="text-xs font-semibold text-[#5C5247]">
           {farmer.name} · {farmer.town}
         </p>
-        <div className="mt-3 flex items-center gap-3 text-sm">
-          <span className="inline-flex items-center gap-1 font-bold text-foreground">
-            <Star className="size-4 fill-gold text-gold" /> {farmer.rating.toFixed(1)}
+        <div className="mt-3 flex items-center gap-3 text-xs font-bold">
+          <span className="inline-flex items-center gap-1 font-black text-[#211A12]">
+            <Star className="h-3.5 w-3.5 fill-[#F0A81E] text-[#F0A81E]" /> {farmer.rating.toFixed(1)}
           </span>
-          <span className="text-muted-foreground">{inStockCount} items in stock</span>
+          <span className="text-[#5C5247]">{inStockCount} items in stock</span>
         </div>
         <div className="mt-4">
-          <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground">
+          <div className="flex items-center justify-between text-xs font-bold text-[#5C5247]">
             <span>Basket availability</span>
-            <span className="text-foreground">{pct(availabilityScore)}</span>
+            <span className="font-black text-[#211A12]">{pct(availabilityScore)}</span>
           </div>
-          <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-secondary">
+          <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-[#EDE8DF]">
             <div
-              className="h-full rounded-full bg-leaf transition-all"
+              className="h-full rounded-full bg-[#0B3B25] transition-all"
               style={{ width: `${Math.round(availabilityScore * 100)}%` }}
             />
           </div>

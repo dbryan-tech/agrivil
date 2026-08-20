@@ -137,8 +137,21 @@ export default function MobileOnboardingScreen() {
         }}
       />
 
-      {/* 1. Top Bar with Skip */}
-      <div className="relative z-20 flex items-center justify-end">
+      {/* 1. Top Bar with Logo & Skip */}
+      <div className="relative z-20 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Image
+            src="/agrivil-mark.svg"
+            alt="AgriVil"
+            width={28}
+            height={28}
+            className="h-7 w-7 object-contain"
+            priority
+          />
+          <span className="text-[16px] font-black tracking-[0.18em] text-[#0B3B25]">
+            AGRIVIL
+          </span>
+        </div>
         <Link
           href="/m"
           className="text-[12px] font-extrabold tracking-wide text-[#5C5247] transition-colors hover:text-[#211A12]"

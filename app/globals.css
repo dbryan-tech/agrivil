@@ -215,73 +215,73 @@ nextjs-portal { display: none !important; }
   color-scheme: light;
   font-family: var(--font-jakarta);
   letter-spacing: -0.011em;
-  /* AgriVil — "Harvest Market": copper chrome + green actions + yellow accents */
-  --background: #f5f1e8;
-  --foreground: #1c2118;
-  --card: #ffffff;
-  --card-foreground: #1c2118;
-  --popover: #ffffff;
-  --popover-foreground: #1c2118;
-  --primary: #0f7a43;
-  --primary-foreground: #ffffff;
-  --secondary: #ecefe4;
-  --secondary-foreground: #14422a;
-  --muted: #efece1;
-  --muted-foreground: #6a6450;
-  --accent: #f0a81e;
-  --accent-foreground: #2a1c02;
-  --destructive: #d33b2a;
-  --border: #e3ddcd;
-  --input: #e3ddcd;
-  --ring: #0f7a43;
-  --brand: #0f7a43;
-  --brand-foreground: #ffffff;
-  --radius: 0.625rem;
+  /* AgriVil — Mobile-Aligned Warm Editorial Palette */
+  --background: #F7F5F0;
+  --foreground: #211A12;
+  --card: #FFFFFF;
+  --card-foreground: #211A12;
+  --popover: #FFFFFF;
+  --popover-foreground: #211A12;
+  --primary: #0B3B25;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EDE8DF;
+  --secondary-foreground: #211A12;
+  --muted: #EAE5DB;
+  --muted-foreground: #5C5247;
+  --accent: #F0A81E;
+  --accent-foreground: #211A12;
+  --destructive: #D33B2A;
+  --border: rgba(33, 26, 18, 0.08);
+  --input: rgba(33, 26, 18, 0.12);
+  --ring: #0B3B25;
+  --brand: #0B3B25;
+  --brand-foreground: #FFFFFF;
+  --radius: 0.75rem;
 
-  /* marketplace chrome — copper brand band */
-  --ga-header: #7a3f1c;          /* deep copper top brand band */
-  --ga-header-foreground: #f7ead9;
-  --ga-deal: #d6402c;            /* sale / flash-deal red */
-  --ga-deal-foreground: #ffffff;
-  --ga-star: #f0a81e;            /* rating star yellow */
+  /* marketplace chrome — clay rust brand band */
+  --ga-header: #7A3F1C;          /* deep copper top brand band */
+  --ga-header-foreground: #FAF9F6;
+  --ga-deal: #D6402C;            /* sale / flash-deal red */
+  --ga-deal-foreground: #FFFFFF;
+  --ga-star: #F0A81E;            /* rating star harvest gold */
 
-  /* copper brand chrome */
-  --ga-copper: #b5642e;
-  --ga-copper-deep: #7a3f1c;
-  --ga-copper-soft: #d98a4e;
-  --ga-copper-foreground: #f7ead9;
+  /* copper / clay rust brand chrome */
+  --ga-copper: #7A3F1C;
+  --ga-copper-deep: #5E2F13;
+  --ga-copper-soft: #9E5225;
+  --ga-copper-foreground: #FAF9F6;
 
-  /* warm yellow — ratings + highlights */
-  --ga-gold: #a8740f;
-  --ga-gold-soft: #f0a81e;
-  /* green brand core */
-  --ga-field: #0f7a43;
-  --ga-field-deep: #0b3b25;
-  /* copper accent (warmth) */
-  --ga-terracotta: #b5642e;
-  --ga-cream: #faf7f0;
-  --ga-paper: #faf7f0;
-  --ga-clay: #8a5a3a;
-  --ga-leaf: #3f8a4f;
+  /* harvest gold — ratings + highlights */
+  --ga-gold: #F0A81E;
+  --ga-gold-soft: #F59E0B;
+  /* deep forest green brand core */
+  --ga-field: #0B3B25;
+  --ga-field-deep: #072618;
+  /* clay rust accent */
+  --ga-terracotta: #7A3F1C;
+  --ga-cream: #FAF9F6;
+  --ga-paper: #FAF9F6;
+  --ga-clay: #7A3F1C;
+  --ga-leaf: #0B3B25;
   /* cinematic dark-section ink + fresh pop */
-  --ga-ink-deep: #1a0f06;
-  --ga-ink-soft: #2a1a0d;
-  --ga-lime: #f0c84a;
+  --ga-ink-deep: #1A0F06;
+  --ga-ink-soft: #2A1A0D;
+  --ga-lime: #F0A81E;
 
-  --chart-1: #0f7a43;
-  --chart-2: #f0a81e;
-  --chart-3: #b5642e;
-  --chart-4: #3f8a4f;
-  --chart-5: #7a3f1c;
+  --chart-1: #0B3B25;
+  --chart-2: #F0A81E;
+  --chart-3: #7A3F1C;
+  --chart-4: #2D6A4F;
+  --chart-5: #5E2F13;
 
-  --sidebar: #ffffff;
-  --sidebar-foreground: #16241b;
-  --sidebar-primary: #0f7a43;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e8f1e8;
-  --sidebar-accent-foreground: #14422a;
-  --sidebar-border: #e1e5db;
-  --sidebar-ring: #0f7a43;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #211A12;
+  --sidebar-primary: #0B3B25;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EDE8DF;
+  --sidebar-accent-foreground: #211A12;
+  --sidebar-border: rgba(33, 26, 18, 0.08);
+  --sidebar-ring: #0B3B25;
 }
 
 .ga-display {
@@ -491,7 +491,7 @@ nextjs-portal { display: none !important; }
     0 24px 48px -16px rgba(15, 122, 67, 0.22);
 }
 
-/* premium card hover: lift + two-layer shadow + border warm-up.
+/* premium card hover: lift + soft two-layer shadow + border warm-up.
    transitions only the properties that change (no `transition: all`). */
 .ga-card-hover {
   transition:
@@ -499,15 +499,24 @@ nextjs-portal { display: none !important; }
     box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1),
     border-color 0.32s ease;
   box-shadow:
-    0 1px 2px -1px rgba(28, 33, 24, 0.07),
-    0 2px 8px -4px rgba(28, 33, 24, 0.06);
+    0 2px 12px -2px rgba(33, 26, 18, 0.04),
+    0 6px 18px -4px rgba(33, 26, 18, 0.06);
 }
 .ga-card-hover:hover {
-  transform: translateY(-6px);
-  border-color: color-mix(in oklab, var(--primary) 32%, var(--border));
+  transform: translateY(-4px);
+  border-color: rgba(11, 59, 37, 0.2);
   box-shadow:
-    0 6px 14px -6px rgba(28, 33, 24, 0.14),
-    0 26px 52px -18px rgba(15, 122, 67, 0.26);
+    0 4px 16px -2px rgba(33, 26, 18, 0.08),
+    0 12px 28px -6px rgba(11, 59, 37, 0.12);
+}
+
+.ga-card-borderless {
+  background-color: #FFFFFF;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(33, 26, 18, 0.05);
+  box-shadow:
+    0 2px 12px -2px rgba(33, 26, 18, 0.04),
+    0 6px 18px -4px rgba(33, 26, 18, 0.06);
 }
 
 /* smooth color transitions */

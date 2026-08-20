@@ -1,23 +1,26 @@
 {
-	"appId": "com.agrivil.marketplace",
-	"appName": "AgriVil",
-	"webDir": "../out",
-	"server": {
-		"url": "https://agrivil1.vercel.app/m",
-		"cleartext": true
-	},
-	"plugins": {
-		"SplashScreen": {
-			"launchAutoHide": true,
-			"backgroundColor": "#0B3B25",
-			"showSpinner": false,
-			"androidScaleType": "CENTER",
-			"splashFullScreen": true,
-			"splashImmersive": true
-		},
-		"StatusBar": {
-			"backgroundColor": "#F7F5F0",
-			"style": "DARK"
-		}
-	}
+  "appId": "com.agrivil.marketplace",
+  "appName": "AgriVil",
+  "webDir": "../out",
+  "server": {
+    "url": "https://agrivil1.vercel.app/m",
+    "cleartext": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2200,
+      "launchAutoHide": true,
+      "launchFadeOutDuration": 350,
+      "backgroundColor": "#0B3B25",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    },
+    "StatusBar": {
+      "backgroundColor": "#0B3B25",
+      "style": "DARK"
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { MapPin, Star, ShieldCheck, Sprout, CalendarDays } from 'lucide-react'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { ProduceCard } from '@/components/golden-acres/produce-card'
@@ -24,33 +25,48 @@ export function FarmerProfile({
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--ga-field-deep)]/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#072618]/85 to-transparent" />
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="-mt-16 flex flex-col gap-5 sm:flex-row sm:items-end">
-          <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-3xl border-4 border-card bg-card">
+          <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-[24px] border-4 border-white bg-white shadow-md">
             <SmartImage src={farmer.photo} alt={farmer.name} fill className="object-cover" />
           </div>
           <div className="flex-1 pb-1">
-            <p className="font-jakarta text-sm font-bold uppercase tracking-widest text-[var(--ga-gold-soft)]">
+            <p className="font-jakarta text-xs font-black uppercase tracking-widest text-[#F0A81E]">
               {farmer.farmName}
             </p>
-            <h1 className="ga-display mt-1 text-4xl font-semibold text-foreground">
+            <h1 className="ga-headline mt-1 text-3xl sm:text-4xl font-black text-[#211A12]">
               {farmer.name}
             </h1>
-            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs sm:text-sm font-semibold text-[#5C5247]">
               <span className="inline-flex items-center gap-1">
-                <MapPin className="h-4 w-4" /> {farmer.town}, {farmer.region}
+                <MapPin className="h-4 w-4 text-[#0B3B25]" /> {farmer.town}, {farmer.region}
               </span>
               <span className="inline-flex items-center gap-1">
-                <Star className="h-4 w-4 fill-[var(--ga-gold)] text-[var(--ga-gold)]" />
+                <Star className="h-4 w-4 fill-[#F0A81E] text-[#F0A81E]" />
                 {farmer.rating} ({farmer.reviewCount} reviews)
               </span>
               <span className="inline-flex items-center gap-1">
-                <CalendarDays className="h-4 w-4" /> Partner since {farmer.joinedYear}
+                <CalendarDays className="h-4 w-4 text-[#0B3B25]" /> Partner since {farmer.joinedYear}
               </span>
+            </div>
+          </div>
+
+          {/* Verified Partner Seal */}
+          <div className="hidden sm:flex items-center gap-3 rounded-2xl bg-[#FAF7F2] p-3 border border-black/[0.06] shadow-xs">
+            <Image
+              src="/agrivil-stamp.svg"
+              alt="AgriVil Verified Partner"
+              width={44}
+              height={44}
+              className="h-11 w-11 shrink-0"
+            />
+            <div className="text-xs">
+              <span className="font-extrabold text-[#0B3B25]">Verified Grower</span>
+              <p className="text-[11px] font-medium text-[#5C5247]">Direct Cold-Chain Dispatch</p>
             </div>
           </div>
         </div>
@@ -65,12 +81,12 @@ export function FarmerProfile({
           ].map((s) => (
             <div
               key={s.label}
-              className="rounded-2xl border border-border bg-card p-4 text-center"
+              className="rounded-[20px] border border-black/[0.04] bg-[#FDFDFB] p-4 text-center shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]"
             >
-              <p className="ga-display text-2xl font-semibold text-foreground">
+              <p className="ga-headline text-2xl font-black text-[#211A12]">
                 {s.value}
               </p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              <p className="mt-1 text-xs font-bold uppercase tracking-wider text-[#5C5247]">
                 {s.label}
               </p>
             </div>
@@ -80,36 +96,36 @@ export function FarmerProfile({
         {/* Story */}
         <div className="mt-10 grid gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <h2 className="ga-display text-2xl font-semibold text-foreground">
+            <h2 className="ga-headline text-2xl font-black text-[#211A12]">
               The story
             </h2>
-            <p className="mt-4 whitespace-pre-line text-pretty leading-relaxed text-muted-foreground">
+            <p className="mt-4 whitespace-pre-line text-pretty leading-relaxed text-[#5C5247]">
               {farmer.story}
             </p>
           </div>
           <aside className="space-y-5">
-            <div className="rounded-2xl border border-border bg-card p-5">
-              <h3 className="flex items-center gap-2 font-bold text-foreground">
-                <Sprout className="h-5 w-5 text-[var(--ga-leaf)]" /> Growing methods
+            <div className="rounded-[20px] border border-black/[0.04] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+              <h3 className="flex items-center gap-2 font-black text-[#211A12]">
+                <Sprout className="h-5 w-5 text-[#0B3B25]" /> Growing methods
               </h3>
               <ul className="mt-3 space-y-2">
                 {farmer.methods.map((m) => (
-                  <li key={m} className="text-sm text-muted-foreground">
+                  <li key={m} className="text-sm font-medium text-[#5C5247]">
                     {m}
                   </li>
                 ))}
               </ul>
             </div>
             {farmer.certifications.length > 0 && (
-              <div className="rounded-2xl border border-border bg-card p-5">
-                <h3 className="flex items-center gap-2 font-bold text-foreground">
-                  <ShieldCheck className="h-5 w-5 text-[var(--ga-gold)]" /> Certifications
+              <div className="rounded-[20px] border border-black/[0.04] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+                <h3 className="flex items-center gap-2 font-black text-[#211A12]">
+                  <ShieldCheck className="h-5 w-5 text-[#F0A81E]" /> Certifications
                 </h3>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {farmer.certifications.map((c) => (
                     <span
                       key={c}
-                      className="rounded-full bg-secondary px-3 py-1.5 text-sm font-semibold text-secondary-foreground"
+                      className="rounded-full bg-[#EDE8DF] px-3 py-1.5 text-xs font-bold text-[#211A12]"
                     >
                       {c}
                     </span>
@@ -121,12 +137,12 @@ export function FarmerProfile({
         </div>
 
         {/* Catalog */}
-        <section className="mt-14 pb-16">
+        <section className="mt-12 pb-14">
           <div className="flex items-end justify-between">
-            <h2 className="ga-display text-2xl font-semibold text-foreground">
+            <h2 className="ga-headline text-2xl font-black text-[#211A12]">
               From this farm
             </h2>
-            <Link href="/shop" className="text-sm font-semibold text-[var(--ga-gold)] hover:underline">
+            <Link href="/shop" className="text-sm font-extrabold text-[#0B3B25] hover:underline">
               All produce
             </Link>
           </div>
@@ -137,7 +153,7 @@ export function FarmerProfile({
               ))}
             </div>
           ) : (
-            <p className="mt-4 text-muted-foreground">
+            <p className="mt-4 text-[#5C5247]">
               This farm has no produce listed right now. Check back soon.
             </p>
           )}

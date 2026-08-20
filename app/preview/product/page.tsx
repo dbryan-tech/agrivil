@@ -367,8 +367,9 @@ export default function MobileProductDetailsScreen() {
                         </span>
                       )}
                     </div>
-                    <p className="text-[11px] font-semibold text-[#5C5247]">
-                      {offer.region} · {offer.rating} ★
+                    <p className="flex items-center gap-1 text-[11px] font-semibold text-[#5C5247]">
+                      <span>{offer.region} · {offer.rating}</span>
+                      <Star className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
                     </p>
                   </div>
 

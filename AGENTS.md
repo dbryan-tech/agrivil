@@ -23,13 +23,25 @@
 
 ### A. Color Palette
 - **Deep Forest Green** (`#0B3B25`): Primary brand, organic certification, success states, primary CTA buttons.
+- **Sun Ochre / Orange** (`#DF8821`): Harvest sun arch & radiating energy rays, highlight accents, vitality badges.
 - **Clay Rust** (`#7A3F1C`): Secondary brand, farm attribution links, badges, discount alerts.
 - **Harvest Gold** (`#F0A81E` / `#F59E0B`): Star ratings, featured farm highlights, badges.
 - **Off-White / Warm Canvas** (`#FAF9F6` / `#F7F5F0`): Primary mobile page backgrounds and card substrates.
 - **Deep Soil Charcoal** (`#211A12`): High-contrast primary headings, titles, and active tabs.
 - **Muted Earth Charcoal** (`#5C5247` / `#8A7E72`): Secondary metadata, subtitles, labels, and helper text.
 
-### B. Standardized 10% Margins & Compact Spacing
+### B. Master Brand Asset System (Concept 01)
+- **Vector Brand Directory**: `docs/brand-assets/`
+  - `01_LOGO_SYSTEM/`: Core marks, primary stacked logos, horizontal logos, reverse white, monochrome black, circular social avatar, and round farm fresh stamp.
+  - `02_ICONS/`: 12 Brand SVG and PNG icons (`home`, `search`, `cart`, `heart`, `user`, `location`, `bag`, `bell`, `recipe`, `settings`, `package`, `farmer`).
+  - `03_DIGITAL_ASSETS/`: Multi-density app icons (16px–1024px), `favicon.ico`, and social media banners.
+  - `04_PRINT_ASSETS/`: Business cards, A4 letterhead, email signature, and invoice headers.
+  - `05_MOCKUPS/`: Seamless brand canvas pattern tile.
+  - `06_BRAND_GUIDE/`: `AGRIVIL_BRAND_IDENTITY_GUIDE.md` & `ASSET_MANIFEST.json`.
+- **Mobile Agent Package**: `docs/mobile-app-agent-package/`
+- **Public App Integration**: `public/agrivil-logo.svg`, `public/icon.png`, `public/favicon.ico`, `public/brand-pattern.png`.
+
+### C. Standardized 10% Margins & Compact Spacing
 - **Outer Page Horizontal Padding**: Standardized to `px-1.5` (~4px to 6px, representing 10% of standard `16px` padding) across all mobile views.
 - **Card Grid Spacing**: `gap-1.5` for 2-column produce and category grids; `space-y-1.5` or `space-y-2` for vertical card lists.
 - **Halved Vertical Section Spacing**: Ultra-compact top spacings (`pt-1.5`, `pt-2`, `pb-1`) between header, search bar, hero, chips, and produce sections.
