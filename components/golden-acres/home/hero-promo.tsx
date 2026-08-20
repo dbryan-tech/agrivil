@@ -95,14 +95,14 @@ export function HeroPromo() {
   const data = HERO_BANNER_DATA
 
   return (
-    <section className="mx-auto max-w-7xl px-4 pt-5 sm:px-6 lg:px-8">
-      <div className="grid gap-4 lg:grid-cols-12">
+    <section className="mx-auto max-w-7xl px-2 pt-2.5 sm:px-3 lg:px-4">
+      <div className="grid gap-2 sm:gap-2.5 lg:grid-cols-12">
         {/* Main promo */}
         <Link
           href={data.ctaHref}
           className="group relative col-span-12 overflow-hidden rounded-2xl lg:col-span-8"
         >
-          <div className="relative aspect-[16/10] sm:aspect-[16/8] lg:aspect-auto lg:h-full lg:min-h-[420px]">
+          <div className="relative aspect-[16/10] sm:aspect-[16/8] lg:aspect-auto lg:h-full lg:min-h-[360px]">
             <SmartImage
               src={data.image}
               alt={data.imageAlt}
@@ -111,22 +111,22 @@ export function HeroPromo() {
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[var(--ga-ink-deep)]/85 via-[var(--ga-ink-deep)]/45 to-transparent" />
-            <div className="absolute inset-0 flex flex-col justify-center gap-4 p-7 sm:p-10 lg:max-w-[60%]">
-              <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-accent-foreground">
+            <div className="absolute inset-0 flex flex-col justify-center gap-2.5 p-4 sm:p-7 lg:max-w-[60%]">
+              <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-accent px-3 py-0.5 text-xs font-bold uppercase tracking-wide text-accent-foreground">
                 <MapPin className="h-3.5 w-3.5" /> {data.badge}
               </span>
-              <h1 className="ga-headline text-balance text-4xl text-white sm:text-5xl lg:text-6xl">
+              <h1 className="ga-headline text-balance text-3xl text-white sm:text-4xl lg:text-5xl">
                 {data.title} <em className="not-italic text-[#DF8821]">{data.highlightText}</em>
               </h1>
-              <p className="max-w-md text-pretty text-sm leading-relaxed text-white/85 sm:text-base">
+              <p className="max-w-md text-pretty text-xs leading-relaxed text-white/85 sm:text-sm">
                 {data.description}
               </p>
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="ga-press inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-colors group-hover:bg-field-deep">
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                <span className="ga-press inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-bold text-primary-foreground transition-colors group-hover:bg-field-deep sm:text-sm">
                   {data.ctaText}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </span>
-                <span className="text-sm font-semibold text-white/90">{data.freeDeliveryText}</span>
+                <span className="text-xs font-semibold text-white/90 sm:text-sm">{data.freeDeliveryText}</span>
               </div>
             </div>
           </div>
@@ -134,7 +134,7 @@ export function HeroPromo() {
 
 
         {/* Side promos */}
-        <div className="col-span-12 grid gap-4 sm:grid-cols-2 lg:col-span-4 lg:grid-cols-1">
+        <div className="col-span-12 grid gap-2 sm:gap-2.5 sm:grid-cols-2 lg:col-span-4 lg:grid-cols-1">
           <SidePromo
             href="/bundles"
             image="/golden-acres/bundle-box.png"
@@ -174,7 +174,7 @@ function SidePromo({
 }) {
   return (
     <Link href={href} className="group relative overflow-hidden rounded-2xl">
-      <div className="relative aspect-[16/9] sm:aspect-auto sm:h-full sm:min-h-[200px] lg:min-h-[202px]">
+      <div className="relative aspect-[16/9] sm:aspect-auto sm:h-full sm:min-h-[175px] lg:min-h-[175px]">
         <SmartImage
           src={image}
           alt={title}
@@ -188,11 +188,11 @@ function SidePromo({
               : 'absolute inset-0 bg-gradient-to-t from-[var(--ga-ink-deep)]/85 to-transparent'
           }
         />
-        <div className="absolute inset-0 flex flex-col justify-end gap-0.5 p-5">
+        <div className="absolute inset-0 flex flex-col justify-end gap-0.5 p-3.5 sm:p-4">
           <span className="text-[11px] font-bold uppercase tracking-wide text-[var(--ga-lime)]">
             {kicker}
           </span>
-          <h3 className="ga-headline text-xl text-white">{title}</h3>
+          <h3 className="ga-headline text-lg text-white sm:text-xl">{title}</h3>
           <p className="flex items-center gap-1 text-xs text-white/80">
             {sub}
             <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
@@ -210,12 +210,12 @@ export function TrustStrip() {
     { icon: MapPin, title: 'GhanaPostGPS', sub: 'Accurate to your door' },
   ]
   return (
-    <section className="mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 gap-3 rounded-2xl border border-border bg-card p-3 sm:grid-cols-3">
+    <section className="mx-auto mt-2 max-w-7xl px-2 sm:px-3 lg:px-4">
+      <div className="grid grid-cols-1 gap-2 rounded-2xl border border-border bg-card p-2 sm:grid-cols-3">
         {items.map((it) => (
-          <div key={it.title} className="flex items-center gap-3 rounded-xl px-3 py-2">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-secondary text-primary">
-              <it.icon className="h-5 w-5" />
+          <div key={it.title} className="flex items-center gap-2.5 rounded-xl px-2.5 py-1.5">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary text-primary">
+              <it.icon className="h-4 w-4" />
             </span>
             <div className="leading-tight">
               <p className="text-sm font-bold text-foreground">{it.title}</p>

@@ -35,12 +35,12 @@ const COLS = [
 export function GaFooter() {
   return (
     <footer className="relative overflow-hidden bg-[#1A0F06] text-[#FAF9F6]">
-      <div className="relative z-[2] mx-auto max-w-7xl px-4 pt-14 pb-10 sm:px-6">
+      <div className="relative z-[2] mx-auto max-w-7xl px-2 pt-7 pb-5 sm:px-3 lg:px-4">
         {/* Newsletter / CTA row */}
-        <div className="flex flex-col gap-6 border-b border-white/10 pb-10 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-3 border-b border-white/10 pb-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-xl">
-            <p className="ga-kicker font-extrabold text-[#F0A81E]">Stay fresh</p>
-            <h2 className="ga-headline mt-2 text-pretty text-3xl font-black leading-[1.08] sm:text-4xl">
+            <p className="ga-kicker text-xs font-extrabold text-[#F0A81E]">Stay fresh</p>
+            <h2 className="ga-headline mt-1.5 text-pretty text-2xl font-black leading-[1.08] sm:text-3xl">
               Get the harvest list <span className="text-[#F0A81E]">before</span> it
               sells out.
             </h2>
@@ -51,18 +51,18 @@ export function GaFooter() {
               required
               placeholder="you@email.com"
               aria-label="Email address"
-              className="h-12 w-full rounded-full border border-white/15 bg-white/5 px-5 text-sm font-medium text-white outline-none transition-[border-color,background-color] duration-300 placeholder:text-white/40 focus:border-[#F0A81E] focus:bg-white/10"
+              className="h-11 w-full rounded-full border border-white/15 bg-white/5 px-4 text-xs sm:text-sm font-medium text-white outline-none transition-[border-color,background-color] duration-300 placeholder:text-white/40 focus:border-[#F0A81E] focus:bg-white/10"
             />
             <button
               type="submit"
-              className="ga-press ga-sheen flex h-12 shrink-0 items-center gap-1.5 rounded-full bg-[#F0A81E] px-6 text-sm font-black text-[#211A12] shadow-sm hover:bg-[#F59E0B]"
+              className="ga-press ga-sheen flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-[#F0A81E] px-5 text-xs sm:text-sm font-black text-[#211A12] shadow-sm hover:bg-[#F59E0B]"
             >
               Join <ArrowRight className="h-4 w-4" />
             </button>
           </form>
         </div>
 
-        <div className="grid gap-10 py-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div className="grid gap-5 py-5 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <Link href="/" className="flex items-center gap-3">
               <div className="relative h-10 w-10 shrink-0 overflow-hidden">

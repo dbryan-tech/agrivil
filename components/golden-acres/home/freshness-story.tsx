@@ -28,10 +28,10 @@ const steps = [
 export function FreshnessStory() {
   return (
     <section className="bg-[#FAF7F2]">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
+      <div className="mx-auto max-w-7xl px-2 py-6 sm:px-3 lg:px-4 lg:py-8">
+        <div className="grid gap-5 lg:grid-cols-2 lg:items-center lg:gap-8">
           <Reveal>
-            <div className="group relative aspect-[4/3] overflow-hidden rounded-[24px] border border-black/[0.04] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] lg:aspect-[4/5]">
+            <div className="group relative aspect-[4/3] overflow-hidden rounded-[20px] border border-black/[0.04] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] lg:aspect-[4/5]">
               <SmartImage
                 src="/golden-acres/story-harvest.jpg"
                 alt="Hands holding freshly harvested vegetables with soil still on them"
@@ -44,34 +44,34 @@ export function FreshnessStory() {
           </Reveal>
 
           <Reveal delay={80}>
-            <div className="flex items-center gap-4">
-              <span className="ga-index text-sm font-black text-[#7A3F1C]">04</span>
+            <div className="flex items-center gap-3">
+              <span className="ga-index text-xs font-black text-[#7A3F1C]">04</span>
               <div className="ga-rule" />
-              <span className="ga-kicker shrink-0 font-extrabold text-[#5C5247]">How It Works</span>
+              <span className="ga-kicker shrink-0 text-xs font-extrabold text-[#5C5247]">How It Works</span>
             </div>
-            <h2 className="ga-headline mt-5 text-balance text-4xl font-black text-[#211A12] sm:text-5xl">
+            <h2 className="ga-headline mt-2.5 text-balance text-3xl font-black text-[#211A12] sm:text-4xl">
               From their soil to your <em className="text-[#0B3B25]">kitchen</em>
             </h2>
-            <p className="mt-4 max-w-xl leading-relaxed text-[#5C5247]">
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-[#5C5247]">
               No middlemen, no warehouses sitting on produce for days. Just a short, cold
               path from the farm that grew it to the table that needs it.
             </p>
-            <ol className="relative mt-8 space-y-1">
+            <ol className="relative mt-4 space-y-0.5">
               {/* connecting line through the step markers */}
               <span
                 aria-hidden
                 className="absolute left-[1.375rem] top-6 bottom-6 w-px bg-gradient-to-b from-[#0B3B25]/40 via-black/10 to-transparent"
               />
               {steps.map((s, i) => (
-                <li key={s.title} className="group relative flex gap-4 rounded-2xl p-2.5 transition-colors duration-300 hover:bg-white/60">
-                  <div className="relative z-[1] flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-[#0B3B25] shadow-xs ring-1 ring-black/5 transition-transform duration-300 group-hover:scale-110">
-                    <s.icon className="h-5 w-5" />
+                <li key={s.title} className="group relative flex gap-3.5 rounded-2xl p-2 transition-colors duration-300 hover:bg-white/60">
+                  <div className="relative z-[1] flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#0B3B25] shadow-xs ring-1 ring-black/5 transition-transform duration-300 group-hover:scale-110">
+                    <s.icon className="h-4 w-4" />
                   </div>
-                  <div className="pt-1">
-                    <h3 className="text-base font-extrabold text-[#211A12]">
+                  <div className="pt-0.5">
+                    <h3 className="text-sm font-extrabold text-[#211A12]">
                       <span className="text-[#F0A81E]">{i + 1}.</span> {s.title}
                     </h3>
-                    <p className="mt-1 text-sm leading-relaxed text-[#5C5247]">
+                    <p className="mt-0.5 text-xs leading-relaxed text-[#5C5247]">
                       {s.desc}
                     </p>
                   </div>

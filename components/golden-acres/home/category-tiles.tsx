@@ -13,14 +13,14 @@ const TILES = [
 
 export function CategoryTiles() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mb-4 flex items-end justify-between">
-        <h2 className="ga-headline text-2xl font-black text-[#211A12] sm:text-3xl">Shop by category</h2>
-        <Link href="/shop" className="text-sm font-extrabold text-[#0B3B25] hover:text-[#072618] hover:underline">
+    <section className="mx-auto max-w-7xl px-2 py-4 sm:px-3 lg:px-4">
+      <div className="mb-2 flex items-end justify-between">
+        <h2 className="ga-headline text-xl font-black text-[#211A12] sm:text-2xl">Shop by category</h2>
+        <Link href="/shop" className="text-xs font-extrabold text-[#0B3B25] hover:text-[#072618] hover:underline sm:text-sm">
           View all
         </Link>
       </div>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
         {TILES.map((t, i) => (
           <Link
             key={t.label}

@@ -48,24 +48,24 @@ export function MatchTeaser() {
             'radial-gradient(120% 80% at 15% 0%, rgba(11, 59, 37, 0.45), transparent 55%)',
         }}
       />
-      <div className="relative z-[2] mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-14 lg:px-8 lg:py-16">
+      <div className="relative z-[2] mx-auto grid max-w-7xl gap-5 px-2 py-6 sm:px-3 lg:grid-cols-2 lg:items-center lg:gap-8 lg:px-4 lg:py-8">
         <div>
-          <div className="flex items-center gap-4">
-            <span className="ga-index text-sm font-black text-[#F0A81E]">05</span>
+          <div className="flex items-center gap-3">
+            <span className="ga-index text-xs font-black text-[#F0A81E]">05</span>
             <div className="h-px flex-1 bg-white/15" />
-            <span className="ga-kicker shrink-0 font-extrabold text-[#FAF9F6]/65">MarketPlace Match</span>
+            <span className="ga-kicker shrink-0 text-xs font-extrabold text-[#FAF9F6]/65">MarketPlace Match</span>
           </div>
-          <h2 className="ga-headline mt-5 text-balance text-4xl font-black sm:text-5xl">
+          <h2 className="ga-headline mt-2.5 text-balance text-3xl font-black sm:text-4xl">
             We find the farms{' '}
             <span className="font-normal text-[#F0A81E]">closest</span> to you
           </h2>
-          <p className="mt-4 max-w-xl leading-relaxed text-[#FAF9F6]/80 text-sm sm:text-base">
+          <p className="mt-2 max-w-xl text-xs sm:text-sm leading-relaxed text-[#FAF9F6]/80">
             Enter your GhanaPostGPS address and our proximity engine ranks nearby farms by
             distance and what they have in stock — so your produce travels the shortest
             possible path and arrives at its freshest.
           </p>
 
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-4 flex flex-col gap-2.5 sm:flex-row">
             <div className="group relative flex-1">
               <MapPin className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-[#0B3B25] transition-colors duration-300 group-focus-within:text-[#072618]" />
               <input
@@ -73,32 +73,32 @@ export function MatchTeaser() {
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="e.g. GA-183-4250"
                 aria-label="GhanaPostGPS address"
-                className="h-14 w-full rounded-full bg-[#FAF9F6] py-3.5 pl-11 pr-4 font-bold text-[#211A12] outline-none ring-2 ring-transparent transition-shadow duration-300 focus:ring-[#F0A81E]"
+                className="h-12 w-full rounded-full bg-[#FAF9F6] py-3 pl-11 pr-4 text-sm font-bold text-[#211A12] outline-none ring-2 ring-transparent transition-shadow duration-300 focus:ring-[#F0A81E]"
               />
             </div>
             <button
               type="button"
               onClick={check}
               disabled={state === 'loading'}
-              className="ga-press ga-sheen inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[#F0A81E] px-7 py-3.5 font-black text-[#211A12] shadow-sm hover:bg-[#F59E0B] disabled:opacity-70"
+              className="ga-press ga-sheen inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#F0A81E] px-6 py-3 text-sm font-black text-[#211A12] shadow-sm hover:bg-[#F59E0B] disabled:opacity-70"
             >
               {state === 'loading' ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
-                <Navigation className="h-5 w-5" />
+                <Navigation className="h-4 w-4" />
               )}
               Find farms
             </button>
           </div>
           {state === 'invalid' && (
-            <p className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[#F59E0B]">
-              <XCircle className="h-4 w-4" />
+            <p className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-[#F59E0B]">
+              <XCircle className="h-3.5 w-3.5" />
               That doesn&apos;t look like a valid GhanaPostGPS code (format: GA-183-4250).
             </p>
           )}
         </div>
 
-        <div className="rounded-[24px] border border-black/[0.04] bg-[#FAF9F6] p-6 text-[#211A12] shadow-2xl shadow-black/25">
+        <div className="rounded-[20px] border border-black/[0.04] bg-[#FAF9F6] p-4 text-[#211A12] shadow-xl shadow-black/20">
           {state === 'ok' && quote ? (
             <div>
               <div className="flex items-center justify-between border-b border-black/[0.06] pb-4">

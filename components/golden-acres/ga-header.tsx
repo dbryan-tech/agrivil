@@ -64,7 +64,7 @@ export function GaHeader() {
     <header className="sticky top-0 z-50">
       {/* Utility bar */}
       <div className="bg-header text-header-foreground">
-        <div className="mx-auto flex h-9 max-w-7xl items-center justify-between gap-4 px-4 text-xs sm:px-6">
+        <div className="mx-auto flex h-9 max-w-7xl items-center justify-between gap-4 px-2 text-xs sm:px-3 lg:px-4">
           <Link href="/local" className="flex items-center gap-1.5 transition-opacity hover:opacity-80">
             <MapPin className="h-3.5 w-3.5" />
             <span className="font-medium">Deliver to</span>
@@ -86,7 +86,7 @@ export function GaHeader() {
 
       {/* Main bar */}
       <div className="border-b border-border/40 bg-card/95 backdrop-blur-sm">
-        <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:gap-6">
+        <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-2 sm:px-3 lg:gap-4 lg:px-4">
           <Link href="/" className="group flex shrink-0 items-center gap-2.5" aria-label="AgriVil home">
             <div className="relative h-10 w-10 shrink-0 overflow-hidden transition-transform duration-300 group-hover:scale-105">
               <Image

@@ -5,26 +5,26 @@ import { ArrowRight, Clock, UtensilsCrossed } from 'lucide-react'
 
 export function RecipesPreview() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-      <div className="flex items-center gap-4">
-        <span className="ga-index text-sm font-black text-[#7A3F1C]">07</span>
+    <section className="mx-auto max-w-7xl px-2 py-6 sm:px-3 lg:px-4 lg:py-8">
+      <div className="flex items-center gap-3">
+        <span className="ga-index text-xs font-black text-[#7A3F1C]">07</span>
         <div className="ga-rule" />
-        <span className="ga-kicker shrink-0 font-extrabold text-[#5C5247]">Cook &amp; Shop</span>
+        <span className="ga-kicker shrink-0 text-xs font-extrabold text-[#5C5247]">Cook &amp; Shop</span>
       </div>
-      <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
-        <h2 className="ga-headline max-w-xl text-balance text-4xl font-black text-[#211A12] sm:text-5xl">
+      <div className="mt-3 flex flex-wrap items-end justify-between gap-3">
+        <h2 className="ga-headline max-w-xl text-balance text-2xl font-black text-[#211A12] sm:text-3xl">
           Recipes you can <em className="text-[#0B3B25]">shop in a tap</em>
         </h2>
         <Link
           href="/recipes"
-          className="group inline-flex items-center gap-2 pb-1 text-sm font-extrabold text-[#0B3B25] hover:text-[#072618]"
+          className="group inline-flex items-center gap-1.5 pb-0.5 text-xs font-extrabold text-[#0B3B25] hover:text-[#072618] sm:text-sm"
         >
           <span className="link-underline">Browse all recipes</span>
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
         </Link>
       </div>
 
-      <div className="mt-8 grid gap-5 md:grid-cols-3">
+      <div className="mt-4 grid gap-3 md:grid-cols-3">
         {recipes.slice(0, 3).map((recipe) => (
           <Link
             key={recipe.id}
