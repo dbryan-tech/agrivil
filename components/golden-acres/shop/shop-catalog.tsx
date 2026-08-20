@@ -324,7 +324,7 @@ export function ShopCatalog() {
               {view === 'grid' ? (
                 <div
                   key={`grid-${filterSig}`}
-                  className="ga-stagger mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4"
+                  className="ga-stagger mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5"
                 >
                   {visibleGroups.map((g) => (
                     <ProduceCard

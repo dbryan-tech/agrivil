@@ -5,10 +5,10 @@ import { ArrowRight } from 'lucide-react'
 import { Reveal } from '@/components/golden-acres/reveal'
 
 export function FeaturedProduce() {
-  const featured = featuredProducts.slice(0, 4)
+  const featured = featuredProducts.slice(0, 6)
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <Reveal>
         <div className="flex items-center gap-4">
           <span className="ga-index text-sm font-black text-[#7A3F1C]">02</span>
@@ -16,8 +16,8 @@ export function FeaturedProduce() {
           <span className="ga-kicker shrink-0 font-extrabold text-[#5C5247]">Today&apos;s Harvest</span>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
-          <h2 className="ga-headline max-w-xl text-balance text-4xl font-black text-[#211A12] sm:text-5xl">
+        <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
+          <h2 className="ga-headline max-w-xl text-balance text-2xl font-black text-[#211A12] sm:text-3xl">
             Picked this <em className="text-[#0B3B25]">morning</em>
           </h2>
           <Link
@@ -30,7 +30,7 @@ export function FeaturedProduce() {
         </div>
       </Reveal>
 
-      <div className="ga-stagger mt-8 grid grid-cols-2 gap-3.5 sm:gap-5 lg:grid-cols-4">
+      <div className="ga-stagger mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         {featured.map((product) => (
           <ProduceCard key={product.id} product={product} />
         ))}

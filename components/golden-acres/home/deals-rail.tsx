@@ -41,9 +41,9 @@ export function DealsRail() {
           </Link>
         </div>
 
-        <div className="ga-rail flex gap-3.5 overflow-x-auto p-4 sm:gap-4 sm:p-5">
+        <div className="ga-rail flex gap-3 overflow-x-auto p-4 sm:p-5">
           {picks.map((p) => (
-            <div key={p.id} className="w-[175px] shrink-0 sm:w-[215px]">
+            <div key={p.id} className="w-[160px] shrink-0 sm:w-[190px]">
               <ProduceCard product={p} />
             </div>
           ))}

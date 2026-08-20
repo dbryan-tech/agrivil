@@ -75,10 +75,10 @@ export function ProductRail({
 
       <div
         ref={scroller}
-        className="ga-rail -mx-4 mt-5 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0"
+        className="ga-rail -mx-4 mt-5 flex gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0"
       >
         {cards.map(({ product, count }) => (
-          <div key={product.id} className="w-[170px] shrink-0 sm:w-[220px]">
+          <div key={product.id} className="w-[160px] shrink-0 sm:w-[190px]">
             <ProduceCard product={product} offerCount={count} onQuickView={onQuickView} />
           </div>
         ))}

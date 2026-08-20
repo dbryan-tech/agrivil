@@ -53,11 +53,11 @@ export function ProduceCard({
   }
 
   return (
-    <div className="ga-card-hover group relative flex flex-col justify-between overflow-hidden rounded-[20px] bg-[#FDFDFB] border border-black/[0.04] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+    <div className="ga-card-hover group relative flex flex-col justify-between overflow-hidden rounded-[20px] bg-[#FDFDFB] border border-black/[0.04] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] transition-all">
       <div className="relative">
         <Link
           href={`/shop/${product.slug}`}
-          className="relative block aspect-square overflow-hidden bg-[#EDE8DF]/40"
+          className="relative block aspect-[1.15/1] overflow-hidden bg-[#EDE8DF]/30"
         >
           <SmartImage
             src={product.image}
@@ -68,37 +68,37 @@ export function ProduceCard({
           {/* soft bottom gradient keeps overlay chips legible on any photo */}
           <span
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/55 via-black/15 to-transparent opacity-90"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 via-black/15 to-transparent opacity-90"
           />
         </Link>
 
         {/* top-left: commerce-critical badges */}
-        <div className="pointer-events-none absolute left-2.5 top-2.5 flex flex-col gap-1.5">
+        <div className="pointer-events-none absolute left-2 top-2 z-[2] flex flex-col gap-1">
           {product.organic && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-[#0B3B25]/95 px-2 py-[3px] text-[10px] font-black uppercase tracking-wider text-white shadow-xs backdrop-blur-sm">
-              <Leaf className="h-3 w-3" strokeWidth={2.5} />
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#0B3B25]/95 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-xs backdrop-blur-sm">
+              <Leaf className="h-2.5 w-2.5 stroke-[2.5]" />
               Organic
             </span>
           )}
           {product.status === 'low' && (
-            <span className="inline-flex w-fit items-center rounded-full bg-[#7A3F1C]/95 px-2 py-[3px] text-[10px] font-black uppercase tracking-wider text-white shadow-xs backdrop-blur-sm">
+            <span className="inline-flex w-fit items-center rounded-full bg-[#7A3F1C]/95 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-xs backdrop-blur-sm">
               Low stock
             </span>
           )}
         </div>
 
         {/* top-right: wishlist + compare (refined frosted controls) */}
-        <div className="absolute right-2.5 top-2.5 flex flex-col gap-1.5">
+        <div className="absolute right-2 top-2 z-[2] flex flex-col gap-1">
           {canSave && (
             <button
               type="button"
               onClick={() => toggleWishlist(product.id)}
               aria-label={saved ? `Remove ${product.name} from favorites` : `Save ${product.name} to favorites`}
               aria-pressed={saved}
-              className="ga-scale-interactive flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#211A12] shadow-xs backdrop-blur-md"
+              className="ga-scale-interactive flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-[#211A12] shadow-xs backdrop-blur-md transition-transform active:scale-90"
             >
               <Heart
-                className="h-[16px] w-[16px] transition-all duration-300"
+                className="h-3.5 w-3.5 transition-all duration-300"
                 style={{
                   fill: saved ? '#7A3F1C' : 'transparent',
                   color: saved ? '#7A3F1C' : 'currentColor',
@@ -114,13 +114,13 @@ export function ProduceCard({
             aria-pressed={comparing}
             title={!comparing && compareFull ? 'Compare list is full (max 4)' : 'Compare'}
             className={[
-              'ga-scale-interactive flex h-8 w-8 items-center justify-center rounded-full shadow-xs backdrop-blur-md transition-colors disabled:opacity-40',
+              'ga-scale-interactive flex h-7 w-7 items-center justify-center rounded-full shadow-xs backdrop-blur-md transition-colors disabled:opacity-40 active:scale-90',
               comparing
                 ? 'bg-[#0B3B25] text-white'
                 : 'bg-white/90 text-[#211A12]',
             ].join(' ')}
           >
-            <GitCompareArrows className="h-[15px] w-[15px]" />
+            <GitCompareArrows className="h-3 w-3" />
           </button>
         </div>
 
@@ -129,17 +129,17 @@ export function ProduceCard({
           <button
             type="button"
             onClick={() => onQuickView(product)}
-            className="ga-press absolute left-1/2 top-1/2 z-[3] flex -translate-x-1/2 -translate-y-1/2 items-center gap-1.5 rounded-full bg-white/95 px-4 py-2 text-xs font-bold text-[#211A12] opacity-0 shadow-md backdrop-blur-md transition-opacity duration-200 focus-visible:opacity-100 group-hover:opacity-100"
+            className="ga-press absolute left-1/2 top-1/2 z-[3] flex -translate-x-1/2 -translate-y-1/2 items-center gap-1 rounded-full bg-white/95 px-3 py-1.5 text-[11px] font-extrabold text-[#211A12] opacity-0 shadow-md backdrop-blur-md transition-opacity duration-200 focus-visible:opacity-100 group-hover:opacity-100"
           >
-            <Eye className="h-4 w-4" />
+            <Eye className="h-3 w-3" />
             Quick view
           </button>
         )}
 
         {/* bottom overlay row: freshness chip + multi-farmer pill */}
-        <div className="pointer-events-none absolute inset-x-2.5 bottom-2.5 flex items-end justify-between gap-2">
+        <div className="pointer-events-none absolute inset-x-2 bottom-1.5 z-[2] flex items-end justify-between gap-1.5">
           {fresh ? (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-black/45 px-2 py-[3px] text-[9.5px] font-extrabold uppercase tracking-wider text-white shadow-xs backdrop-blur-md">
+            <span className="inline-flex items-center gap-1 rounded-full bg-black/50 px-1.5 py-0.5 text-[8.5px] font-extrabold uppercase tracking-wider text-white shadow-xs backdrop-blur-md">
               <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: fresh.color || '#0B3B25' }} />
               {fresh.label}
             </span>
@@ -147,82 +147,74 @@ export function ProduceCard({
             <span aria-hidden />
           )}
           {multi && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-[#7A3F1C]/90 px-2 py-[3px] text-[9.5px] font-extrabold uppercase tracking-wider text-white shadow-xs backdrop-blur-md">
-              <Users className="h-3 w-3" />
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#7A3F1C]/90 px-1.5 py-0.5 text-[8.5px] font-extrabold uppercase tracking-wider text-white shadow-xs backdrop-blur-md">
+              <Users className="h-2.5 w-2.5" />
               {offerCount}
             </span>
           )}
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col p-3.5 pt-3">
-        <Link
-          href={`/farmers/${farmer.slug}`}
-          className="truncate text-xs font-semibold text-[#5C5247] transition-colors hover:text-[#0B3B25]"
-        >
-          {farmer.farmName}
-        </Link>
+      <div className="flex flex-1 flex-col justify-between p-3 pt-2.5">
+        <div>
+          <Link
+            href={`/farmers/${farmer.slug}`}
+            className="block truncate text-[10.5px] font-extrabold uppercase tracking-wider text-[#7A3F1C] transition-colors hover:underline"
+          >
+            {farmer.farmName}
+          </Link>
 
-        <Link href={`/shop/${product.slug}`} className="mt-1">
-          <h3 className="line-clamp-2 min-h-[2.5rem] text-[14px] font-black leading-tight text-[#211A12] transition-colors group-hover:text-[#0B3B25]">
-            {product.name}
-          </h3>
-        </Link>
+          <Link href={`/shop/${product.slug}`} className="mt-0.5 block">
+            <h3 className="line-clamp-1 text-[13.5px] sm:text-[14px] font-black leading-snug text-[#211A12] transition-colors group-hover:text-[#0B3B25]">
+              {product.name}
+            </h3>
+          </Link>
 
-        {/* rating */}
-        <div className="mt-2 flex items-center gap-1.5">
-          <div className="flex items-center">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star
-                key={i}
-                className="h-3.5 w-3.5"
-                style={{
-                  fill: i < rounded ? '#F0A81E' : 'transparent',
-                  color: i < rounded ? '#F0A81E' : '#EAE5DB',
-                }}
-              />
-            ))}
+          {/* rating */}
+          <div className="mt-1 flex items-center gap-1 text-[11px] font-bold text-[#5C5247]">
+            <div className="flex items-center">
+              <Star className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
+            </div>
+            <span className="font-extrabold text-[#211A12]">{farmer.rating.toFixed(1)}</span>
+            <span className="text-[10px] text-[#5C5247]">({farmer.reviewCount})</span>
           </div>
-          <span className="text-xs font-bold text-[#211A12]">{farmer.rating.toFixed(1)}</span>
-          <span className="text-xs text-[#5C5247]">({farmer.reviewCount})</span>
         </div>
 
-        {/* price */}
-        <div className="mt-3 flex items-baseline gap-1.5">
-          {multi && <span className="text-xs font-medium text-[#5C5247]">from</span>}
-          <span className="ga-price text-[1.35rem] font-black leading-none text-[#211A12]">{formatGHS(estimate)}</span>
-          <span className="text-xs font-medium text-[#5C5247]">/ {unitLabel}</span>
-        </div>
-        <span className="mt-1 block min-h-[1rem] text-[11px] font-medium leading-tight">
-          {multi ? (
-            <span className="text-[#7A3F1C] font-semibold">Compare {offerCount} farmer prices</span>
-          ) : product.variableWeight ? (
-            <span className="text-[#5C5247]">Est. weight, priced after picking</span>
-          ) : null}
-        </span>
+        <div>
+          {/* price */}
+          <div className="mt-2 flex items-baseline justify-between gap-1">
+            <div className="flex items-baseline gap-1">
+              {multi && <span className="text-[10.5px] font-bold text-[#5C5247]">from</span>}
+              <span className="text-[16px] sm:text-[17px] font-black leading-none text-[#211A12]">
+                {formatGHS(estimate)}
+              </span>
+            </div>
+            <span className="text-[11px] font-semibold text-[#5C5247]">/ {unitLabel}</span>
+          </div>
 
-        <button
-          type="button"
-          onClick={handleAdd}
-          aria-label={`Add ${product.name} to cart`}
-          className={[
-            'ga-press ga-sheen mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-full text-sm font-extrabold',
-            'transition-all duration-300',
-            added
-              ? 'bg-[#0B3B25]/12 text-[#0B3B25] ring-1 ring-[#0B3B25]/30'
-              : 'bg-[#0B3B25] text-white hover:bg-[#072618] shadow-sm',
-          ].join(' ')}
-        >
-          {added ? (
-            <>
-              <Check className="h-4 w-4 ga-scale-in" /> Added to basket
-            </>
-          ) : (
-            <>
-              <ShoppingCart className="h-4 w-4" /> Add to cart
-            </>
-          )}
-        </button>
+          <button
+            type="button"
+            onClick={handleAdd}
+            aria-label={`Add ${product.name} to cart`}
+            className={[
+              'ga-press ga-sheen mt-2.5 flex h-9 w-full items-center justify-center gap-1.5 rounded-full text-xs font-black',
+              'transition-all duration-300 active:scale-[0.98]',
+              added
+                ? 'bg-[#0B3B25]/12 text-[#0B3B25] ring-1 ring-[#0B3B25]/30'
+                : 'bg-[#0B3B25] text-white hover:bg-[#072618] shadow-xs',
+            ].join(' ')}
+          >
+            {added ? (
+              <>
+                <Check className="h-3.5 w-3.5 ga-scale-in" /> Added
+              </>
+            ) : (
+              <>
+                <ShoppingCart className="h-3.5 w-3.5" /> Add to cart
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   )
