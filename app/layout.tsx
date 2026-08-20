@@ -17,7 +17,6 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { SessionProvider } from '@/components/golden-acres/auth/session-context'
 import { DataStoreProvider } from '@/components/golden-acres/store/data-store'
 import { RecentlyViewedProvider } from '@/components/golden-acres/store/recently-viewed'
-import { MobileSwitcherPill } from '@/components/golden-acres/mobile-switcher-pill'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -119,7 +118,6 @@ export default function RootLayout({
             <DataStoreProvider>
               <RecentlyViewedProvider>
                 {children}
-                <MobileSwitcherPill />
               </RecentlyViewedProvider>
             </DataStoreProvider>
           </SessionProvider>

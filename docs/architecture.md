@@ -47,20 +47,26 @@ agrivil/
 
 ---
 
-## 2. Multi-Channel Experience
+## 2. Multi-Channel Experience & Device-Aware Routing
 
-1. **Mobile Experience (`/m/**`)**:
-   - Primary target for the Android APK and PWA users.
+1. **Smart Device Detection & URL Masking (`middleware.ts`)**:
+   - **Clean URLs everywhere**: The browser address bar always displays clean URLs (`/`, `/shop`, `/farmers`, `/recipes`, `/bundles`, `/checkout`, `/orders`, etc.) with **zero `/m` or `/w` prefix exposed**.
+   - **Mobile Devices (Phones / WebViews)**: Transparently **rewrites** clean URLs to the corresponding `/m/**` components while preserving the clean path in the browser address bar.
+   - **Desktop / Tablets / Large Screens**: Automatically serves desktop views. If a desktop user visits `/m` or `/w`, the middleware automatically redirects them (307) to the clean desktop equivalent.
+   - **Capacitor Android Native App**: Native Android app loads directly with full hardware back button delegation and zero scrollbar support.
+
+2. **Mobile Experience (`/m/**`)**:
+   - Primary target for the Android APK and progressive mobile web.
    - Tailored specifically for touch manipulation, zero scrollbars, and native hardware back button handling.
    - Tightly integrated with GhanaPostGPS and Mobile Money (MTN MoMo, Telecel Cash, AT Money).
 
-2. **Desktop Web (`/**`)**:
+3. **Desktop Web (`/**`)**:
    - Full-width multi-column consumer portal with interactive maps, bulk wholesale ordering, and comprehensive farm story galleries.
 
-3. **Farmer Portal (`/farmer/**`)**:
+4. **Farmer Portal (`/farmer/**`)**:
    - Batch upload for smallholder farmers with harvest date, plot location, moisture levels, and FEFO expiry data.
 
-4. **Admin Logistics Hub (`/admin/**`)**:
+5. **Admin Logistics Hub (`/admin/**`)**:
    - Real-time FEFO order fulfillment, chilled cold-chain van route dispatch, and 3PL webhook reconciliation.
 
 ---

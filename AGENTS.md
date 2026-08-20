@@ -8,9 +8,11 @@
 
 **AgriVil (Golden Acres)** is a premier virtual farmers' marketplace in Ghana connecting consumers directly to smallholder farmers with direct-from-farm cold-chain distribution, transparent FEFO batching, and fair farmer pricing.
 
-### Core Route Taxonomy
-- `/m/**` — **Mobile Application**: The flagship mobile experience loaded inside the Android Capacitor WebView and progressive mobile web.
-- `/**` (e.g. `/`, `/shop`, `/farmers`, `/bundles`, `/recipes`) — **Desktop Web**: Full desktop consumer storefront.
+### Core Route Taxonomy & URL Masking
+- `/**` (e.g. `/`, `/shop`, `/farmers`, `/bundles`, `/recipes`, `/cart`, `/checkout`, `/orders`) — **Clean Public URLs**: The browser address bar ALWAYS displays clean URLs with **zero `/m` or `/w` prefix**.
+  - **On Mobile Devices**: The middleware transparently rewrites clean URLs to render the mobile `/m/**` components while keeping the URL bar clean.
+  - **On Desktop / Tablets**: The middleware serves the full desktop consumer storefront. Any intentional visit to `/m` or `/w` on a desktop/tablet automatically redirects (307) back to the clean desktop equivalent.
+- `/m/**` — **Mobile Application Internal Routes**: Loaded directly inside the Android Capacitor WebView and progressive mobile web.
 - `/farmer/**` — **Farmer Portal**: Smallholder grower harvest uploads, batch management, and payout wallet.
 - `/admin/**` — **Admin Hub**: FEFO inventory management, cold-chain logistics routing, and platform analytics.
 - `/api/**` — **Backend Endpoints**: Paystack / Stripe webhooks, 3PL dispatch tracking, auth, and image upload.
