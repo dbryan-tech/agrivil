@@ -76,7 +76,7 @@ export default function OrdersIndexPage() {
       : orders.slice(0, 6)
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-5xl px-2 py-6 sm:px-3 lg:px-4">
       {/* Header */}
       <div className="text-center">
         <p className="ga-kicker font-extrabold text-[#7A3F1C]">Live Fulfillment</p>

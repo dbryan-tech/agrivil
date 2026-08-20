@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function FarmersPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-2 py-6 sm:px-3 lg:px-4">
       <header className="ga-rise max-w-2xl">
         <p className="ga-eyebrow text-primary">Meet the growers</p>
         <h1 className="ga-display mt-3 text-4xl text-foreground sm:text-5xl">

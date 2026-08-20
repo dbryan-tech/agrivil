@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function WaitlistPage() {
   return (
     <div className="ga-root min-h-screen bg-background">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
+      <div className="mx-auto grid max-w-6xl gap-6 px-2 py-8 sm:px-3 lg:grid-cols-2 lg:items-center lg:px-4">
         <div className="ga-fade-up">
           <p className="text-sm font-bold uppercase tracking-wide text-gold">Coming soon</p>
           <h1 className="ga-display mt-2 text-balance text-4xl font-semibold text-foreground sm:text-5xl">

@@ -156,7 +156,7 @@ export function ShopCatalog() {
   )
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-2 py-3 sm:px-3 lg:px-4">
       {/* breadcrumb + title */}
       <div className="ga-rise">
         <p className="text-xs text-muted-foreground">

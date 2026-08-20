@@ -36,14 +36,14 @@ export function RecipesCatalog() {
           imgClassName="object-cover"
         />
         <div className="ga-media-scrim" aria-hidden />
-        <div className="relative z-10 mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="relative z-10 mx-auto max-w-7xl px-2 py-7 sm:px-3 lg:px-4">
           <p className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#F0A81E]">
             <UtensilsCrossed className="h-4 w-4" /> Cook &amp; shop
           </p>
-          <h1 className="ga-headline mt-2 max-w-2xl text-balance text-4xl font-black text-white sm:text-5xl">
+          <h1 className="ga-headline mt-2 max-w-2xl text-balance text-3xl font-black text-white sm:text-4xl">
             Ghanaian recipes, shoppable in one tap
           </h1>
-          <p className="mt-3 max-w-2xl text-pretty text-base sm:text-lg leading-relaxed text-white/90">
+          <p className="mt-2 max-w-2xl text-pretty text-sm sm:text-base leading-relaxed text-white/90">
             Pick a dish, see exactly what fresh produce you need, and add every
             ingredient to your basket from our farmers — at the best live price.
           </p>
@@ -51,8 +51,8 @@ export function RecipesCatalog() {
       </section>
 
       {/* Category filter */}
-      <div className="sticky top-0 z-10 border-b border-black/[0.04] bg-[#F7F5F0]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-3 sm:px-6 lg:px-8">
+      <div className="sticky top-0 z-10 border-b border-black/[0.04] bg-[#F7F5F0]">
+        <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-2 py-2.5 sm:px-3 lg:px-4">
           {CATEGORIES.map((c) => {
             const active = c === category
             return (
@@ -74,7 +74,7 @@ export function RecipesCatalog() {
       </div>
 
       {/* Grid */}
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-2 py-5 sm:px-3 lg:px-4">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((recipe, i) => (
             <Reveal key={recipe.id} delay={i * 50} as="article">

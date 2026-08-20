@@ -90,7 +90,7 @@ export function HelpCenter() {
   )
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-5xl px-2 py-5 sm:px-3 lg:px-4">
       <header className="ga-rise max-w-2xl">
         <span className="inline-flex items-center gap-2 rounded-full bg-[#F0A81E]/15 px-3 py-1 text-xs font-black uppercase tracking-wider text-[#7A3F1C]">
           <LifeBuoy className="h-3.5 w-3.5" />

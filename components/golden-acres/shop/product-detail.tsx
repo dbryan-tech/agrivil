@@ -62,7 +62,7 @@ export function ProductDetail({
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-2 py-4 sm:px-3 lg:px-4">
       <nav className="text-sm text-muted-foreground">
         <Link href="/shop" className="hover:text-foreground">
           Market

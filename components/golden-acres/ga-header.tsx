@@ -173,7 +173,7 @@ export function GaHeader() {
 
       {/* Category nav strip */}
       <div className="border-b border-border/50 bg-card/95 backdrop-blur">
-        <div className="ga-rail mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 sm:px-6">
+        <div className="ga-rail mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-2 sm:px-3 lg:px-4">
           {PRIMARY_NAV.map((item) => {
             const active = pathname === item.href
             return (

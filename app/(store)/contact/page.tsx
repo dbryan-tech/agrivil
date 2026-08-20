@@ -36,7 +36,7 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-2 py-6 sm:px-3 lg:px-4">
       <div className="text-center">
         <p className="ga-kicker font-extrabold text-[#7A3F1C]">Get In Touch</p>
         <h1 className="ga-headline mt-2 text-3xl font-black tracking-tight text-[#211A12] sm:text-5xl">

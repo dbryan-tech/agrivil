@@ -87,7 +87,7 @@ export function MobileProductCard({
 
           {/* Top-Left: Organic Badge */}
           {product.organic && (
-            <div className="absolute top-2 left-2 z-10 flex items-center gap-1 rounded-full bg-[#0B3B25]/95 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-xs backdrop-blur-xs">
+            <div className="absolute top-2 left-2 z-10 flex items-center gap-1 rounded-full bg-[#0B3B25] px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-xs">
               <Leaf className="h-2.5 w-2.5 stroke-[2.5]" />
               <span>Organic</span>
             </div>
@@ -99,7 +99,7 @@ export function MobileProductCard({
               type="button"
               onClick={handleOpenQuickView}
               aria-label="Quick view"
-              className="flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-[#211A12] shadow-xs backdrop-blur-xs active:scale-90 transition-transform"
+              className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-[#211A12] shadow-xs active:scale-90 transition-transform"
             >
               <Eye className="h-3 w-3" />
             </button>
@@ -107,7 +107,7 @@ export function MobileProductCard({
               type="button"
               onClick={handleWishlist}
               aria-label="Favorite"
-              className="flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-[#211A12] shadow-xs backdrop-blur-xs active:scale-90 transition-transform"
+              className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-[#211A12] shadow-xs active:scale-90 transition-transform"
             >
               <Heart
                 className={cn(
@@ -119,7 +119,7 @@ export function MobileProductCard({
           </div>
 
           {/* Bottom-Left: Freshness Status Pill */}
-          <div className="absolute bottom-1.5 left-2 z-10 flex items-center gap-1 rounded-full bg-black/45 px-1.5 py-0.5 text-[8.5px] font-extrabold uppercase tracking-wider text-white backdrop-blur-md shadow-xs">
+          <div className="absolute bottom-1.5 left-2 z-10 flex items-center gap-1 rounded-full bg-black/75 px-1.5 py-0.5 text-[8.5px] font-extrabold uppercase tracking-wider text-white shadow-xs">
             <span
               className="h-1.5 w-1.5 rounded-full"
               style={{ backgroundColor: fresh.color || '#0B3B25' }}
@@ -129,7 +129,7 @@ export function MobileProductCard({
 
           {/* Bottom-Right: Competing Farmers Offer Count */}
           {offerCount > 1 && (
-            <div className="absolute bottom-1.5 right-2 z-10 flex items-center gap-1 rounded-full bg-[#7A3F1C]/90 px-1.5 py-0.5 text-[8.5px] font-extrabold text-white backdrop-blur-md shadow-xs">
+            <div className="absolute bottom-1.5 right-2 z-10 flex items-center gap-1 rounded-full bg-[#7A3F1C] px-1.5 py-0.5 text-[8.5px] font-extrabold text-white shadow-xs">
               <Users className="h-2.5 w-2.5" />
               <span>{offerCount}</span>
             </div>

@@ -6,6 +6,17 @@
    This element is never emitted in production/APK builds. */
 nextjs-portal { display: none !important; }
 
+/* Global zero-scrollbar override — eliminates browser scrollbar gutters for balanced margins */
+html, body {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

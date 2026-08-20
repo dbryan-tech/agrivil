@@ -22,19 +22,19 @@ export function BundlesCatalog() {
   return (
     <div className="min-h-screen bg-[#F7F5F0]">
       <section className="border-b border-black/[0.04] bg-[#EDE8DF]/40">
-        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-2 py-6 sm:px-3 lg:px-4">
           <p className="text-xs font-black uppercase tracking-wider text-[#7A3F1C]">Curated boxes</p>
-          <h1 className="ga-headline mt-2 text-balance text-4xl font-black text-[#211A12] sm:text-5xl">
+          <h1 className="ga-headline mt-2 text-balance text-3xl font-black text-[#211A12] sm:text-4xl">
             Bundles &amp; <em className="text-[#0B3B25]">subscriptions</em>
           </h1>
-          <p className="mt-3 max-w-2xl text-pretty text-base sm:text-lg leading-relaxed text-[#5C5247]">
+          <p className="mt-2 max-w-2xl text-pretty text-sm sm:text-base leading-relaxed text-[#5C5247]">
             Hand-packed boxes from our farmers, delivered once or on repeat. Subscribe and your box
             arrives fresh each cycle — pause or cancel anytime.
           </p>
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-2 py-5 sm:px-3 lg:px-4">
         <div className="grid gap-6 lg:grid-cols-2">
           {bundles.map((bundle, i) => (
             <Reveal key={bundle.id} delay={i * 60} as="article">

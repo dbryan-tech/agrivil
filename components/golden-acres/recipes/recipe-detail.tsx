@@ -108,7 +108,7 @@ export function RecipeDetail({ recipeId }: { recipeId: string }) {
           imgClassName="object-cover"
         />
         <div className="ga-media-scrim" aria-hidden />
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-2 py-5 sm:px-3 lg:px-4">
           <Link
             href="/recipes"
             className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-white/90 transition-opacity hover:opacity-100"
@@ -146,7 +146,7 @@ export function RecipeDetail({ recipeId }: { recipeId: string }) {
         </div>
       </section>
 
-      <div className="mx-auto grid max-w-5xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.4fr_1fr] lg:px-8">
+      <div className="mx-auto grid max-w-5xl gap-8 px-2 py-5 sm:px-3 lg:grid-cols-[1.4fr_1fr] lg:px-4">
         {/* Method */}
         <Reveal as="section">
           <h2 className="ga-headline text-2xl font-black text-[#211A12]">How to cook it</h2>
@@ -280,7 +280,7 @@ function RelatedRecipes({ currentId }: { currentId: string }) {
   if (others.length === 0) return null
   return (
     <section className="border-t border-black/[0.04] bg-[#EDE8DF]/40">
-      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-5xl px-2 py-5 sm:px-3 lg:px-4">
         <h2 className="ga-headline text-2xl font-black text-[#211A12]">More to cook</h2>
         <div className="mt-5 grid gap-5 sm:grid-cols-3">
           {others.map((r) => (

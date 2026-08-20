@@ -56,25 +56,25 @@ export function ShopLocal() {
     <div className="min-h-screen bg-[#F7F5F0]">
       {/* Hero / search */}
       <section className="relative overflow-hidden border-b border-black/[0.04] bg-[#1A0F06] text-white">
-        <div className="relative z-[2] mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 lg:px-8">
+        <div className="relative z-[2] mx-auto max-w-4xl px-2 py-8 text-center sm:px-3 lg:px-4">
           <p className="ga-kicker font-extrabold text-[#F0A81E]">MarketPlace Match</p>
-          <h1 className="ga-headline mt-3 text-balance text-4xl font-black text-white sm:text-5xl">
+          <h1 className="ga-headline mt-2 text-balance text-3xl font-black text-white sm:text-4xl">
             Shop the farms <span className="text-[#F0A81E]">closest</span> to you
           </h1>
-          <p className="mx-auto mt-3 max-w-xl text-pretty text-sm sm:text-base leading-relaxed text-white/80">
+          <p className="mx-auto mt-2 max-w-xl text-pretty text-sm leading-relaxed text-white/80">
             Enter your GhanaPostGPS address and we&apos;ll match you with the nearest farmers — for
             shorter trips, fresher produce, and lower delivery fees.
           </p>
 
-          <div className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
+          <div className="mx-auto mt-5 flex max-w-md flex-col gap-2.5 sm:flex-row">
             <div className="flex flex-1 items-center gap-2 rounded-full bg-white px-4 text-[#211A12] shadow-sm">
-              <MapPin className="h-5 w-5 shrink-0 text-[#7A3F1C]" />
+              <MapPin className="h-4 w-4 shrink-0 text-[#7A3F1C]" />
               <input
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
                 onKeyDown={(e) => e.key === 'Enter' && search()}
                 placeholder="GA-183-4250"
-                className="h-14 w-full bg-transparent font-black tracking-wider text-[#211A12] outline-none placeholder:text-[#5C5247]/50"
+                className="h-12 w-full bg-transparent font-black tracking-wider text-[#211A12] outline-none placeholder:text-[#5C5247]/50 text-sm"
                 aria-label="GhanaPostGPS code"
               />
             </div>
@@ -82,10 +82,10 @@ export function ShopLocal() {
               type="button"
               onClick={search}
               disabled={stage === 'searching'}
-              className="ga-press flex h-14 items-center justify-center gap-2 rounded-full bg-[#F0A81E] px-7 text-sm font-black text-[#1A0F06] shadow-sm hover:bg-[#F0A81E]/90 disabled:opacity-70 transition-all"
+              className="ga-press flex h-12 items-center justify-center gap-2 rounded-full bg-[#F0A81E] px-6 text-sm font-black text-[#1A0F06] shadow-sm hover:bg-[#F0A81E]/90 disabled:opacity-70 transition-all"
             >
               {stage === 'searching' ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <>
                   <Navigation className="h-4 w-4" /> Find farms
@@ -93,11 +93,11 @@ export function ShopLocal() {
               )}
             </button>
           </div>
-          {error && <p className="mt-3 text-xs font-bold text-[#F0A81E]">{error}</p>}
+          {error && <p className="mt-2 text-xs font-bold text-[#F0A81E]">{error}</p>}
         </div>
       </section>
 
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-2 py-6 sm:px-3 lg:px-4">
         {stage === 'idle' && <IdleState />}
 
         {stage === 'in-zone' && validation && quote && (

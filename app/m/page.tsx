@@ -78,19 +78,29 @@ export default function MobileHomeScreen() {
         }}
       />
 
-      {/* 1. Header Bar: Greeting, Location & Action Badges */}
+      {/* 1. Header Bar: AgriVil Logo & Action Badges */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-3 py-2.5 backdrop-blur-md"
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0] px-3 py-2.5"
         style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
       >
-        <Link href="/m/onboarding/gps" className="flex flex-col active:scale-95 transition-transform">
-          <div className="flex items-center gap-1 text-[11px] font-bold text-[#5C5247]">
-            <span>Hi, Ewoke</span>
+        <Link href="/m" className="flex items-center gap-2 active:scale-95 transition-transform" aria-label="AgriVil Home">
+          <div className="relative h-8 w-8 shrink-0 overflow-hidden">
+            <Image
+              src="/agrivil-mark.svg"
+              alt="AgriVil"
+              width={32}
+              height={32}
+              className="h-full w-full object-contain"
+              priority
+            />
           </div>
-          <div className="flex items-center gap-1.5 text-[13.5px] font-extrabold text-[#211A12]">
-            <MapPin className="h-3.5 w-3.5 text-[#0B3B25]" />
-            <span>KNUST, Kumasi</span>
-            <ChevronDown className="h-3 w-3 text-[#5C5247]" />
+          <div className="flex flex-col leading-none">
+            <span className="text-[17px] font-black tracking-[0.14em] text-[#0B3B25]">
+              AGRIVIL
+            </span>
+            <span className="text-[7.5px] font-bold tracking-[0.12em] uppercase text-[#DF8821]">
+              Golden Acres
+            </span>
           </div>
         </Link>
 

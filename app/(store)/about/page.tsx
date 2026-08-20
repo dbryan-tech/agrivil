@@ -53,7 +53,7 @@ const STATS = [
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-2 py-6 sm:px-3 lg:px-4">
       {/* Hero */}
       <div className="max-w-3xl">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-[#0B3B25]/10 px-3.5 py-1 text-xs font-black text-[#0B3B25]">

@@ -28,7 +28,7 @@ export function FarmerProfile({
         <div className="absolute inset-0 bg-gradient-to-t from-[#072618]/85 to-transparent" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-2 sm:px-3 lg:px-4">
         {/* Header */}
         <div className="-mt-16 flex flex-col gap-5 sm:flex-row sm:items-end">
           <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-[24px] border-4 border-white bg-white shadow-md">

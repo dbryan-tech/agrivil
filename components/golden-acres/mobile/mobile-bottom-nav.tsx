@@ -20,9 +20,9 @@ export function MobileBottomNav() {
 
   return (
     <nav
-      aria-label="Mobile Navigation"
-      className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-[rgba(33,26,18,0.06)] bg-[#FDFDFB]/95 px-1.5 backdrop-blur-md shadow-[0_-4px_20px_rgba(33,26,18,0.04)]"
-      style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 12px)', paddingTop: '8px' }}
+      aria-label="Mobile Bottom Navigation"
+      className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-[rgba(33,26,18,0.06)] bg-[#FDFDFB] px-1.5 shadow-[0_-4px_20px_rgba(33,26,18,0.04)]"
+      style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 8px)', paddingTop: '6px' }}
     >
       {TABS.map((tab) => {
         const active = tab.match(pathname)

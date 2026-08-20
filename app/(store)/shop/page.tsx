@@ -14,7 +14,7 @@ export default function ShopPage() {
       <Suspense fallback={null}>
         <ShopCatalog />
       </Suspense>
-      <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-2 pb-6 sm:px-3 lg:px-4">
         <RecentlyViewedRail />
       </div>
     </>

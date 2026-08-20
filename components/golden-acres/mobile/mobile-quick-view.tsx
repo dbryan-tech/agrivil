@@ -83,10 +83,10 @@ export function MobileQuickView({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center">
-      {/* Backdrop with beautiful blur effect */}
+      {/* Backdrop with solid smooth dark alpha overlay */}
       <div
         onClick={onClose}
-        className="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-300 animate-in fade-in"
+        className="absolute inset-0 bg-black/65 transition-opacity duration-300 animate-in fade-in"
       />
 
       {/* Modal Sheet Container */}
@@ -119,7 +119,7 @@ export function MobileQuickView({
                 <Leaf className="h-2.5 w-2.5" /> Organic
               </span>
             )}
-            <span className="inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white backdrop-blur-xs">
+            <span className="inline-flex items-center gap-1 rounded-full bg-black/75 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-xs">
               <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: fresh.color || '#0B3B25' }} />
               {fresh.label || 'FRESH'}
             </span>
