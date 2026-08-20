@@ -81,77 +81,109 @@ export default function MobileFarmerProfileScreen() {
   }
 
   return (
-    <div className="relative min-h-dvh bg-[#F7F5F0] pb-28 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-      {/* 1. Header Bar */}
-      <header
-        className="fixed inset-x-0 top-0 z-40 mx-auto flex max-w-md items-center justify-between px-3 py-2.5 bg-[#F7F5F0]/90 backdrop-blur-md border-b border-[rgba(33,26,18,0.08)]"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
-      >
-        <button
-          type="button"
-          onClick={() => router.back()}
-          aria-label="Back"
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </button>
+    <div className="relative min-h-dvh bg-[#FAF9F6] pb-28 text-[#211A12] select-none antialiased overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Zero Scrollbar Global Styles */}
+      <style jsx global>{`
+        * {
+          scrollbar-width: none !important;
+          -ms-overflow-style: none !important;
+        }
+        *::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+        }
+      `}</style>
 
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => {
-              if (navigator.share) {
-                navigator.share({ title: farmer.name, url: window.location.href }).catch(() => {})
-              }
-            }}
-            aria-label="Share"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
-          >
-            <Share2 className="h-4 w-4" />
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setFollowing(!following)}
-            aria-label="Follow farm"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
-          >
-            <Heart
-              className={cn(
-                'h-4 w-4',
-                following ? 'fill-[#DC2626] text-[#DC2626]' : 'text-[#211A12]'
-              )}
-            />
-          </button>
-        </div>
-      </header>
-
-      {/* 2. Hero Farmer Banner */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#211A12] mt-11">
+      {/* ========================================================
+          1. FULL-BLEED TOP HERO BANNER (Bleeds to edges & top)
+         ======================================================== */}
+      <div className="relative w-full aspect-[16/10] sm:aspect-[21/9] overflow-hidden rounded-b-[32px] bg-[#211A12] shadow-xs">
         <Image
           src={farmer.photo}
           alt={farmer.name}
           fill
           priority
-          className="object-cover opacity-90"
+          sizes="100vw"
+          className="object-cover object-center scale-[1.05] opacity-90 transition-transform select-none"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#211A12] via-[#211A12]/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
-        <div className="absolute bottom-3 left-3 right-3 text-white">
-          <span className="inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[9.5px] font-black uppercase tracking-wider text-white shadow-xs">
-            <CheckCircle2 className="h-3 w-3" /> Verified Ghana Grower
+        {/* Floating Top Navigation Header */}
+        <header
+          className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-3.5 pt-3"
+          style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
+        >
+          <button
+            type="button"
+            onClick={() => router.back()}
+            aria-label="Back"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-[#211A12] shadow-sm border border-[rgba(33,26,18,0.08)] active:scale-95 transition-transform backdrop-blur-xs"
+          >
+            <ArrowLeft className="h-4 w-4 stroke-[2.4]" />
+          </button>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                if (navigator.share) {
+                  navigator.share({ title: farmer.name, url: window.location.href }).catch(() => {})
+                }
+              }}
+              aria-label="Share"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-[#211A12] shadow-sm border border-[rgba(33,26,18,0.08)] active:scale-95 transition-transform backdrop-blur-xs"
+            >
+              <Share2 className="h-4 w-4" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setFollowing(!following)}
+              aria-label="Follow farm"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-[#211A12] shadow-sm border border-[rgba(33,26,18,0.08)] active:scale-95 transition-transform backdrop-blur-xs"
+            >
+              <Heart
+                className={cn(
+                  'h-4 w-4',
+                  following ? 'fill-[#DC2626] text-[#DC2626]' : 'text-[#211A12]'
+                )}
+              />
+            </button>
+          </div>
+        </header>
+
+        {/* Banner Farm Name */}
+        <div className="absolute bottom-4 left-4 right-4 text-white z-20">
+          <span className="inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-xs">
+            <CheckCircle2 className="h-2.5 w-2.5" /> Verified Ghana Grower
           </span>
           <h1 className="mt-1 text-[22px] font-black tracking-tight text-white sm:text-2xl">
             {farmer.farmName || farmer.name}
           </h1>
-          <p className="mt-0.5 text-[11.5px] font-medium text-white/90">
-            {farmer.name} · {farmer.town}, {farmer.region}
-          </p>
         </div>
       </div>
 
-      {/* 3. Interactive Tab Navigation */}
-      <div className="sticky top-11 z-30 border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/95 backdrop-blur-md">
+      {/* 2. Circular Avatar Overlapping the Banner */}
+      <div className="relative -mt-10 flex flex-col items-center px-4 text-center z-20">
+        <div className="relative h-20 w-20 overflow-hidden rounded-full border-4 border-[#FAF9F6] bg-white shadow-md">
+          <Image
+            src={farmer.photo}
+            alt={farmer.name}
+            fill
+            className="object-cover"
+          />
+        </div>
+        <h2 className="mt-1.5 text-[17px] font-black text-[#211A12]">
+          {farmer.name}
+        </h2>
+        <p className="text-[12px] font-semibold text-[#7A3F1C]">
+          {farmer.town}, {farmer.region} · {farmer.distanceKm || 12}km from you
+        </p>
+      </div>
+
+      {/* 3. Interactive Tab Navigation (No visible bottom divider line) */}
+      <div className="sticky top-0 z-30 bg-[#FAF9F6]/95 backdrop-blur-md pt-2">
         <div className="flex gap-1.5 overflow-x-auto px-3 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {[
             { key: 'overview', label: 'Overview' },
@@ -165,7 +197,7 @@ export default function MobileFarmerProfileScreen() {
               type="button"
               onClick={() => setActiveTab(t.key as typeof activeTab)}
               className={cn(
-                'flex shrink-0 items-center rounded-full px-3 py-1 text-[11.5px] font-extrabold transition-all active:scale-95 shadow-2xs',
+                'flex shrink-0 items-center rounded-full px-3.5 py-1.5 text-[11.5px] font-extrabold transition-all active:scale-95 shadow-2xs',
                 activeTab === t.key
                   ? 'bg-[#0B3B25] text-white shadow-xs'
                   : 'border border-[rgba(33,26,18,0.08)] bg-white text-[#211A12]'

@@ -249,30 +249,33 @@ export default function MobileHomeScreen() {
             <Link
               key={bundle.id}
               href="/m/bundles"
-              className="flex w-60 shrink-0 flex-col overflow-hidden rounded-[24px] bg-[#FDFDFB] p-3 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
+              className="flex w-60 shrink-0 flex-col overflow-hidden rounded-[22px] bg-white shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
             >
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#F7F5F0]">
+              {/* Image Bleeding to Top, Left, Right */}
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#211A12]">
                 <Image
                   src={bundle.image}
                   alt={bundle.name}
                   fill
                   className="object-cover"
                 />
-                <span className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[9.5px] font-extrabold text-white shadow-xs">
+                <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[9.5px] font-extrabold text-white shadow-xs">
                   <Repeat className="h-2.5 w-2.5" /> {bundle.frequency}
                 </span>
               </div>
-              <h4 className="mt-2 text-[13px] font-extrabold text-[#211A12]">
-                {bundle.name}
-              </h4>
-              <p className="mt-0.5 line-clamp-1 text-[11px] font-semibold text-[#5C5247]">
-                {bundle.description}
-              </p>
-              <div className="mt-2 flex items-center justify-between border-t border-[rgba(33,26,18,0.06)] pt-1.5 text-[13px] font-black text-[#0B3B25]">
-                <span>{formatGHS(bundle.price)}</span>
-                <span className="text-[10.5px] font-bold text-[#7A3F1C]">
-                  {bundle.items.length} items
-                </span>
+              <div className="p-3 bg-[#FAF9F6]">
+                <h4 className="text-[13.5px] font-black text-[#211A12]">
+                  {bundle.name}
+                </h4>
+                <p className="mt-0.5 line-clamp-1 text-[11px] font-semibold text-[#5C5247]">
+                  {bundle.description}
+                </p>
+                <div className="mt-2 flex items-center justify-between border-t border-[rgba(33,26,18,0.06)] pt-1.5 text-[13px] font-black text-[#0B3B25]">
+                  <span>{formatGHS(bundle.price)}</span>
+                  <span className="text-[10.5px] font-bold text-[#7A3F1C]">
+                    {bundle.items.length} items
+                  </span>
+                </div>
               </div>
             </Link>
           ))}

@@ -58,9 +58,9 @@ export default function MobileAccountScreen() {
       </header>
 
       <div className="relative px-3.5 pt-4 space-y-4">
-        {/* 1. Profile Member Header (Direct on background, zero card box) */}
+        {/* 1. Profile Member Header (Direct on background, circular avatar, zero card box) */}
         <div className="flex items-center gap-3.5">
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#0B3B25] text-xl font-black text-white shadow-sm">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#0B3B25] text-xl font-black text-white shadow-sm">
             {userName.charAt(0)}
           </div>
           <div className="min-w-0 flex-1">
@@ -75,31 +75,31 @@ export default function MobileAccountScreen() {
           </div>
         </div>
 
-        {/* 2. Quick Action Links (Direct on background, zero card box) */}
-        <div className="grid grid-cols-2 gap-2 pt-1">
+        {/* 2. Quick Action Links (Direct on background, zero card box, zero borders) */}
+        <div className="grid grid-cols-2 gap-3 pt-1">
           <Link
             href="/m/orders"
-            className="flex items-center gap-3 p-3 rounded-2xl bg-white/80 border border-[rgba(33,26,18,0.08)] active:scale-[0.98] transition-transform"
+            className="flex items-center gap-2.5 py-1 active:opacity-75 transition-opacity"
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#0B3B25]/10 text-[#0B3B25]">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#0B3B25]/10 text-[#0B3B25]">
               <Package className="h-4.5 w-4.5 stroke-[2.2]" />
             </div>
             <div className="min-w-0">
               <span className="block text-[13px] font-black text-[#211A12] truncate">My Shipping</span>
-              <span className="block text-[10px] font-semibold text-[#5C5247] truncate">Track &amp; history</span>
+              <span className="block text-[10.5px] font-semibold text-[#5C5247] truncate">Track &amp; history</span>
             </div>
           </Link>
 
           <Link
             href="/m/farmers"
-            className="flex items-center gap-3 p-3 rounded-2xl bg-white/80 border border-[rgba(33,26,18,0.08)] active:scale-[0.98] transition-transform"
+            className="flex items-center gap-2.5 py-1 active:opacity-75 transition-opacity"
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#7A3F1C]/10 text-[#7A3F1C]">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7A3F1C]/10 text-[#7A3F1C]">
               <Store className="h-4.5 w-4.5 stroke-[2.2]" />
             </div>
             <div className="min-w-0">
               <span className="block text-[13px] font-black text-[#211A12] truncate">Local Growers</span>
-              <span className="block text-[10px] font-semibold text-[#5C5247] truncate">Smallholder farms</span>
+              <span className="block text-[10.5px] font-semibold text-[#5C5247] truncate">Smallholder farms</span>
             </div>
           </Link>
         </div>

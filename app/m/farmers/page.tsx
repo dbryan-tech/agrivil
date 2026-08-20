@@ -100,48 +100,50 @@ export default function MobileFarmersScreen() {
           ))}
         </div>
 
-        {/* 3. Featured Hero Grower Card */}
+        {/* 3. Featured Hero Grower Card (Bleeds to left & right edges) */}
         {selectedRegion === 'All' && !search && featuredFarmer && (
-          <Link
-            href={`/m/farmers/${featuredFarmer.slug}`}
-            className="group block overflow-hidden rounded-[24px] bg-[#FDFDFB] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-transform"
-          >
-            <div className="relative aspect-[16/9] w-full overflow-hidden bg-white">
-              <Image
-                src={featuredFarmer.photo}
-                alt={featuredFarmer.name}
-                fill
-                priority
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[10px] font-black text-white shadow-md">
-                <Sparkles className="h-3 w-3 text-[#F0A81E]" /> Featured Farm
-              </span>
-            </div>
-
-            <div className="p-3.5">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <h2 className="text-[14.5px] font-extrabold text-[#211A12]">
-                    {featuredFarmer.name}
-                  </h2>
-                  <CheckCircle2 className="h-3.5 w-3.5 fill-[#0B3B25] text-white" />
-                </div>
-                <div className="flex items-center gap-1 text-[11.5px] font-black text-[#211A12]">
-                  <Star className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
-                  <span>{featuredFarmer.rating}</span>
-                  <span className="text-[#5C5247] font-semibold">({featuredFarmer.reviewCount})</span>
-                </div>
+          <div className="-mx-3 pt-1 pb-1">
+            <Link
+              href={`/m/farmers/${featuredFarmer.slug}`}
+              className="group block overflow-hidden bg-white shadow-xs active:scale-[0.99] transition-transform"
+            >
+              <div className="relative aspect-[16/9] w-full overflow-hidden bg-white">
+                <Image
+                  src={featuredFarmer.photo}
+                  alt={featuredFarmer.name}
+                  fill
+                  priority
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute top-3 left-3.5 inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-2.5 py-0.5 text-[10px] font-black text-white shadow-md">
+                  <Sparkles className="h-3 w-3 text-[#F0A81E]" /> Featured Farm
+                </span>
               </div>
 
-              <p className="mt-0.5 text-[11.5px] font-bold text-[#7A3F1C]">
-                {featuredFarmer.farmName} · {featuredFarmer.town}, {featuredFarmer.region}
-              </p>
-              <p className="mt-1.5 line-clamp-2 text-[11.5px] leading-relaxed text-[#5C5247] font-semibold">
-                {featuredFarmer.bio}
-              </p>
-            </div>
-          </Link>
+              <div className="p-3.5 bg-white">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <h2 className="text-[15px] font-black text-[#211A12]">
+                      {featuredFarmer.name}
+                    </h2>
+                    <CheckCircle2 className="h-3.5 w-3.5 fill-[#0B3B25] text-white" />
+                  </div>
+                  <div className="flex items-center gap-1 text-[11.5px] font-black text-[#211A12]">
+                    <Star className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
+                    <span>{featuredFarmer.rating}</span>
+                    <span className="text-[#5C5247] font-semibold">({featuredFarmer.reviewCount})</span>
+                  </div>
+                </div>
+
+                <p className="mt-0.5 text-[12px] font-bold text-[#7A3F1C]">
+                  {featuredFarmer.farmName} · {featuredFarmer.town}, {featuredFarmer.region}
+                </p>
+                <p className="mt-1.5 line-clamp-2 text-[12px] leading-relaxed text-[#5C5247] font-medium">
+                  {featuredFarmer.bio}
+                </p>
+              </div>
+            </Link>
+          </div>
         )}
 
         {/* 4. Farmers Directory List */}

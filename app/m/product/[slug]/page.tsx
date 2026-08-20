@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
@@ -19,8 +19,11 @@ import {
   MapPin,
   Users,
   Info,
+  ThumbsUp,
+  MessageSquare,
+  Sparkles,
 } from 'lucide-react'
-import { products, productFarmer } from '@/lib/golden-acres/data'
+import { products, productFarmer, farmers } from '@/lib/golden-acres/data'
 import { formatGHS, freshnessLabel } from '@/lib/golden-acres/format'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { useSession } from '@/components/golden-acres/auth/session-context'
@@ -36,7 +39,7 @@ export default function MobileProductDetailScreen() {
 
   // Find product by slug or fallback
   const product = products.find((p) => p.slug === rawSlug) || products[0]
-  const farmer = productFarmer(product)
+  const defaultFarmer = productFarmer(product)
 
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
@@ -45,47 +48,84 @@ export default function MobileProductDetailScreen() {
   const saved = isSaved(product.id)
   const fresh = freshnessLabel(product.expiryDate)
 
-  // Competing farmer offers for this product
-  const competingOffers = [
+  // Real competing farmer offers for this product
+  const competingOffers = useMemo(() => {
+    const otherFarmers = farmers.filter((f) => f.id !== defaultFarmer.id).slice(0, 2)
+    return [
+      {
+        id: defaultFarmer.id,
+        farmer: defaultFarmer,
+        name: defaultFarmer.farmName,
+        region: `${defaultFarmer.region} (${defaultFarmer.distanceKm || 15}km)`,
+        price: product.pricePerKg || product.priceMin,
+        image: product.image,
+        rating: defaultFarmer.rating,
+        freshness: fresh.label || 'Just Harvested',
+        freshnessColor: fresh.color || '#0B3B25',
+      },
+      ...otherFarmers.map((f, i) => ({
+        id: f.id,
+        farmer: f,
+        name: f.farmName || f.name,
+        region: `${f.region} (${f.distanceKm || (i === 0 ? 45 : 85)}km)`,
+        price: (product.pricePerKg || product.priceMin) * (i === 0 ? 1.05 : 0.95),
+        image: product.image,
+        rating: f.rating,
+        freshness: i === 0 ? 'Just Harvested' : 'Fresh Picked',
+        freshnessColor: i === 0 ? '#0B3B25' : '#F59E0B',
+      })),
+    ]
+  }, [defaultFarmer, product, fresh])
+
+  const activeOffer = competingOffers[selectedOfferIndex] || competingOffers[0]
+  const activeFarmer = activeOffer.farmer
+  const activePrice = activeOffer.price
+  const activeImage = activeOffer.image || product.image
+  const lineEstimate = activePrice * qty
+
+  const farmerHarvests = products
+    .filter((p) => p.farmerId === activeFarmer.id && p.id !== product.id)
+    .slice(0, 4)
+  const displayRelated = farmerHarvests.length > 0
+    ? farmerHarvests
+    : products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4)
+
+  // Customer Reviews Data
+  const productReviews = [
     {
-      id: farmer.id,
-      name: farmer.farmName,
-      region: `${farmer.region} (${farmer.distanceKm}km)`,
-      price: product.pricePerKg || product.priceMin,
-      rating: farmer.rating,
-      freshness: fresh.label || 'Just Harvested',
-      freshnessColor: fresh.color || '#0B3B25',
+      id: 'rev-1',
+      author: 'Akua Mansa',
+      location: 'East Legon, Accra',
+      rating: 5,
+      date: 'Yesterday',
+      verified: true,
+      comment: `Incredible freshness! Picked at dawn from ${activeFarmer.farmName} and arrived chilled in great condition. Best quality I've had in Accra.`,
+      helpful: 12,
     },
     {
-      id: 'f-alt-1',
-      name: "Auntie Ama's Garden",
-      region: 'Koforidua, Eastern (85km)',
-      price: (product.pricePerKg || product.priceMin) * 1.08,
-      rating: 4.9,
-      freshness: 'Just Harvested',
-      freshnessColor: '#0B3B25',
+      id: 'rev-2',
+      author: 'Kofi Mensah',
+      location: 'Cantonments, Accra',
+      rating: 5,
+      date: '3 days ago',
+      verified: true,
+      comment: `Crisp, aromatic, and perfectly weighed. You can really taste the difference when produce comes direct from local growers.`,
+      helpful: 8,
     },
     {
-      id: 'f-alt-2',
-      name: 'Fati Abukari Fields',
-      region: 'Tamale, Northern (420km)',
-      price: (product.pricePerKg || product.priceMin) * 0.94,
-      rating: 4.7,
-      freshness: 'Fresh',
-      freshnessColor: '#F59E0B',
+      id: 'rev-3',
+      author: 'Serwaa Bonsu',
+      location: 'Kumasi',
+      rating: 4,
+      date: '1 week ago',
+      verified: true,
+      comment: `Very clean and well packaged in chilled boxes. Delivery driver was polite and called ahead.`,
+      helpful: 5,
     },
   ]
 
-  const activeOffer = competingOffers[selectedOfferIndex]
-  const activePrice = activeOffer.price
-  const lineEstimate = activePrice * qty
-
-  const relatedProducts = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4)
-
   function handleAddToCart() {
-    add(product, qty)
+    add({ ...product, pricePerKg: activePrice, priceMin: activePrice }, qty)
     setAdded(true)
     setTimeout(() => setAdded(false), 1800)
   }
@@ -111,12 +151,13 @@ export default function MobileProductDetailScreen() {
       <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] overflow-hidden rounded-b-[32px] bg-white shadow-xs">
         {/* Full Image Auto-Fill with scale & object-cover */}
         <Image
-          src={product.image}
+          key={activeImage}
+          src={activeImage}
           alt={product.name}
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center scale-[1.05] transition-transform select-none"
+          className="object-cover object-center scale-[1.05] transition-all duration-300 select-none"
         />
 
         {/* Floating Top Navigation Header */}
@@ -183,7 +224,7 @@ export default function MobileProductDetailScreen() {
         <div className="space-y-1.5">
           {/* Farm Attribution Link */}
           <Link
-            href={`/m/farmer/${farmer.slug}`}
+            href={`/m/farmers/${activeFarmer.slug || activeFarmer.id}`}
             className="inline-flex items-center gap-1 text-[12px] font-extrabold text-[#7A3F1C] hover:underline"
           >
             <MapPin className="h-3.5 w-3.5" />
@@ -206,7 +247,7 @@ export default function MobileProductDetailScreen() {
               ))}
             </div>
             <span className="font-black text-[#211A12]">{activeOffer.rating.toFixed(1)}</span>
-            <span>({farmer.reviewCount} verified reviews)</span>
+            <span>({activeFarmer.reviewCount || 84} verified reviews)</span>
           </div>
 
           {/* Price & Unit */}
@@ -219,7 +260,7 @@ export default function MobileProductDetailScreen() {
             </span>
             {product.pricePerKg && (
               <span className="ml-1 rounded-full bg-[#0B3B25]/10 px-2 py-0.5 text-[10.5px] font-black text-[#0B3B25]">
-                {formatGHS(product.pricePerKg)}/kg
+                {formatGHS(activePrice)}/kg
               </span>
             )}
           </div>
@@ -324,17 +365,17 @@ export default function MobileProductDetailScreen() {
         </div>
 
         {/* ========================================================
-            3. FARMER PROFILE (HAS A DEDICATED CARD)
+            3. DYNAMIC FARMER PROFILE (HAS A DEDICATED CARD)
            ======================================================== */}
         <div className="rounded-[24px] bg-white p-4 shadow-sm border border-[rgba(33,26,18,0.06)]">
           <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
-            Farmer Profile
+            Grower Profile
           </span>
           <div className="mt-2.5 flex items-center gap-3">
             <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs">
               <Image
-                src={farmer.photo}
-                alt={farmer.name}
+                src={activeFarmer.photo}
+                alt={activeFarmer.name}
                 fill
                 className="object-cover"
               />
@@ -342,22 +383,22 @@ export default function MobileProductDetailScreen() {
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
                 <h4 className="text-[15px] font-black text-[#211A12]">
-                  {farmer.name}
+                  {activeFarmer.name}
                 </h4>
                 <ShieldCheck className="h-4 w-4 text-[#0B3B25]" />
               </div>
               <p className="text-[12px] font-bold text-[#7A3F1C]">
-                {farmer.farmName} · {farmer.region}
+                {activeFarmer.farmName} · {activeFarmer.region}
               </p>
               <div className="mt-0.5 flex items-center gap-1 text-[11px] font-bold text-[#5C5247]">
                 <Star className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
-                <span>{farmer.rating}</span>
-                <span>({farmer.reviewCount} reviews · Since {farmer.joinedYear})</span>
+                <span>{activeFarmer.rating}</span>
+                <span>({activeFarmer.reviewCount || 84} reviews · Since {activeFarmer.joinedYear || 2018})</span>
               </div>
             </div>
           </div>
           <p className="mt-2.5 text-[12px] font-medium leading-relaxed text-[#5C5247] border-t border-[rgba(33,26,18,0.06)] pt-2.5">
-            {farmer.bio}
+            {activeFarmer.bio}
           </p>
         </div>
 
@@ -396,7 +437,7 @@ export default function MobileProductDetailScreen() {
                 Origin
               </span>
               <p className="mt-0.5 text-[13px] font-black text-[#211A12]">
-                {farmer.region}
+                {activeFarmer.region}
               </p>
             </div>
           </div>
@@ -408,21 +449,122 @@ export default function MobileProductDetailScreen() {
         </div>
 
         {/* ========================================================
-            4. MORE FROM THE MARKET (HAS PRODUCT CARDS)
+            4. CUSTOMER REVIEWS SECTION
            ======================================================== */}
-        {relatedProducts.length > 0 && (
+        <div className="pt-2 space-y-3 border-t border-[rgba(33,26,18,0.06)]">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
+                Verified Buyer Feedback
+              </span>
+              <h3 className="text-[16px] font-black text-[#211A12]">
+                Customer Reviews
+              </h3>
+            </div>
+            <div className="flex items-center gap-1 rounded-full bg-[#0B3B25]/10 px-2.5 py-1 text-[12px] font-black text-[#0B3B25]">
+              <Star className="h-3.5 w-3.5 fill-[#0B3B25] text-[#0B3B25]" />
+              <span>4.9 / 5.0</span>
+            </div>
+          </div>
+
+          {/* Rating Breakdown Summary */}
+          <div className="flex items-center gap-4 rounded-2xl bg-white p-3.5 border border-[rgba(33,26,18,0.06)] shadow-2xs">
+            <div className="flex flex-col items-center justify-center border-r border-[rgba(33,26,18,0.08)] pr-4">
+              <span className="text-[28px] font-black text-[#211A12] leading-none">4.9</span>
+              <div className="mt-1 flex items-center">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
+                ))}
+              </div>
+              <span className="mt-0.5 text-[10px] font-bold text-[#5C5247]">84 reviews</span>
+            </div>
+
+            <div className="flex-1 space-y-1 text-[10.5px] font-bold text-[#5C5247]">
+              <div className="flex items-center gap-2">
+                <span className="w-3">5★</span>
+                <div className="h-1.5 flex-1 rounded-full bg-[#F7F5F0] overflow-hidden">
+                  <div className="h-full w-[90%] rounded-full bg-[#0B3B25]" />
+                </div>
+                <span className="w-6 text-right">90%</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-3">4★</span>
+                <div className="h-1.5 flex-1 rounded-full bg-[#F7F5F0] overflow-hidden">
+                  <div className="h-full w-[8%] rounded-full bg-[#0B3B25]" />
+                </div>
+                <span className="w-6 text-right">8%</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-3">3★</span>
+                <div className="h-1.5 flex-1 rounded-full bg-[#F7F5F0] overflow-hidden">
+                  <div className="h-full w-[2%] rounded-full bg-[#0B3B25]" />
+                </div>
+                <span className="w-6 text-right">2%</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Review Cards List */}
+          <div className="space-y-2">
+            {productReviews.map((rev) => (
+              <div
+                key={rev.id}
+                className="rounded-2xl bg-white p-3.5 border border-[rgba(33,26,18,0.06)] shadow-2xs space-y-1.5"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0B3B25]/10 text-[11px] font-black text-[#0B3B25]">
+                      {rev.author.charAt(0)}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[12.5px] font-black text-[#211A12]">{rev.author}</span>
+                        {rev.verified && (
+                          <span className="inline-flex items-center gap-0.5 text-[9.5px] font-bold text-[#0B3B25]">
+                            <ShieldCheck className="h-3 w-3" /> Verified
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-[10px] text-[#5C5247]">{rev.location} · {rev.date}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center">
+                    {Array.from({ length: rev.rating }).map((_, i) => (
+                      <Star key={i} className="h-3 w-3 fill-[#F0A81E] text-[#F0A81E]" />
+                    ))}
+                  </div>
+                </div>
+
+                <p className="text-[12px] font-medium leading-relaxed text-[#211A12]">
+                  {rev.comment}
+                </p>
+
+                <div className="flex items-center gap-1 text-[10.5px] font-bold text-[#5C5247] pt-0.5">
+                  <ThumbsUp className="h-3 w-3 text-[#0B3B25]" />
+                  <span>{rev.helpful} people found this helpful</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ========================================================
+            5. MORE FROM THIS GROWER & MARKET
+           ======================================================== */}
+        {displayRelated.length > 0 && (
           <div className="pt-3">
             <div className="flex items-center justify-between mb-2">
               <div>
                 <h3 className="text-[16px] font-black tracking-tight text-[#211A12]">
-                  More From The Market
+                  More From {activeFarmer.farmName || 'The Market'}
                 </h3>
                 <p className="text-[11px] font-semibold text-[#5C5247]">
                   Fresh picks you might also like
                 </p>
               </div>
               <Link
-                href="/m/categories"
+                href={`/m/farmers/${activeFarmer.slug || activeFarmer.id}`}
                 className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
               >
                 See all
@@ -430,7 +572,7 @@ export default function MobileProductDetailScreen() {
             </div>
 
             <div className="grid grid-cols-2 gap-1.5">
-              {relatedProducts.map((p) => (
+              {displayRelated.map((p) => (
                 <MobileProductCard key={p.id} product={p} />
               ))}
             </div>
