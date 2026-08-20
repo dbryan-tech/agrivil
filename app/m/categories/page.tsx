@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Search, ArrowRight, ArrowLeft, Sparkles, Filter } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { products } from '@/lib/golden-acres/data'
+import { Search, ArrowRight, ArrowLeft, Sparkles, Filter, ChefHat, Repeat } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { products, recipes, bundles } from '@/lib/golden-acres/data'
 import { MobileProductCard } from '@/components/golden-acres/mobile/mobile-product-card'
 import { MobileBottomNav } from '@/components/golden-acres/mobile/mobile-bottom-nav'
 import { cn } from '@/lib/utils'
@@ -65,10 +65,20 @@ const ALL_FILTER_TABS = [
   'Grains & Legumes',
 ]
 
-export default function MobileCategoriesScreen() {
+function CategoriesContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const initialCategory = searchParams.get('category') || 'All'
+
   const [search, setSearch] = useState('')
-  const [activeCatalogTab, setActiveCatalogTab] = useState('All')
+  const [activeCatalogTab, setActiveCatalogTab] = useState(initialCategory)
+
+  useEffect(() => {
+    const cat = searchParams.get('category')
+    if (cat) {
+      setActiveCatalogTab(cat)
+    }
+  }, [searchParams])
 
   const filteredCategories = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -83,7 +93,6 @@ export default function MobileCategoriesScreen() {
   // Continuous All Products Catalog (mixed / filtered)
   const catalogProducts = useMemo(() => {
     if (activeCatalogTab === 'All') {
-      // Mixed variety of all products
       return [...products].sort((a, b) => (a.id > b.id ? 1 : -1))
     }
     return products.filter((p) => {
@@ -142,7 +151,7 @@ export default function MobileCategoriesScreen() {
       </header>
 
       <div className="relative px-3 pt-3 space-y-4">
-        {/* 2. 2-Column Category Grid (70% Image Shell / 30% Details) */}
+        {/* 2. 2-Column Category Grid */}
         <div>
           <div className="flex items-center justify-between pb-2">
             <h2 className="text-[14.5px] font-black text-[#211A12]">
@@ -158,9 +167,9 @@ export default function MobileCategoriesScreen() {
               <Link
                 key={cat.slug}
                 href={`/m/categories/${encodeURIComponent(cat.slug)}`}
+                prefetch={true}
                 className="group flex flex-col overflow-hidden rounded-[20px] bg-white shadow-[0_2px_10px_-2px_rgba(33,26,18,0.04),0_4px_14px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-transform"
               >
-                {/* 70% Image Shell (Auto-fill mask) */}
                 <div className="relative aspect-[1.28/1] w-full overflow-hidden bg-white">
                   <Image
                     src={cat.image}
@@ -172,7 +181,6 @@ export default function MobileCategoriesScreen() {
                   <span className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/25 to-transparent" />
                 </div>
 
-                {/* 30% Category Details */}
                 <div className="flex flex-1 flex-col justify-center p-2.5 bg-[#FAF9F6]">
                   <h3 className="truncate text-[13px] font-black text-[#211A12] group-hover:text-[#0B3B25] transition-colors">
                     {cat.name}
@@ -186,27 +194,71 @@ export default function MobileCategoriesScreen() {
           </div>
         </div>
 
-        {/* 3. Shop Local Banner CTA */}
+        {/* 3. Cross-Discovery Cards: Recipes & Bundles */}
+        <div className="grid grid-cols-2 gap-2">
+          <Link
+            href="/m/recipes"
+            prefetch={true}
+            className="flex flex-col justify-between rounded-[22px] bg-[#7A3F1C] p-3.5 text-white shadow-xs active:scale-[0.98] transition-transform"
+          >
+            <div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">
+                <ChefHat className="h-4 w-4" />
+              </div>
+              <h3 className="mt-2 text-[13.5px] font-black text-white">Cook &amp; Shop</h3>
+              <p className="mt-0.5 text-[10.5px] font-medium text-white/80 line-clamp-2">
+                Authentic recipes with 1-tap ingredients
+              </p>
+            </div>
+            <div className="mt-2.5 flex items-center gap-1 text-[10.5px] font-bold text-white">
+              <span>View Recipes</span>
+              <ArrowRight className="h-3 w-3" />
+            </div>
+          </Link>
+
+          <Link
+            href="/m/bundles"
+            prefetch={true}
+            className="flex flex-col justify-between rounded-[22px] bg-[#0B3B25] p-3.5 text-white shadow-xs active:scale-[0.98] transition-transform"
+          >
+            <div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">
+                <Repeat className="h-4 w-4" />
+              </div>
+              <h3 className="mt-2 text-[13.5px] font-black text-white">Weekly Boxes</h3>
+              <p className="mt-0.5 text-[10.5px] font-medium text-white/80 line-clamp-2">
+                Curated farm boxes delivered to your door
+              </p>
+            </div>
+            <div className="mt-2.5 flex items-center gap-1 text-[10.5px] font-bold text-white">
+              <span>Explore Boxes</span>
+              <ArrowRight className="h-3 w-3" />
+            </div>
+          </Link>
+        </div>
+
+        {/* 4. Shop Local Banner CTA */}
         <Link
           href="/m/farmers"
-          className="flex items-center justify-between rounded-[22px] bg-[#0B3B25] p-3.5 text-white shadow-md active:scale-[0.98] transition-transform"
+          prefetch={true}
+          className="flex items-center justify-between rounded-[22px] bg-white p-3.5 text-[#211A12] border border-[rgba(33,26,18,0.08)] shadow-2xs active:scale-[0.98] transition-transform"
         >
           <div>
-            <span className="text-[9px] font-black uppercase tracking-wider text-white/80">
+            <span className="text-[9px] font-black uppercase tracking-wider text-[#7A3F1C]">
               Community Supported Agriculture
             </span>
-            <h3 className="mt-0.5 text-[14.5px] font-black text-white">Meet Smallholder Growers</h3>
-            <p className="mt-0.5 text-[11px] font-semibold text-white/80">
+            <h3 className="mt-0.5 text-[14.5px] font-black text-[#211A12]">Meet Smallholder Growers</h3>
+            <p className="mt-0.5 text-[11px] font-medium text-[#5C5247]">
               Support 200+ local Ghanaian family farms
             </p>
           </div>
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#0B3B25] shadow-sm">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-sm">
             <ArrowRight className="h-4 w-4 stroke-[3]" />
           </div>
         </Link>
 
         {/* ========================================================
-            4. CONTINUING ALL-PRODUCTS SECTION (Sliding filter + Grid)
+            5. CONTINUING ALL-PRODUCTS SECTION (Sliding filter + Grid)
            ======================================================== */}
         <div className="pt-2">
           {/* Section Header */}
@@ -257,6 +309,14 @@ export default function MobileCategoriesScreen() {
 
       <MobileBottomNav />
     </div>
+  )
+}
+
+export default function MobileCategoriesScreen() {
+  return (
+    <Suspense fallback={<div className="min-h-dvh bg-[#FAF9F6]" />}>
+      <CategoriesContent />
+    </Suspense>
   )
 }
 

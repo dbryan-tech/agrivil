@@ -119,11 +119,12 @@ export default function MobileHomeScreen() {
         </div>
       </header>
 
-      {/* 2. Search Bar */}
-      <div className="relative px-3 pt-2.5">
+      {/* 2. Search Bar (Halved spacing) */}
+      <div className="relative px-3 pt-1.5">
         <Link
           href="/m/search"
-          className="flex h-[44px] w-full items-center justify-between rounded-full border border-[rgba(33,26,18,0.10)] bg-white px-3.5 text-[13px] font-medium text-[#5C5247] shadow-2xs active:scale-[0.99] transition-transform"
+          prefetch={true}
+          className="flex h-[42px] w-full items-center justify-between rounded-full border border-[rgba(33,26,18,0.10)] bg-white px-3.5 text-[13px] font-medium text-[#5C5247] shadow-2xs active:scale-[0.99] transition-transform"
         >
           <div className="flex items-center gap-2.5">
             <Search className="h-4 w-4 text-[#0B3B25] stroke-[2.4]" />
@@ -135,20 +136,21 @@ export default function MobileHomeScreen() {
         </Link>
       </div>
 
-      {/* 3. Scaled-down Real Web Hero Banner (streams from HERO_BANNER_DATA) */}
-      <div className="relative px-3 pt-2.5">
+      {/* 3. Scaled-down Real Web Hero Banner (Side margins reduced to 10% of previous state) */}
+      <div className="relative px-0.5 sm:px-1 pt-1.5">
         <MobileHeroBanner />
       </div>
 
-      {/* 4. Category Chips Scroller */}
-      <div className="relative pt-3.5">
-        <div className="flex items-center justify-between px-3 pb-1.5">
-          <h3 className="text-[11px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
+      {/* 4. Category Chips Scroller (Halved spacing, clicks navigate to dedicated category page) */}
+      <div className="relative pt-2">
+        <div className="flex items-center justify-between px-3 pb-1">
+          <h3 className="text-[10.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Shop by category
           </h3>
           <Link
             href="/m/categories"
-            className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
+            prefetch={true}
+            className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
           >
             View all
           </Link>
@@ -156,37 +158,32 @@ export default function MobileHomeScreen() {
 
         <div className="flex gap-1.5 overflow-x-auto px-3 py-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {CATEGORY_CHIPS.map((cat) => {
-            const active = activeCategory === cat.slug
             const Icon = cat.icon
             return (
-              <button
+              <Link
                 key={cat.label}
-                type="button"
-                onClick={() => setActiveCategory(cat.slug)}
-                className={cn(
-                  'flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[11.5px] font-extrabold shadow-2xs transition-all active:scale-95',
-                  active
-                    ? 'bg-[#0B3B25] text-white shadow-xs'
-                    : 'bg-white text-[#211A12] border border-[rgba(33,26,18,0.08)]'
-                )}
+                href={cat.slug === 'All' ? '/m/categories' : `/m/categories?category=${encodeURIComponent(cat.slug)}`}
+                prefetch={true}
+                className="flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[11.5px] font-extrabold shadow-2xs transition-all active:scale-95 bg-white text-[#211A12] border border-[rgba(33,26,18,0.08)] hover:border-[#0B3B25]"
               >
-                <Icon className={cn('h-3.5 w-3.5', active ? 'text-white' : 'text-[#0B3B25]')} />
+                <Icon className="h-3.5 w-3.5 text-[#0B3B25]" />
                 <span>{cat.label}</span>
-              </button>
+              </Link>
             )
           })}
         </div>
       </div>
 
-      {/* 5. Recommended Produce (2-Column Grid with -20% Card Height & 8px gap) */}
-      <div className="relative px-3 pt-3.5">
-        <div className="flex items-center justify-between pb-2">
-          <h3 className="text-[14.5px] font-extrabold text-[#211A12]">
+      {/* 5. Recommended Produce (Halved spacing, 2-Column Grid with gap-1.5) */}
+      <div className="relative px-3 pt-2">
+        <div className="flex items-center justify-between pb-1.5">
+          <h3 className="text-[14px] font-black text-[#211A12]">
             Recommended for you
           </h3>
           <Link
             href="/m/categories"
-            className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
+            prefetch={true}
+            className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
           >
             See all
           </Link>
@@ -204,17 +201,18 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 6. Popular This Week Grid */}
-      <div className="relative px-3 pt-4">
-        <div className="flex items-center justify-between pb-2">
+      <div className="relative px-3 pt-3">
+        <div className="flex items-center justify-between pb-1.5">
           <div>
-            <h3 className="text-[14.5px] font-extrabold text-[#211A12]">
+            <h3 className="text-[14px] font-black text-[#211A12]">
               Popular this week
             </h3>
-            <p className="text-[11px] font-semibold text-[#5C5247]">Top harvested favorites in Ashanti</p>
+            <p className="text-[10.5px] font-semibold text-[#5C5247]">Top harvested favorites in Ashanti</p>
           </div>
           <Link
             href="/m/categories"
-            className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
+            prefetch={true}
+            className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
           >
             See all
           </Link>
@@ -228,17 +226,18 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 7. Bundles & Subscriptions Preview */}
-      <div className="relative pt-4">
-        <div className="flex items-center justify-between px-3 pb-2">
+      <div className="relative pt-3">
+        <div className="flex items-center justify-between px-3 pb-1.5">
           <div>
-            <h3 className="text-[14.5px] font-extrabold text-[#211A12]">
+            <h3 className="text-[14px] font-black text-[#211A12]">
               Bundles &amp; subscriptions
             </h3>
-            <p className="text-[11px] font-semibold text-[#5C5247]">Weekly curated boxes delivered direct</p>
+            <p className="text-[10.5px] font-semibold text-[#5C5247]">Weekly curated boxes delivered direct</p>
           </div>
           <Link
             href="/m/bundles"
-            className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
+            prefetch={true}
+            className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
           >
             View all
           </Link>
@@ -249,6 +248,7 @@ export default function MobileHomeScreen() {
             <Link
               key={bundle.id}
               href="/m/bundles"
+              prefetch={true}
               className="flex w-60 shrink-0 flex-col overflow-hidden rounded-[22px] bg-white shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
             >
               {/* Image Bleeding to Top, Left, Right */}
@@ -283,15 +283,16 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 8. Recipes Inspiration */}
-      <div className="relative px-3 pt-4">
-        <div className="flex items-center justify-between pb-2">
+      <div className="relative px-3 pt-3">
+        <div className="flex items-center justify-between pb-1.5">
           <div>
-            <h3 className="text-[14.5px] font-extrabold text-[#211A12]">Recipes inspiration</h3>
-            <p className="text-[11px] font-semibold text-[#5C5247]">Cook authentic Ghanaian dishes</p>
+            <h3 className="text-[14px] font-black text-[#211A12]">Recipes inspiration</h3>
+            <p className="text-[10.5px] font-semibold text-[#5C5247]">Cook authentic Ghanaian dishes</p>
           </div>
           <Link
             href="/m/recipes"
-            className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
+            prefetch={true}
+            className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
           >
             See all
           </Link>
@@ -302,7 +303,8 @@ export default function MobileHomeScreen() {
             <Link
               key={recipe.id}
               href={`/m/recipes/${recipe.id}`}
-              className="flex items-center gap-3 overflow-hidden rounded-[24px] bg-[#FDFDFB] p-2.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
+              prefetch={true}
+              className="flex items-center gap-3 overflow-hidden rounded-[22px] bg-white p-2.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
             >
               <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-white shadow-2xs">
                 <Image
@@ -319,7 +321,7 @@ export default function MobileHomeScreen() {
                 <h4 className="text-[13px] font-extrabold text-[#211A12]">
                   {recipe.name}
                 </h4>
-                <div className="mt-1 flex items-center gap-2.5 text-[10.5px] font-semibold text-[#5C5247]">
+                <div className="mt-0.5 flex items-center gap-2.5 text-[10.5px] font-semibold text-[#5C5247]">
                   <span className="flex items-center gap-1">
                     <Clock className="h-3 w-3 text-[#0B3B25]" /> {recipe.time}
                   </span>
@@ -337,15 +339,16 @@ export default function MobileHomeScreen() {
       </div>
 
       {/* 9. Meet Local Ghanaian Farmers */}
-      <div className="relative px-3 pt-4">
-        <div className="flex items-center justify-between pb-2">
+      <div className="relative px-3 pt-3">
+        <div className="flex items-center justify-between pb-1.5">
           <div>
-            <h3 className="text-[14.5px] font-extrabold text-[#211A12]">Meet your farmers</h3>
-            <p className="text-[11px] font-semibold text-[#5C5247]">Know the hands that grow your food</p>
+            <h3 className="text-[14px] font-black text-[#211A12]">Meet your farmers</h3>
+            <p className="text-[10.5px] font-semibold text-[#5C5247]">Know the hands that grow your food</p>
           </div>
           <Link
             href="/m/farmers"
-            className="text-[12px] font-bold text-[#7A3F1C] hover:underline"
+            prefetch={true}
+            className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
           >
             See all
           </Link>
@@ -356,7 +359,8 @@ export default function MobileHomeScreen() {
             <Link
               key={farmer.id}
               href={`/m/farmers/${farmer.slug}`}
-              className="flex flex-col overflow-hidden rounded-[24px] bg-[#FDFDFB] p-2.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
+              prefetch={true}
+              className="flex flex-col overflow-hidden rounded-[22px] bg-white p-2.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] active:scale-[0.98] transition-transform"
             >
               <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white shadow-2xs">
                 <Image
@@ -381,6 +385,130 @@ export default function MobileHomeScreen() {
                 </span>
               </div>
             </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* ========================================================
+          10. CONTINUATION SECTIONS BY CATEGORY (Endless Scrolling)
+         ======================================================== */}
+
+      {/* 10. Fresh Vegetables & Greens */}
+      <div className="relative px-3 pt-3.5">
+        <div className="flex items-center justify-between pb-1.5">
+          <div>
+            <h3 className="text-[14px] font-black text-[#211A12]">
+              Fresh Vegetables &amp; Greens
+            </h3>
+            <p className="text-[10.5px] font-semibold text-[#5C5247]">Hand-harvested at dawn</p>
+          </div>
+          <Link
+            href="/m/categories?category=Vegetables"
+            prefetch={true}
+            className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
+          >
+            See all
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 gap-1.5">
+          {products.filter((p) => p.category === 'Vegetables').slice(0, 4).map((p) => (
+            <MobileProductCard key={p.id} product={p} />
+          ))}
+        </div>
+      </div>
+
+      {/* 11. Roots, Tubers & Plantain */}
+      <div className="relative px-3 pt-3.5">
+        <div className="flex items-center justify-between pb-1.5">
+          <div>
+            <h3 className="text-[14px] font-black text-[#211A12]">
+              Roots, Tubers &amp; Plantain
+            </h3>
+            <p className="text-[10.5px] font-semibold text-[#5C5247]">Pona yam, sweet potatoes &amp; cassava</p>
+          </div>
+          <Link
+            href="/m/categories?category=Roots%20%26%20Tubers"
+            prefetch={true}
+            className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
+          >
+            See all
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 gap-1.5">
+          {products.filter((p) => p.category === 'Roots & Tubers').slice(0, 4).map((p) => (
+            <MobileProductCard key={p.id} product={p} />
+          ))}
+        </div>
+      </div>
+
+      {/* 12. Orchard Fresh Fruits */}
+      <div className="relative px-3 pt-3.5">
+        <div className="flex items-center justify-between pb-1.5">
+          <div>
+            <h3 className="text-[14px] font-black text-[#211A12]">
+              Orchard Fresh Fruits
+            </h3>
+            <p className="text-[10.5px] font-semibold text-[#5C5247]">Sun-ripened papaya, mangoes &amp; citrus</p>
+          </div>
+          <Link
+            href="/m/categories?category=Fruits"
+            prefetch={true}
+            className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
+          >
+            See all
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 gap-1.5">
+          {products.filter((p) => p.category === 'Fruits').slice(0, 4).map((p) => (
+            <MobileProductCard key={p.id} product={p} />
+          ))}
+        </div>
+      </div>
+
+      {/* 13. Grains, Legumes & Staples */}
+      <div className="relative px-3 pt-3.5">
+        <div className="flex items-center justify-between pb-1.5">
+          <div>
+            <h3 className="text-[14px] font-black text-[#211A12]">
+              Grains, Legumes &amp; Staples
+            </h3>
+            <p className="text-[10.5px] font-semibold text-[#5C5247]">Local perfumed rice, cowpea &amp; maize</p>
+          </div>
+          <Link
+            href="/m/categories?category=Grains%20%26%20Legumes"
+            prefetch={true}
+            className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
+          >
+            See all
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 gap-1.5">
+          {products.filter((p) => p.category === 'Grains & Legumes').slice(0, 4).map((p) => (
+            <MobileProductCard key={p.id} product={p} />
+          ))}
+        </div>
+      </div>
+
+      {/* 14. Aromatic Herbs & Hot Peppers */}
+      <div className="relative px-3 pt-3.5">
+        <div className="flex items-center justify-between pb-1.5">
+          <div>
+            <h3 className="text-[14px] font-black text-[#211A12]">
+              Herbs &amp; Fresh Peppers
+            </h3>
+            <p className="text-[10.5px] font-semibold text-[#5C5247]">Kpakpo shito, ginger &amp; scotch bonnet</p>
+          </div>
+          <Link
+            href="/m/categories?category=Herbs%20%26%20Spices"
+            prefetch={true}
+            className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
+          >
+            See all
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 gap-1.5">
+          {products.filter((p) => p.category === 'Herbs & Spices').slice(0, 4).map((p) => (
+            <MobileProductCard key={p.id} product={p} />
           ))}
         </div>
       </div>
