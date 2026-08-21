@@ -47,9 +47,6 @@ jobs:
       - name: Ensure gradlew is executable
         run: chmod +x mobile/android/gradlew
 
-      - name: Install root dependencies (Sharp & build tools)
-        run: npm ci
-
       - name: Install mobile native deps (Capacitor CLI + plugins)
         working-directory: mobile
         run: npm ci
@@ -62,10 +59,6 @@ jobs:
       - name: Sync Capacitor native glue (symlinks android/app -> consumer, copies to admin)
         working-directory: mobile
         run: node scripts/sync-android.mjs
-
-      - name: Sync brand raster icons & splash screens
-        run: |
-          node scripts/sync_mobile_brand_assets.mjs
 
       - name: Generate brand vector drawables
         run: |
