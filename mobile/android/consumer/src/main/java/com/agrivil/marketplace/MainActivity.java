@@ -1,6 +1,8 @@
 package com.agrivil.marketplace;
 
 import android.os.Bundle;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
@@ -8,6 +10,15 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         registerPlugin(AppUpdaterPlugin.class);
+
+        // Optimize WebView performance and local caching
+        if (this.bridge != null && this.bridge.getWebView() != null) {
+            WebView webView = this.bridge.getWebView();
+            WebSettings settings = webView.getSettings();
+            settings.setDomStorageEnabled(true);
+            settings.setDatabaseEnabled(true);
+            settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        }
     }
 
     @Override

@@ -69,36 +69,41 @@ export default function MobileHomeScreen() {
         }
       `}</style>
 
-      {/* Top warm brand gradient backdrop */}
+      {/* Top warm brand gradient backdrop (Unified Across Mobile) */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(260px,45vh,380px)] z-0"
         style={{
           background:
-            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+            'radial-gradient(130% 90% at 50% 0%, rgba(254, 215, 170, 0.45) 0%, rgba(253, 230, 210, 0.25) 40%, rgba(247, 245, 240, 0.6) 80%, rgba(247, 245, 240, 1) 100%)',
         }}
       />
 
       {/* 1. Header Bar: AgriVil Logo & Action Badges */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0] px-3 py-2.5"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.06)] bg-[#FAF9F6]/90 backdrop-blur-md px-3 py-2.5 transition-colors"
+        style={{
+          paddingTop: 'max(env(safe-area-inset-top, 0px), 14px)',
+          paddingBottom: '10px',
+        }}
       >
-        <Link href="/m" className="flex items-center gap-2 active:scale-95 transition-transform" aria-label="AgriVil Home">
-          <div className="relative h-8 w-8 shrink-0 overflow-hidden">
+        <Link href="/m" prefetch={true} className="flex items-center gap-2.5 active:scale-95 transition-transform" aria-label="AgriVil Home">
+          {/* Logo Mark Doubled in Size (100% Increase) */}
+          <div className="relative h-11 w-11 shrink-0 overflow-hidden drop-shadow-2xs">
             <Image
               src="/agrivil-mark.svg"
-              alt="AgriVil"
-              width={32}
-              height={32}
-              className="h-full w-full object-contain"
+              alt="AgriVil Emblem"
+              width={44}
+              height={44}
+              className="h-full w-full object-contain scale-110"
               priority
             />
           </div>
-          <div className="flex flex-col leading-none">
-            <span className="text-[17px] font-black tracking-[0.14em] text-[#0B3B25]">
+          <div className="flex flex-col leading-tight justify-center">
+            <span className="text-[19px] font-black tracking-[0.14em] text-[#0B3B25]">
               AGRIVIL
             </span>
-            <span className="text-[7.5px] font-bold tracking-[0.12em] uppercase text-[#DF8821]">
+            <span className="text-[8.5px] font-extrabold tracking-[0.14em] uppercase text-[#DF8821]">
               Golden Acres
             </span>
           </div>

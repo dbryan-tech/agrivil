@@ -52,3 +52,4 @@ __pycache__/
 # temp previews
 scripts/_preview_*.png
 scripts/previews/
+temp/

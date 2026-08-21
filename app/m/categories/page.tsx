@@ -117,17 +117,30 @@ function CategoriesContent() {
         }
       `}</style>
 
+      {/* Top warm brand gradient backdrop (Unified Across Mobile) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(260px,45vh,380px)] z-0"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(254, 215, 170, 0.45) 0%, rgba(253, 230, 210, 0.25) 40%, rgba(247, 245, 240, 0.6) 80%, rgba(247, 245, 240, 1) 100%)',
+        }}
+      />
+
       {/* 1. Header with Back Arrow & Title */}
       <header
-        className="sticky top-0 z-30 border-b border-[rgba(33,26,18,0.08)] bg-white/95 px-1.5 py-2.5 backdrop-blur-md"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
+        className="sticky top-0 z-30 border-b border-[rgba(33,26,18,0.06)] bg-[#FAF9F6]/90 px-1.5 py-2.5 backdrop-blur-md transition-colors"
+        style={{
+          paddingTop: 'max(env(safe-area-inset-top, 0px), 14px)',
+          paddingBottom: '10px',
+        }}
       >
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Back"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#FAF9F6] text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95 transition-transform"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
@@ -144,7 +157,7 @@ function CategoriesContent() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search produce categories..."
-            className="h-10 w-full rounded-full border border-[rgba(33,26,18,0.10)] bg-[#FAF9F6] pl-9 pr-3 text-[12.5px] font-semibold text-[#211A12] shadow-2xs outline-none focus:border-[#0B3B25]"
+            className="h-10 w-full rounded-full border border-[rgba(33,26,18,0.10)] bg-white pl-9 pr-3 text-[12.5px] font-semibold text-[#211A12] shadow-2xs outline-none focus:border-[#0B3B25]"
           />
           <Search className="absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-[#0B3B25] stroke-[2.4]" />
         </div>

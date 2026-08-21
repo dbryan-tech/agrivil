@@ -17,6 +17,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { SessionProvider } from '@/components/golden-acres/auth/session-context'
 import { DataStoreProvider } from '@/components/golden-acres/store/data-store'
 import { RecentlyViewedProvider } from '@/components/golden-acres/store/recently-viewed'
+import { ServiceWorkerRegister } from '@/components/service-worker-register'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -118,6 +119,11 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
   colorScheme: 'light dark',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#0B3B25' },
@@ -147,6 +153,7 @@ export default function RootLayout({
             <DataStoreProvider>
               <RecentlyViewedProvider>
                 {children}
+                <ServiceWorkerRegister />
               </RecentlyViewedProvider>
             </DataStoreProvider>
           </SessionProvider>

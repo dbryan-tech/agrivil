@@ -79,7 +79,7 @@ The emblem unites two foundational agricultural elements:
 ## 6. Directory Structure & Asset Inventory
 
 ```
-docs/brand-assets/
+LOGO-ASSETS-REFERENCE-TYPE-OF-EACH-REQUIRED-ASSET/
 ├── 01_LOGO_SYSTEM/         # Core marks, lockups, reverse, monochrome, social circle, stamp, and usage board
 ├── 02_ICONS/               # 12 UI SVG & PNG icons (home, cart, search, farmer, etc.)
 ├── 03_DIGITAL_ASSETS/      # App icon suite (16px to 1024px), favicon.ico, social banners

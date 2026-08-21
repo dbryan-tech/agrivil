@@ -143,18 +143,21 @@ export default function MobileOrdersScreen() {
 
       {/* Header Bar */}
       <header
-        className="relative flex items-center justify-between px-1.5 pt-3 pb-1"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.06)] bg-[#FAF9F6]/90 px-1.5 py-2.5 backdrop-blur-md transition-colors"
+        style={{
+          paddingTop: 'max(env(safe-area-inset-top, 0px), 14px)',
+          paddingBottom: '10px',
+        }}
       >
-        <h1 className="text-[26px] font-black tracking-tight text-[#211A12]">
+        <h1 className="text-[24px] font-black tracking-tight text-[#211A12]">
           My Shipping
         </h1>
         <button
           type="button"
           aria-label="Menu"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#211A12] shadow-xs border border-[rgba(33,26,18,0.06)] active:scale-95 transition-transform"
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-xs border border-[rgba(33,26,18,0.06)] active:scale-95 transition-transform"
         >
-          <MoreVertical className="h-5 w-5" />
+          <MoreVertical className="h-4.5 w-4.5" />
         </button>
       </header>
 

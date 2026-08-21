@@ -46,8 +46,24 @@ export default function MobileAccountScreen() {
         }
       `}</style>
 
+      {/* Top warm brand gradient backdrop (Unified Across Mobile) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(260px,45vh,380px)] z-0"
+        style={{
+          background:
+            'radial-gradient(130% 90% at 50% 0%, rgba(254, 215, 170, 0.45) 0%, rgba(253, 230, 210, 0.25) 40%, rgba(247, 245, 240, 0.6) 80%, rgba(247, 245, 240, 1) 100%)',
+        }}
+      />
+
       {/* Header */}
-      <header className="relative flex items-center justify-between px-1.5 pt-3.5 pb-2 border-b border-[rgba(33,26,18,0.06)] bg-white/95 backdrop-blur-md">
+      <header
+        className="sticky top-0 z-30 flex items-center justify-between px-1.5 py-2.5 border-b border-[rgba(33,26,18,0.06)] bg-[#FAF9F6]/90 backdrop-blur-md transition-colors"
+        style={{
+          paddingTop: 'max(env(safe-area-inset-top, 0px), 14px)',
+          paddingBottom: '10px',
+        }}
+      >
         <h1 className="text-[20px] font-black tracking-tight text-[#211A12]">
           My Profile
         </h1>

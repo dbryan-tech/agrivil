@@ -45,13 +45,16 @@ export function MobileAppBar({
   return (
     <header
       className={cn(
-        'sticky top-0 z-30 flex h-14 items-center justify-between px-3 transition-colors',
+        'sticky top-0 z-30 flex min-h-[54px] items-center justify-between px-3 transition-colors',
         transparent
           ? 'bg-transparent'
-          : 'border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]',
+          : 'border-b border-[rgba(33,26,18,0.06)] bg-[#FAF9F6]/90 backdrop-blur-md',
         className
       )}
-      style={{ paddingTop: 'env(safe-area-inset-top)' }}
+      style={{
+        paddingTop: 'max(env(safe-area-inset-top, 0px), 14px)',
+        paddingBottom: '10px',
+      }}
     >
       {/* Left side: Back or Title */}
       <div className="flex items-center gap-3 overflow-hidden">
@@ -83,6 +86,7 @@ export function MobileAppBar({
         {showSearch && (
           <Link
             href="/m/search"
+            prefetch={true}
             aria-label="Search"
             className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-xs border border-[rgba(33,26,18,0.10)] active:scale-95"
           >
@@ -93,6 +97,7 @@ export function MobileAppBar({
         {showNotifications && (
           <Link
             href="/m/account/notifications"
+            prefetch={true}
             aria-label="Notifications"
             className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-xs border border-[rgba(33,26,18,0.10)] active:scale-95"
           >
@@ -131,6 +136,7 @@ export function MobileAppBar({
         {showCart && (
           <Link
             href="/m/cart"
+            prefetch={true}
             aria-label="Shopping Cart"
             className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-sm active:scale-95 transition-transform"
           >

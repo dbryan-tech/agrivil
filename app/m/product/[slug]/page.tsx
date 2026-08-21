@@ -196,7 +196,7 @@ export default function MobileProductDetailScreen() {
       {/* Floating Top Navigation Header */}
       <header
         className="fixed inset-x-0 top-0 z-40 mx-auto flex max-w-md items-center justify-between px-1.5 pt-3"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 12px)' }}
+        style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 14px)' }}
       >
         <button
           type="button"

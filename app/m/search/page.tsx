@@ -50,19 +50,23 @@ export default function MobileSearchScreen() {
         }
       `}</style>
 
-      {/* Top warm brand gradient backdrop */}
+      {/* Top warm brand gradient backdrop (Unified Across Mobile) */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(260px,45vh,380px)] z-0"
         style={{
           background:
-            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+            'radial-gradient(130% 90% at 50% 0%, rgba(254, 215, 170, 0.45) 0%, rgba(253, 230, 210, 0.25) 40%, rgba(247, 245, 240, 0.6) 80%, rgba(247, 245, 240, 1) 100%)',
         }}
       />
 
       {/* Search Header */}
       <div
-        className="sticky top-0 z-30 flex items-center gap-2 border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-1.5 py-2.5 backdrop-blur-md"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
+        className="sticky top-0 z-30 flex items-center gap-2 border-b border-[rgba(33,26,18,0.06)] bg-[#FAF9F6]/90 px-1.5 py-2.5 backdrop-blur-md transition-colors"
+        style={{
+          paddingTop: 'max(env(safe-area-inset-top, 0px), 14px)',
+          paddingBottom: '10px',
+        }}
       >
         <Link
           href="/m"
