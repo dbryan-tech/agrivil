@@ -32,6 +32,7 @@ export function MobileBottomNav() {
           <Link
             key={tab.label}
             href={tab.href}
+            prefetch={true}
             className={cn(
               'relative flex flex-1 flex-col items-center justify-center py-1 transition-all active:scale-95',
               active ? 'text-[#0B3B25]' : 'text-[#5C5247] hover:text-[#211A12]'

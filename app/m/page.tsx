@@ -107,6 +107,7 @@ export default function MobileHomeScreen() {
         <div className="flex items-center gap-2">
           <Link
             href="/m/account/notifications"
+            prefetch={true}
             aria-label="Notifications"
             className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#211A12] shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-95"
           >
@@ -116,6 +117,7 @@ export default function MobileHomeScreen() {
 
           <Link
             href="/m/cart"
+            prefetch={true}
             aria-label="Basket"
             className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-sm active:scale-95 transition-transform"
           >
