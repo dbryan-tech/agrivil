@@ -52,8 +52,8 @@ export function MobileAppBar({
         className
       )}
       style={{
-        paddingTop: 'max(env(safe-area-inset-top, 0px), 14px)',
-        paddingBottom: '10px',
+        paddingTop: 'max(env(safe-area-inset-top, 0px), 36px)',
+        paddingBottom: '12px',
       }}
     >
       {/* Left side: Back or Title */}

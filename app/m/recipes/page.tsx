@@ -27,13 +27,11 @@ export default function MobileRecipesScreen() {
         }
       `}</style>
 
-      {/* ========================================================
-          1. FULL-BLEED TOP HERO BANNER (Bleeds to edges & top)
-         ======================================================== */}
-      <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] overflow-hidden rounded-b-[32px] bg-[#7A3F1C] shadow-xs">
+      {/* 1. TOP HERO BANNER with Curved Bottom Corners */}
+      <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] overflow-hidden rounded-b-[36px] bg-[#0B3B25] shadow-xs">
         <Image
-          src="/golden-acres/recipes/ghana-jollof.png"
-          alt="Cook & Shop Authentic Recipes"
+          src="/golden-acres/recipe-hero.jpg"
+          alt="Ghanaian Recipes"
           fill
           priority
           sizes="100vw"
@@ -44,7 +42,7 @@ export default function MobileRecipesScreen() {
         {/* Floating Top Navigation Header */}
         <header
           className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-3.5 pt-3"
-          style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 14px)' }}
+          style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 36px)' }}
         >
           <button
             type="button"

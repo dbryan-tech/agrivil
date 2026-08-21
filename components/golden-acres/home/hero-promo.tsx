@@ -39,7 +39,7 @@ export function MobileHeroBanner({
     <Link
       href="/m/categories"
       className={cn(
-        'group relative block overflow-hidden rounded-t-[22px] rounded-b-[38px] shadow-[0_4px_18px_-4px_rgba(122,63,28,0.12)] active:scale-[0.99] transition-transform',
+        'group relative block overflow-hidden rounded-[26px] shadow-[0_4px_18px_-4px_rgba(33,26,18,0.08)] active:scale-[0.99] transition-transform',
         className
       )}
     >
@@ -75,9 +75,9 @@ export function MobileHeroBanner({
             </p>
           </div>
 
-          {/* CTA & Delivery info (Copper Button Style) */}
+          {/* CTA & Delivery info */}
           <div className="mt-2.5 flex flex-wrap items-center gap-2.5">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-[#7A3F1C] px-3.5 py-1.5 text-[11.5px] font-extrabold text-white shadow-sm transition-transform active:scale-95 group-hover:bg-[#5E2F14]">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-[#0B3B25] px-3.5 py-1.5 text-[11.5px] font-extrabold text-white shadow-sm transition-transform active:scale-95 group-hover:bg-[#072618]">
               <span>{data.ctaText}</span>
               <ArrowRight className="h-3 w-3 stroke-[2.5]" />
             </div>

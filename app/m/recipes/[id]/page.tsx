@@ -77,7 +77,7 @@ export default function MobileRecipeDetailScreen() {
         {/* Floating Top Nav */}
         <header
           className="fixed inset-x-0 top-0 z-40 mx-auto flex max-w-md items-center justify-between px-1.5 pt-3"
-          style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 14px)' }}
+          style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 36px)' }}
         >
           <button
             type="button"

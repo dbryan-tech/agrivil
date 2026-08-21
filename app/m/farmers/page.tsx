@@ -47,13 +47,13 @@ export default function MobileFarmersScreen() {
         }
       `}</style>
 
-      {/* Top warm brand radiant gradient backdrop (Copper Tone, +50% Intensity) */}
+      {/* Top warm brand radiant gradient backdrop (Seamless Harvest Glow) */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(280px,48vh,400px)] z-0"
         style={{
           background:
-            'radial-gradient(130% 95% at 50% 0%, rgba(200, 109, 59, 0.52) 0%, rgba(223, 136, 33, 0.32) 35%, rgba(247, 245, 240, 0.75) 75%, rgba(247, 245, 240, 1) 100%)',
+            'radial-gradient(130% 95% at 50% 0%, rgba(223, 136, 33, 0.20) 0%, rgba(240, 168, 30, 0.08) 35%, rgba(247, 245, 240, 0.6) 75%, rgba(247, 245, 240, 1) 100%)',
         }}
       />
 
@@ -61,8 +61,8 @@ export default function MobileFarmersScreen() {
       <header
         className="sticky top-0 z-30 flex items-center justify-between px-1.5 py-2.5 border-b border-[rgba(33,26,18,0.06)] bg-[#FAF9F6]/90 backdrop-blur-md transition-colors"
         style={{
-          paddingTop: 'max(env(safe-area-inset-top, 0px), 14px)',
-          paddingBottom: '10px',
+          paddingTop: 'max(env(safe-area-inset-top, 0px), 36px)',
+          paddingBottom: '12px',
         }}
       >
         <h1 className="text-[22px] font-black tracking-tight text-[#211A12]">

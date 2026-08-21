@@ -58,19 +58,23 @@ export default function MobileShopLocalScreen() {
         }
       `}</style>
 
-      {/* Top warm brand gradient backdrop */}
+      {/* Top warm brand radiant gradient backdrop (Seamless Harvest Glow) */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(240px,40vh,360px)]"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(280px,48vh,400px)] z-0"
         style={{
           background:
-            'radial-gradient(130% 90% at 50% 0%, rgba(122,63,28,0.14) 0%, rgba(240,168,30,0.06) 35%, rgba(247,245,240,0.4) 75%, rgba(247,245,240,1) 100%)',
+            'radial-gradient(130% 95% at 50% 0%, rgba(223, 136, 33, 0.20) 0%, rgba(240, 168, 30, 0.08) 35%, rgba(247, 245, 240, 0.6) 75%, rgba(247, 245, 240, 1) 100%)',
         }}
       />
 
       {/* 1. Header */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.08)] bg-[#F7F5F0]/90 px-1.5 py-2.5 backdrop-blur-md"
-        style={{ paddingTop: 'max(env(safe-area-inset-top), 10px)' }}
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.06)] bg-[#FAF9F6]/90 px-1.5 py-2.5 backdrop-blur-md transition-colors"
+        style={{
+          paddingTop: 'max(env(safe-area-inset-top, 0px), 36px)',
+          paddingBottom: '12px',
+        }}
       >
         <div className="flex items-center gap-2">
           <button
