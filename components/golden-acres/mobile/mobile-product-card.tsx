@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {
   Heart,
-  ShoppingCart,
+  ShoppingBag,
   Check,
   Star,
   Eye,
@@ -187,7 +187,7 @@ export function MobileProductCard({
             </p>
           </div>
 
-          {/* 3. Full-Width Add To Cart Button */}
+          {/* 3. Full-Width Add To Basket Button */}
           <button
             type="button"
             onClick={handleQuickAdd}
@@ -201,12 +201,12 @@ export function MobileProductCard({
             {isAdded ? (
               <>
                 <Check className="h-3.5 w-3.5 stroke-[3]" />
-                <span>Added</span>
+                <span>In Basket</span>
               </>
             ) : (
               <>
-                <ShoppingCart className="h-3 w-3 stroke-[2.4]" />
-                <span>Add to cart</span>
+                <ShoppingBag className="h-3.5 w-3.5 stroke-[2.4]" />
+                <span>Add to basket</span>
               </>
             )}
           </button>

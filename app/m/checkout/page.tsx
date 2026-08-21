@@ -21,7 +21,7 @@ import { PackageBoxes3D } from '@/app/preview/_lib/premium'
 
 export default function MobileCheckoutScreen() {
   const router = useRouter()
-  const { subtotalEstimate, clear } = useCart()
+  const { lines, subtotalEstimate, clear } = useCart()
 
   const [paymentMethod, setPaymentMethod] = useState<'momo' | 'card' | 'cod'>('momo')
   const [momoProvider, setMomoProvider] = useState<'mtn' | 'telecel' | 'at'>('mtn')
@@ -37,9 +37,38 @@ export default function MobileCheckoutScreen() {
 
   async function handlePlaceOrder() {
     setBusy(true)
+    const newOrderId = `AGR-${Math.floor(10000 + Math.random() * 90000)}`
+    const newOrder = {
+      id: newOrderId,
+      trackingCode: `SWFT-${Math.floor(1000000 + Math.random() * 9000000)}`,
+      title: lines.map((l) => l.product.name).join(', ') || 'Fresh Farm Produce Basket',
+      farmerName: lines[0]?.product.farmerName || 'Ghanaian Local Farmers',
+      status: 'TRANSIT',
+      ribbonColor: '#E86328',
+      awayText: '35m Away',
+      truckIndex: 2,
+      steps: [{ done: true }, { done: true }, { done: false }, { done: false }],
+      from: 'Ejisu Aggregation Hub',
+      fromDate: 'Today',
+      to: gpsCode || 'Greater Accra',
+      toDate: 'Estimated Today (in 35 mins)',
+      image: lines[0]?.product.image || '/golden-acres/produce/roma-tomatoes.png',
+      totalGHS: finalTotal,
+    }
+
+    if (typeof window !== 'undefined') {
+      try {
+        const existing = JSON.parse(localStorage.getItem('agrivil_orders') || '[]')
+        localStorage.setItem('agrivil_orders', JSON.stringify([newOrder, ...existing]))
+        localStorage.setItem('agrivil_last_order', JSON.stringify(newOrder))
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
     setTimeout(() => {
       clear()
-      router.push('/m/checkout/success')
+      router.push(`/m/checkout/success?ref=${newOrderId}`)
     }, 900)
   }
 

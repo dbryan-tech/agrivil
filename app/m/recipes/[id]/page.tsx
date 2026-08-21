@@ -18,6 +18,7 @@ import {
 import { recipes, products } from '@/lib/golden-acres/data'
 import { formatGHS } from '@/lib/golden-acres/format'
 import { useCart } from '@/components/golden-acres/cart-context'
+import { CookingStepVisualizer } from '@/components/golden-acres/recipes/cooking-step-visualizer'
 
 export default function MobileRecipeDetailScreen() {
   const params = useParams<{ id: string }>()
@@ -182,36 +183,13 @@ export default function MobileRecipeDetailScreen() {
           </div>
         </div>
 
-        {/* 4. Cooking Instructions (Direct on background, zero card wrapper) */}
+        {/* 4. Animated Step-by-Step Cooking Visualizer */}
         {recipe.steps && recipe.steps.length > 0 && (
-          <div className="space-y-2.5 pt-1">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.14em] text-[#8A7E72]">
-              Step-by-Step Cooking Instructions
-            </h3>
-            <div className="space-y-3">
-              {recipe.steps.map((step, idx) => (
-                <div key={idx} className="flex items-start gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#0B3B25] text-[11px] font-black text-white shadow-xs mt-0.5">
-                    {idx + 1}
-                  </span>
-                  <div className="flex-1">
-                    <p className="text-[13px] leading-relaxed text-[#211A12] font-semibold">
-                      {step}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {recipe.tip && (
-              <div className="mt-3 flex items-start gap-2 pt-2 text-[12px] font-medium text-[#7A3F1C] border-t border-[rgba(33,26,18,0.06)]">
-                <Sparkles className="h-4 w-4 shrink-0 mt-0.5 text-[#F0A81E]" />
-                <p>
-                  <strong className="font-black text-[#211A12]">Chef's Tip:</strong> {recipe.tip}
-                </p>
-              </div>
-            )}
-          </div>
+          <CookingStepVisualizer
+            steps={recipe.steps}
+            recipeName={recipe.name}
+            tip={recipe.tip}
+          />
         )}
       </div>
 

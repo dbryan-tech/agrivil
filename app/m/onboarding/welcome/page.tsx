@@ -152,12 +152,18 @@ export default function MobileOnboardingScreen() {
             AGRIVIL
           </span>
         </div>
-        <Link
-          href="/m"
+        <button
+          type="button"
+          onClick={() => {
+            if (typeof window !== 'undefined') {
+              localStorage.setItem('agrivil_has_onboarded', 'true')
+            }
+            router.push('/m')
+          }}
           className="text-[12px] font-extrabold tracking-wide text-[#5C5247] transition-colors hover:text-[#211A12]"
         >
           Skip
-        </Link>
+        </button>
       </div>
 
       {/* 2. Slide Show Hero Content */}
@@ -239,7 +245,12 @@ export default function MobileOnboardingScreen() {
         <div className="space-y-2">
           <button
             type="button"
-            onClick={() => router.push('/m/onboarding/how-it-works')}
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                localStorage.setItem('agrivil_has_onboarded', 'true')
+              }
+              router.push('/m/onboarding/how-it-works')
+            }}
             className="flex h-12 w-full items-center justify-center rounded-full bg-[#0B3B25] text-[13.5px] font-extrabold text-white shadow-md active:scale-[0.98] transition-transform"
           >
             Get Started
@@ -247,7 +258,12 @@ export default function MobileOnboardingScreen() {
 
           <button
             type="button"
-            onClick={() => router.push('/m/auth/login')}
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                localStorage.setItem('agrivil_has_onboarded', 'true')
+              }
+              router.push('/m/auth/login')
+            }}
             className="flex h-11 w-full items-center justify-center rounded-full border border-[rgba(33,26,18,0.12)] bg-white text-[12px] font-extrabold text-[#211A12] shadow-2xs active:scale-[0.98] transition-transform"
           >
             I have an account

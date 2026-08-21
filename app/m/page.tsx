@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -43,8 +44,18 @@ const CATEGORY_CHIPS = [
 ]
 
 export default function MobileHomeScreen() {
+  const router = useRouter()
   const { count } = useCart()
   const [activeCategory, setActiveCategory] = useState('All')
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const onboarded = localStorage.getItem('agrivil_has_onboarded')
+      if (!onboarded) {
+        router.replace('/m/onboarding')
+      }
+    }
+  }, [router])
 
   const filteredProducts =
     activeCategory === 'All'
@@ -79,12 +90,12 @@ export default function MobileHomeScreen() {
         }}
       />
 
-      {/* 1. Header Bar: Permanent Sticky Header with Curved Arch Bottom Corners */}
+      {/* 1. Header Bar: Clean Canvas Header */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between px-3 py-2 bg-[#FAF7F2]/95 backdrop-blur-md rounded-b-[24px] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.06)] border-b border-[rgba(33,26,18,0.05)] transition-all"
+        className="sticky top-0 z-30 flex items-center justify-between px-3 py-2 bg-[#FAF7F2]/95 backdrop-blur-md transition-all"
         style={{
           paddingTop: 'max(env(safe-area-inset-top, 0px), 10px)',
-          paddingBottom: '10px',
+          paddingBottom: '8px',
         }}
       >
         <Link href="/m" prefetch={true} className="flex items-center gap-2.5 active:scale-95 transition-transform" aria-label="AgriVil Home">
@@ -136,16 +147,18 @@ export default function MobileHomeScreen() {
         </div>
       </header>
 
-      {/* 2. Search Bar (Halved spacing) */}
+      {/* 2. Top Search Bar: direct to /m/shop */}
       <div className="relative px-1.5 pt-1.5">
         <Link
-          href="/m/search"
+          href="/m/shop"
           prefetch={true}
-          className="flex h-[42px] w-full items-center justify-between rounded-full border border-[rgba(33,26,18,0.10)] bg-white px-3 text-[13px] font-medium text-[#5C5247] shadow-2xs active:scale-[0.99] transition-transform"
+          className="flex h-11 w-full items-center justify-between rounded-full bg-white px-3.5 shadow-2xs border border-[rgba(33,26,18,0.10)] active:scale-[0.99] transition-transform"
         >
-          <div className="flex items-center gap-2.5">
-            <Search className="h-4 w-4 text-[#0B3B25] stroke-[2.4]" />
-            <span className="text-[#8A8175]">Search fresh produce, yam, farmers...</span>
+          <div className="flex items-center gap-2 text-[#5C5247]">
+            <Search className="h-4 w-4 text-[#0B3B25]" />
+            <span className="text-[12.5px] font-semibold text-[#5C5247]/90">
+              Search fresh produce, yam, farmers...
+            </span>
           </div>
           <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#F7F5F0] text-[#211A12]">
             <SlidersHorizontal className="h-3.5 w-3.5" />
@@ -158,16 +171,16 @@ export default function MobileHomeScreen() {
         <MobileHeroBanner />
       </div>
 
-      {/* 4. Category Chips Scroller (Halved spacing, clicks navigate to dedicated category page) */}
+      {/* 4. Category Chips Scroller (Clicks navigate to dedicated /m/shop pre-filtered) */}
       <div className="relative pt-2">
         <div className="flex items-center justify-between px-1.5 pb-1">
           <h3 className="text-[10.5px] font-black uppercase tracking-[0.14em] text-[#5C5247]">
             Shop by category
           </h3>
           <Link
-            href="/m/categories"
+            href="/m/shop"
             prefetch={true}
-            className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
+            className="text-[11.5px] font-black text-[#7A3F1C] hover:underline"
           >
             View all
           </Link>
@@ -179,7 +192,7 @@ export default function MobileHomeScreen() {
             return (
               <Link
                 key={cat.label}
-                href={cat.slug === 'All' ? '/m/categories' : `/m/categories?category=${encodeURIComponent(cat.slug)}`}
+                href={cat.slug === 'All' ? '/m/shop' : `/m/shop?category=${encodeURIComponent(cat.slug)}`}
                 prefetch={true}
                 className="flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[11.5px] font-extrabold shadow-2xs transition-all active:scale-95 bg-white text-[#211A12] border border-[rgba(33,26,18,0.08)] hover:border-[#0B3B25]"
               >
@@ -198,7 +211,7 @@ export default function MobileHomeScreen() {
             Recommended for you
           </h3>
           <Link
-            href="/m/categories"
+            href="/m/shop"
             prefetch={true}
             className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
           >
@@ -227,7 +240,7 @@ export default function MobileHomeScreen() {
             <p className="text-[10.5px] font-semibold text-[#5C5247]">Top harvested favorites in Ashanti</p>
           </div>
           <Link
-            href="/m/categories"
+            href="/m/shop"
             prefetch={true}
             className="text-[11.5px] font-bold text-[#7A3F1C] hover:underline"
           >

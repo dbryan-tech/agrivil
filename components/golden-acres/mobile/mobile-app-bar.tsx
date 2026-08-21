@@ -48,7 +48,7 @@ export function MobileAppBar({
         'sticky top-0 z-30 flex min-h-[50px] items-center justify-between px-3 transition-colors',
         transparent
           ? 'bg-transparent'
-          : 'border-b border-[rgba(33,26,18,0.05)] bg-[#FAF7F2]/95 backdrop-blur-md rounded-b-[24px] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.06)]',
+          : 'border-b border-[rgba(33,26,18,0.06)] bg-[#FAF7F2]/95 backdrop-blur-md',
         className
       )}
       style={{

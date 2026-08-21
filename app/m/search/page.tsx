@@ -62,7 +62,7 @@ export default function MobileSearchScreen() {
 
       {/* Search Header */}
       <div
-        className="sticky top-0 z-30 flex items-center gap-2 border-b border-[rgba(33,26,18,0.05)] bg-[#FAF7F2]/95 px-2 py-2.5 backdrop-blur-md rounded-b-[24px] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.06)] transition-all"
+        className="sticky top-0 z-30 flex items-center gap-2 border-b border-[rgba(33,26,18,0.06)] bg-[#FAF7F2]/95 px-2 py-2.5 backdrop-blur-md transition-colors"
         style={{
           paddingTop: 'max(env(safe-area-inset-top, 0px), 10px)',
           paddingBottom: '10px',

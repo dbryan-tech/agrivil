@@ -102,6 +102,28 @@ export default function MobileProductDetailScreen() {
   const activeImage = activeOffer.image || product.image
   const lineEstimate = activePrice * qty
 
+  const productGalleryImages = useMemo(() => {
+    const imagesList: string[] = []
+    if (product.images && product.images.length > 0) {
+      imagesList.push(...product.images)
+    } else {
+      imagesList.push(product.image)
+      if (product.slug.includes('tomato')) {
+        imagesList.push('/golden-acres/produce/roma-tomatoes-1.png', '/golden-acres/produce/roma-tomatoes-2.png')
+      } else if (product.slug.includes('plantain')) {
+        imagesList.push('/golden-acres/produce/ripe-plantain-1.png', '/golden-acres/produce/ripe-plantain-2.png')
+      } else if (product.slug.includes('pineapple')) {
+        imagesList.push('/golden-acres/produce/sweet-pineapple-1.png', '/golden-acres/produce/sweet-pineapple-2.png')
+      } else if (product.slug.includes('onion')) {
+        imagesList.push('/golden-acres/produce/red-onions-1.png', '/golden-acres/produce/red-onions-2.png')
+      }
+    }
+    return Array.from(new Set(imagesList)).filter(Boolean)
+  }, [product])
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const displayImage = productGalleryImages[currentImageIndex] || activeImage
+
   const farmerHarvests = products
     .filter((p) => p.farmerId === activeFarmer.id && p.id !== product.id)
     .slice(0, 4)
@@ -240,9 +262,9 @@ export default function MobileProductDetailScreen() {
       </header>
 
       {/* 1. Product Image with Curved Bottom Corners (Arch Style) */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-white rounded-b-[36px] shadow-[0_8px_24px_-8px_rgba(33,26,18,0.12)]">
+      <div className="relative aspect-[4/3.1] w-full overflow-hidden bg-white rounded-b-[36px] shadow-[0_8px_24px_-8px_rgba(33,26,18,0.12)]">
         <Image
-          src={activeImage}
+          src={displayImage}
           alt={`${product.name} from ${activeFarmer.farmName}`}
           fill
           priority
@@ -269,7 +291,37 @@ export default function MobileProductDetailScreen() {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/30 to-transparent" />
       </div>
 
-      <div className="relative px-1.5 pt-3.5 space-y-3.5">
+      {/* 1b. Multi-Angle Product Gallery Thumbnails Strip */}
+      {productGalleryImages.length > 1 && (
+        <div className="px-2 pt-2.5">
+          <div className="flex items-center gap-2 overflow-x-auto py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            {productGalleryImages.map((imgSrc, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setCurrentImageIndex(idx)}
+                aria-label={`View product image ${idx + 1}`}
+                className={cn(
+                  'relative h-15 w-15 shrink-0 overflow-hidden rounded-2xl border-2 transition-all active:scale-95 bg-white shadow-2xs',
+                  currentImageIndex === idx
+                    ? 'border-[#0B3B25] ring-2 ring-[#0B3B25]/20 scale-105'
+                    : 'border-[rgba(33,26,18,0.12)] opacity-70 hover:opacity-100'
+                )}
+              >
+                <Image
+                  src={imgSrc}
+                  alt={`${product.name} view ${idx + 1}`}
+                  fill
+                  sizes="60px"
+                  className="object-cover p-1"
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="relative px-1.5 pt-2.5 space-y-3.5">
         {/* 2. Product Name, Price & Description */}
         <div className="space-y-1.5">
           <Link

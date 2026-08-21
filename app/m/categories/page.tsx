@@ -129,7 +129,7 @@ function CategoriesContent() {
 
       {/* 1. Header with Back Arrow & Title */}
       <header
-        className="sticky top-0 z-30 border-b border-[rgba(33,26,18,0.05)] bg-[#FAF7F2]/95 px-2 py-2.5 backdrop-blur-md rounded-b-[24px] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.06)] transition-all"
+        className="sticky top-0 z-30 border-b border-[rgba(33,26,18,0.06)] bg-[#FAF7F2]/95 px-2 py-2.5 backdrop-blur-md transition-colors"
         style={{
           paddingTop: 'max(env(safe-area-inset-top, 0px), 10px)',
           paddingBottom: '10px',
@@ -207,45 +207,65 @@ function CategoriesContent() {
           </div>
         </div>
 
-        {/* 3. Cross-Discovery Cards: Recipes & Bundles */}
+        {/* 3. Cross-Discovery Cards: Recipes & Bundles with Rich Photography */}
         <div className="grid grid-cols-2 gap-1.5">
           <Link
             href="/m/recipes"
             prefetch={true}
-            className="flex flex-col justify-between rounded-[22px] bg-[#7A3F1C] p-3 text-white shadow-xs active:scale-[0.98] transition-transform"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-[22px] min-h-[145px] p-3 text-white shadow-sm active:scale-[0.98] transition-transform"
           >
-            <div>
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">
-                <ChefHat className="h-4 w-4" />
+            {/* Real Kitchen/Recipe Photographic Backdrop */}
+            <Image
+              src="/golden-acres/recipes/ghana-jollof.png"
+              alt="Cook and Shop Recipes"
+              fill
+              sizes="(max-width: 640px) 190px, 240px"
+              className="object-cover scale-110 transition-transform duration-700 group-hover:scale-120"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/65 to-black/35" />
+
+            <div className="relative z-10">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#DF8821] text-[#211A12] shadow-xs">
+                <ChefHat className="h-3.5 w-3.5 stroke-[2.5]" />
               </div>
-              <h3 className="mt-2 text-[13.5px] font-black text-white">Cook &amp; Shop</h3>
-              <p className="mt-0.5 text-[10.5px] font-medium text-white/80 line-clamp-2">
+              <h3 className="mt-2 text-[14px] font-black text-white leading-tight">Cook &amp; Shop</h3>
+              <p className="mt-0.5 text-[10.5px] font-semibold text-white/90 line-clamp-2">
                 Authentic recipes with 1-tap ingredients
               </p>
             </div>
-            <div className="mt-2.5 flex items-center gap-1 text-[10.5px] font-bold text-white">
+            <div className="relative z-10 mt-2 flex items-center gap-1 text-[10.5px] font-extrabold text-[#F0A81E]">
               <span>View Recipes</span>
-              <ArrowRight className="h-3 w-3" />
+              <ArrowRight className="h-3 w-3 stroke-[2.5]" />
             </div>
           </Link>
 
           <Link
             href="/m/bundles"
             prefetch={true}
-            className="flex flex-col justify-between rounded-[22px] bg-[#0B3B25] p-3 text-white shadow-xs active:scale-[0.98] transition-transform"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-[22px] min-h-[145px] p-3 text-white shadow-sm active:scale-[0.98] transition-transform"
           >
-            <div>
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">
-                <Repeat className="h-4 w-4" />
+            {/* Real Weekly Harvest Box Photographic Backdrop */}
+            <Image
+              src="/golden-acres/bundle-box.png"
+              alt="Weekly Harvest Boxes"
+              fill
+              sizes="(max-width: 640px) 190px, 240px"
+              className="object-cover scale-110 transition-transform duration-700 group-hover:scale-120"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/65 to-black/35" />
+
+            <div className="relative z-10">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0B3B25] text-white shadow-xs">
+                <Repeat className="h-3.5 w-3.5 stroke-[2.5]" />
               </div>
-              <h3 className="mt-2 text-[13.5px] font-black text-white">Weekly Boxes</h3>
-              <p className="mt-0.5 text-[10.5px] font-medium text-white/80 line-clamp-2">
+              <h3 className="mt-2 text-[14px] font-black text-white leading-tight">Weekly Boxes</h3>
+              <p className="mt-0.5 text-[10.5px] font-semibold text-white/90 line-clamp-2">
                 Curated farm boxes delivered to your door
               </p>
             </div>
-            <div className="mt-2.5 flex items-center gap-1 text-[10.5px] font-bold text-white">
+            <div className="relative z-10 mt-2 flex items-center gap-1 text-[10.5px] font-extrabold text-[#F0A81E]">
               <span>Explore Boxes</span>
-              <ArrowRight className="h-3 w-3" />
+              <ArrowRight className="h-3 w-3 stroke-[2.5]" />
             </div>
           </Link>
         </div>

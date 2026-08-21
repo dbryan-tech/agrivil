@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -91,15 +91,31 @@ const ORDERS: OrderItem[] = [
 export default function MobileOrdersScreen() {
   const [activeTab, setActiveTab] = useState<Tab>('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [orderList, setOrderList] = useState<OrderItem[]>(ORDERS)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = JSON.parse(localStorage.getItem('agrivil_orders') || '[]')
+        if (Array.isArray(stored) && stored.length > 0) {
+          const combined = [...stored, ...ORDERS]
+          const unique = combined.filter((v, i, a) => a.findIndex((t) => t.id === v.id) === i)
+          setOrderList(unique)
+        }
+      } catch (e) {
+        console.error(e)
+      }
+    }
+  }, [])
 
   const counts = {
-    all: ORDERS.length,
-    transit: ORDERS.filter((o) => o.status === 'TRANSIT').length,
-    process: ORDERS.filter((o) => o.status === 'PROCESS').length,
-    delivered: ORDERS.filter((o) => o.status === 'DELIVERED').length,
+    all: orderList.length,
+    transit: orderList.filter((o) => o.status === 'TRANSIT').length,
+    process: orderList.filter((o) => o.status === 'PROCESS').length,
+    delivered: orderList.filter((o) => o.status === 'DELIVERED').length,
   }
 
-  const filtered = ORDERS.filter((order) => {
+  const filtered = orderList.filter((order) => {
     const matchesTab =
       activeTab === 'all' ||
       (activeTab === 'transit' && order.status === 'TRANSIT') ||
@@ -144,7 +160,7 @@ export default function MobileOrdersScreen() {
 
       {/* Header Bar */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.05)] bg-[#FAF7F2]/95 px-2 py-2.5 backdrop-blur-md rounded-b-[24px] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.06)] transition-all"
+        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.06)] bg-[#FAF7F2]/95 px-2 py-2.5 backdrop-blur-md transition-colors"
         style={{
           paddingTop: 'max(env(safe-area-inset-top, 0px), 10px)',
           paddingBottom: '10px',
@@ -218,7 +234,7 @@ export default function MobileOrdersScreen() {
         {filtered.map((order) => (
           <Link
             key={order.id}
-            href={`/m/orders/track`}
+            href={`/m/orders/track?id=${encodeURIComponent(order.id)}`}
             className="group relative block overflow-hidden rounded-[24px] bg-white p-3.5 shadow-[0_2px_14px_rgba(0,0,0,0.04)] border border-[rgba(33,26,18,0.04)] active:scale-[0.985] transition-all"
           >
             {/* Top-Right Diagonal Ribbon Badge */}

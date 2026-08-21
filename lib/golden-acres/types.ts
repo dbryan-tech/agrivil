@@ -73,6 +73,7 @@ export interface Product {
   farmerId: string
   farmerName?: string
   image: string
+  images?: string[]
   unit: ProductUnit
   // Variable-weight pricing: an estimate + price range reconciled post-pick.
   variableWeight: boolean

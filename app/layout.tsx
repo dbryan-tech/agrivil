@@ -44,7 +44,6 @@ const archivo = Archivo({
   variable: '--font-archivo',
   subsets: ['latin'],
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900'],
 })
 const ibmPlexMono = IBM_Plex_Mono({
   variable: '--font-ibm-plex-mono',
@@ -56,25 +55,21 @@ const spaceGrotesk = Space_Grotesk({
   variable: '--font-space-grotesk',
   subsets: ['latin'],
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
 })
 const nunito = Nunito({
   variable: '--font-nunito',
   subsets: ['latin'],
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900'],
 })
 const fraunces = Fraunces({
   variable: '--font-fraunces',
   subsets: ['latin'],
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900'],
 })
 const jakarta = Plus_Jakarta_Sans({
   variable: '--font-jakarta',
   subsets: ['latin'],
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800'],
 })
 
 export const metadata: Metadata = {
