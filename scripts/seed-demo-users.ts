@@ -1,3 +1,4 @@
+import "dotenv/config"
 import { Pool } from "pg"
 import { betterAuth } from "better-auth"
 import { eq } from "drizzle-orm"
@@ -10,7 +11,10 @@ if (!connectionString) {
   process.exit(1)
 }
 
-const pool = new Pool({ connectionString })
+const pool = new Pool({
+  connectionString,
+  ssl: { rejectUnauthorized: false },
+})
 
 const auth = betterAuth({
   database: pool,

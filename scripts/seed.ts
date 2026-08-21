@@ -10,7 +10,14 @@ import {
   supportTickets as seedTickets,
 } from "../lib/golden-acres/data"
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL })
+const rawUrl = (process.env.DATABASE_URL || "").replace(/[?&]sslmode=[^&]+/, "")
+
+const pool = new Pool({
+  connectionString: rawUrl,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+})
 
 async function main() {
   const c = await pool.connect()

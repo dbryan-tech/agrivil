@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth"
 import { emailOTP, phoneNumber } from "better-auth/plugins"
-import { Pool } from "pg"
+import { pool } from "./db"
 import { getBaseURL } from "./base-url"
 import { sendSms } from "@/lib/golden-acres/sms"
 import {
@@ -59,7 +59,7 @@ export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET || "agrivil_prod_secret_auth_key_2026",
   baseURL: getBaseURL(),
   trustedOrigins,
-  database: new Pool({ connectionString: process.env.DATABASE_URL }),
+  database: pool,
   emailAndPassword: {
     enabled: true,
     // Real password reset via a tokenised link delivered by Resend (or logged

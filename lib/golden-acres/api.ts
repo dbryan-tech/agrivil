@@ -32,7 +32,8 @@ import type {
   FaultParty,
 } from './types'
 
-function delay<T>(value: T, ms = 220): Promise<T> {
+function delay<T>(value: T, ms = 0): Promise<T> {
+  if (ms <= 0) return Promise.resolve(value)
   return new Promise((resolve) => setTimeout(() => resolve(value), ms))
 }
 

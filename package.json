@@ -24,6 +24,7 @@
     "@react-three/fiber": "^9.6.1",
     "@stripe/react-stripe-js": "^6.6.0",
     "@stripe/stripe-js": "^9.8.0",
+    "@supabase/supabase-js": "^2.112.3",
     "@vercel/analytics": "1.6.1",
     "@vercel/blob": "^2.4.0",
     "better-auth": "^1.6.19",
