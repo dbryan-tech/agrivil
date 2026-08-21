@@ -1,67 +1,179 @@
-# agrivil
+<div align="center">
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+# 🌿 AgriVil (Golden Acres Ghana)
+### Premier Virtual Farmers' Marketplace & Direct Cold-Chain Distribution
 
-## Built with v0
+[![Next.js](https://img.shields.io/badge/Next.js-16.2.6-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
+[![Capacitor](https://img.shields.io/badge/Capacitor-Android%20%7C%20iOS-119EFF?style=for-the-badge&logo=capacitor)](https://capacitorjs.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+<p align="center">
+  <b>Farm fresh. Market smart. Delivered with care.</b><br>
+  Connecting Ghanaian smallholder farmers directly with urban consumers through transparent FEFO batching, direct cold-chain logistics, and fair farmer pricing.
+</p>
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_wIebwNYl8EIBAS6jj4k00HaDZUS1)
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-## Brand Identity & Design System
-
-Agrivil utilizes an earthy, fresh, and modern organic palette tailored for the Ghanaian agricultural market:
-
-| Color Role | Hex Code | Usage |
-|---|---|---|
-| **Brand Primary Green** | `#0B3B25` | Primary CTA buttons, key brand headings, active navigation states, verified badges |
-| **Sun Ochre / Orange** | `#DF8821` | Harvest sun emblem, energy rays, vitality markers |
-| **Brand Copper / Clay Rust** | `#7A3F1C` | Accent links, secondary buttons, transit ribbons, warm icons, helper actions |
-| **Harvest Gold** | `#F0A81E` | Star ratings, premium farmer highlights, featured freshness badges |
-| **General Background & Card (Warm Canvas)** | `#FAF7F2` / `#F7F5F0` | Canonical bright & clean warm porcelain tan canvas and card background |
-| **Text Dark Neutral / Ink** | `#211A12` | High-contrast headings, process badges, and body text |
-| **Text Muted** | `#5C5247` | Subtitles, secondary copy, and helper descriptions |
-| **Surface White** | `#FFFFFF` | Search inputs, filter buttons, elevated dialogs, and action containers |
-
-### Documentation & Brand Assets
-- **Master Brand Assets**: [`docs/brand-assets/`](docs/brand-assets/) — Complete Concept 01 vector SVGs, high-res PNGs, brand guide, app icons, and print stationery.
-- **Mobile Design & Build Package**: [`docs/mobile-app-agent-package/`](docs/mobile-app-agent-package/) — Comprehensive screen behavior specifications, UX copy, and design token manifest.
-
-### Mobile Flow Architecture (`/m`)
-
-The mobile application flow features 8 standing onboarding and authentication interfaces:
-
-1. **Splash Screen** (`/m/splash`): Fullscreen farm visual with Agrivil brand mark and tagline (*"Farm fresh. Market smart. Delivered with care."*).
-2. **Welcome Screen** (`/m/onboarding/welcome`): Intro screen showcasing fresh harvest produce with *"Get Started"* and *"I have an account"* CTAs.
-3. **How It Works** (`/m/onboarding/how-it-works`): 3-step value overview (Shop, We deliver, Enjoy) with copper/green circular icons.
-4. **Location Permission** (`/m/onboarding/location`): Radar-pulse location access prompt to pinpoint nearby farmers.
-5. **GhanaPostGPS Setup** (`/m/onboarding/gps`): Ghana digital address capture (`GA-143-3586`) with GPS auto-detection.
-6. **Delivery Area Confirmation** (`/m/onboarding/confirm-area`): Verification card displaying confirmed delivery zone.
-7. **Sign Up** (`/m/auth/signup`): User registration with name, Ghana phone number (`+233`), optional email, password, and social sign-in.
-8. **Login** (`/m/auth/login`): Secure sign-in with phone/password and password recovery.
+</div>
 
 ---
 
-## Learn More
+## 📌 Executive Overview
 
-To learn more, take a look at the following resources:
+**AgriVil** is an end-to-end digital agricultural marketplace built to eliminate unnecessary middlemen, reduce post-harvest food waste, and deliver fresh harvest produce across Greater Accra and beyond within 24 hours of harvest.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+### Key Capabilities
+- 🚜 **Verified Grower Network**: Direct grower attribution, farm stories, harvesting methods, and authentic certifications.
+- ❄️ **FEFO Cold-Chain Tracking**: First-Expired, First-Out (FEFO) inventory management ensuring optimal freshness.
+- 📍 **GhanaPostGPS Integration**: Accurate digital address validation (`GA-183-4250`) and radius-based delivery estimation.
+- 🍲 **Authentic Ghanaian Recipe Bundles**: 1-click basket additions for traditional staples (Jollof Rice, Kontomire Stew, Light Soup).
+- 💳 **Multi-Channel Payments**: Mobile Money (MTN MoMo, Telecel Cash, AT Money), Paystack, and Stripe.
+- 📱 **Omnichannel Experience**: Responsive desktop storefront + dedicated native Android/iOS mobile application via Capacitor WebView.
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technologies |
+|---|---|
+| **Frontend Framework** | [Next.js 16.2.6](https://nextjs.org/) (App Router, Turbopack, React 19) |
+| **Mobile Runtime** | [@capacitor/core](https://capacitorjs.com/) (Android WebView, iOS) |
+| **Database & ORM** | [Supabase](https://supabase.com/) (PostgreSQL with PgBouncer/Supavisor pooler) + [Drizzle ORM](https://orm.drizzle.team/) |
+| **Authentication** | [Better Auth](https://better-auth.com/) + PostgreSQL Session Store (Email, Phone OTP, Social) |
+| **Styling & Design** | Tailwind CSS v4, Lucide Icons, Framer Motion |
+| **Payments & Logistics** | Paystack, Stripe, Mobile Money API Seams, 3PL Dispatch Tracking |
+
+---
+
+## 🎨 Master Brand Identity & Design System
+
+AgriVil uses an earthy, premium, organic palette inspired by Ghana's fertile soil and harvest sun:
+
+| Swatch | Color Name | Hex Code | Role & Application |
+|---|---|---|---|
+| 🟢 | **Deep Forest Green** | `#0B3B25` | Primary brand CTA, organic verification, active navigation |
+| 🟠 | **Sun Ochre / Harvest Orange** | `#DF8821` | Vitality badges, harvest energy rays, highlight accents |
+| 🟤 | **Clay Rust / Copper** | `#7A3F1C` | Farm attribution badges, secondary buttons, discount alerts |
+| 🟡 | **Harvest Gold** | `#F0A81E` | Star ratings, premium farm badges, verified customer highlights |
+| ⚪ | **Warm Canvas / Off-White** | `#FAF7F2` / `#F7F5F0` | Canonical mobile & desktop background canvas |
+| ⚫ | **Deep Soil Charcoal** | `#211A12` | High-contrast headings, active typography |
+| 🔘 | **Muted Earth Charcoal** | `#5C5247` | Subtitles, labels, secondary metadata |
+
+### Design Standards
+- **Zero Scrollbars**: Native-app fluid feel with global hidden scrollbars.
+- **Strict SVG Icons**: 100% clean Lucide SVG icons (no unicode emojis).
+- **Canvas-First Philosophy**: Content sits directly on the warm canvas background without redundant nested card wrappers.
+
+---
+
+## 📂 Project Architecture
+
+```text
+agrivil/
+├── app/                        # Next.js App Router
+│   ├── (storefront)/           # Desktop & public routes (/, /shop, /farmers, /bundles, /recipes)
+│   ├── m/                      # Mobile-optimized routes loaded by Capacitor WebView
+│   ├── farmer/                 # Grower harvest upload & payout portal
+│   ├── admin/                  # Cold-chain ops, FEFO inventory, KYC moderation
+│   ├── actions/                # DB-backed Server Actions (catalog, orders, reviews, kyc)
+│   └── api/                    # Webhooks, 3PL dispatch, auth, and image upload endpoints
+├── components/                 # Reusable UI component library
+│   ├── golden-acres/           # Domain-specific components (cart context, auth, cards)
+│   └── ui/                     # Base design system primitives
+├── docs/                       # Project documentation & master brand assets
+│   ├── brand-assets/           # Master vector SVGs, app icons, brand guidelines
+│   └── setup.md                # Detailed backend provisioning instructions
+├── drizzle/                    # Database migrations & SQL seed scripts
+│   ├── supabase_setup.sql      # Master 17-table schema definition
+│   └── supabase_seed_data.sql  # Full catalog, farmers, bundles, & recipe seed data
+├── lib/                        # Core utilities, database connection, API seams
+│   ├── db/                     # Drizzle ORM client & table schemas
+│   ├── supabase.ts             # Supabase client & admin utilities
+│   ├── auth.ts                 # Better Auth configuration
+│   └── golden-acres/           # Business logic, geo math, type definitions
+└── mobile/                     # Capacitor native iOS & Android project shell
+```
+
+---
+
+## 🚀 Quick Start Guide
+
+### 1. Prerequisites
+- **Node.js**: v18.18+ or v20+
+- **Package Manager**: `pnpm` (or `npm`)
+- **Supabase Account**: Free project on [supabase.com](https://supabase.com)
+
+### 2. Installation
+```bash
+# Clone the repository
+git clone https://github.com/dbryan-tech/agrivil.git
+cd agrivil
+
+# Install dependencies
+pnpm install
+```
+
+### 3. Environment Configuration
+Create a `.env.local` file in the root directory (refer to [`.env.example`](.env.example)):
+
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# PostgreSQL Connection String (Transaction Pooler port 6543)
+DATABASE_URL=postgresql://postgres.your-project:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?sslmode=require
+
+# Better Auth Configuration
+BETTER_AUTH_SECRET=your-random-32-byte-secret
+BETTER_AUTH_URL=http://localhost:3000
+```
+
+### 4. Database Provisioning
+Run the master schema in your Supabase SQL Editor:
+1. Copy and run [`drizzle/supabase_setup.sql`](drizzle/supabase_setup.sql) (creates all 17 tables and indexes).
+2. Copy and run [`drizzle/supabase_seed_data.sql`](drizzle/supabase_seed_data.sql) (populates products, farmers, and recipes).
+
+### 5. Running the Application
+```bash
+# Start Next.js development server
+pnpm dev
+```
+Open [http://localhost:3000](http://localhost:3000) for the desktop storefront or [http://localhost:3000/m](http://localhost:3000/m) for the mobile web preview.
+
+---
+
+## 📱 Mobile APK & Capacitor Workflow
+
+The mobile application is powered by Capacitor and dynamically syncs with the live backend:
+
+```bash
+# Open Android Studio project
+cd mobile
+npm run cap:android
+
+# Or run the root build script to generate a fresh APK
+./build-apk.bat
+```
+
+> **Note on APK Updates**: Because the Capacitor shell wraps the live production deployment (`https://agrivil1.vercel.app/m`), code changes deployed to Vercel are instantly live in users' APKs without requiring a manual re-download.
+
+---
+
+## 📜 Available NPM Scripts
+
+| Command | Purpose |
+|---|---|
+| `pnpm dev` | Start the local Next.js development server with Turbopack |
+| `pnpm build` | Build the optimized production bundle |
+| `pnpm start` | Run the production build locally |
+| `pnpm db:push` | Push schema changes from `lib/db/schema.ts` to PostgreSQL |
+| `pnpm db:seed` | Seed catalog and demo records into the active database |
+| `pnpm db:setup` | Full database push + initial seed execution |
+| `pnpm mobile:android` | Open the native Android Capacitor project |
+
+---
+
+## 📄 License & Ownership
+Copyright © 2026 **AgriVil / Golden Acres Ghana**. All rights reserved.

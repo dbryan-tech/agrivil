@@ -1,54 +1,60 @@
-# AgriVil / Golden Acres Ghana — Setup & DB Provisioning
+# AgriVil (Golden Acres Ghana) — Setup & Database Provisioning
 
-Next.js 16 farm-to-door marketplace. Stack: **Neon Postgres + Drizzle ORM + Better Auth**, Vercel Blob, optional Stripe.
+Next.js 16 farm-to-door agricultural marketplace. Stack: **Supabase PostgreSQL + Drizzle ORM + Better Auth**, Capacitor Mobile, Vercel.
 
-## Quick start (fresh environment / new Vercel account)
+---
 
-1. **Install deps**
-   ```bash
-   pnpm install
-   ```
+## 1. Quick Start Guide
 
-2. **Connect the database** — add the **Neon** integration to the project.
-   This automatically sets `DATABASE_URL`. (Any Postgres connection string works.)
+### Step 1: Install Dependencies
+```bash
+pnpm install
+```
 
-3. **Set required env vars** (see `.env.example`):
-   - `DATABASE_URL` — from Neon (auto)
-   - `BETTER_AUTH_SECRET` — `openssl rand -base64 32`
-   - `BETTER_AUTH_URL` — app base URL (e.g. `http://localhost:3000`)
+### Step 2: Configure Environment Variables
+Copy `.env.example` to `.env.local` and populate your Supabase credentials:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://hxacnucbapdxwewnsktn.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
-4. **Create tables + seed data** (one command):
-   ```bash
-   pnpm db:setup
-   ```
-   This runs `drizzle-kit push` (creates all 17 tables from `lib/db/schema.ts`)
-   then seeds the catalog and demo users.
+# Supabase Transaction Pooler (Port 6543):
+DATABASE_URL=postgresql://postgres.hxacnucbapdxwewnsktn:[YOUR_DB_PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?sslmode=require
 
-5. **Run**
-   ```bash
-   pnpm dev
-   ```
+BETTER_AUTH_SECRET=agrivil_prod_secret_auth_key_2026_supabase_backend
+BETTER_AUTH_URL=http://localhost:3000
+```
 
-## Database scripts
+### Step 3: Provision Supabase Database
+You can provision your database using either of two methods:
 
-| Script | What it does |
-| --- | --- |
+#### Method A: 1-Click SQL Editor (Recommended)
+1. Open the [Supabase SQL Editor](https://supabase.com/dashboard/project/hxacnucbapdxwewnsktn/sql).
+2. Copy and execute [`drizzle/supabase_setup.sql`](../drizzle/supabase_setup.sql) (creates all 17 tables and indexes).
+3. Copy and execute [`drizzle/supabase_seed_data.sql`](../drizzle/supabase_seed_data.sql) (populates products, farmers, bundles, recipes, and discounts).
+
+#### Method B: Automated CLI
+```bash
+pnpm db:setup
+```
+
+---
+
+## 2. Database Scripts Reference
+
+| Script | Purpose |
+|---|---|
 | `pnpm db:push` | Push `lib/db/schema.ts` to the DB (creates/updates tables). Idempotent. |
 | `pnpm db:generate` | Generate SQL migration files into `drizzle/`. |
 | `pnpm db:seed` | Seed farmers, products, bundles, recipes, orders, tickets. |
 | `pnpm db:seed:users` | Seed demo customer + staff/farmer accounts. |
 | `pnpm db:setup` | `db:push` + seed + seed users (full provision). |
-| `pnpm db:studio` | Open Drizzle Studio to inspect data. |
+| `pnpm db:studio` | Open Drizzle Studio in browser to visually inspect live data. |
 
-> Fallback: raw DDL for all tables lives in `drizzle/0000_init.sql` if you'd
-> rather apply the schema with `psql` instead of `drizzle-kit push`.
+---
 
-## Notes for an AI agent picking this up
-- Schema source of truth: **`lib/db/schema.ts`** (17 tables incl. Better Auth
-  `user`/`session`/`account`/`verification`). DB client: `lib/db/index.ts`.
-- There is **no RLS** (Neon + Better Auth) — every query touching user data must
-  be scoped by the session user id. Follow the existing patterns in server actions.
-- Seed source data lives in `lib/golden-acres/data`.
-- Optional integrations (Stripe, Blob, Resend, MoMo/Hubtel/Arkesel SMS) degrade
-  gracefully when their env vars are absent — the core app runs with just
-  `DATABASE_URL` + Better Auth vars.
+## 3. Engineering Notes
+- **Schema Source of Truth**: [`lib/db/schema.ts`](../lib/db/schema.ts) (17 tables including Better Auth `user`/`session`/`account`/`verification`).
+- **Database Client**: [`lib/db/index.ts`](../lib/db/index.ts) configured with SSL support and connection pooling.
+- **Supabase Utilities**: [`lib/supabase.ts`](../lib/supabase.ts) for client-side and server-side operations.
+- **Graceful Fallbacks**: Optional third-party integrations (Stripe, Resend, SMS) degrade gracefully when environment variables are absent.
