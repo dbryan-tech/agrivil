@@ -79,11 +79,12 @@ export default function MobileHomeScreen() {
         }}
       />
 
-      {/* 1. Header Bar: Direct on Canvas with Edge-to-Edge Headroom */}
+      {/* 1. Header Bar: Permanent Sticky Header with Curved Arch Bottom Corners */}
       <header
-        className="relative z-30 flex items-center justify-between px-2.5 py-1.5 bg-transparent border-none"
+        className="sticky top-0 z-30 flex items-center justify-between px-3 py-2 bg-[#FAF7F2]/95 backdrop-blur-md rounded-b-[24px] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.06)] border-b border-[rgba(33,26,18,0.05)] transition-all"
         style={{
-          paddingTop: 'max(env(safe-area-inset-top, 0px), 36px)',
+          paddingTop: 'max(env(safe-area-inset-top, 0px), 10px)',
+          paddingBottom: '10px',
         }}
       >
         <Link href="/m" prefetch={true} className="flex items-center gap-2.5 active:scale-95 transition-transform" aria-label="AgriVil Home">

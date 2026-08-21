@@ -14,10 +14,10 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Edge-to-edge transparent status bar with dark system status icons
+        // Permanent #FAF7F2 Status Bar & Navigation Bar with crisp dark system icons
         Window window = getWindow();
-        WindowCompat.setDecorFitsSystemWindows(window, false);
-        window.setStatusBarColor(Color.TRANSPARENT);
+        WindowCompat.setDecorFitsSystemWindows(window, true);
+        window.setStatusBarColor(Color.parseColor("#FAF7F2"));
         window.setNavigationBarColor(Color.parseColor("#FAF7F2"));
         WindowInsetsControllerCompat insetsController = new WindowInsetsControllerCompat(window, window.getDecorView());
         insetsController.setAppearanceLightStatusBars(true);

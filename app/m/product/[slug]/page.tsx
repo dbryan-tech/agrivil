@@ -196,7 +196,7 @@ export default function MobileProductDetailScreen() {
       {/* Floating Top Navigation Header */}
       <header
         className="fixed inset-x-0 top-0 z-40 mx-auto flex max-w-md items-center justify-between px-1.5 pt-3"
-        style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 36px)' }}
+        style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 12px)' }}
       >
         <button
           type="button"
@@ -251,7 +251,7 @@ export default function MobileProductDetailScreen() {
         />
 
         {/* Floating Badges (Positioned Safely Below Top Navigation) */}
-        <div className="absolute top-[calc(max(env(safe-area-inset-top,0px),36px)+48px)] left-3.5 flex flex-col gap-1.5 z-20">
+        <div className="absolute top-[calc(max(env(safe-area-inset-top,0px),12px)+48px)] left-3.5 flex flex-col gap-1.5 z-20">
           <span
             className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-white shadow-xs"
             style={{ backgroundColor: activeOffer.freshnessColor }}

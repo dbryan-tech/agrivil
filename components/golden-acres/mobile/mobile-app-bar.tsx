@@ -45,15 +45,15 @@ export function MobileAppBar({
   return (
     <header
       className={cn(
-        'sticky top-0 z-30 flex min-h-[54px] items-center justify-between px-3 transition-colors',
+        'sticky top-0 z-30 flex min-h-[50px] items-center justify-between px-3 transition-colors',
         transparent
           ? 'bg-transparent'
-          : 'border-b border-[rgba(33,26,18,0.06)] bg-[#FAF9F6]/90 backdrop-blur-md',
+          : 'border-b border-[rgba(33,26,18,0.05)] bg-[#FAF7F2]/95 backdrop-blur-md rounded-b-[24px] shadow-[0_4px_16px_-4px_rgba(33,26,18,0.06)]',
         className
       )}
       style={{
-        paddingTop: 'max(env(safe-area-inset-top, 0px), 36px)',
-        paddingBottom: '12px',
+        paddingTop: 'max(env(safe-area-inset-top, 0px), 10px)',
+        paddingBottom: '10px',
       }}
     >
       {/* Left side: Back or Title */}
