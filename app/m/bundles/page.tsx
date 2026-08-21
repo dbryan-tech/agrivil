@@ -41,10 +41,8 @@ export default function MobileBundlesScreen() {
         }
       `}</style>
 
-      {/* ========================================================
-          1. FULL-BLEED TOP HERO BANNER (Bleeds to edges & top)
-         ======================================================== */}
-      <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] overflow-hidden rounded-b-[32px] bg-[#0B3B25] shadow-xs">
+      {/* 1. TOP HERO BANNER with Curved Bottom Corners */}
+      <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] overflow-hidden rounded-b-[36px] bg-[#0B3B25] shadow-xs">
         <Image
           src="/golden-acres/bundle-box.png"
           alt="Farm Boxes & Subscriptions"

@@ -30,13 +30,13 @@ export default function MobileAppLayout({
         <MobileBackListener />
         <div className="relative min-h-dvh bg-[#F7F5F0] text-[#211A12] antialiased selection:bg-[#0B3B25]/20 selection:text-[#0B3B25] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <div className="relative mx-auto min-h-dvh max-w-md bg-[#F7F5F0] shadow-2xl sm:border-x sm:border-[rgba(33,26,18,0.08)] overflow-x-hidden">
-            {/* Unified Mobile Top Warm Gradient Backdrop for Status Bar & Safe Area */}
+            {/* Unified Mobile Top Radiant Copper Gradient Backdrop for Status Bar & Safe Area */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(260px,45vh,380px)] z-0"
+              className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(280px,48vh,400px)] z-0"
               style={{
                 background:
-                  'radial-gradient(130% 90% at 50% 0%, rgba(254, 215, 170, 0.45) 0%, rgba(253, 230, 210, 0.25) 40%, rgba(247, 245, 240, 0.6) 80%, rgba(247, 245, 240, 1) 100%)',
+                  'radial-gradient(130% 95% at 50% 0%, rgba(200, 109, 59, 0.52) 0%, rgba(223, 136, 33, 0.32) 35%, rgba(247, 245, 240, 0.75) 75%, rgba(247, 245, 240, 1) 100%)',
               }}
             />
             <div className="relative z-10">

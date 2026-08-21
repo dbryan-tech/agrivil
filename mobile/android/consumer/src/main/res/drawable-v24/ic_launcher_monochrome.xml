@@ -7,92 +7,92 @@
 
     <!-- 1. Semicircular Rising Sun Arch -->
     <path
-        android:fillColor="#DF8821"
+        android:fillColor="#FFFFFF"
         android:pathData="M32,54 A22,22 0 0,1 76,54 H66 A12,12 0 0,0 42,54 Z" />
 
     <!-- 2. Radial Sun Rays (9 Rays: 2 Baseline + 7 Upper) -->
     <!-- Baseline Left -->
     <path
-        android:strokeColor="#DF8821"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="2.8"
         android:strokeLineCap="round"
         android:pathData="M20,54 L27,54" />
     <!-- Baseline Right -->
     <path
-        android:strokeColor="#DF8821"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="2.8"
         android:strokeLineCap="round"
         android:pathData="M81,54 L88,54" />
 
     <!-- Ray 1 (~160 deg) -->
     <path
-        android:strokeColor="#DF8821"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="2.8"
         android:strokeLineCap="round"
         android:pathData="M23.9,43.1 L30.5,45.8" />
     <!-- Ray 2 (~137 deg) -->
     <path
-        android:strokeColor="#DF8821"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="2.8"
         android:strokeLineCap="round"
         android:pathData="M30.6,32.2 L36.4,37.6" />
     <!-- Ray 3 (~114 deg) -->
     <path
-        android:strokeColor="#DF8821"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="2.8"
         android:strokeLineCap="round"
         android:pathData="M41.0,24.7 L44.2,32.1" />
     <!-- Ray 4 (~90 deg Top) -->
     <path
-        android:strokeColor="#DF8821"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="2.8"
         android:strokeLineCap="round"
         android:pathData="M54.0,22.0 L54.0,30.0" />
     <!-- Ray 5 (~66 deg) -->
     <path
-        android:strokeColor="#DF8821"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="2.8"
         android:strokeLineCap="round"
         android:pathData="M67.0,24.7 L63.8,32.1" />
     <!-- Ray 6 (~43 deg) -->
     <path
-        android:strokeColor="#DF8821"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="2.8"
         android:strokeLineCap="round"
         android:pathData="M77.4,32.2 L71.6,37.6" />
     <!-- Ray 7 (~20 deg) -->
     <path
-        android:strokeColor="#DF8821"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="2.8"
         android:strokeLineCap="round"
         android:pathData="M84.1,43.1 L77.5,45.8" />
 
     <!-- 3. Contoured Farmland Soil -->
     <path
-        android:fillColor="#0B3B25"
+        android:fillColor="#FFFFFF"
         android:pathData="M32,54 A22,22 0 0,0 76,54 Z" />
 
     <!-- 4. Negative Space Furrow Lines -->
     <!-- Left Hill Furrows -->
     <path
-        android:strokeColor="#FAF7F2"
+        android:strokeColor="#0B3B25"
         android:strokeWidth="1.6"
         android:strokeLineCap="round"
         android:pathData="M35,60 C40,58 48,59 52,63" />
     <path
-        android:strokeColor="#FAF7F2"
+        android:strokeColor="#0B3B25"
         android:strokeWidth="1.6"
         android:strokeLineCap="round"
         android:pathData="M40,67 C44,65 48,66 51,69" />
 
     <!-- Right Hill Sweeping Furrows -->
     <path
-        android:strokeColor="#FAF7F2"
+        android:strokeColor="#0B3B25"
         android:strokeWidth="1.6"
         android:strokeLineCap="round"
         android:pathData="M56,63 C60,59 68,58 73,60" />
     <path
-        android:strokeColor="#FAF7F2"
+        android:strokeColor="#0B3B25"
         android:strokeWidth="1.6"
         android:strokeLineCap="round"
         android:pathData="M53,69 C58,66 64,65 68,67" />

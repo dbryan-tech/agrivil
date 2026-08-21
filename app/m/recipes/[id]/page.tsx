@@ -62,10 +62,8 @@ export default function MobileRecipeDetailScreen() {
         }
       `}</style>
 
-      {/* ========================================================
-          1. FULL-BLEED TOP HERO IMAGE (Bleeds to edges & top)
-         ======================================================== */}
-      <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] overflow-hidden rounded-b-[32px] bg-[#211A12] shadow-xs">
+      {/* 1. TOP HERO IMAGE with Curved Bottom Corners */}
+      <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] overflow-hidden rounded-b-[36px] bg-[#211A12] shadow-xs">
         <Image
           src={recipe.image}
           alt={recipe.name}

@@ -1,7 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp" android:height="108dp"
-    android:viewportWidth="108" android:viewportHeight="108">
-    <path android:fillColor="#FFFFFFFF" android:pathData="M59.763 36.672 H75.746 C82.226 36.672 87.48 41.925 87.48 48.406 V63.648 H80.915 V48.406 C80.915 48.25 80.909 48.095 80.897 47.941 L64.915 63.646 C64.969 63.648 65.023 63.648 65.077 63.648 H80.915 V69.849 H65.077 C58.596 69.849 53.198 64.543 53.198 58.062 V42.861 H59.763 V58.062 C59.763 58.355 59.785 58.644 59.829 58.928 L76.164 42.878 C76.026 42.866 75.887 42.861 75.746 42.861 H59.763 V36.672 Z"/>
-    <path android:fillColor="#FFFFFFFF" android:pathData="M43.619 68.707 L20.52 42.858 H29.813 L43.374 58.034 V42.858 H50.304 V66.155 C50.304 69.671 45.962 71.328 43.619 68.707 Z"/>
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 1. Semicircular Rising Sun Arch -->
+    <path
+        android:fillColor="#DF8821"
+        android:pathData="M32,54 A22,22 0 0,1 76,54 H66 A12,12 0 0,0 42,54 Z" />
+
+    <!-- 2. Radial Sun Rays (9 Rays: 2 Baseline + 7 Upper) -->
+    <!-- Baseline Left -->
+    <path
+        android:strokeColor="#DF8821"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M20,54 L27,54" />
+    <!-- Baseline Right -->
+    <path
+        android:strokeColor="#DF8821"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M81,54 L88,54" />
+
+    <!-- Ray 1 (~160 deg) -->
+    <path
+        android:strokeColor="#DF8821"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M23.9,43.1 L30.5,45.8" />
+    <!-- Ray 2 (~137 deg) -->
+    <path
+        android:strokeColor="#DF8821"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M30.6,32.2 L36.4,37.6" />
+    <!-- Ray 3 (~114 deg) -->
+    <path
+        android:strokeColor="#DF8821"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M41.0,24.7 L44.2,32.1" />
+    <!-- Ray 4 (~90 deg Top) -->
+    <path
+        android:strokeColor="#DF8821"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M54.0,22.0 L54.0,30.0" />
+    <!-- Ray 5 (~66 deg) -->
+    <path
+        android:strokeColor="#DF8821"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M67.0,24.7 L63.8,32.1" />
+    <!-- Ray 6 (~43 deg) -->
+    <path
+        android:strokeColor="#DF8821"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M77.4,32.2 L71.6,37.6" />
+    <!-- Ray 7 (~20 deg) -->
+    <path
+        android:strokeColor="#DF8821"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M84.1,43.1 L77.5,45.8" />
+
+    <!-- 3. Contoured Farmland Soil -->
+    <path
+        android:fillColor="#0B3B25"
+        android:pathData="M32,54 A22,22 0 0,0 76,54 Z" />
+
+    <!-- 4. Negative Space Furrow Lines -->
+    <!-- Left Hill Furrows -->
+    <path
+        android:strokeColor="#FAF7F2"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:pathData="M35,60 C40,58 48,59 52,63" />
+    <path
+        android:strokeColor="#FAF7F2"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:pathData="M40,67 C44,65 48,66 51,69" />
+
+    <!-- Right Hill Sweeping Furrows -->
+    <path
+        android:strokeColor="#FAF7F2"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:pathData="M56,63 C60,59 68,58 73,60" />
+    <path
+        android:strokeColor="#FAF7F2"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:pathData="M53,69 C58,66 64,65 68,67" />
 </vector>

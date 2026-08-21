@@ -132,12 +132,13 @@ export default function MobileOrdersScreen() {
         }
       `}</style>
 
-      {/* Top warm brand gradient backdrop */}
+      {/* Top warm brand radiant gradient backdrop (Copper Tone, +50% Intensity) */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(260px,45vh,380px)]"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(280px,48vh,400px)] z-0"
         style={{
           background:
-            'radial-gradient(130% 90% at 50% 0%, rgba(254, 215, 170, 0.45) 0%, rgba(253, 230, 210, 0.25) 40%, rgba(247, 245, 240, 0.6) 80%, rgba(247, 245, 240, 1) 100%)',
+            'radial-gradient(130% 95% at 50% 0%, rgba(200, 109, 59, 0.52) 0%, rgba(223, 136, 33, 0.32) 35%, rgba(247, 245, 240, 0.75) 75%, rgba(247, 245, 240, 1) 100%)',
         }}
       />
 

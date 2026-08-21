@@ -69,22 +69,21 @@ export default function MobileHomeScreen() {
         }
       `}</style>
 
-      {/* Top warm brand gradient backdrop (Unified Across Mobile) */}
+      {/* Top warm brand radiant gradient backdrop (Copper Tone, +50% Intensity) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(260px,45vh,380px)] z-0"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[clamp(280px,48vh,400px)] z-0"
         style={{
           background:
-            'radial-gradient(130% 90% at 50% 0%, rgba(254, 215, 170, 0.45) 0%, rgba(253, 230, 210, 0.25) 40%, rgba(247, 245, 240, 0.6) 80%, rgba(247, 245, 240, 1) 100%)',
+            'radial-gradient(130% 95% at 50% 0%, rgba(200, 109, 59, 0.52) 0%, rgba(223, 136, 33, 0.32) 35%, rgba(247, 245, 240, 0.75) 75%, rgba(247, 245, 240, 1) 100%)',
         }}
       />
 
-      {/* 1. Header Bar: AgriVil Logo & Action Badges */}
+      {/* 1. Header Bar: Direct on Canvas (No Card / Border Wrapper) */}
       <header
-        className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(33,26,18,0.06)] bg-[#FAF9F6]/90 backdrop-blur-md px-3 py-2.5 transition-colors"
+        className="relative z-30 flex items-center justify-between px-2.5 py-1.5 bg-transparent border-none"
         style={{
           paddingTop: 'max(env(safe-area-inset-top, 0px), 14px)',
-          paddingBottom: '10px',
         }}
       >
         <Link href="/m" prefetch={true} className="flex items-center gap-2.5 active:scale-95 transition-transform" aria-label="AgriVil Home">

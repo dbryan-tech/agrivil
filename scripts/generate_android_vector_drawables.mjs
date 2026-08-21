@@ -132,28 +132,36 @@ function generateBackgroundXml() {
 }
 
 const targets = [
-  path.resolve('mobile/android/consumer/src/main/res/drawable'),
-  path.resolve('mobile/android/admin/src/main/res/drawable'),
+  path.resolve('mobile/android/consumer/src/main/res'),
+  path.resolve('mobile/android/admin/src/main/res'),
 ]
 
-for (const dir of targets) {
-  if (!fs.existsSync(dir)) continue
-  console.log(`Writing vector drawables to ${dir}`)
+for (const resDir of targets) {
+  if (!fs.existsSync(resDir)) continue
+  console.log(`Writing vector drawables to ${resDir}`)
+
+  const drawableDir = path.join(resDir, 'drawable')
+  const drawableV24Dir = path.join(resDir, 'drawable-v24')
+  fs.mkdirSync(drawableDir, { recursive: true })
+  fs.mkdirSync(drawableV24Dir, { recursive: true })
   
   // 1. Splash Precision Icon (Android 12+ Splash)
-  fs.writeFileSync(path.join(dir, 'splash_precision_icon.xml'), generateEmblemVectorXml(true))
+  fs.writeFileSync(path.join(drawableDir, 'splash_precision_icon.xml'), generateEmblemVectorXml(true))
   
-  // 2. Adaptive Icon Foreground (Color Emblem)
-  fs.writeFileSync(path.join(dir, 'ic_launcher_foreground.xml'), generateEmblemVectorXml(false))
+  // 2. Adaptive Icon Foreground (Color Emblem) in both drawable and drawable-v24
+  fs.writeFileSync(path.join(drawableDir, 'ic_launcher_foreground.xml'), generateEmblemVectorXml(false))
+  fs.writeFileSync(path.join(drawableV24Dir, 'ic_launcher_foreground.xml'), generateEmblemVectorXml(false))
   
   // 3. Adaptive Icon Monochrome (For Android 13+ Themed Icons)
-  fs.writeFileSync(path.join(dir, 'ic_launcher_monochrome.xml'), generateEmblemVectorXml(true))
+  fs.writeFileSync(path.join(drawableDir, 'ic_launcher_monochrome.xml'), generateEmblemVectorXml(true))
+  fs.writeFileSync(path.join(drawableV24Dir, 'ic_launcher_monochrome.xml'), generateEmblemVectorXml(true))
   
   // 4. Adaptive Icon Background
-  fs.writeFileSync(path.join(dir, 'ic_launcher_background.xml'), generateBackgroundXml())
+  fs.writeFileSync(path.join(drawableDir, 'ic_launcher_background.xml'), generateBackgroundXml())
+  fs.writeFileSync(path.join(drawableV24Dir, 'ic_launcher_background.xml'), generateBackgroundXml())
 
   // 5. Update values/ic_launcher_background.xml
-  const valuesDir = path.join(path.dirname(dir), 'values')
+  const valuesDir = path.join(resDir, 'values')
   if (fs.existsSync(valuesDir)) {
     fs.writeFileSync(
       path.join(valuesDir, 'ic_launcher_background.xml'),

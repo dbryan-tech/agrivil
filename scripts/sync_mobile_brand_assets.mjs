@@ -91,11 +91,52 @@ async function generateMobileAssets() {
       fs.mkdirSync(dir, { recursive: true })
 
       // ic_launcher.png (Square/Squircle)
-      await sharp(APP_ICON_LIGHT).resize(sizes.icon, sizes.icon).png().toFile(path.join(dir, 'ic_launcher.png'))
+      await sharp(path.resolve('public/apple-icon.png'))
+        .resize(sizes.icon, sizes.icon)
+        .png()
+        .toFile(path.join(dir, 'ic_launcher.png'))
+
       // ic_launcher_round.png
-      await sharp(APP_ICON_LIGHT).resize(sizes.icon, sizes.icon).png().toFile(path.join(dir, 'ic_launcher_round.png'))
-      // ic_launcher_foreground.png
-      await sharp(MARK_COLOR).resize(sizes.fg, sizes.fg).png().toFile(path.join(dir, 'ic_launcher_foreground.png'))
+      await sharp(path.resolve('public/apple-icon.png'))
+        .resize(sizes.icon, sizes.icon)
+        .png()
+        .toFile(path.join(dir, 'ic_launcher_round.png'))
+
+      // ic_launcher_background.png (Solid cream canvas)
+      await sharp({
+        create: {
+          width: sizes.fg,
+          height: sizes.fg,
+          channels: 4,
+          background: { r: 250, g: 247, b: 242, alpha: 1 },
+        },
+      })
+        .png()
+        .toFile(path.join(dir, 'ic_launcher_background.png'))
+
+      // ic_launcher_foreground.png (Emblem scaled & centered with safe-zone padding)
+      const emblemSize = Math.round(sizes.fg * 0.62)
+      const emblemBuffer = await sharp(MARK_COLOR)
+        .resize(emblemSize, emblemSize)
+        .toBuffer()
+
+      await sharp({
+        create: {
+          width: sizes.fg,
+          height: sizes.fg,
+          channels: 4,
+          background: { r: 0, g: 0, b: 0, alpha: 0 },
+        },
+      })
+        .composite([
+          {
+            input: emblemBuffer,
+            top: Math.round((sizes.fg - emblemSize) / 2),
+            left: Math.round((sizes.fg - emblemSize) / 2),
+          },
+        ])
+        .png()
+        .toFile(path.join(dir, 'ic_launcher_foreground.png'))
     }
 
     // 2. Splash Portrait

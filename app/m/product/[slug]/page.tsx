@@ -239,8 +239,8 @@ export default function MobileProductDetailScreen() {
         </div>
       </header>
 
-      {/* 1. Full-Bleed Product Image */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-white">
+      {/* 1. Product Image with Curved Bottom Corners (Arch Style) */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-white rounded-b-[36px] shadow-[0_8px_24px_-8px_rgba(33,26,18,0.12)]">
         <Image
           src={activeImage}
           alt={`${product.name} from ${activeFarmer.farmName}`}
@@ -250,8 +250,8 @@ export default function MobileProductDetailScreen() {
           className="object-cover transition-all duration-300 scale-[1.03]"
         />
 
-        {/* Floating Badges */}
-        <div className="absolute top-16 left-3.5 flex flex-col gap-1.5 z-20">
+        {/* Floating Badges (Positioned Safely Below Top Navigation) */}
+        <div className="absolute top-[calc(max(env(safe-area-inset-top,0px),14px)+48px)] left-3.5 flex flex-col gap-1.5 z-20">
           <span
             className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-white shadow-xs"
             style={{ backgroundColor: activeOffer.freshnessColor }}
@@ -371,7 +371,12 @@ export default function MobileProductDetailScreen() {
                 <button
                   key={offer.id}
                   type="button"
-                  onClick={() => setSelectedOfferIndex(idx)}
+                  onClick={() => {
+                    setSelectedOfferIndex(idx)
+                    if (typeof window !== 'undefined') {
+                      window.scrollTo({ top: 0, behavior: 'smooth' })
+                    }
+                  }}
                   className={cn(
                     'flex w-full items-center justify-between rounded-2xl p-3 text-left transition-all border shadow-2xs',
                     isSelected
