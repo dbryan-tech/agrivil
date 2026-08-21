@@ -12,7 +12,7 @@ export function MobileBottomNav() {
 
   const TABS = [
     { href: '/m', label: 'Home', icon: Home, match: (p: string) => p === '/m' },
-    { href: '/m/shop', label: 'Shop', icon: LayoutGrid, match: (p: string) => p.startsWith('/m/categories') || p.startsWith('/m/shop') },
+    { href: '/m/categories', label: 'Categories', icon: LayoutGrid, match: (p: string) => p.startsWith('/m/categories') || p.startsWith('/m/shop') },
     { href: '/m/orders', label: 'Orders', icon: Package, match: (p: string) => p.startsWith('/m/orders') },
     { href: '/m/cart', label: 'Basket', icon: ShoppingBag, badge: count, match: (p: string) => p.startsWith('/m/cart') },
     { href: '/m/account', label: 'Account', icon: User, match: (p: string) => p.startsWith('/m/account') },

@@ -93,7 +93,7 @@ export default function MobileOrdersScreen() {
   const [searchQuery, setSearchQuery] = useState('')
   const [orderList, setOrderList] = useState<OrderItem[]>(ORDERS)
 
-  useEffect(() => {
+  function loadOrders() {
     if (typeof window !== 'undefined') {
       try {
         const stored = JSON.parse(localStorage.getItem('agrivil_orders') || '[]')
@@ -101,10 +101,22 @@ export default function MobileOrdersScreen() {
           const combined = [...stored, ...ORDERS]
           const unique = combined.filter((v, i, a) => a.findIndex((t) => t.id === v.id) === i)
           setOrderList(unique)
+          return
         }
       } catch (e) {
         console.error(e)
       }
+      setOrderList(ORDERS)
+    }
+  }
+
+  useEffect(() => {
+    loadOrders()
+    window.addEventListener('storage', loadOrders)
+    window.addEventListener('agrivil_orders_updated', loadOrders)
+    return () => {
+      window.removeEventListener('storage', loadOrders)
+      window.removeEventListener('agrivil_orders_updated', loadOrders)
     }
   }, [])
 

@@ -1,16 +1,34 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { Check, Truck, MapPin, Clock, ArrowRight, ShieldCheck } from 'lucide-react'
+import { Suspense, useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Check, Truck, Clock, ArrowRight, ShieldCheck, MapPin } from 'lucide-react'
+import { formatGHS } from '@/lib/golden-acres/format'
 
-export default function MobileOrderSuccessScreen() {
+function SuccessContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const ref = searchParams.get('ref') || 'AGR-88412'
+  const [lastOrder, setLastOrder] = useState<any>(null)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = JSON.parse(localStorage.getItem('agrivil_last_order') || 'null')
+        if (stored) {
+          setLastOrder(stored)
+        }
+      } catch (e) {
+        console.error(e)
+      }
+    }
+  }, [])
 
   const timeline = [
     { label: 'Harvested at Ejisu Farm', time: '5:30 AM', done: true },
     { label: 'Quality Checked & Scaled at Hub', time: '6:15 AM', done: true },
     { label: 'Out for Delivery with Rider', time: '6:45 AM', active: true },
-    { label: 'Estimated Arrival (KNUST Campus)', time: '7:30 AM', pending: true },
+    { label: 'Estimated Arrival (Doorstep)', time: '7:30 AM', pending: true },
   ]
 
   return (
@@ -35,7 +53,7 @@ export default function MobileOrderSuccessScreen() {
             Order Confirmed!
           </h1>
           <p className="text-[11.5px] font-semibold text-[#5C5247]">
-            Order Ref: <strong className="text-[#211A12]">#AGR-88412</strong>
+            Order Ref: <strong className="text-[#211A12]">#{ref}</strong>
           </p>
         </div>
 
@@ -49,10 +67,27 @@ export default function MobileOrderSuccessScreen() {
               <span className="text-[9.5px] font-black uppercase tracking-wider text-[#5C5247]">
                 Estimated Delivery
               </span>
-              <h2 className="text-[13.5px] font-black text-[#0B3B25]">Today, 7:30 AM (in 35 mins)</h2>
+              <h2 className="text-[13.5px] font-black text-[#0B3B25]">Today (Arriving in ~35 mins)</h2>
             </div>
           </div>
         </div>
+
+        {/* Order Details Preview */}
+        {lastOrder && (
+          <div className="rounded-[24px] bg-white p-3.5 shadow-2xs border border-[rgba(33,26,18,0.06)] space-y-1">
+            <span className="text-[10px] font-black uppercase tracking-wider text-[#5C5247]">
+              Order Contents
+            </span>
+            <p className="text-[12.5px] font-black text-[#211A12] line-clamp-2">
+              {lastOrder.title}
+            </p>
+            {lastOrder.totalGHS && (
+              <p className="text-[11.5px] font-extrabold text-[#0B3B25]">
+                Total: {formatGHS(lastOrder.totalGHS)}
+              </p>
+            )}
+          </div>
+        )}
 
         {/* Live Timeline Tracking */}
         <div className="rounded-[24px] bg-[#FDFDFB] p-3.5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
@@ -106,7 +141,7 @@ export default function MobileOrderSuccessScreen() {
       <div className="relative space-y-2 pt-4">
         <button
           type="button"
-          onClick={() => router.push('/m/orders/track')}
+          onClick={() => router.push(`/m/orders/track?id=${encodeURIComponent(ref)}`)}
           className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#0B3B25] text-[13.5px] font-extrabold text-white shadow-md active:scale-[0.98] transition-transform"
         >
           <Truck className="h-4 w-4" /> Track Rider Live on Map
@@ -114,12 +149,20 @@ export default function MobileOrderSuccessScreen() {
 
         <button
           type="button"
-          onClick={() => router.push('/m')}
+          onClick={() => router.push('/m/orders')}
           className="flex h-11 w-full items-center justify-center rounded-full border border-[rgba(33,26,18,0.12)] bg-white text-[12px] font-extrabold text-[#211A12] shadow-2xs active:scale-[0.98] transition-transform"
         >
-          Back to Home
+          View All Orders
         </button>
       </div>
     </div>
+  )
+}
+
+export default function MobileOrderSuccessScreen() {
+  return (
+    <Suspense fallback={<div className="min-h-dvh bg-[#F7F5F0]" />}>
+      <SuccessContent />
+    </Suspense>
   )
 }

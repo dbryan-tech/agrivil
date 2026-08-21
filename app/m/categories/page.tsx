@@ -151,16 +151,24 @@ function CategoriesContent() {
         </div>
 
         {/* Search Bar */}
-        <div className="relative mt-2.5">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            if (search.trim()) {
+              router.push(`/m/shop?search=${encodeURIComponent(search.trim())}`)
+            }
+          }}
+          className="relative mt-2.5"
+        >
           <input
-            type="text"
+            type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search produce categories..."
+            placeholder="Search produce categories or items..."
             className="h-10 w-full rounded-full border border-[rgba(33,26,18,0.10)] bg-white pl-9 pr-3 text-[12.5px] font-semibold text-[#211A12] shadow-2xs outline-none focus:border-[#0B3B25]"
           />
           <Search className="absolute top-1/2 left-3 h-3.5 w-3.5 -translate-y-1/2 text-[#0B3B25] stroke-[2.4]" />
-        </div>
+        </form>
       </header>
 
       <div className="relative px-1.5 pt-3 space-y-3">
@@ -179,7 +187,7 @@ function CategoriesContent() {
             {filteredCategories.map((cat) => (
               <Link
                 key={cat.slug}
-                href={`/m/categories/${encodeURIComponent(cat.slug)}`}
+                href={`/m/shop?category=${encodeURIComponent(cat.slug)}`}
                 prefetch={true}
                 className="group flex flex-col overflow-hidden rounded-[20px] bg-white shadow-[0_2px_10px_-2px_rgba(33,26,18,0.04),0_4px_14px_-4px_rgba(33,26,18,0.06)] active:scale-[0.985] transition-transform"
               >

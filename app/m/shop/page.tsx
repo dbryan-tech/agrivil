@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, Suspense } from 'react'
+import { useState, useMemo, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
@@ -47,6 +47,17 @@ function ShopContent() {
   const [organicOnly, setOrganicOnly] = useState(false)
   const [priceFilter, setPriceFilter] = useState<'all' | 'under10' | '10to25' | 'over25'>('all')
   const [showFiltersDrawer, setShowFiltersDrawer] = useState(false)
+
+  useEffect(() => {
+    const cat = searchParams.get('category')
+    if (cat) {
+      setSelectedCategory(cat)
+    }
+    const q = searchParams.get('search')
+    if (q !== null) {
+      setSearchQuery(q)
+    }
+  }, [searchParams])
 
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {
