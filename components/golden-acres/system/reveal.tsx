@@ -25,7 +25,12 @@ export function Reveal({
   once?: boolean
 }) {
   const ref = useRef<HTMLElement | null>(null)
-  const [visible, setVisible] = useState(false)
+  // Reduced-motion users (and headless captures with the flag) get content
+  // immediately visible: no reveal animation, no IntersectionObserver wait.
+  const [visible, setVisible] = useState(() =>
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
 
   useEffect(() => {
     const el = ref.current
