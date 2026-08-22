@@ -112,8 +112,8 @@ AgriVil's web presence should read like a **premium farm-to-table house**
 | 03 | Forgot/reset/staff/farmer/social reskins | **SHIPPED to live** | `d8db4f7` |
 | 03 | Shop-local rebuild (real match data) | **SHIPPED to live `/local`** | `4901300` |
 | 04 | Farmer portal IA restructure + reskin (Today·Produce·Orders·Money) | **SHIPPED to live `/farmer`** | `5299241` |
-| 05 | Staff console frame (admin/ops/support) | QUEUED (next) | — |
-| 06 | Recipes index/detail, bundles, farmers directory, help center | QUEUED | — |
+| 05 | Staff console frame + BI/ops rewiring | **SHIPPED to live `/admin` `/support`** | `8b2f47d` |
+| 06 | Recipes index/detail, bundles, farmers directory, help center | QUEUED (next) | — |
 
 **Standing verification after every phase:** tsc clean · production build
 green · lint errors ≤ 24 documented baseline · all touched routes 200 in
