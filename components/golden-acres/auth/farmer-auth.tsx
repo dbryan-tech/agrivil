@@ -136,13 +136,13 @@ export function FarmerAuth() {
 
   return (
     <div className="ga-rise">
-      <h1 className="ga-display text-3xl font-semibold text-foreground">Farmer sign in</h1>
+      <h1 className="ga-display-title text-[clamp(26px,3vw,36px)] text-[#211A12]">Farmer sign in</h1>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
         Sign in to manage harvests, stock, and payouts.
       </p>
 
       {/* Method tabs */}
-      <div className="mt-6 grid grid-cols-2 gap-2 rounded-2xl bg-secondary p-1.5">
+      <div className="mt-7 flex gap-x-6 border-b border-[rgba(33,26,18,0.08)]">
         {tabs.map((t) => {
           const active = mode === t.id
           return (
@@ -154,8 +154,8 @@ export function FarmerAuth() {
                 setOtpStage(false)
                 setError(null)
               }}
-              className={`flex h-11 items-center justify-center rounded-xl text-sm font-bold transition-colors ${
-                active ? 'bg-card text-field shadow-sm' : 'text-muted-foreground'
+              className={`shrink-0 -mb-px border-b pb-2.5 text-[13.5px] font-medium transition-colors ${
+                active ? 'border-[#211A12] font-semibold text-[#211A12]' : 'border-transparent text-[#8A7E72]'
               }`}
             >
               {t.label}
@@ -165,7 +165,7 @@ export function FarmerAuth() {
       </div>
 
       {error && (
-        <p className="ga-fade-up mt-5 rounded-xl bg-clay/10 px-4 py-3 text-sm font-semibold text-clay" role="alert">
+        <p className="ga-fade-up mt-5 rounded-xl border border-[rgba(185,28,28,0.25)] bg-[#B91C1C]/5 px-4 py-3 text-[13.5px] font-medium text-[#B91C1C]" role="alert">
           {error}
         </p>
       )}
@@ -183,7 +183,7 @@ export function FarmerAuth() {
             type="button"
             disabled={busy || phone.length < 9 || pin.length < 4}
             onClick={submitPin}
-            className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-full bg-field text-base font-bold text-cream disabled:opacity-50"
+            className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#0B3B25] text-[15px] font-semibold text-white transition-all duration-300 hover:bg-[#0F4A2E] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40"
           >
             {busy ? <Loader2 className="size-5 animate-spin" /> : 'Sign in'}
           </button>
@@ -200,7 +200,7 @@ export function FarmerAuth() {
                 type="button"
                 disabled={busy || phone.length < 9}
                 onClick={sendOtp}
-                className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-full bg-field text-base font-bold text-cream disabled:opacity-50"
+                className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#0B3B25] text-[15px] font-semibold text-white transition-all duration-300 hover:bg-[#0F4A2E] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40"
               >
                 {busy ? <Loader2 className="size-5 animate-spin" /> : 'Send code'}
               </button>
@@ -208,7 +208,7 @@ export function FarmerAuth() {
           ) : (
             <>
               {devOtp && (
-                <p className="rounded-xl bg-gold/15 px-4 py-3 text-sm font-semibold text-gold">
+                <p className="rounded-xl border border-[rgba(122,63,28,0.25)] bg-[#7A3F1C]/5 px-4 py-3 text-sm font-medium text-[#7A3F1C]">
                   Demo code: <span className="font-mono tracking-widest">{devOtp}</span>
                 </p>
               )}
@@ -223,7 +223,7 @@ export function FarmerAuth() {
                 type="button"
                 disabled={busy || otp.length < 6}
                 onClick={checkOtp}
-                className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-full bg-field text-base font-bold text-cream disabled:opacity-50"
+                className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#0B3B25] text-[15px] font-semibold text-white transition-all duration-300 hover:bg-[#0F4A2E] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40"
               >
                 {busy ? <Loader2 className="size-5 animate-spin" /> : 'Verify & sign in'}
               </button>
@@ -248,7 +248,7 @@ export function FarmerAuth() {
             type="button"
             disabled={busy || !email || !password}
             onClick={submitPassword}
-            className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-full bg-field text-base font-bold text-cream disabled:opacity-50"
+            className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#0B3B25] text-[15px] font-semibold text-white transition-all duration-300 hover:bg-[#0F4A2E] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40"
           >
             {busy ? <Loader2 className="size-5 animate-spin" /> : 'Sign in'}
           </button>
@@ -269,7 +269,7 @@ export function FarmerAuth() {
       <button
         type="button"
         onClick={fillDemo}
-        className="mt-4 flex w-full items-center justify-center gap-1.5 text-xs font-semibold text-gold hover:underline"
+        className="mt-4 flex w-full items-center justify-center gap-1.5 text-xs font-medium text-[#B7AC9E] hover:text-[#5C5247]"
       >
         <Sparkles className="size-3.5" />
         Use demo credentials
@@ -357,8 +357,8 @@ function FarmerSignUp({
         <ArrowLeft className="size-4" /> Back to sign in
       </button>
 
-      <h1 className="ga-display text-3xl font-semibold text-foreground">
-        Register your farm
+      <h1 className="ga-display-title text-[clamp(26px,3vw,36px)] text-[#211A12]">
+        Register your farm.
       </h1>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
         Create your supplier account. Your farm appears in the market the moment
@@ -367,7 +367,7 @@ function FarmerSignUp({
 
       {error && (
         <p
-          className="ga-fade-up mt-5 rounded-xl bg-clay/10 px-4 py-3 text-sm font-semibold text-clay"
+          className="ga-fade-up mt-5 rounded-xl border border-[rgba(185,28,28,0.25)] bg-[#B91C1C]/5 px-4 py-3 text-[13.5px] font-medium text-[#B91C1C]"
           role="alert"
         >
           {error}
@@ -386,7 +386,7 @@ function FarmerSignUp({
       <div className="mt-6 space-y-4">
         <SignUpField label="Your name">
           <input
-            className="ga-input"
+            className="ga-underline"
             placeholder="Kwame Mensah"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -396,7 +396,7 @@ function FarmerSignUp({
 
         <SignUpField label="Farm name">
           <input
-            className="ga-input"
+            className="ga-underline"
             placeholder="Mensah Family Farm"
             value={farmName}
             onChange={(e) => setFarmName(e.target.value)}
@@ -421,7 +421,7 @@ function FarmerSignUp({
 
         <SignUpField label="Region">
           <select
-            className="ga-input"
+            className="ga-underline"
             value={region}
             onChange={(e) => setRegion(e.target.value as GhanaRegion)}
           >
@@ -435,7 +435,7 @@ function FarmerSignUp({
 
         <SignUpField label="Nearest town">
           <input
-            className="ga-input"
+            className="ga-underline"
             placeholder="Dodowa"
             value={town}
             onChange={(e) => setTown(e.target.value)}
@@ -445,7 +445,7 @@ function FarmerSignUp({
         <SignUpField label="Email (optional)">
           <input
             type="email"
-            className="ga-input"
+            className="ga-underline"
             placeholder="you@farm.gh"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -455,7 +455,7 @@ function FarmerSignUp({
 
         <SignUpField label="Short bio (optional)">
           <input
-            className="ga-input"
+            className="ga-underline"
             placeholder="Third-generation vegetable grower"
             value={bio}
             onChange={(e) => setBio(e.target.value)}
@@ -466,7 +466,7 @@ function FarmerSignUp({
           type="button"
           disabled={busy || !ready}
           onClick={submit}
-          className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-full bg-field text-base font-bold text-cream disabled:opacity-50"
+          className="ga-press flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#0B3B25] text-[15px] font-semibold text-white transition-all duration-300 hover:bg-[#0F4A2E] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40"
         >
           {busy ? <Loader2 className="size-5 animate-spin" /> : 'Create farm account'}
         </button>
@@ -496,14 +496,14 @@ function PhoneField({ value, onChange }: { value: string; onChange: (v: string) 
   return (
     <div>
       <label className="text-sm font-semibold text-foreground">Mobile number</label>
-      <div className="mt-1.5 flex items-center gap-2 rounded-xl border border-border bg-card px-3 focus-within:border-gold focus-within:ring-2 focus-within:ring-gold/30">
-        <span className="font-bold text-muted-foreground">+233</span>
+      <div className="mt-1.5 mt-1 flex items-center gap-2 border-b border-[rgba(33,26,18,0.15)] px-0 pb-2 transition-colors focus-within:border-[#0B3B25]">
+        <span className="ga-index pt-2 text-[15px] font-medium text-[#8A7E72]">+233</span>
         <input
           inputMode="tel"
           value={value}
           onChange={(e) => onChange(e.target.value.replace(/[^0-9\s]/g, ''))}
           placeholder="024 551 1137"
-          className="h-12 w-full bg-transparent font-semibold text-foreground outline-none"
+          className="h-10 w-full border-0 bg-transparent ga-index font-medium tracking-wide text-[#211A12] outline-none placeholder:text-[#B7AC9E]"
         />
       </div>
     </div>
@@ -550,7 +550,7 @@ function PinDots({ length, filled }: { length: number; filled: number }) {
       {Array.from({ length }).map((_, i) => (
         <span
           key={i}
-          className={`size-4 rounded-full transition-colors ${i < filled ? 'bg-field' : 'bg-border'}`}
+          className={`size-4 rounded-full transition-colors ${i < filled ? 'bg-[#0B3B25]' : 'bg-[rgba(33,26,18,0.12)]'}`}
         />
       ))}
     </div>
@@ -569,7 +569,7 @@ function Keypad({ onPress }: { onPress: (digit: string) => void }) {
             key={i}
             type="button"
             onClick={() => onPress(k)}
-            className="ga-press flex h-14 items-center justify-center rounded-xl bg-secondary text-xl font-bold text-foreground active:bg-gold/20"
+            className="flex h-14 items-center justify-center rounded-[16px] border border-[rgba(33,26,18,0.10)] bg-white text-xl font-semibold tabular-nums text-[#211A12] transition-colors hover:border-[rgba(11,59,37,0.35)] active:bg-[#F2EEE6]"
             aria-label={k === 'del' ? 'Delete' : k}
           >
             {k === 'del' ? <Delete className="size-5" /> : k}

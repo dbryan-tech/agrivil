@@ -905,3 +905,23 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
     transform: none !important;
   }
 }
+
+/* Underline input — the redesigned form-field grammar (03 §2.1). */
+.ga-underline {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid rgba(33, 26, 18, 0.15);
+  background: transparent;
+  padding: 0.5rem 0 0.5rem;
+  font-size: 16px;
+  color: #211a12;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+.ga-underline::placeholder {
+  color: #b7ac9e;
+}
+.ga-underline:focus {
+  border-bottom: 2px solid #0b3b25;
+  padding-bottom: calc(0.5rem - 1px);
+}

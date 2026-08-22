@@ -19,6 +19,11 @@ export function useSocialProviders(): ('google' | 'apple')[] | undefined {
   return (['google', 'apple'] as const).filter((p) => providers[p])
 }
 
+/**
+ * Social sign-in buttons as equal-weight quiet rows (docs/redesign/03 §2.2) —
+ * hairline outline, provider mark, no colored brand boxes. The trust line
+ * "We never post anywhere." sits under the group.
+ */
 export function SocialButtons({ role = 'customer' }: { role?: UserRole }) {
   const [busy, setBusy] = useState<'google' | 'apple' | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -45,32 +50,38 @@ export function SocialButtons({ role = 'customer' }: { role?: UserRole }) {
   if (enabled.length === 0) return null
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2.5">
       {error && (
-        <p className="rounded-xl bg-clay/10 px-3 py-2 text-xs font-semibold text-clay" role="alert">
+        <p
+          className="rounded-xl border border-[rgba(185,28,28,0.25)] bg-[#B91C1C]/5 px-4 py-3 text-[13px] font-medium text-[#B91C1C]"
+          role="alert"
+        >
           {error}
         </p>
       )}
-      <div className={`grid gap-3 ${enabled.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+      <div className={`grid gap-2.5 ${enabled.length === 1 ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'}`}>
         {enabled.map((provider) => (
           <button
             key={provider}
             type="button"
             onClick={() => go(provider)}
             disabled={busy !== null}
-            className="flex h-11 items-center justify-center gap-2 rounded-xl border border-border bg-card text-sm font-semibold text-foreground transition-colors hover:bg-secondary disabled:opacity-60"
+            className="inline-flex h-11 items-center justify-center gap-2.5 rounded-full border border-[rgba(33,26,18,0.15)] bg-transparent text-[14px] font-medium text-[#211A12] transition-colors duration-300 hover:border-[rgba(33,26,18,0.4)] hover:bg-white disabled:opacity-60"
           >
             {busy === provider ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <Loader2 width={16} height={16} className="animate-spin" />
             ) : provider === 'google' ? (
-              <GoogleIcon className="h-5 w-5" />
+              <GoogleIcon className="h-[18px] w-[18px]" />
             ) : (
-              <AppleIcon className="h-5 w-5" />
+              <AppleIcon className="h-[18px] w-[18px]" />
             )}
-            <span className="capitalize">{`Continue with ${provider}`}</span>
+            <span>{`Continue with ${provider === 'google' ? 'Google' : 'Apple'}`}</span>
           </button>
         ))}
       </div>
+      <p className="pt-1 text-center text-[11.5px] text-[#B7AC9E]">
+        We never post anywhere.
+      </p>
     </div>
   )
 }
