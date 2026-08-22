@@ -83,15 +83,8 @@ export function VideoHero() {
           <div className="h-[420px] w-full max-w-2xl rounded-full bg-black/25 blur-3xl" />
         </div>
 
-        <p
-          className="ga-fade-up text-[11px] font-bold uppercase tracking-[0.24em] text-white/85 sm:text-xs"
-          style={{ animationDelay: '0.02s' }}
-        >
-          From Ghana&apos;s farms · Picked today · Delivered cold
-        </p>
-
         <h1
-          className="ga-headline ga-fade-up mt-3 max-w-3xl text-balance text-4xl font-black leading-[1.05] text-white drop-shadow-[0_3px_18px_rgba(0,0,0,0.95)] sm:text-5xl lg:text-[64px]"
+          className="ga-headline ga-fade-up max-w-3xl text-balance text-4xl font-black leading-[1.05] text-white drop-shadow-[0_3px_18px_rgba(0,0,0,0.95)] sm:text-5xl lg:text-[64px]"
           style={{ animationDelay: '0.08s' }}
         >
           Ghana&apos;s freshest harvest,{' '}
@@ -123,7 +116,7 @@ export function VideoHero() {
           </Link>
           <Link
             href="/farmers"
-            className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-black/35 px-7 py-3.5 text-sm font-bold text-white backdrop-blur-md transition-all duration-300 hover:border-white/70 hover:bg-black/55"
+            className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-black/50 px-7 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:border-white/70 hover:bg-black/70"
           >
             Meet the farmers
           </Link>
@@ -147,7 +140,7 @@ export function VideoHero() {
       </div>
 
       {/* Shoppable strip docked to the hero's bottom edge */}
-      <div className="relative z-10 border-t border-white/15 bg-black/55 backdrop-blur-xl">
+      <div className="relative z-10 border-t border-white/10 bg-[#15110C]">
         <div className="mx-auto flex max-w-7xl items-stretch gap-3 overflow-x-auto px-4 py-3 sm:gap-4 sm:px-6 lg:px-10 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {/* Strip label */}
           <div className="hidden shrink-0 flex-col justify-center border-r border-white/15 pr-5 md:flex">
@@ -168,7 +161,7 @@ export function VideoHero() {
               key={p.id}
               onClick={() => handleAdd(p.id)}
               disabled={addedId === p.id}
-              className="group flex shrink-0 items-center gap-3 rounded-2xl border border-white/12 bg-white/[0.07] p-2 pr-4 text-left backdrop-blur-sm transition-all duration-300 hover:border-white/30 hover:bg-white/[0.12] active:scale-[0.98] disabled:pointer-events-none"
+              className="group flex shrink-0 items-center gap-3 rounded-2xl border border-white/10 bg-[#221C13] p-2 pr-4 text-left transition-all duration-300 hover:border-[#DF8821]/60 hover:bg-[#2A2318] active:scale-[0.98] disabled:pointer-events-none"
               aria-label={`Add ${p.name} to basket`}
             >
               {/* thumb */}

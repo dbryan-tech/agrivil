@@ -23,10 +23,10 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
   --font-heading: var(--font-sans);
   --font-sans: var(--font-geist-sans), 'Geist Fallback';
   --font-mono: var(--font-geist-mono), 'Geist Mono Fallback';
-  /* The editorial display voice — Fraunces for story moments. */
-  --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
-  --font-serif: var(--font-fraunces), Georgia, 'Times New Roman', serif;
-  /* Golden Acres — warm editorial farm-to-table */
+  /* Modern grotesque voice for all headings (original design). */
+  --font-display: var(--font-geist-sans), 'Geist Fallback', sans-serif;
+  --font-serif: var(--font-geist-sans), 'Geist Fallback', sans-serif;
+  /* Fraunces reserved for the tiny italic accent moments only. */
   --font-fraunces: var(--font-fraunces), Georgia, 'Times New Roman', serif;
   --font-grotesk: var(--font-geist-sans), sans-serif;
   --color-gold: var(--ga-gold);
