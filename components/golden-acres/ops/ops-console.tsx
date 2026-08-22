@@ -14,7 +14,6 @@ import {
   AlertTriangle,
   RotateCcw,
   ShieldCheck,
-  Leaf,
   ChevronRight,
   ClipboardList,
   X,
@@ -65,6 +64,7 @@ import {
   setTicketStatus as setTicketStatusAction,
 } from '@/app/actions/support'
 import { FleetMap } from '@/components/golden-acres/ops/fleet-map'
+import { ConsoleFrame, ConsoleHeader } from '@/components/golden-acres/staff/console-frame'
 
 const STATUS_META: Record<
   OrderStatus | 'tracking-assigned',
@@ -119,13 +119,6 @@ const FILTERS = [
 type FilterKey = (typeof FILTERS)[number]['key']
 
 type Section = 'orders' | 'support' | 'payouts' | 'fleet'
-
-const NAV_ITEMS: { key: Section; label: string; icon: typeof Package }[] = [
-  { key: 'orders', label: 'Orders', icon: Package },
-  { key: 'support', label: 'Customer support', icon: Headphones },
-  { key: 'payouts', label: 'Farmer payouts', icon: Wallet },
-  { key: 'fleet', label: 'Fleet map', icon: Navigation },
-]
 
 export function OpsConsole() {
   const { orders, addRefund } = useDataStore()
@@ -183,183 +176,54 @@ export function OpsConsole() {
   const openTickets = (ticketData ?? []).filter((t) => t.status !== 'resolved').length
   const payoutsDue = payoutData?.dueCount ?? 0
 
-  const badges: Record<Section, number> = {
-    orders: activeCount,
-    support: openTickets,
-    payouts: payoutsDue,
-    fleet: 0,
-  }
 
   return (
-    <div className="flex h-dvh overflow-hidden bg-background">
-      {/* ---------------- Desktop sidebar ---------------- */}
-      <aside className="hidden w-[244px] shrink-0 flex-col border-r border-border bg-card lg:flex">
-        <div className="flex items-center gap-2.5 border-b border-border px-5 py-4">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--ga-field)] text-white">
-            <Leaf className="h-5 w-5" />
-          </div>
-          <div className="min-w-0">
-            <p className="ga-display truncate text-[15px] font-bold leading-tight text-foreground">
-              Ops &amp; Support
-            </p>
-            <p className="truncate text-xs text-muted-foreground">AgriVil console</p>
-          </div>
-        </div>
-
-        <nav className="flex flex-1 flex-col gap-1 p-3">
-          <p className="px-2 pb-1 pt-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-            Workspace
-          </p>
-          {NAV_ITEMS.map((item) => (
-            <NavButton
-              key={item.key}
-              icon={item.icon}
-              label={item.label}
-              active={section === item.key}
-              badge={badges[item.key]}
-              attention={item.key === 'orders' && attentionCount > 0}
-              onClick={() => setSection(item.key)}
-            />
-          ))}
-        </nav>
-
-        <div className="border-t border-border p-3">
-          <div className="flex items-center gap-3 rounded-lg px-2 py-2">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--ga-gold-soft)] text-sm font-bold text-[var(--ga-field-deep)]">
-              EA
-            </div>
-            <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-foreground">Efua A.</p>
-              <p className="truncate text-xs text-muted-foreground">Operations lead</p>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      {/* ---------------- Main column ---------------- */}
-      <div className="flex min-w-0 flex-1 flex-col">
-        {/* Mobile top bar */}
-        <header className="flex items-center gap-2.5 border-b border-border bg-card px-4 py-3 lg:hidden">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--ga-field)] text-white">
-            <Leaf className="h-4 w-4" />
-          </div>
-          <p className="ga-display flex-1 truncate text-base font-bold text-foreground">
-            Ops &amp; Support
-          </p>
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--ga-gold-soft)] text-xs font-bold text-[var(--ga-field-deep)]">
-            EA
-          </div>
-        </header>
-
-        {/* Mobile nav strip */}
-        <div className="flex gap-1 overflow-x-auto border-b border-border bg-card px-2 py-2 lg:hidden">
-          {NAV_ITEMS.map((item) => {
-            const Icon = item.icon
-            const active = section === item.key
-            return (
-              <button
-                key={item.key}
-                onClick={() => setSection(item.key)}
-                className={`flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-                  active
-                    ? 'bg-[var(--ga-field)] text-white'
-                    : 'bg-secondary text-secondary-foreground'
-                }`}
-              >
-                <Icon className="h-3.5 w-3.5" />
-                {item.label}
-                {badges[item.key] > 0 && (
-                  <span
-                    className={`rounded-full px-1.5 text-[10px] font-bold ${
-                      active ? 'bg-white/20' : 'bg-background'
-                    }`}
-                  >
-                    {badges[item.key]}
-                  </span>
-                )}
-              </button>
-            )
-          })}
-        </div>
-
-        {section === 'orders' ? (
-          <OrdersSection
-            orders={orders}
-            filtered={filtered}
-            selected={selected}
-            query={query}
-            setQuery={setQuery}
-            filter={filter}
-            setFilter={setFilter}
-            setSelectedRef={setSelectedRef}
-            mobileView={mobileView}
-            setMobileView={setMobileView}
-            activeCount={activeCount}
-            attentionCount={attentionCount}
-            applyRefund={applyRefund}
-          />
-        ) : section === 'support' ? (
-          <SupportQueue />
-        ) : section === 'payouts' ? (
-          <PayoutsConsole />
-        ) : (
-          <div className="flex flex-1 flex-col overflow-hidden">
-            <div className="min-h-0 flex-1 overflow-auto">
-              <FleetMap />
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-function NavButton({
-  icon: Icon,
-  label,
-  active,
-  badge,
-  attention,
-  onClick,
-}: {
-  icon: typeof Package
-  label: string
-  active: boolean
-  badge: number
-  attention?: boolean
-  onClick: () => void
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition-colors ${
-        active
-          ? 'bg-[var(--ga-field)]/10 text-[var(--ga-field-deep)]'
-          : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
-      }`}
+    <ConsoleFrame
+      product="Ops & Support"
+      userName="Efua A."
+      userRole="Operations lead"
+      nav={[
+        { key: 'orders', label: 'Orders', badge: activeCount, attention: attentionCount > 0 },
+        { key: 'support', label: 'Customer support', badge: openTickets },
+        { key: 'payouts', label: 'Farmer payouts', badge: payoutsDue },
+        { key: 'fleet', label: 'Fleet map' },
+      ]}
+      activeKey={section}
+      onNavigate={(key) => setSection(key as Section)}
     >
-      <Icon
-        className={`h-[18px] w-[18px] shrink-0 ${
-          active ? 'text-[var(--ga-field)]' : ''
-        }`}
-      />
-      <span className="flex-1 truncate text-left">{label}</span>
-      {badge > 0 && (
-        <span
-          className={`flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[11px] font-bold ${
-            attention
-              ? 'bg-[#f3ddd5] text-[#c0492e]'
-              : active
-                ? 'bg-[var(--ga-field)] text-white'
-                : 'bg-secondary text-secondary-foreground'
-          }`}
-        >
-          {badge}
-        </span>
+      {section === 'orders' ? (
+        <OrdersSection
+          orders={orders}
+          filtered={filtered}
+          selected={selected}
+          query={query}
+          setQuery={setQuery}
+          filter={filter}
+          setFilter={setFilter}
+          setSelectedRef={setSelectedRef}
+          mobileView={mobileView}
+          setMobileView={setMobileView}
+          activeCount={activeCount}
+          attentionCount={attentionCount}
+          applyRefund={applyRefund}
+        />
+      ) : section === 'support' ? (
+        <SupportQueue />
+      ) : section === 'payouts' ? (
+        <PayoutsConsole />
+      ) : (
+        <div>
+          <ConsoleHeader
+            title="Fleet map"
+            lede="Every active delivery on one shared Greater Accra canvas."
+          />
+          <FleetMap />
+        </div>
       )}
-    </button>
+    </ConsoleFrame>
   )
 }
+
 
 function SectionHeader({
   title,

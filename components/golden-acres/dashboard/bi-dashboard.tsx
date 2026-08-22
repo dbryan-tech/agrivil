@@ -13,24 +13,14 @@ import {
 } from 'recharts'
 import {
   TrendingUp,
-  Users,
-  Truck,
-  Leaf,
-  DollarSign,
   Package,
   Check,
   X,
   ShoppingBag,
-  LayoutGrid,
   Sprout,
-  Wallet,
-  LifeBuoy,
-  ClipboardCheck,
   Loader2,
-  ReceiptText,
-  BadgePercent,
-  Megaphone,
-  ShieldCheck,
+  TriangleAlert,
+  Wallet,
 } from 'lucide-react'
 import {
   ChartContainer,
@@ -50,6 +40,7 @@ import { SmartImage } from '@/components/golden-acres/smart-image'
 import { PromotionsSection } from '@/components/golden-acres/dashboard/promotions-section'
 import { AnnouncementsSection } from '@/components/golden-acres/dashboard/announcements-section'
 import { KycSection } from '@/components/golden-acres/dashboard/kyc-section'
+import { ConsoleFrame, ConsoleHeader } from '@/components/golden-acres/staff/console-frame'
 
 type Section =
   | 'overview'
@@ -61,24 +52,24 @@ type Section =
   | 'promotions'
   | 'announcements'
 
-const NAV: { id: Section; label: string; icon: typeof LayoutGrid }[] = [
-  { id: 'overview', label: 'Overview', icon: LayoutGrid },
-  { id: 'orders', label: 'Orders', icon: ReceiptText },
-  { id: 'farmers', label: 'Farmers', icon: Sprout },
-  { id: 'kyc', label: 'Verification', icon: ShieldCheck },
-  { id: 'products', label: 'Products', icon: Package },
-  { id: 'listings', label: 'Listings', icon: ClipboardCheck },
-  { id: 'promotions', label: 'Promotions', icon: BadgePercent },
-  { id: 'announcements', label: 'Announcements', icon: Megaphone },
+const NAV: { key: Section; label: string; badge?: (k: AdminOverview['kpis']) => number; attention?: boolean }[] = [
+  { key: 'overview', label: 'Overview' },
+  { key: 'orders', label: 'Orders', badge: (k) => k.orders },
+  { key: 'farmers', label: 'Farmers' },
+  { key: 'kyc', label: 'KYC & Sellers', badge: (k) => k.pendingListings, attention: true },
+  { key: 'products', label: 'Products' },
+  { key: 'listings', label: 'Listings review', badge: (k) => k.pendingListings, attention: true },
+  { key: 'promotions', label: 'Promotions' },
+  { key: 'announcements', label: 'Announcements' },
 ]
 
 const STATUS_COLORS: Record<string, string> = {
-  delivered: '#4f7d2f',
-  'out-for-delivery': '#b8791a',
+  delivered: '#0F7A43',
+  'out-for-delivery': '#B45309',
   packed: '#3f6d8c',
-  confirmed: '#6b7280',
-  placed: '#6b7280',
-  cancelled: '#c0492e',
+  confirmed: '#8A7E72',
+  placed: '#8A7E72',
+  cancelled: '#B91C1C',
 }
 
 export function BiDashboard() {
@@ -91,158 +82,263 @@ export function BiDashboard() {
     { refreshInterval: 15000 },
   )
 
+  const kpis = data?.kpis
+  const nav = NAV.map((n) => ({
+    key: n.key,
+    label: n.label,
+    badge: n.badge && kpis ? n.badge(kpis) : undefined,
+    attention: n.attention,
+  }))
+
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-[1400px] flex-col lg:flex-row">
-      {/* Sidebar */}
-      <aside className="shrink-0 border-b border-border bg-card/60 lg:w-60 lg:border-b-0 lg:border-r">
-        <div className="flex items-center gap-3 p-5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-            <Leaf className="h-5 w-5" />
-          </div>
-          <div className="leading-tight">
-            <p className="ga-display text-lg font-semibold text-foreground">AgriVil</p>
-            <p className="text-xs text-muted-foreground">Admin console</p>
-          </div>
-        </div>
-        <nav className="flex gap-1 overflow-x-auto px-3 pb-3 lg:flex-col lg:overflow-visible lg:pb-0">
-          {NAV.map((n) => {
-            const active = section === n.id
-            return (
-              <button
-                key={n.id}
-                onClick={() => setSection(n.id)}
-                className={`flex shrink-0 items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-                  active
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground hover:bg-secondary'
-                }`}
-              >
-                <n.icon className="h-4 w-4" />
-                {n.label}
-              </button>
-            )
-          })}
-        </nav>
-      </aside>
-
-      {/* Main */}
-      <main className="flex-1 px-4 py-6 sm:px-6 sm:py-8">
-        <header className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h1 className="ga-display text-3xl font-semibold leading-none text-foreground">
-              {NAV.find((n) => n.id === section)?.label}
-            </h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Live from the order book · Greater Accra pilot
-            </p>
-          </div>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-xs font-semibold text-secondary-foreground">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+    <ConsoleFrame
+      product="Admin console"
+      userName="Kofi A."
+      userRole="Administrator"
+      nav={nav}
+      activeKey={section}
+      onNavigate={(key) => setSection(key as Section)}
+    >
+      <ConsoleHeader
+        title={NAV.find((n) => n.key === section)?.label}
+        lede="Live from the order book · Greater Accra pilot"
+        aside={
+          kpis && (
+            <span className="ga-index inline-flex items-center gap-1.5 rounded-full border border-[rgba(15,122,67,0.3)] px-3 py-1.5 text-[11.5px] font-medium text-[#0F7A43]">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#0F7A43]/50" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#0F7A43]" />
+              </span>
+              Live · 15s refresh
             </span>
-            Live
-          </span>
-        </header>
+          )
+        }
+      />
 
-        {isLoading || !data ? (
-          <div className="flex h-[60vh] items-center justify-center">
-            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-          </div>
-        ) : (
-          <>
-            {section === 'overview' && <OverviewSection data={data} />}
-            {section === 'orders' && <OrdersSection data={data} />}
-            {section === 'farmers' && <FarmersSection data={data} />}
-            {section === 'products' && <ProductsSection data={data} />}
-            {section === 'kyc' && <KycSection />}
-            {section === 'listings' && <ListingsSection />}
-            {section === 'promotions' && <PromotionsSection />}
-            {section === 'announcements' && <AnnouncementsSection />}
-          </>
-        )}
-      </main>
-    </div>
+      {isLoading || !data ? (
+        <div className="flex h-[50vh] items-center justify-center">
+          <Loader2 width={22} height={22} className="animate-spin text-[#8A7E72]" />
+        </div>
+      ) : (
+        <>
+          {section === 'overview' && <OverviewSection data={data} onJump={(s) => setSection(s)} />}
+          {section === 'orders' && <OrdersSection data={data} />}
+          {section === 'farmers' && <FarmersSection data={data} />}
+          {section === 'products' && <ProductsSection data={data} />}
+          {section === 'kyc' && <KycSection />}
+          {section === 'listings' && <ListingsSection />}
+          {section === 'promotions' && <PromotionsSection />}
+          {section === 'announcements' && <AnnouncementsSection />}
+        </>
+      )}
+    </ConsoleFrame>
   )
 }
 
-function OverviewSection({ data }: { data: AdminOverview }) {
+/* ---------------- Overview: exceptions first ---------------- */
+
+function OverviewSection({
+  data,
+  onJump,
+}: {
+  data: AdminOverview
+  onJump: (s: Section) => void
+}) {
   const k = data.kpis
+
+  // Exception feed — "what needs me right now", each row deep-links.
+  const exceptions: {
+    id: string
+    icon: typeof TriangleAlert
+    tone: 'alert' | 'warn' | 'info'
+    title: string
+    meta: string
+    section: Section
+  }[] = []
+  if (k.payoutsDue > 0)
+    exceptions.push({
+      id: 'payouts',
+      icon: Wallet,
+      tone: 'alert',
+      title: `${k.payoutsDue} payout entries due`,
+      meta: `${formatGHS(k.payoutsDue)} waiting inside the 48h window`,
+      section: 'orders',
+    })
+  if (k.pendingListings > 0)
+    exceptions.push({
+      id: 'listings',
+      icon: Package,
+      tone: 'warn',
+      title: `${k.pendingListings} listings awaiting approval`,
+      meta: 'Farmer-submitted produce is invisible to shoppers until reviewed',
+      section: 'listings',
+    })
+  if (k.openTickets > 0)
+    exceptions.push({
+      id: 'tickets',
+      icon: TriangleAlert,
+      tone: 'alert',
+      title: `${k.openTickets} open support tickets`,
+      meta: 'Customers are waiting in the ops console queue',
+      section: 'orders',
+    })
+
   return (
     <>
-      <section className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard icon={DollarSign} label="Gross merchandise value" value={cedis(k.gmv, { decimals: false })} />
-        <KpiCard icon={ShoppingBag} label="Orders" value={k.orders.toLocaleString()} />
-        <KpiCard icon={Users} label="Active customers" value={k.activeCustomers.toLocaleString()} />
-        <KpiCard icon={Truck} label="On-time delivery" value={pct(k.onTimeRate)} />
-        <KpiCard icon={DollarSign} label="Avg order value" value={cedis(k.avgOrderValue)} />
-        <KpiCard icon={Wallet} label="Payouts due" value={cedis(k.payoutsDue, { decimals: false })} />
-        <KpiCard icon={LifeBuoy} label="Open tickets" value={k.openTickets.toLocaleString()} />
-        <KpiCard icon={ClipboardCheck} label="Pending listings" value={k.pendingListings.toLocaleString()} />
+      {/* KPI band — StatBlocks over a hairline */}
+      <dl className="grid grid-cols-2 gap-x-8 gap-y-8 border-t border-[rgba(33,26,18,0.08)] pt-6 lg:grid-cols-4">
+        <StatBlock value={cedis(k.gmv, { decimals: false })} label="Gross merchandise value" />
+        <StatBlock value={k.orders.toLocaleString()} label="Orders" />
+        <StatBlock value={pct(k.onTimeRate)} label="On-time delivery" />
+        <StatBlock value={cedis(k.avgOrderValue)} label="Avg order value" />
+        <StatBlock value={cedis(k.payoutsDue, { decimals: false })} label="Payouts due" />
+        <StatBlock value={k.activeCustomers.toLocaleString()} label="Active customers" />
+        <StatBlock value={k.openTickets.toLocaleString()} label="Open tickets" />
+        <StatBlock value={k.pendingListings.toLocaleString()} label="Pending listings" />
+      </dl>
+
+      {/* Exceptions feed */}
+      <section aria-label="Exceptions" className="mt-10">
+        <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#7A3F1C]">
+          Needs attention
+        </h2>
+        {exceptions.length === 0 ? (
+          <p className="mt-3 border-t border-[rgba(33,26,18,0.08)] pt-5 text-[14px] leading-relaxed text-[#5C5247]">
+            All clear — no payouts stuck, no listings queued, no open tickets.
+          </p>
+        ) : (
+          <ul className="border-t border-[rgba(33,26,18,0.08)]">
+            {exceptions.map((e) => {
+              const Icon = e.icon
+              return (
+                <li key={e.id}>
+                  <button
+                    onClick={() => onJump(e.section)}
+                    className="group flex w-full items-center justify-between gap-4 border-b border-[rgba(33,26,18,0.08)] py-4 text-left"
+                  >
+                    <span className="flex min-w-0 items-center gap-3">
+                      <span
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border ${
+                          e.tone === 'alert'
+                            ? 'border-[rgba(185,28,28,0.35)] text-[#B91C1C]'
+                            : 'border-[rgba(180,83,9,0.35)] text-[#B45309]'
+                        }`}
+                      >
+                        <Icon width={14} height={14} />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block truncate text-[14.5px] font-semibold text-[#211A12] transition-colors group-hover:text-[#7A3F1C]">
+                          {e.title}
+                        </span>
+                        <span className="block truncate text-[12.5px] text-[#8A7E72]">{e.meta}</span>
+                      </span>
+                    </span>
+                    <span
+                      className={`ga-index shrink-0 rounded-full px-2.5 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide ${
+                        e.tone === 'alert'
+                          ? 'bg-[#B91C1C]/8 text-[#B91C1C]'
+                          : 'bg-[#B45309]/10 text-[#B45309]'
+                      }`}
+                    >
+                      Act now
+                    </span>
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        )}
       </section>
 
-      <section className="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-[1.5fr_1fr]">
-        <Panel title="Monthly revenue" subtitle="Realised GMV by month (GH₵)">
+      {/* Charts below the fold */}
+      <section className="mt-12 grid grid-cols-1 gap-x-12 gap-y-10 lg:grid-cols-[1.5fr_1fr]">
+        <div>
+          <Takeaway>
+            Revenue tracks the harvest calendar — dips align with the minor dry
+            season, not with churn.
+          </Takeaway>
           {data.revenueSeries.length > 0 ? (
             <ChartContainer
-              config={{ value: { label: 'Revenue', color: 'var(--chart-2)' } } satisfies ChartConfig}
-              className="h-[260px] w-full"
+              config={{ value: { label: 'Revenue' } as ChartConfig }}
+              className="h-[240px] w-full"
             >
               <AreaChart data={data.revenueSeries} margin={{ left: 4, right: 8, top: 8 }}>
                 <defs>
                   <linearGradient id="revFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--color-value)" stopOpacity={0.35} />
+                    <stop offset="0%" stopColor="var(--color-value)" stopOpacity={0.25} />
                     <stop offset="100%" stopColor="var(--color-value)" stopOpacity={0.02} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={8} />
-                <YAxis tickLine={false} axisLine={false} width={44} />
+                <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="rgba(33,26,18,0.08)" />
+                <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={8} fontSize={11} stroke="#8A7E72" />
+                <YAxis tickLine={false} axisLine={false} width={44} fontSize={11} stroke="#8A7E72" />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <Area dataKey="value" type="monotone" stroke="var(--color-value)" strokeWidth={2.5} fill="url(#revFill)" />
+                <Area dataKey="value" type="monotone" stroke="var(--color-value)" strokeWidth={2} fill="url(#revFill)" />
               </AreaChart>
             </ChartContainer>
           ) : (
             <EmptyChart />
           )}
-        </Panel>
+        </div>
 
-        <Panel title="Orders by status" subtitle="Current fulfilment mix">
-          <ul className="space-y-2.5">
+        <div>
+          <Takeaway>Fulfilment mix shows where orders sit right now.</Takeaway>
+          <ul className="space-y-3">
             {data.ordersByStatus.map((s) => {
               const total = data.ordersByStatus.reduce((a, b) => a + b.count, 0) || 1
               const w = Math.round((s.count / total) * 100)
               return (
                 <li key={s.status}>
-                  <div className="mb-1 flex items-center justify-between text-sm">
-                    <span className="font-semibold capitalize text-foreground">
+                  <div className="mb-1 flex items-center justify-between text-[13px]">
+                    <span className="font-medium capitalize text-[#211A12]">
                       {s.status.replace('-', ' ')}
                     </span>
-                    <span className="text-muted-foreground">{s.count}</span>
+                    <span className="ga-index text-[#8A7E72]">{s.count}</span>
                   </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-secondary">
+                  <div className="h-1 overflow-hidden rounded-full bg-[rgba(33,26,18,0.08)]">
                     <div
                       className="h-full rounded-full"
-                      style={{ width: `${w}%`, background: STATUS_COLORS[s.status] ?? '#6b7280' }}
+                      style={{ width: `${w}%`, background: STATUS_COLORS[s.status] ?? '#8A7E72' }}
                     />
                   </div>
                 </li>
               )
             })}
           </ul>
-        </Panel>
+        </div>
       </section>
 
-      <section className="mt-5">
+      <section className="mt-10">
         <RecentOrdersPanel data={data} />
       </section>
     </>
   )
 }
 
+function Takeaway({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="mb-4 max-w-xl border-l-2 border-[#DF8821]/60 pl-3 text-[13px] leading-relaxed text-[#5C5247]">
+      {children}
+    </p>
+  )
+}
+
+function StatBlock({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="border-t border-[rgba(33,26,18,0.08)] pt-3">
+      <dd className="ga-index text-[clamp(24px,2.6vw,34px)] font-semibold leading-none tracking-[-0.02em] text-[#211A12]">
+        {value}
+      </dd>
+      <dt className="mt-2 text-[12.5px] font-medium text-[#8A7E72]">{label}</dt>
+    </div>
+  )
+}
+
+/* ---------------- Orders / Farmers / Products ---------------- */
+
 function OrdersSection({ data }: { data: AdminOverview }) {
   return (
-    <section className="mt-6">
+    <section className="mt-2">
       <RecentOrdersPanel data={data} expanded />
     </section>
   )
@@ -251,106 +347,111 @@ function OrdersSection({ data }: { data: AdminOverview }) {
 function RecentOrdersPanel({ data, expanded }: { data: AdminOverview; expanded?: boolean }) {
   const rows = expanded ? data.recentOrders : data.recentOrders.slice(0, 6)
   return (
-    <Panel title="Recent orders" subtitle="Newest orders across the marketplace">
-      {rows.length > 0 ? (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="pb-2 pr-3 font-semibold">Reference</th>
-                <th className="pb-2 pr-3 font-semibold">Customer</th>
-                <th className="pb-2 pr-3 font-semibold">Placed</th>
-                <th className="pb-2 pr-3 font-semibold">Status</th>
-                <th className="pb-2 text-right font-semibold">Total</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {rows.map((o) => (
-                <tr key={o.reference}>
-                  <td className="py-2.5 pr-3 font-semibold text-foreground">{o.reference}</td>
-                  <td className="py-2.5 pr-3 text-muted-foreground">{o.customerName}</td>
-                  <td className="py-2.5 pr-3 text-muted-foreground">{shortDate(o.placedAt)}</td>
-                  <td className="py-2.5 pr-3">
-                    <span
-                      className="rounded-full px-2 py-0.5 text-xs font-semibold capitalize"
-                      style={{
-                        color: STATUS_COLORS[o.status] ?? '#6b7280',
-                        background: `${STATUS_COLORS[o.status] ?? '#6b7280'}1a`,
-                      }}
-                    >
-                      {o.status.replace('-', ' ')}
-                    </span>
-                  </td>
-                  <td className="py-2.5 text-right font-bold text-foreground">{formatGHS(o.total)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <EmptyState icon={ShoppingBag} text="No orders yet." />
+    <div>
+      {!expanded && (
+        <h2 className="mb-4 text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
+          Recent orders
+        </h2>
       )}
-    </Panel>
+      {rows.length > 0 ? (
+        <ul className="border-t border-[rgba(33,26,18,0.08)]">
+          {rows.map((o) => (
+            <li
+              key={o.reference}
+              className="grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-1 border-b border-[rgba(33,26,18,0.08)] py-3.5"
+            >
+              <span className="min-w-0">
+                <span className="flex flex-wrap items-baseline gap-x-3">
+                  <span className="ga-index text-[14px] font-semibold text-[#211A12]">
+                    {o.reference}
+                  </span>
+                  <span
+                    className="text-[12.5px]"
+                    style={{ color: STATUS_COLORS[o.status] ?? '#8A7E72' }}
+                  >
+                    {o.status.replace('-', ' ')}
+                  </span>
+                </span>
+                <span className="ga-index mt-0.5 block truncate text-[12.5px] text-[#8A7E72]">
+                  {o.customerName} · {shortDate(o.placedAt)}
+                </span>
+              </span>
+              <span className="ga-index justify-self-end text-[14px] font-semibold text-[#211A12]">
+                {formatGHS(o.total)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <EmptyRow icon={ShoppingBag} text="No orders yet." />
+      )}
+    </div>
   )
 }
 
 function FarmersSection({ data }: { data: AdminOverview }) {
   return (
-    <section className="mt-6">
-      <Panel title="Top farmers" subtitle="Ranked by gross sales (settlement ledger)">
-        {data.topFarmers.length > 0 ? (
-          <ul className="space-y-2.5">
-            {data.topFarmers.map((f, i) => (
-              <li
-                key={f.farmerId}
-                className="flex items-center justify-between gap-3 rounded-lg bg-secondary px-3 py-3 text-sm"
-              >
-                <div className="flex min-w-0 items-center gap-3">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-card text-xs font-bold text-muted-foreground">
-                    {i + 1}
-                  </span>
-                  <div className="min-w-0">
-                    <p className="truncate font-semibold text-foreground">{f.name}</p>
-                    <p className="truncate text-xs text-muted-foreground">{f.farmName} · {f.orders} orders</p>
-                  </div>
-                </div>
-                <span className="shrink-0 font-bold text-foreground">{formatGHS(f.gross)}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <EmptyState icon={Sprout} text="No settled sales yet." />
-        )}
-      </Panel>
+    <section className="mt-2">
+      <h2 className="mb-4 text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
+        Top farmers by gross sales
+      </h2>
+      {data.topFarmers.length > 0 ? (
+        <ol className="border-t border-[rgba(33,26,18,0.08)]">
+          {data.topFarmers.map((f, i) => (
+            <li
+              key={f.farmerId}
+              className="flex items-center gap-4 border-b border-[rgba(33,26,18,0.08)] py-3.5"
+            >
+              <span className="ga-index w-6 shrink-0 text-[12px] font-semibold text-[#8A7E72]">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[14.5px] font-semibold text-[#211A12]">
+                  {f.name}
+                </span>
+                <span className="ga-index block truncate text-[12.5px] text-[#8A7E72]">
+                  {f.farmName} · {f.orders} orders
+                </span>
+              </span>
+              <span className="ga-index shrink-0 text-[14.5px] font-semibold tracking-[-0.02em] text-[#211A12]">
+                {formatGHS(f.gross)}
+              </span>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <EmptyRow icon={Sprout} text="No settled sales yet." />
+      )}
     </section>
   )
 }
 
 function ProductsSection({ data }: { data: AdminOverview }) {
   return (
-    <section className="mt-6">
-      <Panel title="Top products" subtitle="By units sold across realised orders">
-        {data.topProducts.length > 0 ? (
-          <ChartContainer
-            config={{ units: { label: 'Units', color: 'var(--chart-1)' } } satisfies ChartConfig}
-            className="h-[320px] w-full"
+    <section className="mt-2">
+      <Takeaway>
+        Units sold across realised orders — stock the winners deeper next cycle.
+      </Takeaway>
+      {data.topProducts.length > 0 ? (
+        <ChartContainer
+          config={{ units: { label: 'Units' } as ChartConfig }}
+          className="h-[300px] w-full"
+        >
+          <BarChart
+            data={data.topProducts.map((p) => ({ ...p, short: p.name.split(' ').slice(0, 2).join(' ') }))}
+            layout="vertical"
+            margin={{ left: 8, right: 16 }}
           >
-            <BarChart
-              data={data.topProducts.map((p) => ({ ...p, short: p.name.split(' ').slice(0, 2).join(' ') }))}
-              layout="vertical"
-              margin={{ left: 8, right: 16 }}
-            >
-              <CartesianGrid horizontal={false} strokeDasharray="3 3" />
-              <XAxis type="number" tickLine={false} axisLine={false} />
-              <YAxis type="category" dataKey="short" tickLine={false} axisLine={false} width={110} />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <Bar dataKey="units" fill="var(--color-units)" radius={[0, 6, 6, 0]} />
-            </BarChart>
-          </ChartContainer>
-        ) : (
-          <EmptyState icon={Package} text="No product sales yet." />
-        )}
-      </Panel>
+            <CartesianGrid horizontal={false} strokeDasharray="3 3" stroke="rgba(33,26,18,0.08)" />
+            <XAxis type="number" tickLine={false} axisLine={false} fontSize={11} stroke="#8A7E72" />
+            <YAxis type="category" dataKey="short" tickLine={false} axisLine={false} width={110} fontSize={11} stroke="#8A7E72" />
+            <ChartTooltip content={<ChartTooltipContent />} />
+            <Bar dataKey="units" fill="var(--color-units)" radius={[0, 6, 6, 0]} />
+          </BarChart>
+        </ChartContainer>
+      ) : (
+        <EmptyRow icon={Package} text="No product sales yet." />
+      )}
     </section>
   )
 }
@@ -373,111 +474,79 @@ function ListingsSection() {
   }
 
   return (
-    <section className="mt-6">
-      <Panel title="Listing approvals" subtitle="Farmer-submitted produce awaiting review">
-        {isLoading ? (
-          <div className="flex h-32 items-center justify-center">
-            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-          </div>
-        ) : data && data.length > 0 ? (
-          <ul className="space-y-3">
-            {data.map((p) => (
-              <li
-                key={p.id}
-                className="flex items-center gap-3 rounded-lg border border-border bg-background p-2.5"
-              >
-                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md bg-secondary">
-                  <SmartImage src={p.image} alt={p.name} fill />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate font-semibold text-foreground">{p.name}</p>
-                  <p className="truncate text-xs text-muted-foreground">
-                    {p.farmerName} · {formatGHS(p.priceMin)}/{p.unit} · {p.category}
-                  </p>
-                </div>
-                <div className="flex shrink-0 items-center gap-1.5">
-                  <button
-                    onClick={() => decide(p.id, 'live')}
-                    disabled={busy === p.id}
-                    className="ga-press inline-flex h-8 items-center gap-1 rounded-full bg-primary px-3 text-xs font-bold text-primary-foreground disabled:opacity-50"
-                  >
-                    {busy === p.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => decide(p.id, 'rejected')}
-                    disabled={busy === p.id}
-                    aria-label={`Reject ${p.name}`}
-                    className="ga-press inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground disabled:opacity-50"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <EmptyState icon={Check} text="All caught up. New farmer listings will appear here for approval." />
-        )}
-      </Panel>
+    <section className="mt-2">
+      <h2 className="mb-4 text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
+        Listing approvals
+      </h2>
+      {isLoading ? (
+        <div className="flex h-32 items-center justify-center">
+          <Loader2 width={18} height={18} className="animate-spin text-[#8A7E72]" />
+        </div>
+      ) : data && data.length > 0 ? (
+        <ul className="border-t border-[rgba(33,26,18,0.08)]">
+          {data.map((p) => (
+            <li
+              key={p.id}
+              className="flex items-center gap-3 border-b border-[rgba(33,26,18,0.08)] py-3"
+            >
+              <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-[10px] bg-white">
+                <SmartImage src={p.image} alt={p.name} fill />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[14px] font-semibold text-[#211A12]">{p.name}</span>
+                <span className="ga-index block truncate text-[12.5px] text-[#8A7E72]">
+                  {p.farmerName} · {formatGHS(p.priceMin)}/{p.unit} · {p.category}
+                </span>
+              </span>
+              <span className="flex shrink-0 items-center gap-1.5">
+                <button
+                  onClick={() => decide(p.id, 'live')}
+                  disabled={busy === p.id}
+                  className="inline-flex h-8 items-center gap-1 rounded-full bg-[#0B3B25] px-3 text-[12px] font-semibold text-white transition-colors hover:bg-[#0F4A2E] disabled:opacity-50"
+                >
+                  {busy === p.id ? (
+                    <Loader2 width={12} height={12} className="animate-spin" />
+                  ) : (
+                    <Check width={12} height={12} />
+                  )}
+                  Approve
+                </button>
+                <button
+                  onClick={() => decide(p.id, 'rejected')}
+                  disabled={busy === p.id}
+                  aria-label={`Reject ${p.name}`}
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[rgba(33,26,18,0.15)] text-[#8A7E72] transition-colors hover:border-[rgba(185,28,28,0.4)] hover:text-[#B91C1C] disabled:opacity-50"
+                >
+                  <X width={14} height={14} />
+                </button>
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <EmptyRow icon={Check} text="All caught up. New farmer listings will appear here for approval." />
+      )}
     </section>
   )
 }
 
-function KpiCard({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: typeof Users
-  label: string
-  value: string
-}) {
-  return (
-    <div className="ga-card-hover rounded-2xl border border-border bg-card p-5">
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary">
-        <Icon className="h-5 w-5 text-primary" />
-      </div>
-      <p className="ga-display mt-3 text-3xl text-foreground">{value}</p>
-      <p className="text-sm text-muted-foreground">{label}</p>
-    </div>
-  )
-}
-
-function Panel({
-  title,
-  subtitle,
-  children,
-}: {
-  title: string
-  subtitle: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className="rounded-2xl border border-border bg-card p-5">
-      <div className="mb-4">
-        <h2 className="ga-display text-xl text-foreground">{title}</h2>
-        <p className="text-sm text-muted-foreground">{subtitle}</p>
-      </div>
-      {children}
-    </div>
-  )
-}
+/* ---------------- Small pieces ---------------- */
 
 function EmptyChart() {
   return (
-    <div className="flex h-[260px] flex-col items-center justify-center text-center">
-      <TrendingUp className="h-8 w-8 text-muted-foreground/40" />
-      <p className="mt-2 text-sm text-muted-foreground">Not enough data to chart yet.</p>
+    <div className="flex h-[220px] flex-col items-center justify-center text-center">
+      <TrendingUp width={26} height={26} className="text-[#B7AC9E]" />
+      <p className="mt-2 text-[13px] text-[#8A7E72]">Not enough data to chart yet.</p>
     </div>
   )
 }
 
-function EmptyState({ icon: Icon, text }: { icon: typeof Check; text: string }) {
+function EmptyRow({ icon: Icon, text }: { icon: typeof Check; text: string }) {
   return (
-    <div className="flex flex-col items-center py-8 text-center">
-      <Icon className="h-8 w-8 text-muted-foreground/50" />
-      <p className="mt-2 text-sm text-muted-foreground">{text}</p>
+    <div className="flex flex-col items-center border-t border-[rgba(33,26,18,0.08)] py-10 text-center">
+      <Icon width={22} height={22} className="text-[#B7AC9E]" />
+      <p className="mt-2 text-[13px] text-[#8A7E72]">{text}</p>
     </div>
   )
 }
+
