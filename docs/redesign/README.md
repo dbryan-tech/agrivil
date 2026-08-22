@@ -108,8 +108,10 @@ AgriVil's web presence should read like a **premium farm-to-table house**
 | 02 | Orders index | SHIPPED to live `/orders` | `666210a` |
 | 02 | Tracking detail | **SHIPPED to live `/orders/[ref]`** | `487886a` |
 | 02 | Account two-pane dashboard rebuild | **SHIPPED to live `/account`** | `34d9c0e` |
-| 03 | Auth shell + trust microcopy + web onboarding | QUEUED (next) | — |
-| 04 | Farmer console restructure | QUEUED | — |
+| 03 | Auth shell + customer auth + trust microcopy | **SHIPPED to live `/login` `/signup`** | `af7ad72` |
+| 03 | Forgot/reset/staff/farmer/social reskins | **SHIPPED to live** | `d8db4f7` |
+| 03 | Shop-local rebuild (real match data) | **SHIPPED to live `/local`** | `4901300` |
+| 04 | Farmer console restructure | QUEUED (next) | — |
 | 05 | Staff console frame (admin/ops/support) | QUEUED | — |
 | 06 | Recipes index/detail, bundles, farmers directory, help center | QUEUED | — |
 
