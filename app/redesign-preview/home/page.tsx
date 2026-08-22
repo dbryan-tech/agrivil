@@ -10,33 +10,38 @@ import {
   Voices,
   ClosingBand,
 } from './_parts/sections-b'
+import { SiteHeader } from './_parts/site-header'
+import { SiteFooter } from './_parts/site-footer'
+import { CartProvider } from '@/components/golden-acres/cart-context'
 
 /**
- * REDESIGN PREVIEW — home page (docs/redesign/01-brand-marketing.md)
- * Narrative order: Belief (hero) → Proof (stats) → Product (featured)
- * → People (farmers) → Mechanism (how it works) → Lifestyle (kitchen)
- * → Community (voices) → Action (closing band).
- *
- * `?flat=1` renders the hero at a fixed height so full-page captures and
- * print review show every section without viewport-relative sizing.
- * The real `app/(store)/page.tsx` is untouched until owner approval.
+ * REDESIGN PREVIEW — home page with chrome (docs/redesign/01).
+ * `?flat=1` fixes hero height for full-page captures.
+ * CartProvider is provided here because this preview route sits outside the
+ * (store) layout that normally supplies it to the header.
  */
 export default async function HomeRedesignPreview({
   searchParams,
 }: {
-  searchParams: Promise<{ flat?: string }>
+  searchParams: Promise<{ flat?: string; header?: string }>
 }) {
-  const { flat } = await searchParams
+  const { flat, header } = await searchParams
   return (
-    <main className="bg-[#F7F5F0] text-[#211A12]">
-      <NewHomeHero compact={flat === '1'} />
-      <ProofStrip />
-      <FeaturedProduce />
-      <FarmerSpotlightNew />
-      <HowItWorks />
-      <KitchenTeaser />
-      <Voices />
-      <ClosingBand />
-    </main>
+    <CartProvider>
+      <div className="bg-[#F7F5F0] text-[#211A12]">
+        <SiteHeader forceDark={header === 'dark'} />
+        <main>
+          <NewHomeHero compact={flat === '1'} />
+          <ProofStrip />
+          <FeaturedProduce />
+          <FarmerSpotlightNew />
+          <HowItWorks />
+          <KitchenTeaser />
+          <Voices />
+          <ClosingBand />
+        </main>
+        <SiteFooter />
+      </div>
+    </CartProvider>
   )
 }

@@ -31,7 +31,7 @@ export function NewHomeHero({ compact = false }: { compact?: boolean }) {
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(102deg, rgba(8,26,18,0.88) 0%, rgba(8,26,18,0.55) 38%, rgba(8,26,18,0.12) 68%, transparent 100%), linear-gradient(0deg, rgba(8,26,18,0.82) 0%, rgba(8,26,18,0.15) 42%, transparent 70%)',
+              'linear-gradient(102deg, rgba(8,26,18,0.88) 0%, rgba(8,26,18,0.55) 38%, rgba(8,26,18,0.12) 68%, transparent 100%), linear-gradient(0deg, rgba(8,26,18,0.82) 0%, rgba(8,26,18,0.15) 42%, transparent 70%), linear-gradient(180deg, rgba(8,26,18,0.6) 0%, rgba(8,26,18,0.25) 10%, transparent 22%)',
           }}
         />
       </div>
