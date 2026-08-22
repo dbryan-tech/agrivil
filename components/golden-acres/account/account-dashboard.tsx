@@ -39,6 +39,7 @@ import { productEstimate } from '@/lib/golden-acres/data'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { AvatarUpload } from '@/components/golden-acres/image-upload-control'
 import { SecurityTab } from '@/components/golden-acres/account/security-tab'
+import { UnderlineField } from '@/components/golden-acres/system'
 import {
   tierFor,
   nextTier,
@@ -57,21 +58,27 @@ type Tab =
   | 'profile'
   | 'security'
 
-const STATUS: Record<OrderStatus, { label: string; cls: string }> = {
-  placed: { label: 'Placed', cls: 'bg-secondary text-foreground' },
-  picking: { label: 'Picking', cls: 'bg-gold/15 text-gold' },
-  packed: { label: 'Packed', cls: 'bg-gold/15 text-gold' },
-  'out-for-delivery': { label: 'On the way', cls: 'bg-field/15 text-field' },
-  delivered: { label: 'Delivered', cls: 'bg-leaf/15 text-leaf' },
-  cancelled: { label: 'Cancelled', cls: 'bg-clay/10 text-clay' },
+const STATUS: Record<OrderStatus, { label: string; tone: string }> = {
+  placed: { label: 'Placed', tone: 'text-[#8A7E72]' },
+  picking: { label: 'Picking', tone: 'text-[#7A3F1C]' },
+  packed: { label: 'Packed', tone: 'text-[#7A3F1C]' },
+  'out-for-delivery': { label: 'On the way', tone: 'text-[#0B3B25] font-semibold' },
+  delivered: { label: 'Delivered', tone: 'text-[#0F7A43] font-semibold' },
+  cancelled: { label: 'Cancelled', tone: 'text-[#B91C1C]' },
 }
 
-const SUB_STATUS: Record<SubscriptionStatus, string> = {
-  active: 'bg-leaf/15 text-leaf',
-  paused: 'bg-gold/15 text-gold',
-  cancelled: 'bg-clay/10 text-clay',
+const SUB_TONE: Record<SubscriptionStatus, string> = {
+  active: 'text-[#0F7A43] font-semibold',
+  paused: 'text-[#7A3F1C]',
+  cancelled: 'text-[#B91C1C]',
 }
 
+/**
+ * Account dashboard (redesigned, docs/redesign/02 §7).
+ * Two-pane layout: quiet side nav on canvas (no tab boxes) + content pane.
+ * Every server action and context contract preserved verbatim — this is a
+ * skin-only rebuild.
+ */
 export function AccountDashboard() {
   const { account, signOut, updateAccount, wishlist } = useSession()
   const { ordersForCustomer } = useDataStore()
@@ -79,9 +86,8 @@ export function AccountDashboard() {
   const searchParams = useSearchParams()
   const [tab, setTab] = useState<Tab>('overview')
 
-  // Deep-link support: /account?tab=favorites focuses a tab directly (used by
-  // the mobile tab bar, notifications and marketing links). "wishlist" is an
-  // accepted alias for the Favorites tab.
+  // Deep-link support: /account?tab=favorites focuses a tab directly. The
+  // mobile tab bar, notifications and marketing links rely on this.
   useEffect(() => {
     const raw = searchParams.get('tab')
     if (!raw) return
@@ -109,7 +115,7 @@ export function AccountDashboard() {
     [customer.orderRefs, customer.phone, ordersForCustomer],
   )
 
-  const tabs: { id: Tab; label: string; icon: typeof User; count?: number }[] = [
+  const nav: { id: Tab; label: string; icon: typeof User; count?: number }[] = [
     { id: 'overview', label: 'Overview', icon: User },
     { id: 'orders', label: 'Orders', icon: Package, count: myOrders.length },
     { id: 'favorites', label: 'Favorites', icon: Heart, count: wishlist.length },
@@ -126,85 +132,100 @@ export function AccountDashboard() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-2 py-5 sm:px-3 lg:px-4 lg:py-6">
-      {/* Header */}
-      <div className="ga-rise flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          {customer.avatarImage ? (
-            <span className="relative h-14 w-14 overflow-hidden rounded-full ring-2 ring-gold/30">
-              <SmartImage
-                src={customer.avatarImage}
-                alt={customer.name}
-                fill
-                className="h-full w-full"
-              />
-            </span>
-          ) : (
-            <span
-              className="flex h-14 w-14 items-center justify-center rounded-full text-xl font-bold text-cream"
-              style={{ background: customer.avatarColor }}
-            >
-              {customer.name.charAt(0)}
-            </span>
-          )}
-          <div>
-            <h1 className="ga-display text-2xl font-semibold text-foreground">{customer.name}</h1>
-            <p className="text-sm text-muted-foreground">{customer.email}</p>
+    <main className="min-h-screen bg-[#F7F5F0] pb-20 pt-32">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        {/* Identity header */}
+        <header className="ga-rise flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+          <div className="flex items-center gap-4">
+            {customer.avatarImage ? (
+              <span className="relative h-14 w-14 overflow-hidden rounded-full ring-1 ring-[rgba(33,26,18,0.08)]">
+                <SmartImage
+                  src={customer.avatarImage}
+                  alt={customer.name}
+                  fill
+                  className="h-full w-full"
+                />
+              </span>
+            ) : (
+              <span
+                className="flex h-14 w-14 items-center justify-center rounded-full text-xl font-semibold text-white"
+                style={{ background: customer.avatarColor }}
+              >
+                {customer.name.charAt(0)}
+              </span>
+            )}
+            <div>
+              <p className="text-[13px] font-medium text-[#8A7E72]">My account</p>
+              <h1 className="ga-display-title mt-0.5 text-[clamp(24px,2.6vw,34px)] text-[#211A12]">
+                {customer.name}
+              </h1>
+            </div>
+          </div>
+          <button
+            onClick={handleSignOut}
+            className="inline-flex h-10 items-center gap-2 rounded-full border border-[rgba(33,26,18,0.15)] px-4 text-[13px] font-medium text-[#211A12] transition-colors duration-300 hover:border-[rgba(185,28,28,0.4)] hover:text-[#B91C1C]"
+          >
+            <LogOut width={15} height={15} />
+            Sign out
+          </button>
+        </header>
+
+        {/* Two-pane body */}
+        <div className="mt-10 grid gap-12 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-16">
+          {/* Side nav — quiet list, no tab boxes */}
+          <nav aria-label="Account sections" className="lg:sticky lg:top-28 lg:self-start">
+            <ul className="flex gap-x-5 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden lg:flex-col lg:gap-y-0.5 lg:overflow-visible lg:pb-0">
+              {nav.map((item) => {
+                const active = tab === item.id
+                const Icon = item.icon
+                return (
+                  <li key={item.id} className="shrink-0">
+                    <button
+                      onClick={() => setTab(item.id)}
+                      aria-current={active ? 'page' : undefined}
+                      className={cn(
+                        'group flex w-full items-center gap-2.5 border-b py-2.5 text-left text-[13.5px] transition-colors duration-300 lg:border-b lg:py-2.5',
+                        active
+                          ? 'border-[#211A12] font-semibold text-[#211A12]'
+                          : 'border-transparent font-medium text-[#8A7E72] hover:text-[#3D332A]',
+                      )}
+                    >
+                      <Icon width={15} height={15} className={active ? '' : 'opacity-70'} />
+                      <span className="whitespace-nowrap">{item.label}</span>
+                      {item.count !== undefined && item.count > 0 && (
+                        <span className="ga-index ml-auto hidden text-[11.5px] text-[#8A7E72] sm:inline">
+                          {item.count}
+                        </span>
+                      )}
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          </nav>
+
+          {/* Content pane */}
+          <div className="min-w-0">
+            {tab === 'overview' && <Overview customer={customer} orders={myOrders} setTab={setTab} />}
+            {tab === 'orders' && <Orders orders={myOrders} />}
+            {tab === 'favorites' && <Favorites setTab={setTab} />}
+            {tab === 'rewards' && <Rewards customer={customer} orders={myOrders} />}
+            {tab === 'addresses' && (
+              <Addresses customer={customer} updateAccount={updateAccount} />
+            )}
+            {tab === 'boxes' && <Boxes customer={customer} updateAccount={updateAccount} />}
+            {tab === 'profile' && (
+              <ProfileSettings customer={customer} updateAccount={updateAccount} />
+            )}
+            {tab === 'security' && <SecurityTab />}
           </div>
         </div>
-        <button
-          onClick={handleSignOut}
-          className="flex h-10 items-center gap-2 rounded-full border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
-        >
-          <LogOut className="h-4 w-4" />
-          Sign out
-        </button>
       </div>
-
-      {/* Tabs */}
-      <div className="mt-8 flex gap-2 overflow-x-auto border-b border-border pb-px">
-        {tabs.map((t) => {
-          const active = tab === t.id
-          return (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={cn(
-                'flex shrink-0 items-center gap-2 border-b-2 px-4 py-3 text-sm font-semibold transition-colors',
-                active
-                  ? 'border-field text-field'
-                  : 'border-transparent text-muted-foreground hover:text-foreground',
-              )}
-            >
-              <t.icon className="h-4 w-4" />
-              {t.label}
-              {t.count !== undefined && (
-                <span className="rounded-full bg-secondary px-1.5 text-xs font-bold text-foreground">
-                  {t.count}
-                </span>
-              )}
-            </button>
-          )
-        })}
-      </div>
-
-      <div className="mt-8">
-        {tab === 'overview' && <Overview customer={customer} orders={myOrders} setTab={setTab} />}
-        {tab === 'orders' && <Orders orders={myOrders} />}
-        {tab === 'favorites' && <Favorites setTab={setTab} />}
-        {tab === 'rewards' && <Rewards customer={customer} orders={myOrders} />}
-        {tab === 'addresses' && (
-          <Addresses customer={customer} updateAccount={updateAccount} />
-        )}
-        {tab === 'boxes' && <Boxes customer={customer} updateAccount={updateAccount} />}
-        {tab === 'profile' && (
-          <ProfileSettings customer={customer} updateAccount={updateAccount} />
-        )}
-        {tab === 'security' && <SecurityTab />}
-      </div>
-    </div>
+    </main>
   )
 }
+
+/* ------------------------------ Profile ---------------------------------- */
 
 function ProfileSettings({
   customer,
@@ -238,12 +259,12 @@ function ProfileSettings({
   }
 
   return (
-    <div className="ga-rise max-w-xl space-y-6">
-      <div className="rounded-2xl border border-border bg-card p-6">
-        <h2 className="ga-display text-lg font-semibold text-foreground">
+    <section className="ga-rise max-w-xl space-y-10" aria-label="Profile settings">
+      <div>
+        <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
           Profile photo
         </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-2 text-[13.5px] text-[#5C5247]">
           Add a photo so the team recognises you on delivery.
         </p>
         <div className="mt-4">
@@ -256,65 +277,55 @@ function ProfileSettings({
         </div>
       </div>
 
-      <div className="space-y-4 rounded-2xl border border-border bg-card p-6">
-        <h2 className="ga-display text-lg font-semibold text-foreground">
+      <div className="space-y-6 border-t border-[rgba(33,26,18,0.08)] pt-8">
+        <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
           Personal details
         </h2>
-        <label className="block">
-          <span className="mb-1.5 block text-sm font-semibold text-foreground">
-            Full name
-          </span>
-          <input
-            className="ga-input"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            autoComplete="name"
-          />
-        </label>
-        <label className="block">
-          <span className="mb-1.5 block text-sm font-semibold text-foreground">
-            Email
-          </span>
-          <input
-            type="email"
-            className="ga-input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoComplete="email"
-          />
-        </label>
-        <label className="block">
-          <span className="mb-1.5 block text-sm font-semibold text-foreground">
-            Mobile number
-          </span>
-          <input
-            inputMode="tel"
-            className="ga-input"
-            placeholder="+233 24 555 0142"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            autoComplete="tel"
-          />
-        </label>
+        <UnderlineField
+          id="pf-name"
+          label="Full name"
+          value={name}
+          onChange={setName}
+          autoComplete="name"
+        />
+        <UnderlineField
+          id="pf-email"
+          label="Email"
+          type="email"
+          value={email}
+          onChange={setEmail}
+          autoComplete="email"
+        />
+        <UnderlineField
+          id="pf-phone"
+          label="Mobile number"
+          value={phone}
+          onChange={setPhone}
+          placeholder="+233 24 555 0142"
+          inputMode="tel"
+          autoComplete="tel"
+        />
 
         <button
           type="button"
           onClick={save}
           disabled={!dirty}
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-field text-base font-bold text-cream transition-transform hover:-translate-y-0.5 disabled:opacity-50"
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#0B3B25] px-8 text-[15px] font-semibold text-white transition-all duration-300 hover:bg-[#0F4A2E] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40"
         >
           {saved ? (
             <>
-              <Check className="h-4 w-4" /> Saved
+              <Check width={16} height={16} /> Saved
             </>
           ) : (
             'Save changes'
           )}
         </button>
       </div>
-    </div>
+    </section>
   )
 }
+
+/* ------------------------------ Overview ---------------------------------- */
 
 function Overview({
   customer,
@@ -325,45 +336,93 @@ function Overview({
   orders: Order[]
   setTab: (t: Tab) => void
 }) {
+  const nextBox = customer.subscriptions.find(
+    (s) => s.status === 'active' && s.nextDelivery,
+  )
+  const lastOrder = orders[0]
   const stats = [
-    { label: 'Loyalty points', value: customer.loyaltyPoints.toLocaleString(), icon: Star },
-    { label: 'Orders placed', value: String(orders.length), icon: Package },
+    { label: 'Loyalty points', value: customer.loyaltyPoints.toLocaleString(), tab: 'rewards' as Tab },
+    { label: 'Orders placed', value: String(orders.length), tab: 'orders' as Tab },
     {
       label: 'Active boxes',
       value: String(customer.subscriptions.filter((s) => s.status === 'active').length),
-      icon: Repeat,
+      tab: 'boxes' as Tab,
     },
   ]
   return (
-    <div className="ga-rise space-y-6">
-      <div className="grid gap-4 sm:grid-cols-3">
+    <div className="ga-rise space-y-12">
+      {/* Greeting + next delivery moment */}
+      <section aria-label="Summary">
+        <h2 className="ga-display-title text-[clamp(22px,2.4vw,30px)] text-[#211A12]">
+          {greeting()}, {customer.name.split(' ')[0]}.
+        </h2>
+        <p className="mt-2 max-w-md text-[14.5px] leading-relaxed text-[#5C5247]">
+          {nextBox ? (
+            <>
+              Your{' '}
+              <button
+                onClick={() => setTab('boxes')}
+                className="font-semibold text-[#0B3B25] underline decoration-[rgba(11,59,37,0.35)] underline-offset-4 hover:decoration-[#0B3B25]"
+              >
+                {nextBox.bundleName}
+              </button>{' '}
+              arrives {shortDate(nextBox.nextDelivery)}.
+            </>
+          ) : lastOrder ? (
+            <>
+              Last order {lastOrder.reference} ·{' '}
+              {STATUS[lastOrder.status].label.toLowerCase()}.
+            </>
+          ) : (
+            'Your first fresh basket is one shop away.'
+          )}
+        </p>
+      </section>
+
+      {/* Stats over hairlines */}
+      <dl className="grid grid-cols-3 gap-6 border-t border-[rgba(33,26,18,0.08)] pt-6">
         {stats.map((s) => (
-          <div key={s.label} className="rounded-2xl border border-border bg-card p-5">
-            <s.icon className="h-5 w-5 text-gold" />
-            <p className="mt-3 ga-display text-3xl font-semibold text-foreground">{s.value}</p>
-            <p className="text-sm text-muted-foreground">{s.label}</p>
+          <div key={s.label}>
+            <button onClick={() => setTab(s.tab)} className="block text-left transition-opacity hover:opacity-75">
+              <dd className="ga-index text-[clamp(26px,3vw,40px)] font-semibold leading-none tracking-[-0.02em] text-[#211A12]">
+                {s.value}
+              </dd>
+              <dt className="mt-2 text-[12.5px] font-medium text-[#8A7E72]">{s.label}</dt>
+            </button>
           </div>
         ))}
-      </div>
+      </dl>
+
       <BuyAgain orders={orders} />
-      <div className="rounded-2xl border border-border bg-field p-6 text-cream">
-        <p className="text-sm font-semibold uppercase tracking-wider text-gold">
+
+      {/* Freshness promise — quiet band, not a card */}
+      <section className="border-t border-[rgba(33,26,18,0.08)] pt-8" aria-label="Freshness promise">
+        <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#7A3F1C]">
           Freshness Promise
-        </p>
-        <p className="mt-2 max-w-lg text-pretty leading-relaxed">
-          Not happy with a batch? Report it from any order and get an instant Mobile Money
-          refund — no questions, no waiting.
+        </h2>
+        <p className="mt-3 max-w-lg text-[14.5px] leading-relaxed text-[#5C5247]">
+          Not happy with a batch? Report it from any order and get an instant
+          Mobile Money refund — no questions, no waiting.
         </p>
         <button
           onClick={() => setTab('orders')}
-          className="mt-4 rounded-full bg-cream px-5 py-2 text-sm font-bold text-field transition-transform hover:-translate-y-0.5"
+          className="mt-4 inline-flex h-10 items-center rounded-full bg-[#0B3B25] px-5 text-[13.5px] font-semibold text-white transition-all duration-300 hover:bg-[#0F4A2E]"
         >
           View orders
         </button>
-      </div>
+      </section>
     </div>
   )
 }
+
+function greeting() {
+  const h = new Date().getHours()
+  if (h < 12) return 'Good morning'
+  if (h < 17) return 'Good afternoon'
+  return 'Good evening'
+}
+
+/* ------------------------------- Orders ----------------------------------- */
 
 function Orders({ orders }: { orders: Order[] }) {
   const { add } = useCart()
@@ -391,78 +450,79 @@ function Orders({ orders }: { orders: Order[] }) {
   }
 
   return (
-    <div className="ga-rise space-y-4">
-      {orders.map((o) => (
-        <div key={o.id} className="rounded-2xl border border-border bg-card p-5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="font-bold text-foreground">{o.reference}</p>
-              <p className="text-sm text-muted-foreground">{shortDate(o.placedAt)}</p>
+    <div className="ga-rise">
+      <ul className="border-t border-[rgba(33,26,18,0.08)]">
+        {orders.map((o) => (
+          <li
+            key={o.id}
+            className="border-b border-[rgba(33,26,18,0.08)] py-5"
+          >
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <div className="flex flex-wrap items-baseline gap-x-3">
+                <Link
+                  href={`/orders/${o.reference}`}
+                  className="ga-index text-[15px] font-semibold text-[#211A12] transition-colors hover:text-[#7A3F1C]"
+                >
+                  #{o.reference}
+                </Link>
+                <span className={`text-[13px] ${STATUS[o.status].tone}`}>
+                  {STATUS[o.status].label}
+                </span>
+                <span className="ga-index text-[12.5px] text-[#8A7E72]">
+                  {shortDate(o.placedAt)}
+                </span>
+              </div>
+              <span className="ga-index text-[15px] font-semibold text-[#211A12]">
+                {cedis(o.total)}
+              </span>
             </div>
-            <span
-              className={cn(
-                'rounded-full px-3 py-1 text-xs font-bold',
-                STATUS[o.status].cls,
-              )}
-            >
-              {STATUS[o.status].label}
-            </span>
-          </div>
-          <ul className="mt-4 space-y-1.5 text-sm text-foreground">
-            {o.items.map((it) => (
-              <li key={it.productId} className="flex justify-between">
-                <span>
-                  {it.qty} × {it.name}
-                </span>
-                <span className="text-muted-foreground">
-                  {cedis(it.priceFinal ?? it.priceEstimate)}
-                </span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
-            <span className="text-sm text-muted-foreground">
-              Total <span className="font-bold text-foreground">{cedis(o.total)}</span>
-            </span>
-            <div className="flex items-center gap-2">
+
+            {/* Item summary line */}
+            <p className="ga-index mt-1 truncate text-[12.5px] text-[#8A7E72]">
+              {o.items.map((it) => `${it.qty}× ${it.name}`).join(' · ')}
+            </p>
+
+            <div className="mt-3 flex flex-wrap items-center gap-2">
               {o.status === 'delivered' && !o.feedbackAt ? (
                 <Link
                   href={`/orders/${o.reference}#feedback`}
-                  className="flex items-center gap-1.5 rounded-full bg-clay px-4 py-2 text-sm font-bold text-cream transition-transform hover:-translate-y-0.5"
+                  className="inline-flex h-9 items-center gap-1.5 rounded-full border border-[rgba(122,63,28,0.35)] px-4 text-[13px] font-medium text-[#7A3F1C] transition-colors duration-300 hover:bg-[#7A3F1C]/5"
                 >
-                  <Star className="h-4 w-4 fill-cream" />
+                  <Star width={13} height={13} />
                   Rate &amp; review
                 </Link>
               ) : o.status !== 'cancelled' ? (
                 <Link
                   href={`/orders/${o.reference}`}
-                  className="flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-bold text-foreground transition-colors hover:bg-secondary"
+                  className="inline-flex h-9 items-center gap-1.5 rounded-full border border-[rgba(33,26,18,0.15)] px-4 text-[13px] font-medium text-[#211A12] transition-colors duration-300 hover:border-[rgba(11,59,37,0.45)] hover:text-[#0B3B25]"
                 >
-                  <MapPinned className="h-4 w-4 text-field" />
+                  <MapPinned width={13} height={13} className="text-[#0B3B25]" />
                   {o.status === 'delivered' ? 'View' : 'Track'}
                 </Link>
               ) : null}
               <button
                 onClick={() => reorder(o.reference, o.items.map((i) => i.productId))}
-                className="flex items-center gap-1.5 rounded-full bg-field px-4 py-2 text-sm font-bold text-cream transition-transform hover:-translate-y-0.5"
+                className="inline-flex h-9 items-center gap-1.5 rounded-full bg-[#0B3B25] px-4 text-[13px] font-medium text-white transition-all duration-300 hover:bg-[#0F4A2E]"
               >
                 {reordered === o.reference ? (
                   <>
-                    <Check className="h-4 w-4" /> Added
+                    <Check width={13} height={13} /> Added
                   </>
                 ) : (
                   <>
-                    <RotateCcw className="h-4 w-4" /> Reorder
+                    <RotateCcw width={13} height={13} /> Reorder
                   </>
                 )}
               </button>
             </div>
-          </div>
-        </div>
-      ))}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
+
+/* ----------------------------- Addresses ---------------------------------- */
 
 function Addresses({
   customer,
@@ -487,7 +547,7 @@ function Addresses({
   }
 
   return (
-    <div className="ga-rise space-y-4">
+    <div className="ga-rise space-y-6">
       {customer.addresses.length === 0 && !editing && (
         <EmptyState
           icon={MapPin}
@@ -496,44 +556,48 @@ function Addresses({
         />
       )}
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <ul className="border-t border-[rgba(33,26,18,0.08)]">
         {customer.addresses.map((a) => (
-          <div key={a.id} className="rounded-2xl border border-border bg-card p-5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-foreground">{a.label}</span>
+          <li
+            key={a.id}
+            className="flex items-start justify-between gap-4 border-b border-[rgba(33,26,18,0.08)] py-5"
+          >
+            <div className="min-w-0">
+              <div className="flex items-baseline gap-2.5">
+                <span className="text-[15px] font-semibold text-[#211A12]">{a.label}</span>
                 {a.isDefault && (
-                  <span className="rounded-full bg-leaf/15 px-2 py-0.5 text-xs font-bold text-leaf-ink">
+                  <span className="rounded-full bg-[rgba(15,122,67,0.08)] px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide text-[#0F7A43]">
                     Default
                   </span>
                 )}
               </div>
-              <div className="flex gap-1">
-                <button
-                  onClick={() => setEditing(a)}
-                  className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground"
-                  aria-label="Edit address"
-                >
-                  <Pencil className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => remove(a.id)}
-                  className="rounded-lg p-2 text-muted-foreground hover:bg-clay/10 hover:text-clay"
-                  aria-label="Delete address"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
+              <p className="mt-1 text-[13.5px] text-[#3D332A]">
+                {a.recipient} · {a.phone}
+              </p>
+              <p className="ga-index mt-0.5 text-[12.5px] text-[#8A7E72]">
+                <span className="font-semibold text-[#0B3B25]">{a.ghanaPostGPS}</span> ·{' '}
+                {a.area}, {a.region}
+              </p>
             </div>
-            <p className="mt-2 text-sm text-foreground">{a.recipient}</p>
-            <p className="text-sm text-muted-foreground">{a.phone}</p>
-            <p className="mt-1 text-sm font-semibold text-field">{a.ghanaPostGPS}</p>
-            <p className="text-sm text-muted-foreground">
-              {a.area}, {a.region}
-            </p>
-          </div>
+            <div className="flex shrink-0 gap-1 pt-1">
+              <button
+                onClick={() => setEditing(a)}
+                className="rounded-lg p-2 text-[#8A7E72] transition-colors hover:bg-white hover:text-[#211A12]"
+                aria-label={`Edit ${a.label} address`}
+              >
+                <Pencil width={15} height={15} />
+              </button>
+              <button
+                onClick={() => remove(a.id)}
+                className="rounded-lg p-2 text-[#8A7E72] transition-colors hover:bg-[#B91C1C]/5 hover:text-[#B91C1C]"
+                aria-label={`Delete ${a.label} address`}
+              >
+                <Trash2 width={15} height={15} />
+              </button>
+            </div>
+          </li>
         ))}
-      </div>
+      </ul>
 
       {editing ? (
         <AddressForm
@@ -544,9 +608,9 @@ function Addresses({
       ) : (
         <button
           onClick={() => setEditing('new')}
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border text-sm font-semibold text-field transition-colors hover:bg-secondary"
+          className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-dashed border-[rgba(33,26,18,0.25)] px-6 text-[13.5px] font-medium text-[#0B3B25] transition-colors duration-300 hover:border-[rgba(11,59,37,0.55)]"
         >
-          <Plus className="h-4 w-4" /> Add address
+          <Plus width={15} height={15} /> Add address
         </button>
       )}
     </div>
@@ -580,33 +644,43 @@ function AddressForm({
     setForm((f) => ({ ...f, [k]: v }))
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-5">
-      <div className="grid gap-3 sm:grid-cols-2">
-        <input className="ga-input" placeholder="Label (Home, Office)" value={form.label} onChange={(e) => set('label', e.target.value)} />
-        <input className="ga-input" placeholder="Recipient name" value={form.recipient} onChange={(e) => set('recipient', e.target.value)} />
-        <input className="ga-input" placeholder="Phone" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
-        <input className="ga-input" placeholder="GhanaPostGPS (GA-183-4250)" value={form.ghanaPostGPS} onChange={(e) => set('ghanaPostGPS', e.target.value)} />
-        <input className="ga-input sm:col-span-2" placeholder="Area / neighbourhood" value={form.area} onChange={(e) => set('area', e.target.value)} />
+    <div className="space-y-5 rounded-[20px] border border-[rgba(33,26,18,0.06)] bg-[#FDFDFB] p-6">
+      <div className="grid gap-5 sm:grid-cols-2 sm:gap-x-6">
+        <UnderlineField id="af-label" label="Label" value={form.label} onChange={(v) => set('label', v)} placeholder="Home, Office" />
+        <UnderlineField id="af-recipient" label="Recipient name" value={form.recipient} onChange={(v) => set('recipient', v)} />
+        <UnderlineField id="af-phone" label="Phone" value={form.phone} onChange={(v) => set('phone', v)} inputMode="tel" />
+        <UnderlineField id="af-gps" label="GhanaPostGPS" value={form.ghanaPostGPS} onChange={(v) => set('ghanaPostGPS', v.toUpperCase())} placeholder="GA-183-4250" />
+        <UnderlineField id="af-area" label="Area / neighbourhood" value={form.area} onChange={(v) => set('area', v)} className="sm:col-span-2" />
       </div>
-      <label className="mt-3 flex items-center gap-2 text-sm font-medium text-foreground">
-        <input type="checkbox" checked={form.isDefault} onChange={(e) => set('isDefault', e.target.checked)} className="h-4 w-4 accent-[var(--ga-field)]" />
+      <label className="flex items-center gap-2 text-[13.5px] font-medium text-[#211A12]">
+        <input
+          type="checkbox"
+          checked={form.isDefault}
+          onChange={(e) => set('isDefault', e.target.checked)}
+          className="h-4 w-4 accent-[#0B3B25]"
+        />
         Set as default address
       </label>
-      <div className="mt-4 flex gap-2">
+      <div className="flex gap-2">
         <button
           onClick={() => onSave({ ...form, id: form.id || `addr-${Date.now()}` })}
           disabled={!form.label || !form.ghanaPostGPS}
-          className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-field text-sm font-bold text-cream disabled:opacity-60"
+          className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#0B3B25] px-6 text-[14px] font-semibold text-white transition-all duration-300 hover:bg-[#0F4A2E] disabled:pointer-events-none disabled:opacity-40"
         >
-          <Check className="h-4 w-4" /> Save address
+          <Check width={15} height={15} /> Save address
         </button>
-        <button onClick={onCancel} className="flex h-11 items-center justify-center gap-2 rounded-xl border border-border px-4 text-sm font-semibold text-foreground hover:bg-secondary">
-          <X className="h-4 w-4" /> Cancel
+        <button
+          onClick={onCancel}
+          className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[rgba(33,26,18,0.15)] px-5 text-[14px] font-medium text-[#211A12] transition-colors duration-300 hover:border-[rgba(185,28,28,0.4)] hover:text-[#B91C1C]"
+        >
+          <X width={15} height={15} /> Cancel
         </button>
       </div>
     </div>
   )
 }
+
+/* ------------------------------- Boxes ------------------------------------ */
 
 function Boxes({
   customer,
@@ -635,50 +709,64 @@ function Boxes({
   }
 
   return (
-    <div className="ga-rise grid gap-4 sm:grid-cols-2">
-      {customer.subscriptions.map((s) => (
-        <div key={s.id} className="rounded-2xl border border-border bg-card p-5">
-          <div className="flex items-center justify-between">
-            <p className="font-bold text-foreground">{s.bundleName}</p>
-            <span className={cn('rounded-full px-3 py-1 text-xs font-bold capitalize', SUB_STATUS[s.status])}>
-              {s.status}
-            </span>
-          </div>
-          <p className="mt-1 text-sm capitalize text-muted-foreground">
-            {s.frequency} · {cedis(s.price)} / delivery
-          </p>
-          {s.status !== 'cancelled' && (
-            <p className="mt-2 text-sm text-foreground">
-              Next delivery <span className="font-semibold">{shortDate(s.nextDelivery)}</span>
+    <div className="ga-rise">
+      <ul className="border-t border-[rgba(33,26,18,0.08)]">
+        {customer.subscriptions.map((s) => (
+          <li key={s.id} className="border-b border-[rgba(33,26,18,0.08)] py-5">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <span className="text-[15px] font-semibold text-[#211A12]">
+                {s.bundleName}
+              </span>
+              <span className={cn('text-[13px] capitalize', SUB_TONE[s.status])}>
+                {s.status}
+              </span>
+            </div>
+            <p className="ga-index mt-1 text-[12.5px] text-[#8A7E72]">
+              {s.frequency} · {cedis(s.price)} / delivery
+              {s.status !== 'cancelled' && ` · next ${shortDate(s.nextDelivery)}`}
             </p>
-          )}
-          <div className="mt-4 flex gap-2">
-            {s.status === 'active' && (
-              <button onClick={() => setStatus(s.id, 'paused')} className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-border py-2 text-sm font-semibold text-foreground hover:bg-secondary">
-                <Pause className="h-4 w-4" /> Pause
-              </button>
-            )}
-            {s.status === 'paused' && (
-              <button onClick={() => setStatus(s.id, 'active')} className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-field py-2 text-sm font-bold text-cream">
-                <Play className="h-4 w-4" /> Resume
-              </button>
-            )}
-            {s.status !== 'cancelled' && (
-              <button onClick={() => setStatus(s.id, 'cancelled')} className="flex items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold text-clay hover:bg-clay/10">
-                Cancel
-              </button>
-            )}
-            {s.status === 'cancelled' && (
-              <button onClick={() => setStatus(s.id, 'active')} className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-field py-2 text-sm font-bold text-cream">
-                <RotateCcw className="h-4 w-4" /> Reactivate
-              </button>
-            )}
-          </div>
-        </div>
-      ))}
+            <div className="mt-3 flex flex-wrap gap-2">
+              {s.status === 'active' && (
+                <button
+                  onClick={() => setStatus(s.id, 'paused')}
+                  className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full border border-[rgba(33,26,18,0.15)] px-4 text-[13px] font-medium text-[#211A12] transition-colors duration-300 hover:border-[rgba(122,63,28,0.45)] hover:text-[#7A3F1C]"
+                >
+                  <Pause width={13} height={13} /> Pause
+                </button>
+              )}
+              {s.status === 'paused' && (
+                <button
+                  onClick={() => setStatus(s.id, 'active')}
+                  className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full bg-[#0B3B25] px-4 text-[13px] font-medium text-white transition-all duration-300 hover:bg-[#0F4A2E]"
+                >
+                  <Play width={13} height={13} /> Resume
+                </button>
+              )}
+              {s.status !== 'cancelled' && (
+                <button
+                  onClick={() => setStatus(s.id, 'cancelled')}
+                  className="inline-flex h-9 items-center justify-center rounded-full px-4 text-[13px] font-medium text-[#B91C1C] transition-colors duration-300 hover:bg-[#B91C1C]/5"
+                >
+                  Cancel
+                </button>
+              )}
+              {s.status === 'cancelled' && (
+                <button
+                  onClick={() => setStatus(s.id, 'active')}
+                  className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full bg-[#0B3B25] px-4 text-[13px] font-medium text-white transition-all duration-300 hover:bg-[#0F4A2E]"
+                >
+                  <RotateCcw width={13} height={13} /> Reactivate
+                </button>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
+
+/* ----------------------------- EmptyState --------------------------------- */
 
 function EmptyState({
   icon: Icon,
@@ -692,25 +780,26 @@ function EmptyState({
   cta?: { label: string; href: string }
 }) {
   return (
-    <div className="ga-rise flex flex-col items-center rounded-2xl border border-dashed border-border bg-card px-6 py-14 text-center">
-      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary text-field">
-        <Icon className="h-7 w-7" />
+    <div className="ga-rise flex flex-col items-center py-12 text-center">
+      <span className="flex h-14 w-14 items-center justify-center rounded-full border border-[rgba(33,26,18,0.12)] text-[#5C5247]">
+        <Icon width={22} height={22} />
       </span>
-      <h3 className="ga-display mt-4 text-xl font-semibold text-foreground">{title}</h3>
-      <p className="mt-1 max-w-sm text-sm leading-relaxed text-muted-foreground">{body}</p>
+      <h3 className="ga-display-title mt-5 text-[20px] text-[#211A12]">{title}</h3>
+      <p className="mt-2 max-w-sm text-[14px] leading-relaxed text-[#5C5247]">{body}</p>
       {cta && (
-        <a
+        <Link
           href={cta.href}
-          className="mt-5 rounded-full bg-field px-6 py-2.5 text-sm font-bold text-cream transition-transform hover:-translate-y-0.5"
+          className="mt-6 inline-flex h-11 items-center rounded-full bg-[#0B3B25] px-6 text-[14px] font-semibold text-white transition-all duration-300 hover:bg-[#0F4A2E]"
         >
           {cta.label}
-        </a>
+        </Link>
       )}
     </div>
   )
 }
 
-// ---- Buy again: most-recently purchased items, one-tap re-add ----
+/* ------------------------------ BuyAgain ---------------------------------- */
+
 function BuyAgain({ orders }: { orders: Order[] }) {
   const { add } = useCart()
   const { products: catalog } = useDataStore()
@@ -731,36 +820,41 @@ function BuyAgain({ orders }: { orders: Order[] }) {
   if (items.length === 0) return null
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-5">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="ga-display text-lg font-semibold text-foreground">Buy again</h2>
-        <Link href="/shop" className="text-sm font-semibold text-field hover:underline">
+    <section aria-label="Buy again" className="border-t border-[rgba(33,26,18,0.08)] pt-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
+          Buy again
+        </h2>
+        <Link
+          href="/shop"
+          className="text-[13px] font-medium text-[#0B3B25] underline decoration-[rgba(11,59,37,0.35)] underline-offset-4 transition-colors hover:decoration-[#0B3B25]"
+        >
           Browse all
         </Link>
       </div>
-      <div className="flex gap-3 overflow-x-auto pb-1">
+      <div className="mt-4 flex gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {items.map((p) => {
           const just = added === p.id
           return (
             <div
               key={p.id}
-              className="flex w-36 shrink-0 flex-col overflow-hidden rounded-xl border border-border bg-background"
+              className="flex w-36 shrink-0 flex-col overflow-hidden rounded-[16px] border border-[rgba(33,26,18,0.05)] bg-[#FDFDFB]"
             >
               <Link href={`/shop/${p.slug}`} className="relative block aspect-square">
                 <SmartImage src={p.image} alt={p.name} fill className="object-cover" />
               </Link>
               <div className="flex flex-1 flex-col p-2.5">
-                <p className="line-clamp-1 text-sm font-semibold text-foreground">{p.name}</p>
-                <p className="text-xs text-muted-foreground">{formatGHS(productEstimate(p))}</p>
+                <p className="line-clamp-1 text-[13px] font-semibold text-[#211A12]">{p.name}</p>
+                <p className="ga-index text-[12px] text-[#8A7E72]">{formatGHS(productEstimate(p))}</p>
                 <button
                   onClick={() => {
                     add(p, 1)
                     setAdded(p.id)
                     setTimeout(() => setAdded((a) => (a === p.id ? null : a)), 1200)
                   }}
-                  className="mt-2 flex items-center justify-center gap-1 rounded-full bg-secondary px-3 py-1.5 text-xs font-bold text-foreground transition-colors hover:bg-field hover:text-cream"
+                  className="mt-2 inline-flex items-center justify-center gap-1 rounded-full border border-[rgba(33,26,18,0.15)] px-3 py-1.5 text-[12px] font-medium text-[#211A12] transition-all duration-300 hover:border-[rgba(11,59,37,0.45)] hover:text-[#0B3B25]"
                 >
-                  {just ? <Check className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                  {just ? <Check width={12} height={12} /> : <Plus width={12} height={12} />}
                   {just ? 'Added' : 'Add'}
                 </button>
               </div>
@@ -768,12 +862,14 @@ function BuyAgain({ orders }: { orders: Order[] }) {
           )
         })}
       </div>
-    </div>
+    </section>
   )
 }
 
-// ---- Favorites tab: saved produce with quick add + remove ----
+/* ------------------------------ Favorites ---------------------------------- */
+
 function Favorites({ setTab }: { setTab: (t: Tab) => void }) {
+  void setTab
   const { wishlist, toggleWishlist } = useSession()
   const { products: catalog } = useDataStore()
   const { add } = useCart()
@@ -795,56 +891,57 @@ function Favorites({ setTab }: { setTab: (t: Tab) => void }) {
   }
 
   return (
-    <div className="ga-rise grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+    <div className="ga-rise grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 xl:grid-cols-4">
       {items.map((p) => {
         const just = added === p.id
         return (
-          <div
-            key={p.id}
-            className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card"
-          >
-            <Link href={`/shop/${p.slug}`} className="relative block aspect-square">
-              <SmartImage src={p.image} alt={p.name} fill className="object-cover" />
+          <div key={p.id} className="flex flex-col">
+            <Link
+              href={`/shop/${p.slug}`}
+              className="relative block aspect-square overflow-hidden rounded-[16px] border border-[rgba(33,26,18,0.05)] bg-white"
+            >
+              <SmartImage src={p.image} alt={p.name} fill className="object-cover transition-transform duration-700 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03]" />
             </Link>
-            <div className="flex flex-1 flex-col p-3">
-              <Link href={`/shop/${p.slug}`}>
-                <p className="line-clamp-1 font-semibold text-foreground">{p.name}</p>
+            <div className="mt-2.5 flex flex-col">
+              <Link
+                href={`/shop/${p.slug}`}
+                className="line-clamp-1 text-[14px] font-semibold tracking-[-0.01em] text-[#211A12] transition-colors hover:text-[#7A3F1C]"
+              >
+                {p.name}
               </Link>
-              <p className="text-sm text-muted-foreground">{formatGHS(productEstimate(p))}</p>
-              <div className="mt-3 flex items-center gap-2">
+              <p className="ga-index mt-0.5 text-[13px] text-[#8A7E72]">
+                {formatGHS(productEstimate(p))}
+              </p>
+              <div className="mt-2.5 flex items-center gap-2">
                 <button
                   onClick={() => {
                     add(p, 1)
                     setAdded(p.id)
                     setTimeout(() => setAdded((a) => (a === p.id ? null : a)), 1200)
                   }}
-                  className="flex flex-1 items-center justify-center gap-1 rounded-full bg-field px-3 py-2 text-sm font-bold text-cream transition-transform hover:-translate-y-0.5"
+                  className="inline-flex h-9 flex-1 items-center justify-center gap-1 rounded-full bg-[#0B3B25] text-[12.5px] font-medium text-white transition-all duration-300 hover:bg-[#0F4A2E]"
                 >
-                  {just ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                  {just ? <Check width={13} height={13} /> : <Plus width={13} height={13} />}
                   {just ? 'Added' : 'Add'}
                 </button>
                 <button
                   onClick={() => toggleWishlist(p.id)}
                   aria-label={`Remove ${p.name} from favorites`}
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border text-[var(--ga-terracotta)] transition-colors hover:bg-secondary"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[rgba(33,26,18,0.15)] text-[#B91C1C] transition-colors duration-300 hover:bg-[#B91C1C]/5"
                 >
-                  <Heart className="h-4 w-4" style={{ fill: 'currentColor' }} />
+                  <Heart width={14} height={14} style={{ fill: 'currentColor' }} />
                 </button>
               </div>
             </div>
           </div>
         )
       })}
-      <button
-        onClick={() => setTab('orders')}
-        className="hidden"
-        aria-hidden
-      />
     </div>
   )
 }
 
-// ---- Rewards tab: loyalty tier progress + how points work ----
+/* ------------------------------- Rewards ----------------------------------- */
+
 function Rewards({ customer, orders }: { customer: CustomerAccount; orders: Order[] }) {
   const points = customer.loyaltyPoints
   const tier = tierFor(points)
@@ -854,70 +951,77 @@ function Rewards({ customer, orders }: { customer: CustomerAccount; orders: Orde
   const pointsPerCedi = Math.round(1 / POINT_VALUE_GHS)
 
   return (
-    <div className="ga-rise space-y-6">
-      {/* Tier card */}
-      <div
-        className="overflow-hidden rounded-2xl p-6 text-cream"
-        style={{ background: tier.color }}
+    <div className="ga-rise space-y-10">
+      {/* Tier band — full-width quiet band in the tier color */}
+      <section
+        aria-label={`${tier.label} tier`}
+        className="overflow-hidden rounded-[24px] p-7 text-white sm:p-9"
+        style={{ background: tier.color.startsWith('var') ? undefined : tier.color, backgroundColor: tier.color.startsWith('var') ? '#0B3B25' : tier.color }}
       >
-        <p className="text-sm font-semibold uppercase tracking-wider opacity-80">
-          AgriVil Rewards
+        <p className="text-[13px] font-semibold text-white/70">AgriVil Rewards</p>
+        <h2 className="ga-display-title mt-1.5 text-[clamp(24px,2.8vw,36px)]">
+          {tier.label} member
+        </h2>
+        <p className="ga-index mt-2 text-[clamp(30px,3.6vw,44px)] font-semibold leading-none tracking-[-0.02em]">
+          {points.toLocaleString()} pts
         </p>
-        <div className="mt-1 flex items-baseline gap-2">
-          <Award className="h-6 w-6" />
-          <h2 className="ga-display text-3xl font-semibold">{tier.label} member</h2>
-        </div>
-        <p className="mt-2 ga-display text-4xl font-bold">{points.toLocaleString()} pts</p>
 
         {next ? (
-          <div className="mt-5">
-            <div className="flex justify-between text-sm opacity-90">
+          <div className="mt-6 max-w-md">
+            <div className="flex justify-between text-[12.5px] font-medium text-white/80">
               <span>{tier.label}</span>
-              <span>{next.label} at {next.threshold.toLocaleString()} pts</span>
+              <span>
+                {next.label} at {next.threshold.toLocaleString()} pts
+              </span>
             </div>
-            <div className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-cream/25">
+            <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/25">
               <div
-                className="h-full rounded-full bg-cream"
+                className="h-full rounded-full bg-white transition-[width] duration-700"
                 style={{ width: `${Math.round(progress * 100)}%` }}
               />
             </div>
-            <p className="mt-2 text-sm opacity-90">
+            <p className="mt-2 text-[12.5px] text-white/80">
               {(next.threshold - points).toLocaleString()} points to {next.label}
             </p>
           </div>
         ) : (
-          <p className="mt-4 text-sm opacity-90">
+          <p className="mt-4 text-[13.5px] text-white/85">
             You&apos;ve reached the top tier — enjoy the best of AgriVil.
           </p>
         )}
-      </div>
+      </section>
 
-      {/* Perks + how it works */}
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="rounded-2xl border border-border bg-card p-5">
-          <h3 className="ga-display text-lg font-semibold text-foreground">Your perks</h3>
-          <ul className="mt-3 space-y-2 text-sm text-foreground">
+      {/* Perks + mechanics as hairline lists */}
+      <div className="grid gap-10 sm:grid-cols-2 sm:gap-x-12">
+        <div className="border-t border-[rgba(33,26,18,0.08)] pt-5">
+          <h3 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
+            Your perks
+          </h3>
+          <ul className="mt-4 space-y-3">
             {tier.perks.map((perk) => (
-              <li key={perk} className="flex items-start gap-2">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-leaf" />
+              <li key={perk} className="flex items-start gap-2.5 text-[14px] leading-relaxed text-[#211A12]">
+                <Check width={15} height={15} className="mt-1 shrink-0 text-[#0F7A43]" />
                 {perk}
               </li>
             ))}
           </ul>
         </div>
-        <div className="rounded-2xl border border-border bg-card p-5">
-          <h3 className="ga-display text-lg font-semibold text-foreground">How points work</h3>
-          <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-            <li className="flex items-start gap-2">
-              <Star className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
-              Earn {tier.earnMultiplier.toFixed(2)}× points on every cedi spent ({delivered} orders delivered so far).
+        <div className="border-t border-[rgba(33,26,18,0.08)] pt-5">
+          <h3 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
+            How points work
+          </h3>
+          <ul className="mt-4 space-y-3">
+            <li className="flex items-start gap-2.5 text-[14px] leading-relaxed text-[#5C5247]">
+              <Star width={14} height={14} className="mt-1 shrink-0 fill-[#F0A81E] text-[#F0A81E]" />
+              Earn {tier.earnMultiplier.toFixed(2)}× points on every cedi spent ({delivered}{' '}
+              {delivered === 1 ? 'order' : 'orders'} delivered so far).
             </li>
-            <li className="flex items-start gap-2">
-              <Star className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+            <li className="flex items-start gap-2.5 text-[14px] leading-relaxed text-[#5C5247]">
+              <Star width={14} height={14} className="mt-1 shrink-0 fill-[#F0A81E] text-[#F0A81E]" />
               Redeem points at checkout — {pointsPerCedi} points = GH₵1 off your basket.
             </li>
-            <li className="flex items-start gap-2">
-              <Star className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+            <li className="flex items-start gap-2.5 text-[14px] leading-relaxed text-[#5C5247]">
+              <Star width={14} height={14} className="mt-1 shrink-0 fill-[#F0A81E] text-[#F0A81E]" />
               Points never expire while your account stays active.
             </li>
           </ul>
