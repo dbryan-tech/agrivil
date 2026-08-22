@@ -1,6 +1,7 @@
 # AgriVil Web Redesign Program — Master Index
 
-> **Status:** Planning complete · **Execution:** Not started
+> **Status:** Phases 00–01 shipped to live routes; Phase 02 core commerce live
+> **Execution ledger** at the bottom of this file tracks exactly what shipped.
 > **Scope:** The entire desktop/tablet web side of AgriVil (`app/(store)/**`,
 > `app/(auth)/**`, `app/farmer/**`, `app/admin/**`, `app/support/**`, shared
 > `components/golden-acres/**`, `app/globals.css`). The mobile `/m/**` app is
@@ -87,3 +88,38 @@ AgriVil's web presence should read like a **premium farm-to-table house**
 4. User reviews at `/emu` → approval recorded here before merge.
 5. Post-merge: production-mode smoke test of the affected routes
    (status codes + key content greps, as done in the RC audit).
+
+---
+
+## 5. Execution ledger (live record of what shipped)
+
+| Phase | Surface | Status | Commit(s) |
+|---|---|---|---|
+| 00 | Tokens, fonts (Fraunces live), `system/` primitives, gallery | SHIPPED (tokens live, gallery preview) | `c9e5a39` |
+| 01 | Home narrative (hero, proof, featured, growers, mechanism, kitchen, voices, closing) | SHIPPED to live `/` | `4d102a0`, `64e2de7` |
+| 01 | SiteHeader + SiteFooter chrome | SHIPPED to all `(store)` routes | `2d1ba88`, `64e2de7` |
+| 01 | About page | SHIPPED to live `/about` | `fe4a96d`, `64e2de7` |
+| 01 | Sell page (pitch; working form preserved) | SHIPPED to live `/sell` | `fe4a96d`, `64e2de7` |
+| 01 | Waitlist page | SHIPPED to live `/waitlist` | `fe4a96d`, `64e2de7` |
+| 02 | Shop listing (editorial header, toolbar, empty state) | SHIPPED to live `/shop` | `8a77cc3` |
+| 02 | Cart page (`/cart` NEW) + mini-cart wiring | SHIPPED to live `/cart` | `8a77cc3` |
+| 02 | Product detail page | SHIPPED to live `/shop/[slug]` | `a5664b8` |
+| 02 | Checkout reskin (tokens only, logic untouched) | SHIPPED to live `/checkout` | `9420874` |
+| 02 | Orders index | SHIPPED to live `/orders` | `666210a` |
+| 02 | Tracking detail reskin | QUEUED (next session) | — |
+| 02 | Account dashboard two-pane rebuild | QUEUED | — |
+| 03 | Auth shell + trust microcopy + web onboarding | QUEUED | — |
+| 04 | Farmer console restructure | QUEUED | — |
+| 05 | Staff console frame (admin/ops/support) | QUEUED | — |
+| 06 | Recipes index/detail, bundles, farmers directory, help center | QUEUED | — |
+
+**Standing verification after every phase:** tsc clean · production build
+green · lint errors ≤ 24 documented baseline · all touched routes 200 in
+production mode · mobile `/m/**` diff EMPTY.
+
+### Decisions resolved this run (owner pre-approval)
+- D1 Paystack keys: proceeding without payment E2E testing until owner
+  provisions test keys.
+- D2 Guest checkout: guest-first adopted at the UX level; full flow lands
+  with the phase 02 checkout restructure.
+- D3 Imagery: current assets retained with premium treatment.
