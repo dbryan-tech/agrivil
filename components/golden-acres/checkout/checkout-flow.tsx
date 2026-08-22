@@ -326,7 +326,7 @@ export function CheckoutFlow() {
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
           <ShoppingBasket className="h-7 w-7 text-[var(--ga-gold)]" />
         </div>
-        <h1 className="ga-display mt-6 text-3xl font-semibold text-foreground">
+        <h1 className="ga-display-title mt-6 text-[clamp(26px,3vw,38px)] text-[#211A12]">
           Your basket is empty
         </h1>
         <p className="mt-2 text-muted-foreground">
@@ -343,7 +343,7 @@ export function CheckoutFlow() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
+    <div className="mx-auto max-w-6xl px-5 pb-16 pt-32 sm:px-8 md:pb-24">
       <Stepper step={step} />
 
       <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_360px]">
@@ -446,7 +446,7 @@ function Stepper({ step }: { step: Step }) {
               <div
                 className={`flex h-9 w-9 items-center justify-center rounded-full border-2 transition-colors ${
                   active
-                    ? 'border-[var(--ga-gold)] bg-[var(--ga-gold)] text-white'
+                    ? 'border-[#211A12] bg-[#211A12] text-white'
                     : done
                       ? 'border-[var(--ga-leaf)] bg-[var(--ga-leaf)] text-white'
                       : 'border-border bg-card text-muted-foreground'
@@ -490,7 +490,7 @@ function CartStep({
 }) {
   return (
     <section>
-      <h1 className="ga-display text-3xl font-semibold text-foreground">
+      <h1 className="ga-display-title text-[clamp(24px,2.6vw,34px)] text-[#211A12]">
         Your basket
       </h1>
       <div className="mt-6 divide-y divide-border rounded-2xl border border-border bg-card">
@@ -603,7 +603,7 @@ function DeliveryStep({
 
   return (
     <section>
-      <h1 className="ga-display text-3xl font-semibold text-foreground">
+      <h1 className="ga-display-title text-[clamp(24px,2.6vw,34px)] text-[#211A12]">
         Where should we deliver?
       </h1>
 
@@ -701,8 +701,8 @@ function DeliveryStep({
                   onClick={() => setSlotId(s.id)}
                   className={`rounded-xl border-2 p-4 text-left transition-colors ${
                     active
-                      ? 'border-[var(--ga-gold)] bg-[var(--ga-gold)]/5'
-                      : 'border-border bg-card hover:border-[var(--ga-gold-soft)]'
+                      ? 'border-[#211A12] bg-[#F2EEE6]'
+                      : 'border-border bg-card hover:border-[rgba(33,26,18,0.45)]'
                   }`}
                 >
                   <p className="font-bold text-foreground">
@@ -781,7 +781,7 @@ function PaymentStep({
 }) {
   return (
     <section>
-      <h1 className="ga-display text-3xl font-semibold text-foreground">
+      <h1 className="ga-display-title text-[clamp(24px,2.6vw,34px)] text-[#211A12]">
         How would you like to pay?
       </h1>
 
@@ -830,17 +830,17 @@ function PaymentStep({
               onClick={() => setMethod(opt.id)}
               className={`flex w-full items-center gap-4 rounded-xl border-2 p-4 text-left transition-colors ${
                 active
-                  ? 'border-[var(--ga-gold)] bg-[var(--ga-gold)]/5'
-                  : 'border-border bg-card hover:border-[var(--ga-gold-soft)]'
+                  ? 'border-[#211A12] bg-[#F2EEE6]'
+                  : 'border-border bg-card hover:border-[rgba(33,26,18,0.45)]'
               }`}
             >
               <div
                 className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
-                  active ? 'border-[var(--ga-gold)]' : 'border-border'
+                  active ? 'border-[#211A12]' : 'border-border'
                 }`}
               >
                 {active && (
-                  <div className="h-2.5 w-2.5 rounded-full bg-[var(--ga-gold)]" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-[#211A12]" />
                 )}
               </div>
               <div>
@@ -889,7 +889,7 @@ function PaymentStep({
         <button
           onClick={onPay}
           disabled={paying}
-          className="inline-flex items-center gap-2 rounded-full bg-[var(--ga-gold)] px-6 py-3.5 font-bold text-white transition-transform hover:-translate-y-0.5 disabled:opacity-70"
+          className="inline-flex items-center gap-2 rounded-full bg-[#0B3B25] px-6 py-3.5 font-semibold text-white transition-all hover:bg-[#0F4A2E] active:scale-[0.98] disabled:opacity-70"
         >
           {paying ? (
             <>
@@ -1011,7 +1011,7 @@ function OrderSummary({
 }) {
   return (
     <aside className="h-fit rounded-2xl border border-border bg-card p-6 lg:sticky lg:top-24">
-      <h2 className="ga-display text-xl font-semibold text-foreground">
+      <h2 className="ga-display-title text-[20px] text-[#211A12]">
         Order summary
       </h2>
       <dl className="mt-4 space-y-2.5 text-sm">
@@ -1083,7 +1083,7 @@ function OrderSummary({
                 }}
                 placeholder="Promo code"
                 aria-label="Promo code"
-                className="min-w-0 flex-1 rounded-xl border border-border bg-background px-3 py-2 text-sm font-semibold uppercase tracking-wide text-foreground outline-none focus:border-[var(--ga-gold)]"
+                className="min-w-0 flex-1 rounded-xl border border-border bg-background px-3 py-2 text-sm font-semibold uppercase tracking-wide text-foreground outline-none focus:border-[#211A12]"
               />
               <button
                 type="button"
@@ -1104,7 +1104,7 @@ function OrderSummary({
       </div>
       <div className="mt-4 flex items-baseline justify-between border-t border-border pt-4">
         <span className="font-bold text-foreground">Total (est.)</span>
-        <span className="ga-display text-2xl font-semibold text-foreground">
+        <span className="ga-display-title text-[22px] text-[#211A12]">
           {formatGHS(total)}
         </span>
       </div>
