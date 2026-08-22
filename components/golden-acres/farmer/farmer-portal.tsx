@@ -12,7 +12,12 @@ import {
 import { useSession } from '@/components/golden-acres/auth/session-context'
 import { useDataStore } from '@/components/golden-acres/store/data-store'
 import { FarmerInsights } from '@/components/golden-acres/farmer/farmer-insights'
-import { FarmerReviewsTab } from '@/components/golden-acres/farmer/farmer-reviews-tab'
+import { ListSkeleton } from '@/components/golden-acres/ui/skeleton'
+import {
+  ChartContainer,
+  type ChartConfig,
+} from '@/components/ui/chart'
+import { AreaChart, Area, XAxis, YAxis } from 'recharts'
 import { getFarmerLedger } from '@/app/actions/payouts'
 import { maskMomoNumber as maskMomo } from '@/lib/golden-acres/momo'
 import {
@@ -33,6 +38,7 @@ import type {
 } from '@/lib/golden-acres/types'
 import {
   Sprout,
+  ClipboardList,
   Wifi,
   WifiOff,
   CloudCheck,
@@ -44,7 +50,6 @@ import {
   Minus,
   Check,
   TriangleAlert,
-  Clock,
   ChevronRight,
   ShieldCheck,
   Leaf,
@@ -52,17 +57,15 @@ import {
   UserCog,
   Hourglass,
   Save,
-  Snowflake,
 } from 'lucide-react'
 
-type Tab = 'today' | 'inventory' | 'add' | 'earnings' | 'reviews' | 'profile'
+type Tab = 'today' | 'produce' | 'orders' | 'money' | 'profile'
 
 const TABS: { id: Tab; label: string; icon: typeof Package }[] = [
   { id: 'today', label: 'Today', icon: CalendarClock },
-  { id: 'inventory', label: 'Stock', icon: Package },
-  { id: 'add', label: 'Add', icon: Plus },
-  { id: 'earnings', label: 'Earnings', icon: Wallet },
-  { id: 'reviews', label: 'Reviews', icon: Star },
+  { id: 'produce', label: 'Produce', icon: Package },
+  { id: 'orders', label: 'Orders', icon: ClipboardList },
+  { id: 'money', label: 'Money', icon: Wallet },
   { id: 'profile', label: 'Profile', icon: UserCog },
 ]
 
@@ -86,11 +89,17 @@ export function FarmerPortal() {
       <PortalHeader farmer={farmer} online={online} setOnline={setOnline} />
 
       <main className="px-4 pt-4">
-        {tab === 'today' && <TodayTab farmer={farmer} />}
-        {tab === 'inventory' && <InventoryTab farmer={farmer} online={online} />}
-        {tab === 'add' && <AddProduceTab farmer={farmer} online={online} />}
-        {tab === 'earnings' && <EarningsTab farmer={farmer} />}
-        {tab === 'reviews' && <FarmerReviewsTab farmer={farmer} />}
+        {tab === 'today' && (
+          <TodayTab
+            farmer={farmer}
+            goProduce={() => setTab('produce')}
+            goOrders={() => setTab('orders')}
+            goMoney={() => setTab('money')}
+          />
+        )}
+        {tab === 'produce' && <InventoryTab farmer={farmer} online={online} />}
+        {tab === 'orders' && <OrdersTab farmer={farmer} />}
+        {tab === 'money' && <MoneyTab farmer={farmer} />}
         {tab === 'profile' && <ProfileTab farmer={farmer} />}
       </main>
 
@@ -110,16 +119,16 @@ function PortalHeader({
   setOnline: (v: boolean) => void
 }) {
   return (
-    <header className="sticky top-0 z-20 border-b border-border bg-[var(--ga-field-deep)] px-4 pb-3 pt-4 text-[var(--ga-cream)]">
+    <header className="ga-dark sticky top-0 z-20 border-b border-white/10 px-4 pb-3 pt-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="relative h-10 w-10 overflow-hidden rounded-full ring-2 ring-[var(--ga-gold-soft)]">
+          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full ring-1 ring-white/25">
             <SmartImage src={farmer.photo} alt={farmer.name} fill />
           </div>
           <div>
-            <p className="text-sm font-bold leading-tight">{farmer.farmName}</p>
-            <p className="flex items-center gap-1 text-xs text-[var(--ga-cream)]/70">
-              <Star className="h-3 w-3 fill-[var(--ga-gold-soft)] text-[var(--ga-gold-soft)]" />
+            <p className="text-[14.5px] font-semibold leading-tight text-[#FAF9F6]">{farmer.farmName}</p>
+            <p className="ga-index mt-0.5 flex items-center gap-1 text-[11.5px] text-[#FAF9F6]/60">
+              <Star width={10} height={10} className="fill-[#F0A81E] text-[#F0A81E]" />
               {farmer.rating} · {pct(farmer.onTimeRate, 0)} on-time
             </p>
           </div>
@@ -127,28 +136,28 @@ function PortalHeader({
         {/* Connectivity toggle — demonstrates the low-bandwidth offline mode */}
         <button
           onClick={() => setOnline(!online)}
-          className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+          className={`ga-index flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-medium transition-colors ${
             online
-              ? 'bg-[var(--ga-leaf)]/25 text-[var(--ga-cream)]'
-              : 'bg-[var(--ga-terracotta)]/30 text-[var(--ga-cream)]'
+              ? 'bg-white/12 text-[#FAF9F6]/85'
+              : 'bg-[#B91C1C]/30 text-[#FAF9F6]'
           }`}
           aria-label="Toggle connectivity"
         >
           {online ? (
             <>
-              <Wifi className="h-3.5 w-3.5" /> Online
+              <Wifi width={12} height={12} /> Online
             </>
           ) : (
             <>
-              <WifiOff className="h-3.5 w-3.5" /> Offline
+              <WifiOff width={12} height={12} /> Offline
             </>
           )}
         </button>
       </div>
 
       {!online && (
-        <p className="mt-2 flex items-center gap-1.5 rounded-lg bg-[var(--ga-cream)]/10 px-2.5 py-1.5 text-xs font-semibold">
-          <CloudCheck className="h-3.5 w-3.5 text-[var(--ga-gold-soft)]" />
+        <p className="mt-2 flex items-center gap-1.5 rounded-lg bg-white/10 px-2.5 py-1.5 text-[11.5px] font-medium text-[#FAF9F6]/85">
+          <CloudCheck width={13} height={13} className="text-[#DF8821]" />
           Changes are saved on your phone and will sync when you&apos;re back
           online.
         </p>
@@ -157,125 +166,467 @@ function PortalHeader({
   )
 }
 
-/* ---------------- Today / Orders ---------------- */
-function TodayTab({ farmer }: { farmer: Farmer }) {
-  const { ordersByFarmer, productsByFarmer, setOrderStatus } = useDataStore()
-  const myProductIds = productsByFarmer(farmer.id).map((p) => p.id)
+/* ---------------- Today ---------------- */
+function TodayTab({
+  farmer,
+  goProduce,
+  goOrders,
+  goMoney,
+}: {
+  farmer: Farmer
+  goProduce: () => void
+  goOrders: () => void
+  goMoney: () => void
+}) {
+  const { ordersByFarmer, productsByFarmer } = useDataStore()
   const myOrders = ordersByFarmer(farmer.id)
 
   const pendingPickup = myOrders.filter(
     (o) => o.status === 'placed' || o.status === 'picking',
   )
+  const lowStock = productsByFarmer(farmer.id).filter((p) => p.stockKg <= p.lowStockThreshold)
   const harvestList = useMemo(() => {
     const map = new Map<string, number>()
-    pendingPickup.forEach((o) =>
-      o.items
-        .filter((it) => it.farmerId === farmer.id)
-        .forEach((it) =>
-          map.set(
-            it.productId,
-            (map.get(it.productId) ?? 0) + it.estWeightKg * it.qty,
+    myOrders
+      .filter((o) => o.status === 'placed' || o.status === 'picking')
+      .forEach((o) =>
+        o.items
+          .filter((it) => it.farmerId === farmer.id)
+          .forEach((it) =>
+            map.set(
+              it.productId,
+              (map.get(it.productId) ?? 0) + it.estWeightKg * it.qty,
+            ),
           ),
-        ),
-    )
+      )
     return Array.from(map.entries()).map(([id, kg]) => ({
       product: productsByFarmer(farmer.id).find((p) => p.id === id),
       kg,
     }))
-  }, [myOrders])
+  }, [myOrders, farmer.id, productsByFarmer])
 
+  // Next payout figure from the ledger is fetched inside MoneyTab; here we
+  // show the guarantee promise with the scheduled amount when present.
   return (
-    <section className="space-y-5">
-      <SectionTitle
-        eyebrow="Good morning"
-        title={`${myOrders.length} order${myOrders.length === 1 ? '' : 's'} include your produce`}
-      />
+    <section className="space-y-6">
+      <SectionTitle eyebrow={greeting()} title="Your farm today" />
 
-      {/* Harvest list — what to pick this morning */}
-      {harvestList.length > 0 && (
-        <div className="rounded-2xl border border-[var(--ga-gold-soft)] bg-[var(--ga-gold)]/8 p-4">
-          <h3 className="flex items-center gap-2 text-sm font-bold text-[var(--ga-gold)]">
-            <Leaf className="h-4 w-4" /> Harvest list — pick before 7am
-          </h3>
-          <ul className="mt-3 space-y-2">
+      {/* Payout hero — one number that matters */}
+      <NextPayoutHero farmerId={farmer.id} onOpenMoney={goMoney} />
+
+      {/* Needs-action queue */}
+      <div>
+        <h3 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
+          Needs action
+        </h3>
+        {harvestList.length === 0 && lowStock.length === 0 && myOrders.length === 0 ? (
+          <p className="mt-3 border-t border-[rgba(33,26,18,0.08)] pt-5 text-sm leading-relaxed text-[#5C5247]">
+            Nothing needs you right now. New baskets that include your produce
+            appear here the moment they&apos;re placed.
+          </p>
+        ) : (
+          <ul className="border-t border-[rgba(33,26,18,0.08)]">
+            {pendingPickup.length > 0 && (
+              <li>
+                <button
+                  onClick={goOrders}
+                  className="group flex w-full items-center justify-between gap-3 border-b border-[rgba(33,26,18,0.08)] py-3.5 text-left"
+                >
+                  <span className="flex items-center gap-2.5 text-[14.5px] font-medium text-[#211A12]">
+                    <span className="ga-index flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#7A3F1C] text-[11px] font-semibold text-white">
+                      {pendingPickup.length}
+                    </span>
+                    {pendingPickup.length === 1 ? 'Order' : 'Orders'} waiting to harvest & pack
+                  </span>
+                  <ChevronRight width={16} height={16} className="shrink-0 text-[#8A7E72] transition-transform duration-300 group-hover:translate-x-0.5" />
+                </button>
+              </li>
+            )}
             {harvestList.map(({ product, kg }) => (
               <li
-                key={product?.id ?? kg}
-                className="flex items-center justify-between text-sm"
+                key={`h-${product?.id ?? kg}`}
+                className="flex items-center justify-between gap-3 border-b border-[rgba(33,26,18,0.08)] py-3.5"
               >
-                <span className="font-semibold text-foreground">
-                  {product?.name ?? 'Item'}
+                <span className="flex min-w-0 items-center gap-2.5 text-[14.5px] text-[#211A12]">
+                  <Leaf width={15} height={15} className="shrink-0 text-[#0F7A43]" />
+                  <span className="min-w-0 truncate">
+                    Pick {product?.name ?? 'item'} before 7am
+                  </span>
                 </span>
-                <span className="font-bold text-[var(--ga-field-deep)]">
+                <span className="ga-index shrink-0 text-[13.5px] font-semibold text-[#211A12]">
                   {weight(kg)}
                 </span>
               </li>
             ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Order cards */}
-      <div className="space-y-3">
-        {myOrders.length === 0 && (
-          <p className="rounded-2xl border border-dashed border-border bg-card p-6 text-center text-sm text-muted-foreground">
-            No orders yet today. New baskets that include your produce will
-            appear here automatically.
-          </p>
-        )}
-        {myOrders.map((o) => {
-          const mine = o.items.filter((it) => it.farmerId === farmer.id)
-          return (
-            <div
-              key={o.id}
-              className="rounded-2xl border border-border bg-card p-4"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-bold text-foreground">{o.reference}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {shortDate(o.slot.date)} · {o.slot.window}
-                  </p>
-                </div>
-                <StatusPill status={o.status} />
-              </div>
-              <ul className="mt-3 space-y-1.5 border-t border-border pt-3">
-                {mine.map((it) => (
-                  <li
-                    key={it.productId}
-                    className="flex items-center justify-between text-sm"
-                  >
-                    <span className="text-foreground">
-                      {it.qty} × {it.name}
-                    </span>
-                    <span className="flex items-center gap-2 text-muted-foreground">
-                      {weight(it.estWeightKg * it.qty)}
-                      {it.refrigerationRequired && (
-                        <Snowflake className="h-3.5 w-3.5 text-[#0B3B25]" />
-                      )}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              {(o.status === 'placed' || o.status === 'picking') && (
+            {lowStock.slice(0, 3).map((p) => (
+              <li key={`ls-${p.id}`}>
                 <button
-                  onClick={() => setOrderStatus(o.reference, 'packed')}
-                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-bold text-primary-foreground transition-transform active:scale-[0.98]"
+                  onClick={goProduce}
+                  className="group flex w-full items-center justify-between gap-3 border-b border-[rgba(33,26,18,0.08)] py-3.5 text-left"
                 >
-                  <Check className="h-4 w-4" /> Mark as harvested & packed
+                  <span className="flex min-w-0 items-center gap-2.5 text-[14.5px] text-[#211A12]">
+                    <TriangleAlert width={15} height={15} className="shrink-0 text-[#B45309]" />
+                    <span className="min-w-0 truncate">
+                      {p.name} running low ({p.stockKg}kg left)
+                    </span>
+                  </span>
+                  <ChevronRight width={16} height={16} className="shrink-0 text-[#8A7E72] transition-transform duration-300 group-hover:translate-x-0.5" />
                 </button>
-              )}
-            </div>
-          )
-        })}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
+
+      {/* Deeper views fold here as quiet cards */}
+      <div className="grid grid-cols-2 gap-3">
+        <button
+          onClick={goProduce}
+          className="rounded-[16px] border border-[rgba(33,26,18,0.06)] bg-white p-4 text-left transition-colors duration-300 hover:border-[rgba(11,59,37,0.35)]"
+        >
+          <Package width={17} height={17} className="text-[#0B3B25]" />
+          <span className="mt-2 block text-[14px] font-semibold text-[#211A12]">Your produce</span>
+          <span className="mt-0.5 block text-[12px] text-[#8A7E72]">Stock &amp; listings</span>
+        </button>
+        <Link
+          href="/farmer?tab=reviews"
+          className="rounded-[16px] border border-[rgba(33,26,18,0.06)] bg-white p-4 text-left transition-colors duration-300 hover:border-[rgba(11,59,37,0.35)]"
+        >
+          <Star width={17} height={17} className="text-[#F0A81E]" />
+          <span className="mt-2 block text-[14px] font-semibold text-[#211A12]">
+            ★ {farmer.rating} rating
+          </span>
+          <span className="mt-0.5 block text-[12px] text-[#8A7E72]">{farmer.reviewCount} reviews</span>
+        </Link>
+      </div>
+
+      {/* Sales trend */}
+      <SalesSpark farmer={farmer} />
+    </section>
+  )
+}
+
+function greeting() {
+  const h = new Date().getHours()
+  if (h < 12) return 'Good morning'
+  if (h < 17) return 'Good afternoon'
+  return 'Good evening'
+}
+
+/** One primary number: the next payout arriving within the 48h guarantee. */
+function NextPayoutHero({
+  farmerId,
+  onOpenMoney,
+}: {
+  farmerId: string
+  onOpenMoney: () => void
+}) {
+  const { data } = useSWR(
+    farmerId ? ['today-payout', farmerId] : null,
+    () => getFarmerLedger(farmerId),
+    { revalidateOnFocus: true },
+  )
+  const ledger = data ?? []
+  const scheduled = ledger
+    .filter((l) => l.payoutStatus === 'scheduled' || l.payoutStatus === 'processing')
+    .reduce((s, l) => s + l.netPayout, 0)
+  const nextTs = ledger.find(
+    (l) => l.payoutStatus === 'scheduled' || l.payoutStatus === 'processing',
+  )?.payoutTimestamp
+
+  return (
+    <div className="ga-dark rounded-[20px] p-5">
+      <p className="text-[12px] font-medium uppercase tracking-[0.08em] text-[#FAF9F6]/60">
+        Arriving within 48 hours
+      </p>
+      <p className="ga-index mt-1.5 text-[clamp(30px,8vw,40px)] font-semibold leading-none tracking-[-0.02em] text-[#FAF9F6]">
+        {cedis(scheduled)}
+      </p>
+      <button
+        onClick={onOpenMoney}
+        className="group mt-3 inline-flex items-center gap-1.5 text-[13px] font-medium text-[#FAF9F6]/75 transition-colors hover:text-[#FAF9F6]"
+      >
+        See your money
+        <ChevronRight
+          width={14}
+          height={14}
+          className="transition-transform duration-300 group-hover:translate-x-0.5"
+        />
+      </button>
+      {nextTs && (
+        <p className="ga-index mt-2 text-[12px] text-[#FAF9F6]/55">
+          Guaranteed by {shortDate(nextTs)}, {timeOf(nextTs)} · MoMo
+        </p>
+      )}
+    </div>
+  )
+}
+
+/** Compact 14-day sales sparkline (recharts area, quiet axes). */
+function SalesSpark({ farmer }: { farmer: Farmer }) {
+  const { ordersByFarmer } = useDataStore()
+  const orders = ordersByFarmer(farmer.id)
+
+  const series = useMemo(() => {
+    const today = new Date()
+    const days: { label: string; value: number }[] = []
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(today)
+      d.setDate(today.getDate() - i)
+      days.push({ label: `${d.getDate()}/${d.getMonth() + 1}`, value: 0 })
+    }
+    orders.forEach((o) => {
+      const placed = new Date(o.placedAt)
+      const diff = Math.floor(
+        (today.setHours(0, 0, 0, 0) - new Date(placed).setHours(0, 0, 0, 0)) / 86400000,
+      )
+      if (diff >= 0 && diff <= 13) {
+        const idx = 13 - diff
+        const mineTotal = o.items
+          .filter((it) => it.farmerId === farmer.id)
+          .reduce((s, it) => s + (it.priceFinal ?? it.priceEstimate), 0)
+        if (days[idx]) days[idx].value += Math.round(mineTotal)
+      }
+    })
+    return days
+  }, [orders, farmer.id])
+
+  const total = series.reduce((s, d) => s + d.value, 0)
+
+  return (
+    <section aria-label="Last 14 days of sales" className="border-t border-[rgba(33,26,18,0.08)] pt-4">
+      <div className="flex items-baseline justify-between">
+        <h3 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
+          Last 14 days
+        </h3>
+        <span className="ga-index text-[15px] font-semibold text-[#211A12]">
+          {cedis(total, { decimals: false })}
+        </span>
+      </div>
+      <ChartContainer
+        config={{ v: { label: 'Sales' } as ChartConfig }}
+        className="mt-2 h-[64px] w-full"
+      >
+        <AreaChart data={series} margin={{ left: 0, right: 0, top: 4, bottom: 0 }}>
+          <defs>
+            <linearGradient id="spark" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="var(--color-v)" stopOpacity={0.28} />
+              <stop offset="100%" stopColor="var(--color-v)" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <XAxis dataKey="label" hide />
+          <YAxis hide domain={[0, 'dataMax + 10']} />
+          <Area dataKey="v" type="monotone" stroke="var(--color-v)" strokeWidth={2} fill="url(#spark)" />
+        </AreaChart>
+      </ChartContainer>
     </section>
   )
 }
 
 /* ---------------- Inventory ---------------- */
+function OrdersTab({ farmer }: { farmer: Farmer }) {
+  const { ordersByFarmer, setOrderStatus } = useDataStore()
+  const myOrders = ordersByFarmer(farmer.id)
+  const active = myOrders.filter((o) => o.status !== 'delivered' && o.status !== 'cancelled')
+  const done = myOrders.filter((o) => o.status === 'delivered')
+
+  return (
+    <section className="space-y-6">
+      <SectionTitle eyebrow="Orders" title="Fulfilment" />
+      {active.length === 0 && done.length === 0 && (
+        <p className="border-t border-[rgba(33,26,18,0.08)] pt-5 text-sm leading-relaxed text-[#5C5247]">
+          No orders yet. When a basket includes your produce, it appears here
+          with everything you need to pick, pack, and hand over.
+        </p>
+      )}
+      {[...active, ...done].map((o) => {
+        const mine = o.items.filter((it) => it.farmerId === farmer.id)
+        const canPack = o.status === 'placed' || o.status === 'picking'
+        const stepIdx =
+          o.status === 'placed' ? 0 : o.status === 'picking' ? 1 : o.status === 'packed' ? 2 : o.status === 'out-for-delivery' ? 3 : 4
+        return (
+          <article key={o.id} className="border-t border-[rgba(33,26,18,0.08)] pt-4 first:border-0 first:pt-0">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+              <span className="ga-index text-[15px] font-semibold text-[#211A12]">{o.reference}</span>
+              <span className="ga-index text-[12.5px] text-[#8A7E72]">
+                {shortDate(o.slot.date)} · {o.slot.window}
+              </span>
+            </div>
+            {/* fulfilment step tracker */}
+            <ol className="mt-3 flex items-center gap-1.5" aria-label={`Fulfilment stage ${stepIdx + 1} of 4`}>
+              {['Pick', 'Pack', 'Hub', 'Delivered'].map((label, i) => (
+                <li key={label} className="flex flex-1 items-center gap-1.5">
+                  <span
+                    className={`h-1.5 flex-1 rounded-full ${
+                      i <= stepIdx && o.status !== 'cancelled' ? 'bg-[#0B3B25]' : 'bg-[rgba(33,26,18,0.10)]'
+                    }`}
+                  />
+                  <span className="sr-only">{`${label}${i <= stepIdx ? ' done' : ''}`}</span>
+                </li>
+              ))}
+            </ol>
+            <ul className="mt-3 space-y-1">
+              {mine.map((it) => (
+                <li key={it.productId} className="flex items-center justify-between text-[13.5px]">
+                  <span className="text-[#211A12]">
+                    {it.qty} × {it.name}
+                  </span>
+                  <span className="ga-index text-[#8A7E72]">{weight(it.estWeightKg * it.qty)}</span>
+                </li>
+              ))}
+            </ul>
+            {canPack && (
+              <button
+                onClick={() => setOrderStatus(o.reference, 'packed')}
+                className="mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#0B3B25] text-[14px] font-semibold text-white transition-all duration-300 hover:bg-[#0F4A2E] active:scale-[0.98]"
+              >
+                <Check width={15} height={15} /> Mark harvested &amp; packed
+              </button>
+            )}
+          </article>
+        )
+      })}
+    </section>
+  )
+}
+
+/* ---------------- Money (earnings & payouts) ---------------- */
+function MoneyTab({ farmer }: { farmer: Farmer }) {
+  // Real settlement ledger from Neon (accrued on delivery, settled by the Ops
+  // payout run). SWR keeps it fresh after a payout run elsewhere.
+  const { data, isLoading } = useSWR(
+    farmer?.id ? ["farmer-ledger", farmer.id] : null,
+    () => getFarmerLedger(farmer.id),
+    { revalidateOnFocus: true },
+  )
+  const ledger = data ?? []
+  const paidTotal = ledger
+    .filter((l) => l.payoutStatus === "paid")
+    .reduce((s, l) => s + l.netPayout, 0)
+  const scheduled = ledger
+    .filter((l) => l.payoutStatus === "scheduled" || l.payoutStatus === "processing")
+    .reduce((s, l) => s + l.netPayout, 0)
+
+  return (
+    <section className="space-y-6">
+      <SectionTitle eyebrow="Money" title="Your payouts" />
+
+      {/* Commission transparency — trust through plain language */}
+      <p className="border-l-2 border-[#0F7A43]/40 pl-3 text-[12.5px] leading-relaxed text-[#5C5247]">
+        AgriVil keeps a flat commission on each delivered order; everything else
+        is yours. Penalties only apply when the hub SOP is missed, and every
+        deduction shows its reason.
+      </p>
+
+      {/* Sales analytics */}
+      <FarmerInsights farmer={farmer} />
+
+      {/* Balance band */}
+      <div className="ga-dark rounded-[20px] p-5">
+        <p className="text-[12px] font-medium uppercase tracking-[0.08em] text-[#FAF9F6]/60">
+          Paid out to your MoMo wallet
+        </p>
+        <p className="ga-index mt-1.5 text-[clamp(30px,8vw,40px)] font-semibold leading-none tracking-[-0.02em] text-[#FAF9F6]">
+          {cedis(paidTotal)}
+        </p>
+        <div className="mt-4 flex items-center gap-2 rounded-xl bg-white/10 px-3 py-2.5">
+          <ShieldCheck width={15} height={15} className="shrink-0 text-[#DF8821]" />
+          <p className="text-[12.5px] font-medium text-[#FAF9F6]/90">
+            {scheduled > 0
+              ? `${cedis(scheduled)} scheduled via MoMo — 48-hour payout guarantee`
+              : "All caught up — 48-hour MoMo payout guarantee"}
+          </p>
+        </div>
+        {farmer.momoNumber && (
+          <p className="ga-index mt-3 text-[12px] text-[#FAF9F6]/70">
+            Payouts to {farmer.momoProvider} {maskMomo(farmer.momoNumber)}
+          </p>
+        )}
+      </div>
+
+      {/* Ledger as hairline rows */}
+      <div>
+        <h3 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
+          Transaction history
+        </h3>
+        {isLoading ? (
+          <ListSkeleton rows={3} />
+        ) : ledger.length === 0 ? (
+          <p className="border-t border-[rgba(33,26,18,0.08)] pt-5 text-sm leading-relaxed text-[#5C5247]">
+            No payouts yet. Earnings appear here once your delivered orders are
+            settled.
+          </p>
+        ) : (
+          <ul className="border-t border-[rgba(33,26,18,0.08)]">
+            {ledger.map((l) => (
+              <li key={l.id} className="border-b border-[rgba(33,26,18,0.08)] py-4">
+                <div className="flex items-baseline justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="ga-index text-[14.5px] font-semibold text-[#211A12]">{l.orderRef}</p>
+                    <p className="ga-index mt-0.5 text-[12px] text-[#8A7E72]">
+                      {shortDate(l.date)}
+                      {l.payoutStatus === "paid" && l.payoutRef
+                        ? ` · ref ${l.payoutRef.slice(0, 12)}`
+                        : ""}
+                    </p>
+                  </div>
+                  <div className="shrink-0 text-right">
+                    <p className="ga-index text-[16px] font-semibold tracking-[-0.02em] text-[#211A12]">
+                      {cedis(l.netPayout)}
+                    </p>
+                    <PayoutNote status={l.payoutStatus} ts={l.payoutTimestamp} />
+                  </div>
+                </div>
+                <dl className="ga-index mt-2.5 grid grid-cols-3 gap-2 border-t border-[rgba(33,26,18,0.06)] pt-2.5 text-[12px]">
+                  <div>
+                    <dt className="text-[#8A7E72]">Gross</dt>
+                    <dd className="mt-0.5 font-semibold text-[#211A12]">
+                      {cedis(l.grossSales, { decimals: false })}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-[#8A7E72]">Commission</dt>
+                    <dd className="mt-0.5 font-semibold text-[#5C5247]">
+                      −{cedis(l.commission, { decimals: false })}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-[#8A7E72]">SOP penalty</dt>
+                    <dd className={`mt-0.5 font-semibold ${l.sopPenalty > 0 ? 'text-[#B45309]' : 'text-[#5C5247]'}`}>
+                      {l.sopPenalty ? `−${cedis(l.sopPenalty, { decimals: false })}` : '—'}
+                    </dd>
+                  </div>
+                </dl>
+                {l.payoutStatus === "paid" && (l.payoutProvider || l.payoutNumber) && (
+                  <p className="ga-index mt-2 text-[12px] text-[#0F7A43]">
+                    Paid to {l.payoutProvider} {l.payoutNumber}
+                  </p>
+                )}
+                {l.payoutStatus === "failed" && l.failureReason && (
+                  <p className="mt-2 rounded-lg border border-[rgba(185,28,28,0.25)] bg-[#B91C1C]/5 px-2.5 py-1.5 text-[12px] font-medium text-[#B91C1C]">
+                    Payout failed: {l.failureReason}. Our team will retry.
+                  </p>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <Link
+        href="/"
+        className="flex items-center justify-center gap-1 py-2 text-sm font-medium text-[#8A7E72] transition-colors hover:text-[#211A12]"
+      >
+        Back to storefront <ChevronRight width={15} height={15} />
+      </Link>
+    </section>
+  )
+}
+
+/* ---------------- Produce (inventory + add listing) ---------------- */
 function InventoryTab({ farmer, online }: { farmer: Farmer; online: boolean }) {
   const { productsByFarmer, setProductStock } = useDataStore()
+  const [view, setView] = useState<'list' | 'add'>('list')
   const mine = productsByFarmer(farmer.id)
   const [stock, setStock] = useState<Record<string, number>>(
     Object.fromEntries(mine.map((p) => [p.id, p.stockKg])),
@@ -313,7 +664,7 @@ function InventoryTab({ farmer, online }: { farmer: Farmer; online: boolean }) {
 
   return (
     <section className="space-y-4">
-      <SectionTitle eyebrow="Inventory" title="Today's available stock" />
+      <SectionTitle eyebrow="Produce" title="Your listings" />
 
       {dirty.size > 0 && (
         <div className="flex items-center justify-between rounded-2xl border border-[var(--ga-gold-soft)] bg-[var(--ga-gold)]/8 p-3">
@@ -336,6 +687,24 @@ function InventoryTab({ farmer, online }: { farmer: Farmer; online: boolean }) {
           <CloudCheck className="h-3.5 w-3.5" /> All synced · {lastSynced}
         </p>
       )}
+
+      {/* Add-listing entry + reviews fold */}
+      <div className="grid grid-cols-2 gap-3">
+        <button
+          onClick={() => setView(view === 'add' ? 'list' : 'add')}
+          className="flex items-center justify-center gap-2 rounded-full border border-[rgba(33,26,18,0.15)] py-2.5 text-[13.5px] font-semibold text-[#0B3B25] transition-colors duration-300 hover:border-[rgba(11,59,37,0.5)]"
+        >
+          <Plus width={15} height={15} /> New listing
+        </button>
+        <Link
+          href="/farmer?tab=reviews"
+          className="flex items-center justify-center gap-2 rounded-full border border-[rgba(33,26,18,0.15)] py-2.5 text-[13.5px] font-medium text-[#211A12] transition-colors duration-300 hover:border-[rgba(11,59,37,0.5)]"
+        >
+          <Star width={14} height={14} className="text-[#F0A81E]" /> Reviews
+        </Link>
+      </div>
+
+      {view === 'add' && <AddProduceForm farmer={farmer} online={online} onDone={() => setView('list')} />}
 
       <div className="space-y-3">
         {mine.map((p) => {
@@ -401,7 +770,15 @@ const CATEGORY_OPTIONS: ProduceCategory[] = [
   'Herbs & Spices',
 ]
 
-function AddProduceTab({ farmer, online }: { farmer: Farmer; online: boolean }) {
+function AddProduceForm({
+  farmer,
+  online,
+  onDone,
+}: {
+  farmer: Farmer
+  online: boolean
+  onDone: () => void
+}) {
   const { addProduct } = useDataStore()
   const [name, setName] = useState('')
   const [category, setCategory] = useState<ProduceCategory>('Vegetables')
@@ -436,6 +813,7 @@ function AddProduceTab({ farmer, online }: { farmer: Farmer; online: boolean }) 
       setColdChain(false)
       setOrganic(false)
       setPhoto('')
+      onDone()
     }, 1800)
   }
 
@@ -533,122 +911,6 @@ function AddProduceTab({ farmer, online }: { farmer: Farmer; online: boolean }) 
         <Sprout className="h-4 w-4" />
         {online ? 'Publish to market' : 'Save offline & queue'}
       </button>
-    </section>
-  )
-}
-
-/* ---------------- Earnings / Ledger ---------------- */
-function EarningsTab({ farmer }: { farmer: Farmer }) {
-  // Real settlement ledger from Neon (accrued on delivery, settled by the Ops
-  // payout run). SWR keeps it fresh after a payout run elsewhere.
-  const { data, isLoading } = useSWR(
-    farmer?.id ? ["farmer-ledger", farmer.id] : null,
-    () => getFarmerLedger(farmer.id),
-    { revalidateOnFocus: true },
-  )
-  const ledger = data ?? []
-  const paidTotal = ledger
-    .filter((l) => l.payoutStatus === "paid")
-    .reduce((s, l) => s + l.netPayout, 0)
-  const scheduled = ledger
-    .filter((l) => l.payoutStatus === "scheduled" || l.payoutStatus === "processing")
-    .reduce((s, l) => s + l.netPayout, 0)
-
-  return (
-    <section className="space-y-5">
-      <SectionTitle eyebrow="Earnings" title="Your payouts" />
-
-      {/* Sales analytics — revenue trend, best sellers, fulfilment mix */}
-      <FarmerInsights farmer={farmer} />
-
-      {/* Balance card */}
-      <div className="rounded-2xl bg-[var(--ga-field-deep)] p-5 text-[var(--ga-cream)]">
-        <p className="text-xs font-semibold uppercase tracking-wide text-[var(--ga-cream)]/60">
-          Paid out to your MoMo wallet
-        </p>
-        <p className="ga-display mt-1 text-4xl font-semibold">
-          {cedis(paidTotal)}
-        </p>
-        <div className="mt-4 flex items-center gap-2 rounded-xl bg-[var(--ga-cream)]/10 px-3 py-2.5">
-          <ShieldCheck className="h-4 w-4 shrink-0 text-[var(--ga-gold-soft)]" />
-          <p className="text-xs font-semibold">
-            {scheduled > 0
-              ? `${cedis(scheduled)} scheduled via MoMo — 48-hour payout guarantee`
-              : "All caught up — 48-hour MoMo payout guarantee"}
-          </p>
-        </div>
-        {farmer.momoNumber && (
-          <p className="mt-3 text-xs text-[var(--ga-cream)]/70">
-            Payouts to {farmer.momoProvider} {maskMomo(farmer.momoNumber)}
-          </p>
-        )}
-      </div>
-
-      {/* Ledger */}
-      <div>
-        <h3 className="mb-2 text-sm font-bold text-foreground">
-          Transaction history
-        </h3>
-        {isLoading ? (
-          <div className="rounded-2xl border border-border bg-card p-8 text-center text-sm text-muted-foreground">
-            Loading your ledger…
-          </div>
-        ) : ledger.length === 0 ? (
-          <div className="rounded-2xl border border-border bg-card p-8 text-center text-sm text-muted-foreground">
-            No payouts yet. Earnings appear here once your delivered orders are
-            settled.
-          </div>
-        ) : (
-          <div className="divide-y divide-border rounded-2xl border border-border bg-card">
-            {ledger.map((l) => (
-              <div key={l.id} className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-bold text-foreground">{l.orderRef}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {shortDate(l.date)}
-                      {l.payoutStatus === "paid" && l.payoutRef
-                        ? ` · ref ${l.payoutRef.slice(0, 12)}`
-                        : ""}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-extrabold text-[var(--ga-field-deep)]">
-                      {cedis(l.netPayout)}
-                    </p>
-                    <PayoutPill status={l.payoutStatus} ts={l.payoutTimestamp} />
-                  </div>
-                </div>
-                <dl className="mt-2 grid grid-cols-3 gap-2 border-t border-border pt-2 text-center text-xs">
-                  <Stat label="Gross" value={cedis(l.grossSales, { decimals: false })} />
-                  <Stat
-                    label="Commission"
-                    value={`−${cedis(l.commission, { decimals: false })}`}
-                    muted
-                  />
-                  <Stat
-                    label="SOP penalty"
-                    value={l.sopPenalty ? `−${cedis(l.sopPenalty, { decimals: false })}` : '—'}
-                    warn={l.sopPenalty > 0}
-                  />
-                </dl>
-                {l.payoutStatus === "failed" && l.failureReason && (
-                  <p className="mt-2 rounded-lg bg-[var(--ga-clay)]/10 px-2.5 py-1.5 text-xs font-semibold text-[var(--ga-clay)]">
-                    Payout failed: {l.failureReason}. Our team will retry.
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <Link
-        href="/"
-        className="flex items-center justify-center gap-1 py-2 text-sm font-bold text-muted-foreground"
-      >
-        Back to storefront <ChevronRight className="h-4 w-4" />
-      </Link>
     </section>
   )
 }
@@ -814,8 +1076,12 @@ function ProfileTab({ farmer }: { farmer: Farmer }) {
 /* ---------------- Bottom nav ---------------- */
 function BottomNav({ tab, setTab }: { tab: Tab; setTab: (t: Tab) => void }) {
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md border-t border-border bg-card/95 backdrop-blur">
-      <div className="grid grid-cols-6">
+    <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-[rgba(33,26,18,0.08)] bg-[#FAF9F6]/95 backdrop-blur">
+      <div
+        className="mx-auto grid max-w-md grid-cols-5"
+        role="tablist"
+        aria-label="Portal sections"
+      >
         {TABS.map((t) => {
           const Icon = t.icon
           const active = t.id === tab
@@ -823,17 +1089,20 @@ function BottomNav({ tab, setTab }: { tab: Tab; setTab: (t: Tab) => void }) {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`flex flex-col items-center gap-1 py-3 text-[10px] font-bold transition-colors ${
-                active ? 'text-[var(--ga-gold)]' : 'text-muted-foreground'
+              role="tab"
+              aria-selected={active}
+              className={`flex flex-col items-center gap-1 py-2.5 text-[10.5px] transition-colors duration-300 ${
+                active
+                  ? 'font-semibold text-[#211A12]'
+                  : 'font-medium text-[#8A7E72]'
               }`}
             >
+              <Icon width={19} height={19} />
               <span
-                className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
-                  active ? 'bg-[var(--ga-gold)]/12' : ''
+                className={`mt-0.5 h-0.5 w-6 rounded-full transition-colors duration-300 ${
+                  active ? 'bg-[#211A12]' : 'bg-transparent'
                 }`}
-              >
-                <Icon className="h-[18px] w-[18px]" />
-              </span>
+              />
               {t.label}
             </button>
           )
@@ -871,10 +1140,8 @@ function Toggle({
 function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <div>
-      <p className="text-xs font-bold uppercase tracking-widest text-[var(--ga-gold)]">
-        {eyebrow}
-      </p>
-      <h1 className="ga-display mt-1 text-2xl font-semibold text-foreground">
+      <p className="text-[13px] font-semibold text-[#7A3F1C]">{eyebrow}</p>
+      <h1 className="ga-display-title mt-1.5 text-[clamp(24px,5vw,30px)] text-[#211A12]">
         {title}
       </h1>
     </div>
@@ -896,23 +1163,6 @@ function FieldRow({
   )
 }
 
-function StatusPill({ status }: { status: string }) {
-  const map: Record<string, { label: string; cls: string; Icon: typeof Clock }> = {
-    placed: { label: 'New', cls: 'bg-[var(--ga-gold)]/15 text-[var(--ga-gold)]', Icon: Clock },
-    picking: { label: 'Picking', cls: 'bg-[var(--ga-field)]/15 text-[var(--ga-field)]', Icon: Leaf },
-    packed: { label: 'Packed', cls: 'bg-[var(--ga-leaf)]/15 text-[var(--ga-leaf)]', Icon: Package },
-    'out-for-delivery': { label: 'On route', cls: 'bg-[var(--ga-field)]/15 text-[var(--ga-field)]', Icon: Clock },
-    delivered: { label: 'Delivered', cls: 'bg-[var(--ga-leaf)]/15 text-[var(--ga-leaf)]', Icon: Check },
-    cancelled: { label: 'Cancelled', cls: 'bg-[var(--ga-terracotta)]/15 text-[var(--ga-terracotta)]', Icon: TriangleAlert },
-  }
-  const s = map[status] ?? map.placed
-  const Icon = s.Icon
-  return (
-    <span className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold ${s.cls}`}>
-      <Icon className="h-3 w-3" /> {s.label}
-    </span>
-  )
-}
 
 function StockBadge({ status }: { status: StockStatus }) {
   const map: Record<StockStatus, { label: string; cls: string }> = {
@@ -929,62 +1179,33 @@ function StockBadge({ status }: { status: StockStatus }) {
   )
 }
 
-function PayoutPill({ status, ts }: { status: string; ts: string }) {
+function PayoutNote({ status, ts }: { status: string; ts: string }) {
   if (status === 'paid') {
     return (
-      <span className="flex items-center justify-end gap-1 text-[11px] font-bold text-[var(--ga-leaf)]">
-        <Check className="h-3 w-3" /> Paid
+      <span className="flex items-center justify-end gap-1 text-[11.5px] font-medium text-[#0F7A43]">
+        <Check width={12} height={12} /> Paid
       </span>
     )
   }
   if (status === 'failed') {
     return (
-      <span className="flex items-center justify-end gap-1 text-[11px] font-bold text-[var(--ga-clay)]">
-        <Clock className="h-3 w-3" /> Failed
+      <span className="flex items-center justify-end gap-1 text-[11.5px] font-medium text-[#B91C1C]">
+        Failed
       </span>
     )
   }
   if (status === 'processing') {
     return (
-      <span className="flex items-center justify-end gap-1 text-[11px] font-bold text-[var(--ga-gold)]">
-        <Clock className="h-3 w-3" /> Processing
+      <span className="flex items-center justify-end gap-1 text-[11.5px] font-medium text-[#7A3F1C]">
+        Processing
       </span>
     )
   }
   const days = daysUntil(ts)
   return (
-    <span className="flex items-center justify-end gap-1 text-[11px] font-bold text-[var(--ga-gold)]">
-      <Clock className="h-3 w-3" />
+    <span className="ga-index flex items-center justify-end gap-1 text-[11.5px] font-medium text-[#7A3F1C]">
       {days <= 0 ? `by ${timeOf(ts)}` : `in ${days}d`}
     </span>
   )
 }
 
-function Stat({
-  label,
-  value,
-  muted,
-  warn,
-}: {
-  label: string
-  value: string
-  muted?: boolean
-  warn?: boolean
-}) {
-  return (
-    <div>
-      <dt className="text-muted-foreground">{label}</dt>
-      <dd
-        className={`mt-0.5 font-bold ${
-          warn
-            ? 'text-[var(--ga-terracotta)]'
-            : muted
-              ? 'text-muted-foreground'
-              : 'text-foreground'
-        }`}
-      >
-        {value}
-      </dd>
-    </div>
-  )
-}
