@@ -1,16 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import {
   Minus,
   Plus,
   Check,
   Snowflake,
-  Leaf,
   MapPin,
-  ShieldCheck,
+  ArrowRight,
   Star,
 } from 'lucide-react'
 import { SmartImage } from '@/components/golden-acres/smart-image'
@@ -19,9 +17,16 @@ import { ReviewList } from '@/components/golden-acres/reviews/review-list'
 import { CompareOffers } from '@/components/golden-acres/shop/compare-offers'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { useRecordView, useRecentlyViewed } from '@/components/golden-acres/store/recently-viewed'
-import { formatGHS, freshnessLabel, weight } from '@/lib/golden-acres/format'
+import { formatGHS, freshnessLabel, weight, packedDateIso, dayMonth } from '@/lib/golden-acres/format'
 import type { Product, Farmer } from '@/lib/golden-acres/types'
 
+/**
+ * Product detail (redesigned, docs/redesign/02 §4).
+ * Gallery left / sticky buy column right on desktop. Prices via tabular
+ * numerals, variable-weight honesty stated plainly, FEFO-derived harvest
+ * date (real, from the RC fixes), farmer provenance strip, compare offers
+ * as hairline rows. All cart wiring unchanged.
+ */
 export function ProductDetail({
   product,
   farmer,
@@ -54,6 +59,9 @@ export function ProductDetail({
     ? product.estWeightKg * product.pricePerKg
     : product.priceMin
   const lineEstimate = estimateEach * qty
+  const unitLabel = product.variableWeight
+    ? `≈${weight(product.estWeightKg)}`
+    : product.unit
 
   function handleAdd() {
     add(product, qty)
@@ -62,170 +70,225 @@ export function ProductDetail({
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-2 py-4 sm:px-3 lg:px-4">
-      <nav className="text-sm text-muted-foreground">
-        <Link href="/shop" className="hover:text-foreground">
-          Market
+    <div className="mx-auto max-w-6xl px-5 pb-16 pt-10 sm:px-8 sm:pt-12">
+      {/* Breadcrumb */}
+      <nav aria-label="Breadcrumb" className="text-[13px] text-[#8A7E72]">
+        <Link href="/shop" className="transition-colors hover:text-[#211A12]">
+          Shop
         </Link>
-        <span className="px-2">/</span>
-        <span className="text-foreground">{product.name}</span>
+        <span className="px-1.5">/</span>
+        <Link
+          href={`/shop?category=${encodeURIComponent(product.category)}`}
+          className="transition-colors hover:text-[#211A12]"
+        >
+          {product.category}
+        </Link>
+        <span className="px-1.5">/</span>
+        <span className="text-[#211A12]">{product.name}</span>
       </nav>
 
-      <div className="mt-6 grid gap-8 lg:grid-cols-2">
-        <div className="ga-rise relative aspect-square overflow-hidden rounded-[28px] border border-black/[0.04] bg-[#EDE8DF]/30 shadow-sm">
+      <div className="mt-7 grid gap-12 lg:grid-cols-2 lg:gap-16">
+        {/* Gallery */}
+        <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] border border-[rgba(33,26,18,0.05)] bg-white shadow-[0_2px_4px_rgba(33,26,18,0.05),0_16px_40px_rgba(33,26,18,0.08)]">
           <SmartImage
             src={product.image}
             alt={product.name}
             fill
-            className="object-cover"
             priority
+            className="object-cover"
           />
+          {product.organic && (
+            <span className="absolute left-4 top-4 rounded-full bg-[#FDFDFB]/95 px-3 py-1.5 text-[11px] font-semibold text-[#0B3B25] shadow-sm">
+              Certified organic
+            </span>
+          )}
         </div>
 
-        <div className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <span className="rounded-full bg-[#0B3B25]/10 px-3 py-1 text-xs font-black uppercase tracking-wider text-[#0B3B25]">
-              {product.category}
+        {/* Buy column */}
+        <div className="flex flex-col lg:sticky lg:top-24 lg:self-start">
+          {/* Farmer attribution */}
+          <Link
+            href={`/farmers/${farmer.slug}`}
+            className="group inline-flex w-fit items-center gap-2 text-[13px] font-semibold text-[#7A3F1C]"
+          >
+            <MapPin width={13} height={13} />
+            {farmer.farmName} · {farmer.region}
+          </Link>
+
+          <h1 className="ga-display-title mt-2 text-[clamp(30px,3.4vw,46px)] text-[#211A12]">
+            {product.name}
+          </h1>
+
+          {/* Rating */}
+          <div className="mt-3 flex items-center gap-2">
+            <span className="inline-flex items-center gap-0.5" aria-hidden="true">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star
+                  key={i}
+                  width={14}
+                  height={14}
+                  className={
+                    i < Math.round(product.rating ?? 0)
+                      ? 'fill-[#F0A81E] text-[#F0A81E]'
+                      : 'fill-[rgba(33,26,18,0.10)] text-[rgba(33,26,18,0.10)]'
+                  }
+                />
+              ))}
+            </span>
+            <span className="sr-only">Rated {product.rating} out of 5</span>
+            <span className="ga-index text-[13px] text-[#8A7E72]">
+              {product.rating} ({product.reviewCount} reviews)
             </span>
             {fresh && (
-              <span className="flex items-center gap-1 text-xs font-bold text-[#7A3F1C]">
-                <Leaf className="h-3.5 w-3.5" />
-                {fresh.label}
+              <span className="text-[13px] text-[#5C5247]">
+                · {fresh.label}
               </span>
             )}
           </div>
 
-          <h1 className="ga-headline mt-3 text-3xl sm:text-4xl text-[#211A12] font-black">
-            {product.name}
-          </h1>
-
-          <div className="mt-3 flex items-center gap-3">
-            <div className="flex items-center gap-1 text-sm font-black text-[#211A12]">
-              <Star className="h-4 w-4 fill-[#F0A81E] text-[#F0A81E]" />
-              <span>{product.rating}</span>
-            </div>
-            <span className="text-xs text-[#5C5247]">({product.reviewCount} reviews)</span>
-          </div>
-
-          <p className="mt-4 text-sm leading-relaxed text-[#5C5247]">
+          <p className="mt-5 text-[15px] leading-relaxed text-[#5C5247]">
             {product.description}
           </p>
 
-          {/* Tags */}
-          <div className="mt-4 flex flex-wrap gap-2">
-            {product.tags.map((t) => (
-              <span
-                key={t}
-                className="rounded-full bg-[#EDE8DF] px-3 py-1.5 text-xs font-bold text-[#211A12]"
-              >
-                {t}
+          {/* Price block */}
+          <div className="mt-7 border-t border-[rgba(33,26,18,0.08)] pt-6">
+            <div className="flex items-baseline gap-2">
+              <span className="ga-index text-[34px] font-semibold leading-none tracking-[-0.02em] text-[#211A12]">
+                {formatGHS(estimateEach)}
               </span>
-            ))}
-          </div>
-
-          {/* Variable-weight pricing explainer */}
-          <div className="mt-6 rounded-[24px] border border-black/[0.04] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-            <div className="flex items-baseline justify-between">
-              <div>
-                <span className="text-3xl font-black text-[#211A12]">
-                  {formatGHS(estimateEach)}
-                </span>
-                <span className="text-sm font-medium text-[#5C5247]">
-                  {' '}
-                  / {product.variableWeight ? weight(product.estWeightKg) : product.unit}
-                </span>
-              </div>
-              <span className="text-xs font-extrabold text-[#7A3F1C]">
-                {formatGHS(product.pricePerKg)}/kg
-              </span>
+              <span className="text-[14px] text-[#8A7E72]">/ {unitLabel}</span>
             </div>
             {product.variableWeight && (
-              <p className="mt-3 text-xs sm:text-sm leading-relaxed text-[#5C5247]">
-                Priced by weight. You&apos;re charged an estimate of{' '}
-                <strong className="text-[#211A12] font-black">{formatGHS(estimateEach)}</strong> now;
-                the final price is reconciled to the actual weight picked (typically{' '}
-                {formatGHS(product.priceMin)}–{formatGHS(product.priceMax)}). You only pay
-                for what you receive.
+              <p className="mt-3 max-w-md text-[13px] leading-relaxed text-[#5C5247]">
+                You pay <strong className="font-semibold text-[#211A12]">{formatGHS(estimateEach)}</strong>{' '}
+                now — the final price reconciles to the exact weight picked
+                (typically {formatGHS(product.priceMin)}–{formatGHS(product.priceMax)}).
+                You only pay for what you receive.
               </p>
+            )}
+            {product.tags.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1">
+                {product.tags.map((t) => (
+                  <span key={t} className="text-[12px] font-medium text-[#8A7E72]">
+                    {t}
+                  </span>
+                ))}
+              </div>
             )}
           </div>
 
           {/* Quantity + add */}
-          <div className="mt-6 flex flex-wrap items-center gap-4">
-            <div className="inline-flex items-center rounded-full border border-black/[0.08] bg-white">
+          <div className="mt-7 flex flex-wrap items-center gap-4">
+            <div className="inline-flex h-12 items-center rounded-full border border-[rgba(33,26,18,0.15)]">
               <button
                 type="button"
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
                 aria-label="Decrease quantity"
-                className="flex h-12 w-12 items-center justify-center rounded-full text-[#211A12] hover:bg-[#EDE8DF]"
+                className="flex h-full w-11 items-center justify-center rounded-l-full text-[#211A12] transition-colors hover:bg-[#F2EEE6]"
               >
-                <Minus className="h-4 w-4" />
+                <Minus width={15} height={15} />
               </button>
-              <span className="w-10 text-center text-base font-black text-[#211A12]">
+              <span className="ga-index w-8 text-center text-[15px] font-semibold text-[#211A12]">
                 {qty}
               </span>
               <button
                 type="button"
                 onClick={() => setQty((q) => q + 1)}
                 aria-label="Increase quantity"
-                className="flex h-12 w-12 items-center justify-center rounded-full text-[#211A12] hover:bg-[#EDE8DF]"
+                className="flex h-full w-11 items-center justify-center rounded-r-full text-[#211A12] transition-colors hover:bg-[#F2EEE6]"
               >
-                <Plus className="h-4 w-4" />
+                <Plus width={15} height={15} />
               </button>
             </div>
             <button
               type="button"
               onClick={handleAdd}
-              className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-[#0B3B25] px-6 text-sm font-black text-white shadow-sm hover:bg-[#072618] transition-all active:scale-[0.98]"
+              className={[
+                'group inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full text-[15px] font-semibold tracking-[-0.01em] transition-all duration-300 active:scale-[0.98] sm:flex-none sm:px-9',
+                added
+                  ? 'bg-[#0B3B25]/10 text-[#0B3B25] ring-1 ring-[#0B3B25]/40'
+                  : 'bg-[#0B3B25] text-white hover:bg-[#0F4A2E]',
+              ].join(' ')}
             >
               {added ? (
                 <>
-                  <Check className="h-5 w-5" /> Added
+                  <Check width={17} height={17} /> Added to basket
                 </>
               ) : (
-                <>Add to basket · {formatGHS(lineEstimate)}</>
+                <>
+                  Add to basket · {formatGHS(lineEstimate)}
+                </>
               )}
             </button>
           </div>
 
-          {/* Trust guarantee stamp */}
-          <div className="mt-5 flex items-center gap-3.5 rounded-2xl bg-[#FAF7F2] p-3.5 border border-black/[0.06]">
-            <Image
-              src="/agrivil-stamp.svg"
-              alt="AgriVil Farm Fresh Guarantee"
-              width={44}
-              height={44}
-              className="h-11 w-11 shrink-0"
-            />
-            <div className="text-xs">
-              <span className="font-extrabold text-[#0B3B25]">100% Farm-Fresh Quality Guarantee</span>
-              <p className="text-[11px] font-medium text-[#5C5247] mt-0.5">
-                Picked morning of dispatch. Instant Mobile Money refund on any damaged or delayed batch.
-              </p>
-            </div>
+          {/* Farm-to-door specs — hairline rows, real FEFO data */}
+          <dl className="mt-9 border-t border-[rgba(33,26,18,0.08)]">
+            {[
+              {
+                label: 'Harvest date',
+                value: dayMonth(packedDateIso(product.expiryDate, product.shelfLifeDays)),
+              },
+              { label: 'Shelf life', value: `${product.shelfLifeDays} days (FEFO)` },
+              {
+                label: 'Storage',
+                value: product.refrigerationRequired
+                  ? 'Refrigerated below 8°C'
+                  : 'Cool, dry place',
+              },
+              { label: 'Season', value: product.season },
+            ].map((row) => (
+              <div
+                key={row.label}
+                className="flex items-baseline justify-between gap-4 border-b border-[rgba(33,26,18,0.08)] py-3"
+              >
+                <dt className="text-[13px] text-[#8A7E72]">{row.label}</dt>
+                <dd className="text-[14px] font-medium text-[#211A12]">{row.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          {/* Guarantees */}
+          <div className="mt-6 space-y-2.5 text-[13px] text-[#5C5247]">
+            <p className="flex items-center gap-2">
+              <Snowflake width={14} height={14} className="text-[#0B3B25]" />
+              Cold-chain packed at the Tema hub
+            </p>
+            <p className="text-[13px] text-[#5C5247]">
+              Instant Mobile Money refund on any spoiled or missing item —
+              reported within 24 hours.
+            </p>
           </div>
 
-          {/* Farmer mini-card */}
+          {/* Farmer strip */}
           <Link
             href={`/farmers/${farmer.slug}`}
-            className="mt-6 flex items-center gap-4 rounded-[20px] border border-black/[0.04] bg-[#FDFDFB] p-4 shadow-xs transition-colors hover:border-[#0B3B25]/30"
+            className="group mt-8 flex items-center gap-4 rounded-[20px] border border-[rgba(33,26,18,0.06)] bg-[#FDFDFB] p-4 transition-colors duration-300 hover:border-[rgba(11,59,37,0.3)]"
           >
-            <div className="relative h-13 w-13 shrink-0 overflow-hidden rounded-full border border-black/[0.06]">
+            <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
               <SmartImage src={farmer.photo} alt={farmer.name} fill className="object-cover" />
-            </div>
-            <div className="min-w-0">
-              <p className="truncate font-black text-[#211A12]">{farmer.name}</p>
-              <p className="flex items-center gap-1 text-xs text-[#5C5247] mt-0.5">
-                <Star className="h-3.5 w-3.5 fill-[#F0A81E] text-[#F0A81E]" />
-                {farmer.rating} · {farmer.reviewCount} reviews · since {farmer.joinedYear}
-              </p>
-            </div>
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-[14px] font-semibold text-[#211A12]">
+                {farmer.name}
+              </span>
+              <span className="mt-0.5 block text-[12px] text-[#8A7E72]">
+                ★ {farmer.rating} · {farmer.reviewCount} reviews · farming since {farmer.joinedYear}
+              </span>
+            </span>
+            <ArrowRight
+              width={16}
+              height={16}
+              className="shrink-0 text-[#8A7E72] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#7A3F1C]"
+            />
           </Link>
         </div>
       </div>
 
+      {/* Competing offers — hairline rows */}
       <CompareOffers current={product} offers={offers} />
 
+      {/* Reviews */}
       <section className="mt-16">
         <ReviewList productId={product.id} title="Customer reviews" />
       </section>
