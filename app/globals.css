@@ -23,16 +23,11 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
   --font-heading: var(--font-sans);
   --font-sans: var(--font-geist-sans), 'Geist Fallback';
   --font-mono: var(--font-geist-mono), 'Geist Mono Fallback';
-  --font-serif: var(--font-source-serif), Georgia, serif;
-  --font-display: var(--font-archivo), var(--font-geist-sans), sans-serif;
-  --font-onest: var(--font-onest), var(--font-geist-sans), sans-serif;
-  --font-jetbrains: var(--font-jetbrains), var(--font-geist-mono), monospace;
-  --font-mono-display: var(--font-ibm-plex-mono), var(--font-geist-mono), monospace;
-  --font-grotesk: var(--font-space-grotesk), var(--font-geist-sans), sans-serif;
-  --font-rounded: var(--font-nunito), ui-rounded, 'SF Pro Rounded', var(--font-geist-sans), sans-serif;
+  /* The editorial display voice — Fraunces for story moments. */
+  --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  --font-serif: var(--font-fraunces), Georgia, 'Times New Roman', serif;
   /* Golden Acres — warm editorial farm-to-table */
   --font-fraunces: var(--font-fraunces), Georgia, 'Times New Roman', serif;
-  --font-jakarta: var(--font-jakarta), var(--font-geist-sans), sans-serif;
   --color-gold: var(--ga-gold);
   --color-gold-soft: var(--ga-gold-soft);
   --color-field: var(--ga-field);
@@ -41,12 +36,6 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
   --color-cream: var(--ga-cream);
   --color-clay: var(--ga-clay);
   --color-leaf: var(--ga-leaf);
-  /* v3 teal accent — scientific, distinctive */
-  --color-teal: #26d9b8;
-  --color-teal-dark: #1fb39d;
-  /* electric-blue brand accent (company site) */
-  --color-brand: var(--brand);
-  --color-brand-foreground: var(--brand-foreground);
   /* marketplace chrome tokens */
   --color-header: var(--ga-header);
   --color-header-foreground: var(--ga-header-foreground);
@@ -58,10 +47,6 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
   --color-copper-deep: var(--ga-copper-deep);
   --color-copper-soft: var(--ga-copper-soft);
   --color-copper-foreground: var(--ga-copper-foreground);
-  /* Paperfolio flat accents (founder page) */
-  --color-coral: #ff6b7a;
-  --color-cobalt: #2f81f7;
-  --color-sun: #fdb927;
   --color-ink: #0a0a0a;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -105,6 +90,9 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
 
 :root {
   color-scheme: light;
+  /* AgriVil brand tokens at :root so system primitives work on any page
+     (including routes outside .ga-root like the redesign preview gallery). */
+  --ga-header: #7A3F1C;
   --background: oklch(0.962 0.004 95);
   --foreground: oklch(0.16 0.006 265);
   --card: oklch(0.985 0.003 95);
@@ -125,6 +113,17 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
   --border: oklch(0.86 0.006 95);
   --input: oklch(0.86 0.006 95);
   --ring: oklch(0.52 0.252 264);
+  /* AgriVil brand tokens (mirrored from .ga-root for system primitives) */
+  --ga-copper: #7A3F1C;
+  --ga-copper-deep: #5E2F13;
+  --ga-copper-soft: #9E5225;
+  --ga-copper-foreground: #FAF9F6;
+  --ga-gold: #F0A81E;
+  --ga-field: #0B3B25;
+  --ga-field-deep: #072618;
+  --ga-cream: #FAF9F6;
+  --ga-ink-deep: #1A0F06;
+  --ga-ink-soft: #2A1A0D;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -309,6 +308,68 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
   font-weight: 500;
 }
 
+/* ============================================================
+   AgriVil Web System — display typography + motion tokens
+   (docs/redesign/00-design-system.md)
+   ============================================================ */
+
+/* The display voice: Fraunces, tight, confident. Sentence case. */
+.ga-display-title {
+  font-family: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  font-optical-sizing: auto;
+  font-weight: 560;
+  letter-spacing: -0.025em;
+  line-height: 1.06;
+}
+
+/* Hero-scale display line with per-line mask-reveal support. */
+.ga-display-hero {
+  font-family: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  font-optical-sizing: auto;
+  font-weight: 560;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+}
+
+/* Masked line reveal: wrap each hero line in .ga-line > .ga-line-inner. */
+.ga-line {
+  display: block;
+  overflow: hidden;
+}
+.ga-line-inner {
+  display: block;
+  transform: translateY(110%);
+  animation: ga-line-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes ga-line-in {
+  to {
+    transform: translateY(0);
+  }
+}
+.ga-line:nth-child(2) .ga-line-inner { animation-delay: 120ms; }
+.ga-line:nth-child(3) .ga-line-inner { animation-delay: 240ms; }
+
+/* System-tier scroll reveal (slower, calmer than legacy ga-reveal). */
+.gs-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.gs-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Focus ring — copper, visible, consistent across redesigned surfaces. */
+:focus-visible {
+  outline: 2px solid #7A3F1C;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
 /* ---- Marketplace typography ---- */
 
 /* primary heading voice: confident grotesque, tight + bold. */
@@ -334,7 +395,6 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
 
 /* tabular numeral for counts / prices */
 .ga-index {
-  font-family: var(--font-jakarta);
   font-feature-settings: 'tnum' 1;
   letter-spacing: 0;
 }
@@ -642,6 +702,16 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
 
 /* respect users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
+  .ga-display-hero .ga-line-inner,
+  .ga-line-inner {
+    animation-duration: 0.01ms;
+    animation-delay: 0ms;
+  }
+  .gs-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
   .ga-rise,
   .ga-fade-up,
   .ga-scale-in,

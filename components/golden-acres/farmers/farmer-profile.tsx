@@ -35,7 +35,7 @@ export function FarmerProfile({
             <SmartImage src={farmer.photo} alt={farmer.name} fill className="object-cover" />
           </div>
           <div className="flex-1 pb-1">
-            <p className="font-jakarta text-xs font-black uppercase tracking-widest text-[#F0A81E]">
+            <p className="text-xs font-black uppercase tracking-widest text-[#F0A81E]">
               {farmer.farmName}
             </p>
             <h1 className="ga-headline mt-1 text-3xl sm:text-4xl font-black text-[#211A12]">

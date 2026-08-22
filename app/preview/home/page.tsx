@@ -186,7 +186,7 @@ export default function MobileHomeScreen() {
       <header className="relative px-[clamp(14px,2.4vw,20px)] pt-[clamp(8px,1.4vh,16px)] flex items-center justify-between">
         <div className="flex flex-col">
           <span className="text-[clamp(11px,1.4vh,12.5px)] font-bold text-[#5C5247]">
-            Direct from Ghana's Farms
+            Direct from Ghana&apos;s Farms
           </span>
           <div className="flex items-center gap-1.5 mt-0.5 cursor-pointer">
             <MapPin className="h-4 w-4 text-[#0B3B25] stroke-[2.5]" />
@@ -259,7 +259,7 @@ export default function MobileHomeScreen() {
         <div className="flex items-center justify-between mb-3">
           <div>
             <h3 className="text-[clamp(16px,2.2vh,19px)] font-extrabold tracking-tight text-[#211A12]">
-              Today's Fresh Produce
+              Today&apos;s Fresh Produce
             </h3>
             <p className="text-[clamp(11px,1.4vh,12.5px)] font-semibold text-[#5C5247]">
               Compare smallholder farm prices &amp; freshness

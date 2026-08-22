@@ -1,10 +1,9 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import {
+  Fraunces,
   Geist,
   Geist_Mono,
-  Source_Serif_4,
-  Plus_Jakarta_Sans,
 } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { SessionProvider } from '@/components/golden-acres/auth/session-context'
@@ -25,17 +24,13 @@ const geistMono = Geist_Mono({
   display: 'swap',
   preload: true,
 })
-const sourceSerif = Source_Serif_4({
-  variable: '--font-source-serif',
+// The editorial display voice: warm, high-craft serif for story moments.
+const fraunces = Fraunces({
+  variable: '--font-fraunces',
   subsets: ['latin'],
   display: 'swap',
   preload: false,
-})
-const jakarta = Plus_Jakarta_Sans({
-  variable: '--font-jakarta',
-  subsets: ['latin'],
-  display: 'swap',
-  preload: true,
+  axes: ['SOFT', 'WONK', 'opsz'],
 })
 
 export const metadata: Metadata = {
@@ -101,7 +96,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${sourceSerif.variable} ${jakarta.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable}`}
     >
       <body className="font-sans antialiased">
         <ThemeProvider
