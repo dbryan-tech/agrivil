@@ -97,7 +97,7 @@ export function RecipeDetail({ recipeId }: { recipeId: string }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0]">
+    <div className="min-h-screen bg-[#F7F5F0] pt-24">
       {/* Hero image */}
       <section className="relative flex min-h-[22rem] items-end overflow-hidden border-b border-black/[0.04] sm:min-h-[26rem]">
         <SmartImage
@@ -116,11 +116,11 @@ export function RecipeDetail({ recipeId }: { recipeId: string }) {
             <ArrowLeft className="h-4 w-4" /> All recipes
           </Link>
           {recipe.category && (
-            <span className="mt-4 block w-fit rounded-full bg-white/90 px-3 py-1 text-[11px] font-extrabold text-[#211A12] backdrop-blur-md shadow-xs">
+            <span className="mt-4 block w-fit rounded-full bg-white/92 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-[#211A12] backdrop-blur-md">
               {recipe.category}
             </span>
           )}
-          <h1 className="ga-headline mt-3 max-w-2xl text-balance text-4xl font-black text-white sm:text-5xl">
+          <h1 className="ga-display-title mt-3 max-w-2xl text-balance text-[clamp(30px,4vw,48px)] text-white">
             {recipe.name}
           </h1>
           {recipe.description && (
@@ -130,16 +130,16 @@ export function RecipeDetail({ recipeId }: { recipeId: string }) {
           )}
           <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-bold text-white/95">
             <span className="flex items-center gap-1.5">
-              <Clock className="h-4 w-4 text-[#F0A81E]" /> {recipe.time}
+              <Clock className="w-4 h-4 text-white/85" /> {recipe.time}
             </span>
             {recipe.serves && (
               <span className="flex items-center gap-1.5">
-                <Users className="h-4 w-4 text-[#F0A81E]" /> {recipe.serves}
+                <Users className="w-4 h-4 text-white/85" /> {recipe.serves}
               </span>
             )}
             {recipe.difficulty && (
               <span className="flex items-center gap-1.5">
-                <ChefHat className="h-4 w-4 text-[#F0A81E]" /> {recipe.difficulty}
+                <ChefHat className="w-4 h-4 text-white/85" /> {recipe.difficulty}
               </span>
             )}
           </div>
@@ -149,11 +149,11 @@ export function RecipeDetail({ recipeId }: { recipeId: string }) {
       <div className="mx-auto grid max-w-5xl gap-8 px-2 py-5 sm:px-3 lg:grid-cols-[1.4fr_1fr] lg:px-4">
         {/* Method */}
         <Reveal as="section">
-          <h2 className="ga-headline text-2xl font-black text-[#211A12]">How to cook it</h2>
+          <h2 className="ga-display-title text-[clamp(22px,2.6vw,30px)] text-[#211A12]">How to cook it.</h2>
           <ol className="mt-5 space-y-4">
             {(recipe.steps ?? []).map((step, i) => (
               <li key={i} className="flex gap-3.5">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0B3B25] text-xs font-black text-white shadow-xs">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center ga-index rounded-full bg-[#211A12] text-[11px] font-semibold text-white">
                   {i + 1}
                 </span>
                 <p className="pt-0.5 text-pretty text-sm sm:text-base leading-relaxed text-[#211A12]">
@@ -164,10 +164,10 @@ export function RecipeDetail({ recipeId }: { recipeId: string }) {
           </ol>
 
           {recipe.tip && (
-            <div className="mt-6 flex gap-3 rounded-[20px] border border-[#F0A81E]/30 bg-[#F0A81E]/10 p-4">
+            <div className="mt-6 flex gap-3 border-l-2 border-[#7A3F1C]/50 bg-transparent p-0 pl-4">
               <Lightbulb className="h-5 w-5 shrink-0 text-[#7A3F1C]" />
               <div>
-                <p className="text-xs font-black uppercase tracking-wider text-[#7A3F1C]">Chef&apos;s tip</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#7A3F1C]">Chef’s tip</p>
                 <p className="mt-1 text-pretty text-sm leading-relaxed text-[#211A12]">
                   {recipe.tip}
                 </p>
@@ -178,10 +178,9 @@ export function RecipeDetail({ recipeId }: { recipeId: string }) {
 
         {/* Shoppable ingredients */}
         <Reveal as="div" delay={80}>
-          <div className="sticky top-4 rounded-[24px] border border-black/[0.04] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-            <h2 className="ga-headline flex items-center gap-2 text-xl font-black text-[#211A12]">
-              <ShoppingBasket className="h-5 w-5 text-[#0B3B25]" /> Shop the
-              ingredients
+          <div className="sticky top-28 rounded-[22px] border border-black/[0.04] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
+            <h2 className="text-[16px] font-semibold tracking-[-0.01em] text-[#211A12]">
+              Shop the ingredients
             </h2>
             <p className="mt-1 text-xs font-medium text-[#5C5247]">
               Best live prices from our farmers.
@@ -222,7 +221,7 @@ export function RecipeDetail({ recipeId }: { recipeId: string }) {
                           onClick={() => {
                             if (ing.offer) add(ing.offer, ing.qty)
                           }}
-                          className="ga-press mt-1 inline-flex items-center gap-1 rounded-full border border-black/[0.08] bg-white px-2.5 py-1 text-xs font-bold text-[#211A12] hover:bg-[#EDE8DF]"
+                          className="inline-flex items-center gap-1 rounded-full border border-[rgba(33,26,18,0.15)] bg-white px-2.5 py-1 text-[12px] font-medium text-[#211A12] transition-colors hover:border-[rgba(11,59,37,0.45)] hover:text-[#0B3B25]"
                           aria-label={`Add ${ing.name} to basket`}
                         >
                           <Plus className="h-3 w-3" /> Add
@@ -242,7 +241,7 @@ export function RecipeDetail({ recipeId }: { recipeId: string }) {
               <span className="text-xs font-bold uppercase tracking-wider text-[#5C5247]">
                 Total{!allAvailable ? ' (available items)' : ''}
               </span>
-              <span className="ga-headline text-2xl font-black text-[#211A12]">
+              <span className="ga-index text-[22px] font-semibold tracking-[-0.02em] text-[#211A12]">
                 {formatGHS(total)}
               </span>
             </div>
@@ -251,7 +250,7 @@ export function RecipeDetail({ recipeId }: { recipeId: string }) {
               type="button"
               onClick={addAll}
               disabled={available.length === 0}
-              className="ga-press mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-[#0B3B25] px-5 py-3.5 text-sm font-black text-white shadow-sm hover:bg-[#072618] transition-all disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#0B3B25] px-5 text-[14.5px] font-semibold tracking-[-0.01em] text-white transition-all duration-300 hover:bg-[#0F4A2E] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40"
             >
               <ShoppingBasket className="h-4 w-4" />
               Add {available.length} ingredient
@@ -279,9 +278,9 @@ function RelatedRecipes({ currentId }: { currentId: string }) {
   const others = recipes.filter((r) => r.id !== currentId).slice(0, 3)
   if (others.length === 0) return null
   return (
-    <section className="border-t border-black/[0.04] bg-[#EDE8DF]/40">
+    <section className="border-t border-[rgba(33,26,18,0.08)] bg-transparent">
       <div className="mx-auto max-w-5xl px-2 py-5 sm:px-3 lg:px-4">
-        <h2 className="ga-headline text-2xl font-black text-[#211A12]">More to cook</h2>
+        <h2 className="ga-display-title text-[clamp(20px,2.4vw,26px)] text-[#211A12]">More to cook.</h2>
         <div className="mt-5 grid gap-5 sm:grid-cols-3">
           {others.map((r) => (
             <Link

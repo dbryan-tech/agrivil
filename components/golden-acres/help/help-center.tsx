@@ -69,9 +69,9 @@ const STATUS_META: Record<
   TicketStatus,
   { label: string; icon: typeof Clock; className: string }
 > = {
-  open: { label: 'Open', icon: CircleDot, className: 'bg-[#f3ddd5] text-[#c0492e]' },
-  pending: { label: 'Awaiting reply', icon: Clock, className: 'bg-[#f6e8c8] text-[#b8791a]' },
-  resolved: { label: 'Resolved', icon: CheckCircle2, className: 'bg-[#e2efd2] text-[#4f7d2f]' },
+  open: { label: 'Open', icon: CircleDot, className: 'text-[#B45309]' },
+  pending: { label: 'Awaiting reply', icon: Clock, className: 'text-[#7A3F1C]' },
+  resolved: { label: 'Resolved', icon: CheckCircle2, className: 'text-[#0F7A43]' },
 }
 
 export function HelpCenter() {
@@ -90,58 +90,47 @@ export function HelpCenter() {
   )
 
   return (
-    <div className="mx-auto max-w-5xl px-2 py-5 sm:px-3 lg:px-4">
+    <div className="mx-auto max-w-5xl px-5 pb-20 pt-32 sm:px-8">
       <header className="ga-rise max-w-2xl">
-        <span className="inline-flex items-center gap-2 rounded-full bg-[#F0A81E]/15 px-3 py-1 text-xs font-black uppercase tracking-wider text-[#7A3F1C]">
-          <LifeBuoy className="h-3.5 w-3.5" />
-          Help &amp; Support
-        </span>
-        <h1 className="ga-headline mt-3 text-pretty text-4xl font-black text-[#211A12] sm:text-5xl">
+        <p className="text-[13px] font-semibold text-[#7A3F1C]">Help &amp; support</p>
+        <h1 className="ga-display-title mt-2 text-[clamp(30px,3.6vw,48px)] text-[#211A12]">
           How can we help?
         </h1>
-        <p className="mt-3 text-pretty text-sm sm:text-base leading-relaxed text-[#5C5247]">
-          Browse common questions, or send our Accra-based support team a message
-          and we&apos;ll get back to you the same day.
+        <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-[#5C5247]">
+          Browse common questions, or send our Accra-based support team a
+          message — we reply the same day.
         </p>
       </header>
 
       {/* Tabs (only show "My tickets" for signed-in customers) */}
       {customer && (
-        <div className="mt-8 inline-flex rounded-full border border-black/[0.08] bg-white p-1 shadow-xs">
-          <button
-            onClick={() => {
-              setView('help')
-              setActiveRef(null)
-            }}
-            className={`ga-press rounded-full px-5 py-2 text-xs font-black uppercase tracking-wider transition-all ${
-              view === 'help'
-                ? 'bg-[#0B3B25] text-white shadow-xs'
-                : 'text-[#5C5247] hover:text-[#211A12]'
-            }`}
-          >
-            Get help
-          </button>
-          <button
-            onClick={() => setView('tickets')}
-            className={`ga-press inline-flex items-center gap-2 rounded-full px-5 py-2 text-xs font-black uppercase tracking-wider transition-all ${
-              view === 'tickets'
-                ? 'bg-[#0B3B25] text-white shadow-xs'
-                : 'text-[#5C5247] hover:text-[#211A12]'
-            }`}
-          >
-            My tickets
-            {myTickets && myTickets.length > 0 && (
-              <span
-                className={`rounded-full px-1.5 py-0.5 text-[10px] font-black ${
-                  view === 'tickets'
-                    ? 'bg-white/20 text-white'
-                    : 'bg-[#EDE8DF] text-[#211A12]'
+        <div className="mt-8 flex gap-x-6 border-b border-[rgba(33,26,18,0.08)]">
+          {([
+            { id: 'help' as const, label: 'Get help', count: 0 },
+            { id: 'tickets' as const, label: 'My tickets', count: myTickets?.length ?? 0 },
+          ]).map((tb) => {
+            const active = view === tb.id || (tb.id === 'tickets' && activeRef)
+            return (
+              <button
+                key={tb.id}
+                onClick={() => {
+                  setView(tb.id)
+                  if (tb.id === 'help') setActiveRef(null)
+                }}
+                aria-selected={active ? 'true' : 'false'}
+                className={`-mb-px shrink-0 border-b pb-2.5 text-[13.5px] transition-colors duration-300 ${
+                  active
+                    ? 'border-[#211A12] font-semibold text-[#211A12]'
+                    : 'border-transparent font-medium text-[#8A7E72]'
                 }`}
               >
-                {myTickets.length}
-              </span>
-            )}
-          </button>
+                {tb.label}
+                {tb.count > 0 && (
+                  <span className="ga-index ml-1.5 text-[11.5px] text-[#B45309]">{tb.count}</span>
+                )}
+              </button>
+            )
+          })}
         </div>
       )}
 
@@ -172,18 +161,18 @@ export function HelpCenter() {
         <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.1fr]">
           {/* FAQs */}
           <section aria-label="Frequently asked questions">
-            <h2 className="ga-display text-xl font-semibold text-foreground">
+            <h2 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
               Common questions
             </h2>
             <Faqs />
 
-            <div className="mt-6 rounded-xl border border-border bg-secondary/40 p-4">
+            <div className="mt-6 rounded-[16px] border border-[rgba(33,26,18,0.08)] bg-white p-4">
               <p className="text-sm font-semibold text-foreground">
                 Prefer to track an existing order?
               </p>
               <Link
                 href="/account"
-                className="ga-press mt-2 inline-flex items-center gap-1.5 text-sm font-bold text-primary"
+                className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-[#0B3B25] underline decoration-[rgba(11,59,37,0.35)] underline-offset-4 transition-colors hover:decoration-[#0B3B25]"
               >
                 Go to my account
               </Link>
@@ -212,31 +201,42 @@ export function HelpCenter() {
 function Faqs() {
   const [openFaq, setOpenFaq] = useState<number | null>(0)
   return (
-    <ul className="mt-4 space-y-3">
+    <ul className="mt-5 border-t border-[rgba(33,26,18,0.08)]">
       {FAQS.map((f, i) => {
         const open = openFaq === i
         return (
-          <li
-            key={i}
-            className="overflow-hidden rounded-xl border border-border bg-card"
-          >
+          <li key={i} className="border-b border-[rgba(33,26,18,0.08)]">
             <button
               onClick={() => setOpenFaq(open ? null : i)}
               aria-expanded={open}
-              className="ga-press flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
+              className="group flex w-full items-center justify-between gap-4 py-4 text-left"
             >
-              <span className="font-semibold text-foreground">{f.q}</span>
-              <ChevronDown
-                className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${
-                  open ? 'rotate-180' : ''
+              <span
+                className={`text-[15px] font-semibold tracking-[-0.01em] transition-colors duration-300 sm:text-[16px] ${
+                  open ? 'text-[#211A12]' : 'text-[#3D332A] group-hover:text-[#211A12]'
                 }`}
-              />
+              >
+                {f.q}
+              </span>
+              {/* rotating plus */}
+              <span
+                aria-hidden
+                className={`relative inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border transition-transform duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
+                  open ? 'rotate-45 border-[rgba(11,59,37,0.5)]' : 'border-[rgba(33,26,18,0.18)]'
+                }`}
+              >
+                <span className="absolute h-[1.5px] w-3 rounded bg-[#211A12]" />
+                <span className="absolute h-3 w-[1.5px] rounded bg-[#211A12]" />
+              </span>
             </button>
-            {open && (
-              <p className="px-4 pb-4 text-sm leading-relaxed text-muted-foreground">
-                {f.a}
-              </p>
-            )}
+            <div
+              className="grid transition-[grid-template-rows] duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]"
+              style={{ gridTemplateRows: open ? '1fr' : '0fr' }}
+            >
+              <div className="overflow-hidden">
+                <p className="pb-4 pr-10 text-[14px] leading-relaxed text-[#5C5247]">{f.a}</p>
+              </div>
+            </div>
           </li>
         )
       })}
@@ -262,42 +262,40 @@ function TicketsList({
   }
   if (tickets.length === 0) {
     return (
-      <div className="rounded-2xl border border-border bg-card p-8 text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-secondary">
-          <MessageSquare className="h-7 w-7 text-muted-foreground" />
+      <div className="flex flex-col items-center border-t border-[rgba(33,26,18,0.08)] py-12 text-center">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[rgba(33,26,18,0.12)]">
+          <MessageSquare width={20} height={20} className="text-[#5C5247]" />
         </div>
-        <p className="ga-display mt-4 text-lg font-semibold text-foreground">
-          No conversations yet
-        </p>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="ga-display-title mt-5 text-[20px] text-[#211A12]">No conversations yet</p>
+        <p className="mt-2 max-w-xs text-[13.5px] leading-relaxed text-[#5C5247]">
           When you message our team, your conversations show up here.
         </p>
         <button
           onClick={onStartNew}
-          className="ga-press mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground"
+          className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#0B3B25] px-6 py-3 text-[14px] font-semibold text-white transition-all duration-300 hover:bg-[#0F4A2E]"
         >
-          <Send className="h-4 w-4" />
+          <Send width={15} height={15} />
           Start a conversation
         </button>
       </div>
     )
   }
   return (
-    <ul className="space-y-3">
+    <ul className="border-t border-[rgba(33,26,18,0.08)]">
       {tickets.map((t) => {
         const meta = STATUS_META[t.status]
         const last = t.messages[t.messages.length - 1]
         return (
-          <li key={t.id}>
+          <li key={t.id} className="border-b border-[rgba(33,26,18,0.08)]">
             <button
               onClick={() => onOpen(t.reference)}
-              className="ga-press flex w-full items-center gap-3 rounded-xl border border-border bg-card p-4 text-left"
+              className="group grid w-full grid-cols-[1fr_auto] items-center gap-x-4 py-4 text-left"
             >
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-foreground">{t.reference}</span>
                   <span
-                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${meta.className}`}
+                    className={`inline-flex items-center gap-1 text-[11.5px] font-medium ${meta.className}`}
                   >
                     <meta.icon className="h-3 w-3" />
                     {meta.label}
@@ -405,12 +403,12 @@ function ContactForm({
 
   if (submitted) {
     return (
-      <div className="ga-scale-in rounded-2xl border border-border bg-card p-6 text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-secondary">
-          <CheckCircle2 className="h-7 w-7 text-[var(--ga-leaf)]" />
+      <div className="rounded-[22px] border border-[rgba(15,122,67,0.25)] bg-[#FAF9F6] p-8 text-center">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[rgba(15,122,67,0.35)] text-[#0F7A43]">
+          <CheckCircle2 width={24} height={24} />
         </div>
-        <h2 className="ga-display mt-4 text-2xl font-semibold text-foreground">
-          Message received
+        <h2 className="ga-display-title mt-5 text-[clamp(22px,2.6vw,30px)] text-[#211A12]">
+          Message received.
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           Your ticket reference is{' '}
@@ -420,7 +418,7 @@ function ContactForm({
         </p>
         <button
           onClick={() => setSubmitted(null)}
-          className="ga-press mt-5 inline-flex items-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-sm font-semibold text-secondary-foreground"
+          className="mt-6 inline-flex items-center gap-2 rounded-full border border-[rgba(33,26,18,0.15)] px-5 py-2.5 text-[13.5px] font-medium text-[#211A12] transition-colors duration-300 hover:border-[rgba(11,59,37,0.45)]"
         >
           Send another message
         </button>
@@ -433,7 +431,7 @@ function ContactForm({
       onSubmit={submit}
       className="rounded-2xl border border-border bg-card p-5 sm:p-6"
     >
-      <h2 className="ga-display text-xl font-semibold text-foreground">
+      <h2 className="text-[16px] font-semibold tracking-[-0.01em] text-[#211A12]">
         Send us a message
       </h2>
 
@@ -448,10 +446,10 @@ function ContactForm({
               key={c.key}
               type="button"
               onClick={() => setCategory(c.key)}
-              className={`ga-press flex items-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-semibold transition-colors ${
+              className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[13px] font-medium transition-colors duration-300 ${
                 on
-                  ? 'border-primary bg-primary/10 text-foreground'
-                  : 'border-border bg-background text-muted-foreground'
+                  ? 'border-[#211A12] bg-transparent text-[#211A12]'
+                  : 'border-[rgba(33,26,18,0.12)] bg-transparent text-[#8A7E72] hover:text-[#3D332A]'
               }`}
             >
               <c.icon className="h-4 w-4 shrink-0" />
@@ -467,7 +465,7 @@ function ContactForm({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Ama Owusu"
-            className="ga-input"
+            className="ga-underline"
           />
         </Field>
         <Field label="Phone or email">
@@ -475,7 +473,7 @@ function ContactForm({
             value={contact}
             onChange={(e) => setContact(e.target.value)}
             placeholder="+233 24 000 0000"
-            className="ga-input"
+            className="ga-underline"
           />
         </Field>
       </div>
@@ -486,7 +484,7 @@ function ContactForm({
             value={orderRef}
             onChange={(e) => setOrderRef(e.target.value)}
             placeholder="GA-24817"
-            className="ga-input"
+            className="ga-underline"
           />
         </Field>
       </div>
@@ -497,7 +495,7 @@ function ContactForm({
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             placeholder="Brief summary of your issue"
-            className="ga-input"
+            className="ga-underline"
           />
         </Field>
       </div>
@@ -509,7 +507,7 @@ function ContactForm({
             onChange={(e) => setMessage(e.target.value)}
             rows={4}
             placeholder="Tell us what happened…"
-            className="ga-input resize-none"
+            className="ga-underline resize-none"
           />
         </Field>
       </div>
@@ -561,7 +559,7 @@ function ContactForm({
       </div>
 
       {error && (
-        <p className="mt-3 rounded-lg bg-[#f3ddd5] px-3 py-2 text-sm font-medium text-[#c0492e]">
+        <p className="mt-3 rounded-xl border border-[rgba(185,28,28,0.25)] bg-[#B91C1C]/5 px-4 py-3 text-[13.5px] font-medium leading-relaxed text-[#B91C1C]">
           {error}
         </p>
       )}
@@ -579,7 +577,7 @@ function ContactForm({
       <button
         type="submit"
         disabled={!valid || submitting}
-        className="ga-press mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-primary font-bold text-primary-foreground disabled:opacity-50"
+        className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#0B3B25] text-[15px] font-semibold text-white transition-all duration-300 hover:bg-[#0F4A2E] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40"
       >
         {submitting ? (
           <Loader2 className="h-4 w-4 animate-spin" />

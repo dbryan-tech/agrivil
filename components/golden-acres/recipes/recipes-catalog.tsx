@@ -3,10 +3,10 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { SmartImage } from '@/components/golden-acres/smart-image'
-import { Reveal } from '@/components/golden-acres/reveal'
+import { TextTabs } from '@/components/golden-acres/system'
 import { recipes } from '@/lib/golden-acres/data'
 import type { Recipe, RecipeCategory } from '@/lib/golden-acres/types'
-import { Clock, ChefHat, UtensilsCrossed } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 const CATEGORIES: (RecipeCategory | 'All')[] = [
   'All',
@@ -16,6 +16,11 @@ const CATEGORIES: (RecipeCategory | 'All')[] = [
   'Sides & snacks',
 ]
 
+/**
+ * Recipes index (redesigned, docs/redesign/06 §1).
+ * Editorial magazine layout: lead recipe full-bleed with Fraunces title
+ * overlay, then hairline rows. Category text-tabs. Same data source.
+ */
 export function RecipesCatalog() {
   const [category, setCategory] = useState<RecipeCategory | 'All'>('All')
 
@@ -24,110 +29,138 @@ export function RecipesCatalog() {
     return recipes.filter((r) => r.category === category)
   }, [category])
 
+  // Lead recipe only on the unfiltered view; filtered views are all rows.
+  const lead = category === 'All' ? filtered[0] : null
+  const rest = lead ? filtered.slice(1) : filtered
+
   return (
-    <div className="min-h-screen bg-[#F7F5F0]">
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-black/[0.04]">
-        <SmartImage
-          src="/golden-acres/recipes/ghana-jollof.png"
-          alt=""
-          fill
-          priority
-          imgClassName="object-cover"
-        />
-        <div className="ga-media-scrim" aria-hidden />
-        <div className="relative z-10 mx-auto max-w-7xl px-2 py-7 sm:px-3 lg:px-4">
-          <p className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#F0A81E]">
-            <UtensilsCrossed className="h-4 w-4" /> Cook &amp; shop
-          </p>
-          <h1 className="ga-headline mt-2 max-w-2xl text-balance text-3xl font-black text-white sm:text-4xl">
-            Ghanaian recipes, shoppable in one tap
+    <main className="min-h-screen bg-[#F7F5F0] pb-20 pt-32">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        {/* Editorial header */}
+        <header className="max-w-2xl">
+          <p className="text-[13px] font-semibold text-[#7A3F1C]">Cook &amp; shop</p>
+          <h1 className="ga-display-title mt-2 text-[clamp(30px,3.6vw,48px)] text-[#211A12]">
+            Ghanaian recipes, shoppable in one tap.
           </h1>
-          <p className="mt-2 max-w-2xl text-pretty text-sm sm:text-base leading-relaxed text-white/90">
+          <p className="mt-3 text-[15px] leading-relaxed text-[#5C5247]">
             Pick a dish, see exactly what fresh produce you need, and add every
             ingredient to your basket from our farmers — at the best live price.
           </p>
-        </div>
-      </section>
+        </header>
 
-      {/* Category filter */}
-      <div className="sticky top-0 z-10 border-b border-black/[0.04] bg-[#F7F5F0]">
-        <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-2 py-2.5 sm:px-3 lg:px-4">
-          {CATEGORIES.map((c) => {
-            const active = c === category
-            return (
-              <button
-                key={c}
-                type="button"
-                onClick={() => setCategory(c)}
-                className={`ga-press shrink-0 rounded-full px-4 py-2 text-xs font-black uppercase tracking-wider transition-colors ${
-                  active
-                    ? 'bg-[#0B3B25] text-white shadow-xs'
-                    : 'border border-black/[0.06] bg-white text-[#211A12] hover:bg-[#EDE8DF]'
-                }`}
-              >
-                {c}
-              </button>
-            )
-          })}
+        {/* Category text-tabs */}
+        <div className="mt-8 border-b border-[rgba(33,26,18,0.08)]">
+          <TextTabs
+            tabs={CATEGORIES.map((c) => ({ label: c, value: c }))}
+            value={category}
+            onChange={(v) => setCategory(v as RecipeCategory | 'All')}
+          />
         </div>
-      </div>
 
-      {/* Grid */}
-      <div className="mx-auto max-w-7xl px-2 py-5 sm:px-3 lg:px-4">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((recipe, i) => (
-            <Reveal key={recipe.id} delay={i * 50} as="article">
-              <RecipeCard recipe={recipe} />
-            </Reveal>
+        {/* Lead recipe — full-bleed editorial moment */}
+        {lead && (
+          <Link
+            href={`/recipes/${lead.id}`}
+            className="group relative mt-10 block aspect-[16/9] overflow-hidden rounded-[24px] sm:aspect-[21/9]"
+          >
+            <SmartImage
+              src={lead.image}
+              alt={lead.name}
+              fill
+              priority
+              className="object-cover transition-transform duration-700 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
+            />
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{
+                background:
+                  'linear-gradient(200deg, rgba(8,26,18,0) 30%, rgba(8,26,18,0.78) 100%)',
+              }}
+            />
+            <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
+              {lead.category && (
+                <span className="text-[12px] font-semibold uppercase tracking-[0.1em] text-white/75">
+                  {lead.category}
+                </span>
+              )}
+              <h2 className="ga-display-title mt-1.5 max-w-xl text-[clamp(24px,3vw,40px)] text-white">
+                {lead.name}
+              </h2>
+              <p className="ga-index mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-white/80">
+                <span>{lead.time}</span>
+                {lead.serves && <span>{lead.serves}</span>}
+                {lead.difficulty && <span>{lead.difficulty}</span>}
+                <span className="inline-flex items-center gap-1.5 font-semibold text-white">
+                  Shop the ingredients
+                  <ArrowRight
+                    width={14}
+                    height={14}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </span>
+              </p>
+            </div>
+          </Link>
+        )}
+
+        {/* Hairline rows */}
+        <ul className="mt-12 border-t border-[rgba(33,26,18,0.08)]">
+          {rest.map((recipe) => (
+            <RecipeRow key={recipe.id} recipe={recipe} />
           ))}
-        </div>
+        </ul>
+
+        {rest.length === 0 && !lead && (
+          <p className="mt-6 text-[14.5px] text-[#5C5247]">
+            No recipes in this category yet — check back soon.
+          </p>
+        )}
       </div>
-    </div>
+    </main>
   )
 }
 
-function RecipeCard({ recipe }: { recipe: Recipe }) {
+function RecipeRow({ recipe }: { recipe: Recipe }) {
   const count = recipe.ingredients?.length ?? recipe.productIds.length
   return (
-    <Link
-      href={`/recipes/${recipe.id}`}
-      className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-black/[0.04] bg-[#FDFDFB] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)] transition-all"
-    >
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <SmartImage
-          src={recipe.image}
-          alt={recipe.name}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        {recipe.category && (
-          <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[11px] font-extrabold text-[#211A12] backdrop-blur-md shadow-xs">
-            {recipe.category}
+    <li>
+      <Link
+        href={`/recipes/${recipe.id}`}
+        className="group grid grid-cols-[88px_1fr_auto] items-center gap-x-5 gap-y-2 border-b border-[rgba(33,26,18,0.08)] py-4 transition-colors sm:grid-cols-[104px_1fr_auto]"
+      >
+        {/* thumb */}
+        <span className="relative block aspect-square overflow-hidden rounded-[14px] border border-[rgba(33,26,18,0.05)]">
+          <SmartImage
+            src={recipe.image}
+            alt={recipe.name}
+            fill
+            className="object-cover transition-transform duration-700 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+          />
+        </span>
+
+        {/* name + meta */}
+        <span className="min-w-0">
+          <span className="block truncate text-[17px] font-semibold tracking-[-0.01em] text-[#211A12] transition-colors duration-300 group-hover:text-[#7A3F1C] sm:text-[19px]">
+            {recipe.name}
           </span>
-        )}
-      </div>
-      <div className="flex flex-1 flex-col p-5">
-        <h2 className="ga-headline text-xl font-black text-[#211A12] group-hover:text-[#0B3B25] transition-colors">{recipe.name}</h2>
-        {recipe.description && (
-          <p className="mt-1.5 line-clamp-2 text-pretty text-sm leading-relaxed text-[#5C5247]">
-            {recipe.description}
-          </p>
-        )}
-        <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-4 text-xs font-semibold text-[#5C5247]">
-          <span className="flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5 text-[#0B3B25]" /> {recipe.time}
-          </span>
-          {recipe.difficulty && (
-            <span className="flex items-center gap-1.5">
-              <ChefHat className="h-3.5 w-3.5 text-[#0B3B25]" /> {recipe.difficulty}
+          {recipe.description && (
+            <span className="mt-0.5 line-clamp-1 block text-[13px] text-[#5C5247]">
+              {recipe.description}
             </span>
           )}
-          <span className="flex items-center gap-1.5">
-            <UtensilsCrossed className="h-3.5 w-3.5 text-[#0B3B25]" /> {count}{' '}
-            ingredients
+          <span className="ga-index mt-1 block text-[12px] text-[#8A7E72]">
+            {recipe.time}
+            {recipe.serves ? ` · ${recipe.serves}` : ''}
+            {recipe.difficulty ? ` · ${recipe.difficulty}` : ''} · {count} ingredients
           </span>
-        </div>
-      </div>
-    </Link>
+        </span>
+
+        {/* CTA */}
+        <span className="hidden items-center gap-1.5 justify-self-end whitespace-nowrap rounded-full border border-[rgba(33,26,18,0.15)] px-4 py-2 text-[13px] font-medium text-[#211A12] transition-colors duration-300 group-hover:border-[rgba(11,59,37,0.45)] group-hover:text-[#0B3B25] sm:inline-flex">
+          Shop ingredients
+        </span>
+      </Link>
+    </li>
   )
 }

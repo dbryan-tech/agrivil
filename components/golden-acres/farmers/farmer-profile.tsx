@@ -35,10 +35,10 @@ export function FarmerProfile({
             <SmartImage src={farmer.photo} alt={farmer.name} fill className="object-cover" />
           </div>
           <div className="flex-1 pb-1">
-            <p className="text-xs font-black uppercase tracking-widest text-[#F0A81E]">
+            <p className="text-[12.5px] font-semibold text-[#7A3F1C]">
               {farmer.farmName}
             </p>
-            <h1 className="ga-headline mt-1 text-3xl sm:text-4xl font-black text-[#211A12]">
+            <h1 className="ga-display-title mt-1 text-[clamp(28px,3.4vw,44px)] text-[#211A12]">
               {farmer.name}
             </h1>
             <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs sm:text-sm font-semibold text-[#5C5247]">
@@ -72,40 +72,37 @@ export function FarmerProfile({
         </div>
 
         {/* Stats */}
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <dl className="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-b border-[rgba(33,26,18,0.08)] py-6 sm:grid-cols-4">
           {[
             { label: 'On-time delivery', value: pct(farmer.onTimeRate) },
             { label: 'Rating', value: `${farmer.rating} / 5` },
             { label: 'Produce listed', value: String(catalog.length) },
             { label: 'Farm radius', value: `${farmer.farmToHubRadiusKm} km` },
           ].map((s) => (
-            <div
-              key={s.label}
-              className="rounded-[20px] border border-black/[0.04] bg-[#FDFDFB] p-4 text-center shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]"
-            >
-              <p className="ga-headline text-2xl font-black text-[#211A12]">
+            <div key={s.label} className="border-l border-[rgba(33,26,18,0.08)] pl-4 first:border-l-0 first:pl-0">
+              <dd className="ga-index text-[clamp(22px,2.4vw,30px)] font-semibold leading-none tracking-[-0.02em] text-[#211A12]">
                 {s.value}
-              </p>
-              <p className="mt-1 text-xs font-bold uppercase tracking-wider text-[#5C5247]">
+              </dd>
+              <dt className="mt-1.5 text-[12px] font-medium text-[#8A7E72]">
                 {s.label}
-              </p>
+              </dt>
             </div>
           ))}
-        </div>
+        </dl>
 
         {/* Story */}
         <div className="mt-10 grid gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <h2 className="ga-headline text-2xl font-black text-[#211A12]">
-              The story
+            <h2 className="ga-display-title text-[clamp(22px,2.6vw,30px)] text-[#211A12]">
+              The story.
             </h2>
             <p className="mt-4 whitespace-pre-line text-pretty leading-relaxed text-[#5C5247]">
               {farmer.story}
             </p>
           </div>
           <aside className="space-y-5">
-            <div className="rounded-[20px] border border-black/[0.04] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-              <h3 className="flex items-center gap-2 font-black text-[#211A12]">
+            <div className="border-t border-[rgba(33,26,18,0.08)] pt-5">
+              <h3 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
                 <Sprout className="h-5 w-5 text-[#0B3B25]" /> Growing methods
               </h3>
               <ul className="mt-3 space-y-2">
@@ -117,8 +114,8 @@ export function FarmerProfile({
               </ul>
             </div>
             {farmer.certifications.length > 0 && (
-              <div className="rounded-[20px] border border-black/[0.04] bg-[#FDFDFB] p-5 shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-                <h3 className="flex items-center gap-2 font-black text-[#211A12]">
+              <div className="border-t border-[rgba(33,26,18,0.08)] pt-5">
+                <h3 className="text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8A7E72]">
                   <ShieldCheck className="h-5 w-5 text-[#F0A81E]" /> Certifications
                 </h3>
                 <div className="mt-3 flex flex-wrap gap-2">

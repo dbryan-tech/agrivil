@@ -3,13 +3,13 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { SmartImage } from '@/components/golden-acres/smart-image'
-import { Reveal } from '@/components/golden-acres/reveal'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { useSession } from '@/components/golden-acres/auth/session-context'
 import { bundles, products } from '@/lib/golden-acres/data'
 import { formatGHS } from '@/lib/golden-acres/format'
+import { Price } from '@/components/golden-acres/system'
 import type { Bundle, SubscriptionBox, CustomerAccount } from '@/lib/golden-acres/types'
-import { Repeat, Check, ShoppingBasket, CalendarClock, Sparkles, Loader2 } from 'lucide-react'
+import { Check, ShoppingBasket, CalendarClock, Loader2, ArrowRight } from 'lucide-react'
 
 const FREQ_LABEL: Record<string, string> = {
   'one-time': 'One-time',
@@ -20,34 +20,31 @@ const FREQ_LABEL: Record<string, string> = {
 
 export function BundlesCatalog() {
   return (
-    <div className="min-h-screen bg-[#F7F5F0]">
-      <section className="border-b border-black/[0.04] bg-[#EDE8DF]/40">
-        <div className="mx-auto max-w-7xl px-2 py-6 sm:px-3 lg:px-4">
-          <p className="text-xs font-black uppercase tracking-wider text-[#7A3F1C]">Curated boxes</p>
-          <h1 className="ga-headline mt-2 text-balance text-3xl font-black text-[#211A12] sm:text-4xl">
-            Bundles &amp; <em className="text-[#0B3B25]">subscriptions</em>
+    <main className="min-h-screen bg-[#F7F5F0] pb-20 pt-32">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <header className="max-w-2xl">
+          <p className="text-[13px] font-semibold text-[#7A3F1C]">Curated boxes</p>
+          <h1 className="ga-display-title mt-2 text-[clamp(30px,3.6vw,48px)] text-[#211A12]">
+            Bundles &amp; subscriptions.
           </h1>
-          <p className="mt-2 max-w-2xl text-pretty text-sm sm:text-base leading-relaxed text-[#5C5247]">
-            Hand-packed boxes from our farmers, delivered once or on repeat. Subscribe and your box
-            arrives fresh each cycle — pause or cancel anytime.
+          <p className="mt-3 text-[15px] leading-relaxed text-[#5C5247]">
+            Hand-packed boxes from our farmers, delivered once or on repeat.
+            Subscribe and your box arrives fresh each cycle — skip, pause, or
+            cancel anytime from your account.
           </p>
-        </div>
-      </section>
+        </header>
 
-      <div className="mx-auto max-w-7xl px-2 py-5 sm:px-3 lg:px-4">
-        <div className="grid gap-6 lg:grid-cols-2">
-          {bundles.map((bundle, i) => (
-            <Reveal key={bundle.id} delay={i * 60} as="article">
-              <BundleCard bundle={bundle} />
-            </Reveal>
+        <div className="mt-12 space-y-16">
+          {bundles.map((bundle) => (
+            <BundleRow key={bundle.id} bundle={bundle} />
           ))}
         </div>
       </div>
-    </div>
+    </main>
   )
 }
 
-function BundleCard({ bundle }: { bundle: Bundle }) {
+function BundleRow({ bundle }: { bundle: Bundle }) {
   const router = useRouter()
   const { add } = useCart()
   const { session, role, updateAccount } = useSession()
@@ -97,69 +94,69 @@ function BundleCard({ bundle }: { bundle: Bundle }) {
   }
 
   const isSub = bundle.frequency !== 'one-time'
+  const popular = bundle.popular
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-[24px] border border-black/[0.04] bg-[#FDFDFB] shadow-[0_2px_12px_-2px_rgba(33,26,18,0.04),0_6px_18px_-4px_rgba(33,26,18,0.06)]">
-      <div id={bundle.slug} className="relative aspect-[16/9] overflow-hidden">
-        <SmartImage src={bundle.image} alt={bundle.name} className="h-full w-full object-cover" />
-        <div className="absolute left-4 top-4 flex gap-2">
-          {bundle.popular && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-[#F0A81E] px-3 py-1 text-xs font-black text-[#211A12] shadow-xs">
-              <Sparkles className="size-3" /> Popular
-            </span>
-          )}
-          {isSub && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-[#0B3B25] px-3 py-1 text-xs font-black capitalize text-white shadow-xs">
-              <Repeat className="size-3 stroke-[2.5]" /> {FREQ_LABEL[bundle.frequency]}
-            </span>
-          )}
-        </div>
+    <article className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
+      {/* Image */}
+      <div className="relative aspect-[4/3] overflow-hidden rounded-[22px] border border-[rgba(33,26,18,0.05)] bg-white shadow-[0_1px_2px_rgba(33,26,18,0.04),0_8px_24px_rgba(33,26,18,0.05)]">
+        <SmartImage
+          src={bundle.image}
+          alt={bundle.name}
+          fill
+          className="object-cover"
+        />
+        {popular && (
+          <span className="absolute left-4 top-4 rounded-full bg-[#FAF9F6]/95 px-3 py-1.5 text-[11px] font-semibold text-[#211A12] shadow-sm">
+            Most popular
+          </span>
+        )}
       </div>
 
-      <div className="flex flex-1 flex-col p-6">
-        <div className="flex items-start justify-between gap-3">
-          <h2 className="ga-headline text-2xl font-black text-[#211A12]">{bundle.name}</h2>
-          <span className="shrink-0 rounded-full bg-[#EDE8DF] px-3 py-1 text-xs font-extrabold text-[#211A12]">
-            {bundle.serves}
-          </span>
-        </div>
-        <p className="mt-2 text-pretty text-sm leading-relaxed text-[#5C5247]">
+      {/* Story */}
+      <div>
+        {isSub && (
+          <p className="text-[12.5px] font-semibold uppercase tracking-[0.08em] text-[#7A3F1C]">
+            {FREQ_LABEL[bundle.frequency]} subscription
+          </p>
+        )}
+        <h2 className="ga-display-title mt-1.5 text-[clamp(24px,2.8vw,36px)] text-[#211A12]">
+          {bundle.name}
+        </h2>
+        <p className="mt-3 text-[14.5px] leading-relaxed text-[#5C5247]">
           {bundle.description}
         </p>
 
-        <ul className="mt-4 flex flex-wrap gap-2">
+        {/* Contents as quiet text list */}
+        <ul className="mt-5 space-y-1.5">
           {lineItems.map((it) => (
-            <li
-              key={it.name}
-              className="rounded-lg bg-[#EDE8DF] px-2.5 py-1 text-xs font-bold text-[#211A12]"
-            >
-              {it.qty}× {it.name}
+            <li key={it.name} className="flex items-baseline gap-2 text-[13.5px] text-[#3D332A]">
+              <span aria-hidden className="h-1 w-1 shrink-0 rounded-full bg-[#DF8821]" />
+              <span>
+                {it.qty}× {it.name}
+              </span>
             </li>
           ))}
         </ul>
 
-        <div className="mt-auto flex items-end justify-between pt-6">
-          <div>
-            <span className="ga-headline text-3xl font-black text-[#211A12]">
-              {formatGHS(bundle.price)}
-            </span>
-            {isSub && <span className="text-xs font-medium text-[#5C5247]"> / delivery</span>}
-          </div>
+        <div className="mt-6 flex items-baseline gap-2">
+          <Price amount={bundle.price} size="lg" per={isSub ? 'per delivery' : undefined} />
+          <span className="text-[13px] text-[#8A7E72]">{bundle.serves}</span>
         </div>
 
-        <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <button
             type="button"
             onClick={addBox}
-            className="ga-press flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-black/[0.08] bg-white font-extrabold text-[#211A12] hover:bg-[#F7F5F0] shadow-xs"
+            className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-[rgba(33,26,18,0.15)] text-[15px] font-semibold text-[#211A12] transition-all duration-300 hover:border-[rgba(11,59,37,0.45)] hover:text-[#0B3B25] active:scale-[0.98]"
           >
             {added ? (
               <>
-                <Check className="size-4" /> Added
+                <Check width={16} height={16} /> Added to basket
               </>
             ) : (
               <>
-                <ShoppingBasket className="size-4" /> Add box
+                <ShoppingBasket width={16} height={16} /> Add box
               </>
             )}
           </button>
@@ -168,23 +165,32 @@ function BundleCard({ bundle }: { bundle: Bundle }) {
               type="button"
               onClick={subscribe}
               disabled={subscribing || subscribed}
-              className="ga-press flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-[#0B3B25] font-extrabold text-white hover:bg-[#072618] shadow-sm disabled:opacity-70"
+              className="group inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-[#0B3B25] text-[15px] font-semibold text-white transition-all duration-300 hover:bg-[#0F4A2E] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-70"
             >
               {subscribing ? (
-                <Loader2 className="size-4 animate-spin" />
+                <Loader2 width={16} height={16} className="animate-spin" />
               ) : subscribed ? (
                 <>
-                  <Check className="size-4" /> Subscribed
+                  <Check width={16} height={16} /> Subscribed
                 </>
               ) : (
                 <>
-                  <CalendarClock className="size-4" /> Subscribe
+                  <CalendarClock width={16} height={16} /> Subscribe
+                  <ArrowRight
+                    width={15}
+                    height={15}
+                    className="transition-transform duration-300 group-hover:translate-x-0.5"
+                  />
                 </>
               )}
             </button>
           )}
         </div>
+        <p className="mt-3 text-[12px] leading-relaxed text-[#8A7E72]">
+          Subscriptions skip, pause, or cancel anytime — controls live in your
+          account under My Boxes.
+        </p>
       </div>
-    </div>
+    </article>
   )
 }
