@@ -6,15 +6,15 @@ import { MiniCart } from '@/components/golden-acres/cart/mini-cart'
 import { CompareTray } from '@/components/golden-acres/compare/compare-tray'
 import { CommandPalette } from '@/components/golden-acres/command-palette'
 import { MobileTabBar } from '@/components/golden-acres/mobile-tab-bar'
-import { SiteHeader } from '@/components/golden-acres/system/site-header'
-import { SiteFooter } from '@/components/golden-acres/system/site-footer'
+import { AnnouncementBar } from '@/components/golden-acres/announcement-bar'
+import { GaHeader } from '@/components/golden-acres/ga-header'
+import { GaFooter } from '@/components/golden-acres/ga-footer'
 
 /**
- * Store layout (redesigned, docs/redesign/01 §3.7).
- * - SiteHeader/SiteFooter: the new frosted header + forest-green footer.
- *   The old three-tier GaHeader/AnnouncementBar stack is retired for web.
- * - Data providers, mini-cart, compare tray, command palette and the mobile
- *   tab bar are unchanged — same contracts, new chrome.
+ * Store layout — RESTORED original chrome (owner review 2026-08-22:
+ * the old three-tier header stack scored higher than the minimal redesign).
+ * The frosted SiteHeader/SiteFooter remain in components/golden-acres/system/
+ * for reference. All data providers and overlay units are unchanged.
  */
 export default function StoreLayout({ children }: { children: ReactNode }) {
   return (
@@ -22,9 +22,10 @@ export default function StoreLayout({ children }: { children: ReactNode }) {
       <CartProvider>
         <CompareProvider>
           <RecentlyViewedProvider>
-            <SiteHeader />
+            <AnnouncementBar />
+            <GaHeader />
             <main className="pb-16 lg:pb-0">{children}</main>
-            <SiteFooter />
+            <GaFooter />
             <MiniCart />
             <CompareTray />
             <CommandPalette />

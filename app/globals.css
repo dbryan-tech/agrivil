@@ -28,6 +28,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
   --font-serif: var(--font-fraunces), Georgia, 'Times New Roman', serif;
   /* Golden Acres — warm editorial farm-to-table */
   --font-fraunces: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  --font-grotesk: var(--font-geist-sans), sans-serif;
   --color-gold: var(--ga-gold);
   --color-gold-soft: var(--ga-gold-soft);
   --color-field: var(--ga-field);
