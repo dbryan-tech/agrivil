@@ -22,6 +22,8 @@ interface CartCtx {
   lines: CartLine[]
   count: number
   subtotalEstimate: number
+  /** false until localStorage rehydration completes (guards SSR flash) */
+  hydrated: boolean
   add: (product: Product, qty?: number) => void
   setQty: (productId: string, qty: number) => void
   remove: (productId: string) => void
@@ -117,6 +119,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       lines,
       count,
       subtotalEstimate,
+      hydrated,
       add,
       setQty,
       remove,
@@ -126,7 +129,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       openDrawer,
       closeDrawer,
     }
-  }, [lines, lastAdded, drawerOpen])
+  }, [lines, lastAdded, drawerOpen, hydrated])
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }

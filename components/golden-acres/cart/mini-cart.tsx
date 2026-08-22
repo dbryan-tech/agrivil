@@ -220,20 +220,20 @@ export function MiniCart() {
               </p>
               <div className="mt-4 flex flex-col gap-2">
                 <Link
-                  href="/checkout"
+                  href="/cart"
                   onClick={closeDrawer}
                   className="ga-press ga-sheen flex h-12 items-center justify-center gap-2 rounded-full bg-[#0B3B25] text-sm font-black text-white shadow-sm hover:bg-[#072618]"
                 >
-                  Checkout · {formatGHS(subtotalEstimate)}
+                  View basket · {formatGHS(subtotalEstimate)}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-                <button
-                  type="button"
+                <Link
+                  href="/checkout"
                   onClick={closeDrawer}
                   className="ga-press flex h-11 items-center justify-center rounded-full border border-black/[0.08] bg-white text-xs font-black uppercase tracking-wider text-[#211A12] hover:bg-[#EDE8DF]"
                 >
-                  Continue shopping
-                </button>
+                  Straight to checkout
+                </Link>
               </div>
             </div>
           </>

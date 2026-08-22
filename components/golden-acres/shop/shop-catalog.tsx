@@ -21,7 +21,6 @@ import type { OfferGroup } from '@/lib/golden-acres/grouping'
 import {
   runCatalog,
   hasActiveFilters,
-  DEFAULT_FILTERS,
   type FilterState,
   type SortKey,
 } from '@/lib/golden-acres/filters'
@@ -156,33 +155,16 @@ export function ShopCatalog() {
   )
 
   return (
-    <div className="mx-auto max-w-7xl px-2 py-3 sm:px-3 lg:px-4">
-      {/* breadcrumb + title */}
-      <div className="ga-rise">
-        <p className="text-xs text-muted-foreground">
-          Home <span className="px-1">/</span>{' '}
-          <span className="font-semibold text-foreground">Shop</span>
-          {filters.category !== 'All' && (
-            <>
-              <span className="px-1">/</span>
-              <span className="font-semibold text-foreground">{filters.category}</span>
-            </>
-          )}
-        </p>
-        <h1 className="ga-headline mt-1 text-3xl text-foreground sm:text-4xl">
-          {filters.category === 'All' ? 'All produce' : filters.category}
-        </h1>
-      </div>
-
+    <div className="mx-auto max-w-7xl px-5 pb-10 sm:px-8">
       {/* search */}
-      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+      <div className="ga-rise mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
-          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8A7E72]" />
           <input
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder="Search tomatoes, plantain, pepper…"
-            className="h-11 w-full rounded-full border border-border bg-card pl-10 pr-9 text-sm text-foreground outline-none transition-colors focus:border-primary"
+            className="h-11 w-full rounded-full border border-[rgba(33,26,18,0.12)] bg-white pl-11 pr-9 text-sm font-medium text-[#211A12] outline-none transition-colors placeholder:text-[#B7AC9E] focus:border-[#0B3B25]"
           />
           {searchInput && (
             <button
@@ -198,29 +180,30 @@ export function ShopCatalog() {
         <button
           type="button"
           onClick={() => setMobileFilters(true)}
-          className="ga-press inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border bg-card px-4 text-sm font-semibold text-foreground lg:hidden"
+          className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[rgba(33,26,18,0.15)] bg-transparent px-4 text-sm font-semibold text-[#211A12] transition-colors hover:border-[rgba(11,59,37,0.45)] lg:hidden"
         >
           <SlidersHorizontal className="h-4 w-4" /> Filters
           {hasActiveFilters(filters) && (
-            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[11px] font-bold text-primary-foreground">
+            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#0B3B25] px-1 text-[11px] font-bold text-white">
               •
             </span>
           )}
         </button>
       </div>
 
-      {/* category quick-tabs (mobile/tablet) */}
-      <div className="ga-rail mt-4 -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 lg:hidden">
+      {/* category quick-tabs (mobile/tablet) — text-tab grammar */}
+      <div className="ga-rail mt-5 -mx-5 flex gap-x-6 overflow-x-auto px-5 pb-1 lg:hidden">
         {CATEGORIES.map((c) => (
           <button
             key={c}
             type="button"
             onClick={() => update({ category: c })}
+            aria-pressed={filters.category === c}
             className={[
-              'shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-colors',
+              'shrink-0 border-b pb-1.5 pt-0.5 text-[13px] font-medium transition-colors',
               filters.category === c
-                ? 'border-primary bg-primary text-primary-foreground'
-                : 'border-border bg-card text-foreground/75 hover:border-primary/40',
+                ? 'border-[#211A12] text-[#211A12]'
+                : 'border-transparent text-[#8A7E72]',
             ].join(' ')}
           >
             {c}
@@ -251,24 +234,23 @@ export function ShopCatalog() {
         {/* Results */}
         <div className="min-w-0 flex-1">
           {/* toolbar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 pb-4">
-            <p className="text-sm text-muted-foreground">
-              <span className="font-bold text-foreground">{groups.length}</span>{' '}
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[rgba(33,26,18,0.08)] pb-3">
+            <p className="text-[13px] text-[#5C5247]">
+              <span className="ga-index font-semibold text-[#211A12]">{groups.length}</span>{' '}
               {groups.length === 1 ? 'product' : 'products'}
               {filters.category !== 'All' && (
                 <>
-                  {' '}
-                  in <span className="font-semibold text-primary">{filters.category}</span>
+                  {' '}in <span className="font-semibold text-[#211A12]">{filters.category}</span>
                 </>
               )}
               {totalOffers > groups.length && (
-                <span className="text-muted-foreground"> · {totalOffers} farmer listings</span>
+                <span className="text-[#8A7E72]"> · {totalOffers} farmer listings</span>
               )}
             </p>
 
             <div className="flex items-center gap-2">
               {/* grid/list toggle */}
-              <div className="hidden items-center rounded-full border border-border bg-card p-0.5 sm:flex">
+              <div className="hidden items-center rounded-full border border-[rgba(33,26,18,0.12)] bg-white p-0.5 sm:flex">
                 <button
                   type="button"
                   onClick={() => setView('grid')}
@@ -276,7 +258,7 @@ export function ShopCatalog() {
                   aria-pressed={view === 'grid'}
                   className={[
                     'flex h-8 w-8 items-center justify-center rounded-full transition-colors',
-                    view === 'grid' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-secondary',
+                    view === 'grid' ? 'bg-[#0B3B25] text-white' : 'text-[#8A7E72] hover:bg-[#F2EEE6]',
                   ].join(' ')}
                 >
                   <LayoutGrid className="h-4 w-4" />
@@ -288,7 +270,7 @@ export function ShopCatalog() {
                   aria-pressed={view === 'list'}
                   className={[
                     'flex h-8 w-8 items-center justify-center rounded-full transition-colors',
-                    view === 'list' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-secondary',
+                    view === 'list' ? 'bg-[#0B3B25] text-white' : 'text-[#8A7E72] hover:bg-[#F2EEE6]',
                   ].join(' ')}
                 >
                   <ListIcon className="h-4 w-4" />
@@ -296,7 +278,7 @@ export function ShopCatalog() {
               </div>
 
               <label className="flex items-center gap-2">
-                <span className="hidden text-sm text-muted-foreground sm:inline">Sort</span>
+                <span className="hidden text-[13px] text-[#8A7E72] sm:inline">Sort</span>
                 <select
                   value={filters.sort}
                   onChange={(e) => update({ sort: e.target.value as SortKey })}
@@ -345,40 +327,42 @@ export function ShopCatalog() {
 
               {/* pagination / load more */}
               {hasMore ? (
-                <div className="mt-8 flex flex-col items-center gap-3">
-                  <p className="text-xs text-muted-foreground">
+                <div className="mt-10 flex flex-col items-center gap-3">
+                  <p className="ga-index text-[12px] text-[#8A7E72]">
                     Showing {visibleGroups.length} of {groups.length} products
                   </p>
                   <button
                     type="button"
                     onClick={() => setPage((p) => p + 1)}
-                    className="ga-press inline-flex items-center gap-2 rounded-full border border-primary/40 bg-card px-6 py-2.5 text-sm font-bold text-primary hover:bg-primary/5"
+                    className="inline-flex items-center gap-2 rounded-full border border-[rgba(33,26,18,0.18)] px-7 py-3 text-[14px] font-semibold text-[#211A12] transition-all duration-300 hover:border-[rgba(11,59,37,0.5)] hover:text-[#0B3B25] active:scale-[0.98]"
                   >
                     Show more produce
                   </button>
                 </div>
               ) : (
                 groups.length > PAGE_SIZE && (
-                  <p className="mt-8 text-center text-xs text-muted-foreground">
+                  <p className="ga-index mt-8 text-center text-[12px] text-[#8A7E72]">
                     You&apos;ve reached the end — {groups.length} products
                   </p>
                 )
               )}
             </>
           ) : (
-            <div className="ga-fade-up mt-10 flex flex-col items-center rounded-2xl border border-dashed border-border bg-card p-12 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary">
-                <Sprout className="h-7 w-7 text-[var(--ga-leaf)]" />
+            <div className="ga-fade-up mt-12 flex flex-col items-center py-14 text-center">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[rgba(33,26,18,0.12)]">
+                <Sprout className="h-6 w-6 text-[#5C5247]" />
               </div>
-              <p className="mt-4 font-semibold text-foreground">No produce matches your filters.</p>
-              <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-                That crop may be out of season or sold out for today. Try removing a filter or
-                clearing everything to see the full harvest.
+              <p className="ga-display-title mt-5 text-[22px] text-[#211A12]">
+                Nothing matches those filters.
+              </p>
+              <p className="mt-2 max-w-sm text-[14px] leading-relaxed text-[#5C5247]">
+                That crop may be out of season or sold out for today. Remove a
+                filter, or see the full harvest.
               </p>
               <button
                 type="button"
                 onClick={resetAll}
-                className="ga-press mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#0B3B25] px-6 py-3 text-[14px] font-semibold text-white transition-all hover:bg-[#0F4A2E] active:scale-[0.98]"
               >
                 Clear all filters
               </button>
