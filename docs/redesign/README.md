@@ -113,7 +113,17 @@ AgriVil's web presence should read like a **premium farm-to-table house**
 | 03 | Shop-local rebuild (real match data) | **SHIPPED to live `/local`** | `4901300` |
 | 04 | Farmer portal IA restructure + reskin (Today·Produce·Orders·Money) | **SHIPPED to live `/farmer`** | `5299241` |
 | 05 | Staff console frame + BI/ops rewiring | **SHIPPED to live `/admin` `/support`** | `8b2f47d` |
-| 06 | Recipes index/detail, bundles, farmers directory, help center | QUEUED (next) | — |
+| 06 | Recipes index/detail, bundles, farmers directory, help center | **SHIPPED to live** | `adbcfe1` |
+| 06 | Legal pages (privacy/terms) — already typographic, verified | NOT APPLICABLE (no drift) | — |
+
+## 6. Final status
+
+> **All seven phases shipped.** The redesign program is complete: every
+> desktop/tablet web surface now speaks one design language, every server
+> contract survived intact, and the mobile `/m/**` app was never touched.
+>
+> Remaining owner decisions: D1 Paystack test keys (payment E2E), D2 guest
+> checkout depth, D3 photography refresh. See §3 above.
 
 **Standing verification after every phase:** tsc clean · production build
 green · lint errors ≤ 24 documented baseline · all touched routes 200 in
