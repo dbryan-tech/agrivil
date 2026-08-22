@@ -178,29 +178,54 @@ export interface CatalogSnapshot {
   orders: Order[]
 }
 
+// In-memory server-side cache for high-speed sub-millisecond catalog reads
+let cachedSnapshot: { data: CatalogSnapshot; timestamp: number } | null = null
+const CACHE_TTL_MS = 60 * 1000 // 60 seconds TTL
+
+export async function invalidateCatalogCache() {
+  cachedSnapshot = null
+}
+
 /** Full catalog snapshot used to hydrate the client data-store at boot. */
 export async function getCatalogSnapshot(): Promise<CatalogSnapshot> {
-  const [pRows, fRows, bRows, rRows, oRows] = await Promise.all([
-    db.select().from(productsTable),
-    db.select().from(farmersTable),
-    db.select().from(bundlesTable),
-    db.select().from(recipesTable),
-    db.select().from(ordersTable).orderBy(desc(ordersTable.createdAt)),
-  ])
-  // Only verified sellers (and their produce) appear on the storefront.
-  // Pending/rejected KYC applicants live solely in the admin queue.
-  const verifiedFarmers = fRows.filter(
-    (f) => (f.kycStatus ?? "verified") === "verified",
-  )
-  const verifiedFarmerIds = new Set(verifiedFarmers.map((f) => f.id))
-  return {
-    products: pRows
-      .filter((p) => verifiedFarmerIds.has(p.farmerId))
-      .map(toProduct),
-    farmers: verifiedFarmers.map(toFarmer),
-    bundles: bRows.map(toBundle),
-    recipes: rRows.map(toRecipe),
-    orders: oRows.map(toOrder),
+  const now = Date.now()
+  if (cachedSnapshot && now - cachedSnapshot.timestamp < CACHE_TTL_MS) {
+    return cachedSnapshot.data
+  }
+
+  try {
+    const [pRows, fRows, bRows, rRows, oRows] = await Promise.all([
+      db.select().from(productsTable),
+      db.select().from(farmersTable),
+      db.select().from(bundlesTable),
+      db.select().from(recipesTable),
+      db.select().from(ordersTable).orderBy(desc(ordersTable.createdAt)),
+    ])
+    // Only verified sellers (and their produce) appear on the storefront.
+    // Pending/rejected KYC applicants live solely in the admin queue.
+    const verifiedFarmers = fRows.filter(
+      (f) => (f.kycStatus ?? "verified") === "verified",
+    )
+    const verifiedFarmerIds = new Set(verifiedFarmers.map((f) => f.id))
+    const snapshot: CatalogSnapshot = {
+      products: pRows
+        .filter((p) => verifiedFarmerIds.has(p.farmerId))
+        .map(toProduct),
+      farmers: verifiedFarmers.map(toFarmer),
+      bundles: bRows.map(toBundle),
+      recipes: rRows.map(toRecipe),
+      orders: oRows.map(toOrder),
+    }
+
+    cachedSnapshot = { data: snapshot, timestamp: now }
+    return snapshot
+  } catch (err) {
+    // If DB is unreachable/slow, return stale cache if available
+    if (cachedSnapshot) {
+      console.warn("[v0] DB query failed, returning stale cached snapshot:", err)
+      return cachedSnapshot.data
+    }
+    throw err
   }
 }
 
@@ -244,6 +269,7 @@ export async function persistProduct(p: Product): Promise<void> {
     .insert(productsTable)
     .values(row)
     .onConflictDoUpdate({ target: productsTable.id, set: row })
+  await invalidateCatalogCache()
 }
 
 /** Update stock + derived status for a product. */
@@ -257,6 +283,7 @@ export async function persistProductStock(
     .update(productsTable)
     .set({ stockKg, status, updatedAt: new Date() })
     .where(eq(productsTable.id, productId))
+  await invalidateCatalogCache()
 }
 
 /** Staff moderation decision on a pending listing. */
@@ -269,6 +296,7 @@ export async function persistProductReview(
     .update(productsTable)
     .set({ reviewStatus: review, updatedAt: new Date() })
     .where(eq(productsTable.id, productId))
+  await invalidateCatalogCache()
 }
 
 /* --------------------------- farmer persistence ---------------------------- */
@@ -303,6 +331,7 @@ export async function persistFarmer(f: Farmer, ownerUserId?: string): Promise<vo
     .insert(farmersTable)
     .values(row)
     .onConflictDoUpdate({ target: farmersTable.id, set: row })
+  await invalidateCatalogCache()
 }
 
 /** Patch fields on an existing farmer (e.g. photo, cover, bio). */
@@ -333,4 +362,5 @@ export async function persistFarmerPatch(
   if (Object.keys(allowed).length === 0) return
   allowed.updatedAt = new Date()
   await db.update(farmersTable).set(allowed).where(eq(farmersTable.id, farmerId))
+  await invalidateCatalogCache()
 }

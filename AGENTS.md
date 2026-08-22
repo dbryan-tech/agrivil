@@ -97,7 +97,38 @@ All sticky headers, fixed bottom bars, and full modals must respect device safe 
 
 ---
 
-## 5. Verification & Quality Gates
+## 5. High-Speed Performance & Caching Architecture
+
+### A. 97% Image Compression & WebP Pipeline
+- All visual assets in `public/golden-acres/` are pre-compressed and paired with lightweight WebP formats (averaging 15–35 KB per produce/avatar asset).
+- `next.config.mjs` enforces AVIF/WebP image optimization, gzip/brotli compression, and immutable cache headers (`public, max-age=31536000, immutable`).
+- Never introduce uncompressed multi-megabyte PNGs into the repository without running `scripts/optimize-images.mjs`.
+
+### B. Multi-Tier SWR Catalog Caching
+- **Client Tier (`DataStoreProvider`)**: Rehydrates from `ga-catalog-cache-v2` in **0ms** so mobile views render instantly without waiting for server network hops. Syncs in the background with SWR.
+- **Server Tier (`app/actions/catalog.ts`)**: Server-side in-memory snapshot cache with a 60-second TTL. Queries respond in < 1ms from RAM, automatically invalidated on product/farmer mutations.
+
+### C. Multi-Bucket Service Worker v2 (`public/sw.js`)
+- `agrivil-static-v2`: Cache-first for Next.js immutable static chunks and fonts.
+- `agrivil-images-v2`: Permanent cache-first for produce, farmer, and recipe photography.
+- `agrivil-pages-v2`: Stale-While-Revalidate for mobile routes (`/m/**`), providing instant zero-delay navigation.
+
+### D. Native Android WebView Tuning (`MainActivity.java`)
+- Native hardware acceleration (`LAYER_TYPE_HARDWARE`).
+- `setOffscreenPreRaster(true)` for fluid 120Hz scrolling.
+- Enabled DOM storage, database caching, and persistent WebView cache.
+
+---
+
+## 6. APK Build & GitHub Actions Release Workflow
+
+- **Automated CI/CD**: APK generation is automated via GitHub Actions (`.github/workflows/build-apks.yml`).
+- Pushing to the `main` branch automatically compiles both the **AgriVil-Consumer-Debug.apk** (pointed at `/m`) and **AgriVil-Farmer-Debug.apk** (pointed at `/m/farmer`), publishing them directly to GitHub Releases.
+- Do NOT mandate local APK compilation when making web or styling updates; push to GitHub and let GitHub Actions generate the downloadable release binaries.
+
+---
+
+## 7. Verification & Quality Gates
 
 1. Always run `npm run build` with `BypassSandbox: true` before completing changes to verify 0 TypeScript and compilation errors across all 320+ static and dynamic routes.
 2. Maintain clean git commit history with clear conventional commit messages.

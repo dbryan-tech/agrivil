@@ -1,19 +1,17 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
-// Renders an image, falling back to a warm branded placeholder when the file
-// isn't present yet (used for user-supplied lifestyle photography slots).
+// Renders an image with Next.js optimization and fast graceful fallback
 export function SmartImage({
   src,
   alt,
   className,
   imgClassName,
   label,
-  // When `fill` is set, the component absolutely fills its nearest relative
-  // ancestor (Next/Image semantics). Otherwise it lays out in normal flow.
-  fill,
+  fill = true,
   priority,
 }: {
   src: string
@@ -26,30 +24,30 @@ export function SmartImage({
 }) {
   const [failed, setFailed] = useState(false)
 
+  const imageSrc = src || '/placeholder.svg'
+
   return (
     <div
       className={cn(
-        'overflow-hidden bg-secondary',
+        'overflow-hidden bg-[#FAF7F2]',
         fill ? 'absolute inset-0 h-full w-full' : 'relative',
         className,
       )}
     >
       {!failed ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={src || '/placeholder.svg'}
+        <Image
+          src={imageSrc}
           alt={alt}
-          loading={priority ? 'eager' : 'lazy'}
+          fill={fill}
+          priority={priority}
+          sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 33vw"
           onError={() => setFailed(true)}
           className={cn('h-full w-full object-cover', imgClassName)}
         />
       ) : (
-        <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-[repeating-linear-gradient(135deg,var(--color-secondary),var(--color-secondary)_12px,var(--color-muted)_12px,var(--color-muted)_24px)] p-4 text-center">
-          <span className="ga-display text-sm font-semibold text-field">
-            {label ?? 'Photo'}
-          </span>
-          <span className="font-mono text-[0.65rem] uppercase tracking-wider text-muted-foreground">
-            {src.replace('/golden-acres/', '')}
+        <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-[#F7F5F0] p-4 text-center">
+          <span className="text-sm font-semibold text-[#0B3B25]">
+            {label ?? 'AgriVil Fresh'}
           </span>
         </div>
       )}

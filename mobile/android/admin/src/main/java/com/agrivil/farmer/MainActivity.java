@@ -23,13 +23,19 @@ public class MainActivity extends BridgeActivity {
         insetsController.setAppearanceLightStatusBars(true);
         insetsController.setAppearanceLightNavigationBars(true);
 
-        // Optimize WebView performance and local caching
+        // Optimize WebView performance, hardware rendering, and local caching
         if (this.bridge != null && this.bridge.getWebView() != null) {
             WebView webView = this.bridge.getWebView();
             WebSettings settings = webView.getSettings();
             settings.setDomStorageEnabled(true);
             settings.setDatabaseEnabled(true);
             settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+            settings.setLoadsImagesAutomatically(true);
+            settings.setBlockNetworkImage(false);
+            settings.setOffscreenPreRaster(true);
+            settings.setJavaScriptCanOpenWindowsAutomatically(true);
+            settings.setMediaPlaybackRequiresUserGesture(false);
+            webView.setLayerType(android.view.View.LAYER_TYPE_HARDWARE, null);
         }
     }
 

@@ -59,7 +59,8 @@ import type {
  * approved. Component contracts (the hooks below) stay identical after the swap.
  */
 
-const STORAGE_KEY = 'ga-store-v1'
+const STORAGE_KEY = 'ga-store-v2'
+const CATALOG_CACHE_KEY = 'ga-catalog-cache-v2'
 
 // ---- inputs ----
 export interface CreateOrderInput {
@@ -369,39 +370,57 @@ export function DataStoreProvider({ children }: { children: ReactNode }) {
   // seeded ops queue stays stable while a freshly placed order feels alive.
   const simRefs = useRef<Set<string>>(new Set())
 
-  // Rehydrate from localStorage (orders / ledger / tickets / notifications are
-  // still localStorage-backed pending their own migration tasks), then overlay
-  // the live catalog (products + farmers) from Neon so every surface reads the
-  // same DB-backed source of truth.
+  // Fast Instant Hydration:
+  // 1. Instantly restore cached session & catalog from localStorage in 0ms.
+  // 2. Fetch latest snapshot in the background (SWR) without blocking UI.
   useEffect(() => {
     let cancelled = false
 
     try {
-      const raw = localStorage.getItem(STORAGE_KEY)
-      if (raw) {
-        const saved = JSON.parse(raw) as Partial<Persisted>
-        // NOTE: products/farmers are intentionally NOT restored from localStorage.
-        // The catalog is authoritative from the DB (overlaid just below) and the
-        // in-memory seed is the complete fallback. Restoring a stale cached catalog
-        // (e.g. an older, smaller listing set) would make whole categories appear
-        // empty and the shop filters feel broken. Only session data is restored.
+      const rawSession = localStorage.getItem(STORAGE_KEY)
+      const rawCatalog = localStorage.getItem(CATALOG_CACHE_KEY)
+
+      let initialProducts = seedProducts.map((p) => ({
+        ...p,
+        reviewStatus: p.reviewStatus ?? 'live',
+      }))
+      let initialFarmers = seedFarmers.map((f) => ({ ...f }))
+
+      if (rawCatalog) {
+        try {
+          const cachedCat = JSON.parse(rawCatalog)
+          if (Array.isArray(cachedCat.products) && cachedCat.products.length > 0) {
+            initialProducts = cachedCat.products
+          }
+          if (Array.isArray(cachedCat.farmers) && cachedCat.farmers.length > 0) {
+            initialFarmers = cachedCat.farmers
+          }
+        } catch {}
+      }
+
+      if (rawSession) {
+        const saved = JSON.parse(rawSession) as Partial<Persisted>
+        setState({
+          products: initialProducts,
+          farmers: initialFarmers,
+          orders: saved.orders ?? seedOrders,
+          ledger: saved.ledger ?? seedLedger,
+          tickets: saved.tickets ?? seedTickets,
+          notifications: saved.notifications ?? seedNotifications(),
+        })
+      } else {
         setState((cur) => ({
-          products: cur.products,
-          farmers: cur.farmers,
-          orders: saved.orders ?? cur.orders,
-          ledger: saved.ledger ?? cur.ledger,
-          tickets: saved.tickets ?? cur.tickets,
-          notifications: saved.notifications ?? cur.notifications,
+          ...cur,
+          products: initialProducts,
+          farmers: initialFarmers,
         }))
       }
+      setHydrated(true)
     } catch {
-      /* ignore corrupt store */
+      setHydrated(true)
     }
 
-    // Pull live catalog from the database (authoritative for products/farmers,
-    // and for orders placed through the real checkout). DB orders are merged
-    // ahead of the seeded ops queue, de-duplicated by reference, so the farmer
-    // portal, CS console and BI all read the same persisted orders.
+    // Non-blocking background sync with DB (SWR)
     getCatalogSnapshot()
       .then((snap) => {
         if (cancelled) return
@@ -413,17 +432,24 @@ export function DataStoreProvider({ children }: { children: ReactNode }) {
           ]
           return {
             ...cur,
-            products: snap.products,
-            farmers: snap.farmers,
+            products: snap.products.length > 0 ? snap.products : cur.products,
+            farmers: snap.farmers.length > 0 ? snap.farmers : cur.farmers,
             orders: mergedOrders,
           }
         })
+        try {
+          localStorage.setItem(
+            CATALOG_CACHE_KEY,
+            JSON.stringify({
+              products: snap.products,
+              farmers: snap.farmers,
+              updatedAt: Date.now(),
+            })
+          )
+        } catch {}
       })
       .catch((e) => {
-        console.log('[v0] catalog hydrate failed, using local cache:', e)
-      })
-      .finally(() => {
-        if (!cancelled) setHydrated(true)
+        console.log('[AgriVil Cache] Background catalog sync fell back to local cache:', e)
       })
 
     return () => {

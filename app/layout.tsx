@@ -4,13 +4,6 @@ import {
   Geist,
   Geist_Mono,
   Source_Serif_4,
-  Onest,
-  JetBrains_Mono,
-  Archivo,
-  IBM_Plex_Mono,
-  Space_Grotesk,
-  Nunito,
-  Fraunces,
   Plus_Jakarta_Sans,
 } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -20,56 +13,29 @@ import { RecentlyViewedProvider } from '@/components/golden-acres/store/recently
 import { ServiceWorkerRegister } from '@/components/service-worker-register'
 import './globals.css'
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+})
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+  display: 'swap',
+  preload: true,
 })
 const sourceSerif = Source_Serif_4({
   variable: '--font-source-serif',
   subsets: ['latin'],
   display: 'swap',
-})
-const onest = Onest({
-  variable: '--font-onest',
-  subsets: ['latin'],
-  display: 'swap',
-})
-const jetbrainsMono = JetBrains_Mono({
-  variable: '--font-jetbrains',
-  subsets: ['latin'],
-  display: 'swap',
-})
-const archivo = Archivo({
-  variable: '--font-archivo',
-  subsets: ['latin'],
-  display: 'swap',
-})
-const ibmPlexMono = IBM_Plex_Mono({
-  variable: '--font-ibm-plex-mono',
-  subsets: ['latin'],
-  display: 'swap',
-  weight: ['400', '600', '700'],
-})
-const spaceGrotesk = Space_Grotesk({
-  variable: '--font-space-grotesk',
-  subsets: ['latin'],
-  display: 'swap',
-})
-const nunito = Nunito({
-  variable: '--font-nunito',
-  subsets: ['latin'],
-  display: 'swap',
-})
-const fraunces = Fraunces({
-  variable: '--font-fraunces',
-  subsets: ['latin'],
-  display: 'swap',
+  preload: false,
 })
 const jakarta = Plus_Jakarta_Sans({
   variable: '--font-jakarta',
   subsets: ['latin'],
   display: 'swap',
+  preload: true,
 })
 
 export const metadata: Metadata = {
@@ -135,7 +101,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${sourceSerif.variable} ${onest.variable} ${jetbrainsMono.variable} ${archivo.variable} ${ibmPlexMono.variable} ${spaceGrotesk.variable} ${nunito.variable} ${fraunces.variable} ${jakarta.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${sourceSerif.variable} ${jakarta.variable}`}
     >
       <body className="font-sans antialiased">
         <ThemeProvider

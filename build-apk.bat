@@ -5,7 +5,11 @@ echo ===================================================
 echo.
 
 set ANDROID_HOME=%LOCALAPPDATA%\Android\Sdk
-set JAVA_HOME=C:\Program Files\Android\Android Studio\jbr
+if exist "C:\Program Files\Amazon Corretto\jdk21.0.10_7" (
+    set "JAVA_HOME=C:\Program Files\Amazon Corretto\jdk21.0.10_7"
+) else if exist "C:\Program Files\Android\Android Studio\jbr" (
+    set "JAVA_HOME=C:\Program Files\Android\Android Studio\jbr"
+)
 
 echo [1/3] Navigating to mobile android directory...
 cd /d "%~dp0mobile\android"

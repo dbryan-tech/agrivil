@@ -30,7 +30,7 @@ export default function MobileRecipesScreen() {
       {/* 1. TOP HERO BANNER with Curved Bottom Corners */}
       <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] overflow-hidden rounded-b-[36px] bg-[#0B3B25] shadow-xs">
         <Image
-          src="/golden-acres/recipe-hero.jpg"
+          src="/golden-acres/recipes/ghana-jollof.png"
           alt="Ghanaian Recipes"
           fill
           priority
