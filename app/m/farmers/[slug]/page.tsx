@@ -23,6 +23,7 @@ import {
   Send,
 } from 'lucide-react'
 import { farmers, products } from '@/lib/golden-acres/data'
+import { distanceFromHubKm } from '@/lib/golden-acres/format'
 import { MobileProductCard } from '@/components/golden-acres/mobile/mobile-product-card'
 import { cn } from '@/lib/utils'
 
@@ -178,7 +179,7 @@ export default function MobileFarmerProfileScreen() {
           {farmer.name}
         </h2>
         <p className="text-[12px] font-semibold text-[#7A3F1C]">
-          {farmer.town}, {farmer.region} · {farmer.distanceKm || 12}km from you
+          {farmer.town}, {farmer.region} · {distanceFromHubKm(farmer)}km from you
         </p>
       </div>
 

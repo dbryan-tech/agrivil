@@ -50,10 +50,28 @@ export async function getSecurityOverview(): Promise<SecurityOverview> {
     auth.api.listUserAccounts({ headers: h }).catch(() => []),
   ])
 
+  // Minimal structural views of the Better Auth rows we read here; keeps the
+  // mapping honest without depending on the exact driver row generics.
+  type SessionRow = {
+    id: string
+    token: string
+    createdAt: Date | string
+    updatedAt: Date | string
+    expiresAt: Date | string
+    ipAddress?: string | null
+    userAgent?: string | null
+  }
+  type AccountRow = {
+    id: string
+    provider?: string | null
+    accountId?: string | null
+    createdAt?: Date | string | null
+  }
+
   // The current session's token, used to flag "this device".
   const currentToken = session.session?.token
 
-  const sessionInfos: SessionInfo[] = (sessions as any[]).map((s) => ({
+  const sessionInfos: SessionInfo[] = (sessions as unknown as SessionRow[]).map((s) => ({
     id: s.id,
     token: s.token,
     createdAt: new Date(s.createdAt).toISOString(),
@@ -70,9 +88,12 @@ export async function getSecurityOverview(): Promise<SecurityOverview> {
     return a.updatedAt < b.updatedAt ? 1 : -1
   })
 
-  const linked: LinkedAccount[] = (accounts as any[])
+  const accountRows = accounts as unknown as AccountRow[]
+  const linked: LinkedAccount[] = accountRows
     // The credential provider is the email+password record, not an OAuth link.
-    .filter((a) => a.provider && a.provider !== "credential")
+    .filter((a): a is AccountRow & { provider: string } =>
+      Boolean(a.provider) && a.provider !== "credential",
+    )
     .map((a) => ({
       provider: a.provider,
       accountId: a.accountId ?? a.id,
@@ -80,7 +101,7 @@ export async function getSecurityOverview(): Promise<SecurityOverview> {
     }))
 
   // A user "has a password" if a credential account record exists.
-  const hasPassword = (accounts as any[]).some((a) => a.provider === "credential")
+  const hasPassword = accountRows.some((a) => a.provider === "credential")
 
   return {
     email: session.user.email,
@@ -145,7 +166,15 @@ export async function unlinkProvider(
 ): Promise<{ ok: boolean; error?: string }> {
   const { h } = await requireSession()
   try {
-    await auth.api.unlinkAccount({ headers: h, body: { providerId: provider, accountId } as any })
+    await auth.api.unlinkAccount({
+      headers: h,
+      body: {
+        providerId: provider,
+        accountId,
+      } as unknown as NonNullable<
+        Parameters<typeof auth.api.unlinkAccount>[0]
+      >["body"],
+    })
     return { ok: true }
   } catch (err) {
     const msg = (err as { message?: string })?.message || ""

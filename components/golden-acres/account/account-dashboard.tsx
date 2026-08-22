@@ -562,9 +562,11 @@ function AddressForm({
   onCancel: () => void
   onSave: (a: SavedAddress) => void
 }) {
+  // ID is minted at first user interaction (save), not at mount, so the render
+  // output never depends on wall-clock time (React purity / SSR safety).
   const [form, setForm] = useState<SavedAddress>(
     initial ?? {
-      id: `addr-${Date.now()}`,
+      id: '',
       label: '',
       recipient: '',
       phone: '',
@@ -592,7 +594,7 @@ function AddressForm({
       </label>
       <div className="mt-4 flex gap-2">
         <button
-          onClick={() => onSave(form)}
+          onClick={() => onSave({ ...form, id: form.id || `addr-${Date.now()}` })}
           disabled={!form.label || !form.ghanaPostGPS}
           className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-field text-sm font-bold text-cream disabled:opacity-60"
         >

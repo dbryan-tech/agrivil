@@ -1,4 +1,7 @@
-// Golden Acres — formatting helpers
+// Golden Acres - formatting helpers
+import type { Farmer } from './types'
+import { haversineKm } from './geo'
+import { HUB } from './data'
 
 export function cedis(amount: number, opts: { decimals?: boolean } = {}): string {
   const { decimals = true } = opts
@@ -14,7 +17,7 @@ export function weight(kg: number): string {
 }
 
 export function priceRange(min: number, max: number): string {
-  return `${cedis(min)} – ${cedis(max)}`
+  return `${cedis(min)} - ${cedis(max)}`
 }
 
 export function shortDate(iso: string): string {
@@ -70,6 +73,12 @@ export function priceLabel(p: {
   return `${cedis(p.priceMin, { decimals: false })}/${p.unit}`
 }
 
+// Real distance from the Tema fulfilment hub, rounded for display. Falls back
+// to 12km when a caller passes an optional/loose farmer shape without location.
+export function distanceFromHubKm(farmer: Farmer): number {
+  return Math.round(haversineKm(HUB.location, farmer.location)) || 12
+}
+
 // Freshness badge derived from shelf life remaining (FEFO-aware).
 export function freshnessLabel(expiryDate: string): {
   label: string
@@ -79,4 +88,12 @@ export function freshnessLabel(expiryDate: string): {
   if (left <= 2) return { label: 'Use soon', color: '#c0492e' }
   if (left <= 4) return { label: 'Fresh', color: '#b8791a' }
   return { label: 'Just harvested', color: '#4f7d2f' }
+}
+
+// FEFO derivation: the harvest/pack date implied by expiry minus shelf life.
+// Deterministic (no Date.now), so it is safe during SSR/prerender.
+export function packedDateIso(expiryDate: string, shelfLifeDays: number): string {
+  return new Date(
+    new Date(expiryDate).getTime() - shelfLifeDays * 86_400_000,
+  ).toISOString()
 }

@@ -229,7 +229,7 @@ export function CookingStepVisualizer({ steps, recipeName, tip }: CookingStepVis
           </div>
           <div className="space-y-0.5">
             <span className="text-[11px] font-black uppercase tracking-wider text-[#7A3F1C]">
-              Chef's Authentic Secret
+              Chef&apos;s Authentic Secret
             </span>
             <p className="text-[12px] font-semibold leading-relaxed text-[#211A12]">
               {tip}

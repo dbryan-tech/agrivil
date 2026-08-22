@@ -36,7 +36,16 @@ export type ProduceCategory =
   | 'Herbs & Spices'
   | 'Leafy Greens'
 
-export type ProductUnit = 'kg' | 'bunch' | 'each' | 'crate' | 'basket'
+// 'bag' / 'bottle' cover pre-packaged goods sold as a fixed unit
+// (e.g. 5kg rice bags, 1L palm oil bottles) rather than by weight.
+export type ProductUnit =
+  | 'kg'
+  | 'bunch'
+  | 'each'
+  | 'crate'
+  | 'basket'
+  | 'bag'
+  | 'bottle'
 
 export type StockStatus = 'in-stock' | 'low' | 'delisted' | 'out-of-stock'
 

@@ -267,7 +267,7 @@ export default function MobileCheckoutScreen() {
               Order Confirmed!
             </h3>
             <p className="mt-1 text-[13px] font-semibold text-[#5C5247]">
-              MoMo prompt approved. Your produce is scheduled for dawn picking at Auntie Ama's Garden.
+              MoMo prompt approved. Your produce is scheduled for dawn picking at Auntie Ama&apos;s Garden.
             </p>
             <div className="my-4 flex justify-center">
               <PackageBoxes3D size={78} />

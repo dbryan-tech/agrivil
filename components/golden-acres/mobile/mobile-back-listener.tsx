@@ -63,23 +63,33 @@ export function MobileBackListener() {
     }
 
     // 3. Expose global bridge for native Android WebView evaluation
-    ;(window as any).onBackPressed = () => {
+    ;(window as unknown as Record<string, unknown>).onBackPressed = () => {
       return handleBackAction()
     }
-    ;(window as any).__agrivilBack = () => {
+    ;(window as unknown as Record<string, unknown>).__agrivilBack = () => {
       return handleBackAction()
     }
 
     // 4. Capacitor App plugin listener if available
-    let capacitorListener: any = null
-    const capApp = (window as any).Capacitor?.Plugins?.App
+    type CapacitorPlugin = {
+      addListener?: (
+        event: string,
+        cb: (payload: { canGoBack: boolean }) => void,
+      ) => Promise<{ remove: () => void }>
+    }
+    let capacitorListener: { remove: () => void } | null = null
+    const capApp = (
+      window as unknown as {
+        Capacitor?: { Plugins?: { App?: CapacitorPlugin } }
+      }
+    ).Capacitor?.Plugins?.App
     if (capApp && typeof capApp.addListener === 'function') {
       capApp.addListener('backButton', ({ canGoBack }: { canGoBack: boolean }) => {
         const handled = handleBackAction()
         if (!handled && canGoBack) {
           window.history.back()
         }
-      }).then((handle: any) => {
+      }).then((handle) => {
         capacitorListener = handle
       }).catch(() => {})
     }

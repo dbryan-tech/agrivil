@@ -9,7 +9,11 @@ function SuccessContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const ref = searchParams.get('ref') || 'AGR-88412'
-  const [lastOrder, setLastOrder] = useState<any>(null)
+  // Shape persisted by the checkout flow in `agrivil_last_order`.
+  const [lastOrder, setLastOrder] = useState<{
+    title?: string
+    totalGHS?: number
+  } | null>(null)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

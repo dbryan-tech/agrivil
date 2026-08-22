@@ -90,7 +90,7 @@ export function ProductDetail({
             {fresh && (
               <span className="flex items-center gap-1 text-xs font-bold text-[#7A3F1C]">
                 <Leaf className="h-3.5 w-3.5" />
-                {fresh.text}
+                {fresh.label}
               </span>
             )}
           </div>
@@ -104,7 +104,7 @@ export function ProductDetail({
               <Star className="h-4 w-4 fill-[#F0A81E] text-[#F0A81E]" />
               <span>{product.rating}</span>
             </div>
-            <span className="text-xs text-[#5C5247]">({product.reviewsCount} reviews)</span>
+            <span className="text-xs text-[#5C5247]">({product.reviewCount} reviews)</span>
           </div>
 
           <p className="mt-4 text-sm leading-relaxed text-[#5C5247]">

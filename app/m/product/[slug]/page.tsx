@@ -26,7 +26,7 @@ import {
   Filter,
 } from 'lucide-react'
 import { products, productFarmer, farmers } from '@/lib/golden-acres/data'
-import { formatGHS, freshnessLabel } from '@/lib/golden-acres/format'
+import { formatGHS, freshnessLabel, distanceFromHubKm, dayMonth, packedDateIso } from '@/lib/golden-acres/format'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { useSession } from '@/components/golden-acres/auth/session-context'
 import { MobileProductCard } from '@/components/golden-acres/mobile/mobile-product-card'
@@ -73,7 +73,7 @@ export default function MobileProductDetailScreen() {
         id: defaultFarmer.id,
         farmer: defaultFarmer,
         name: defaultFarmer.farmName,
-        region: `${defaultFarmer.region} (${defaultFarmer.distanceKm || 15}km)`,
+        region: `${defaultFarmer.region} (${distanceFromHubKm(defaultFarmer)}km)`,
         price: product.pricePerKg || product.priceMin,
         image: getFarmerProductImage(defaultFarmer.id, 0),
         rating: defaultFarmer.rating,
@@ -85,7 +85,7 @@ export default function MobileProductDetailScreen() {
         id: f.id,
         farmer: f,
         name: f.farmName || f.name,
-        region: `${f.region} (${f.distanceKm || (i === 0 ? 45 : 85)}km)`,
+        region: `${f.region} (${distanceFromHubKm(f)}km)`,
         price: Math.round(((product.pricePerKg || product.priceMin) * (i === 0 ? 1.05 : 0.95)) * 10) / 10,
         image: getFarmerProductImage(f.id, i + 1),
         rating: f.rating,
@@ -524,7 +524,7 @@ export default function MobileProductDetailScreen() {
                 Harvest Date
               </span>
               <p className="mt-0.5 text-[13px] font-black text-[#211A12]">
-                {product.harvestDate || 'Fresh Dawn Harvest'}
+                {dayMonth(packedDateIso(product.expiryDate, product.shelfLifeDays))}
               </p>
             </div>
             <div>
@@ -721,16 +721,16 @@ export default function MobileProductDetailScreen() {
             </div>
 
             <div className="flex gap-1.5 py-2.5 overflow-x-auto [scrollbar-width:none]">
-              {[
+              {([
                 { label: 'All Reviews', key: 'all' },
                 { label: '5 Stars', key: '5' },
                 { label: '4 Stars', key: '4' },
                 { label: 'Verified Buyers', key: 'verified' },
-              ].map((pill) => (
+              ] as const).map((pill) => (
                 <button
                   key={pill.key}
                   type="button"
-                  onClick={() => setReviewFilter(pill.key as any)}
+                  onClick={() => setReviewFilter(pill.key)}
                   className={cn(
                     'flex shrink-0 items-center rounded-full px-3 py-1 text-[11.5px] font-extrabold shadow-2xs transition-all active:scale-95',
                     reviewFilter === pill.key

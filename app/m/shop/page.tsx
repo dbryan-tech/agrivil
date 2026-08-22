@@ -15,7 +15,7 @@ import {
   Check,
   ChevronDown,
 } from 'lucide-react'
-import { products, categories, getCategoryCount } from '@/lib/golden-acres/data'
+import { products } from '@/lib/golden-acres/data'
 import { MobileProductCard } from '@/components/golden-acres/mobile/mobile-product-card'
 import { MobileBottomNav } from '@/components/golden-acres/mobile/mobile-bottom-nav'
 import { useCart } from '@/components/golden-acres/cart-context'
@@ -237,7 +237,7 @@ function ShopContent() {
             <span>Sort:</span>
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
+              onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
               className="bg-transparent font-extrabold text-[#0B3B25] focus:outline-none cursor-pointer"
             >
               <option value="featured">Featured</option>
@@ -310,15 +310,15 @@ function ShopContent() {
                 Price Range (GH₵)
               </span>
               <div className="grid grid-cols-3 gap-2">
-                {[
+                {([
                   { label: 'All', value: 'all' },
                   { label: 'Under 10', value: 'under10' },
                   { label: '10 – 25', value: '10to25' },
-                ].map((item) => (
+                ] as const).map((item) => (
                   <button
                     key={item.value}
                     type="button"
-                    onClick={() => setPriceFilter(item.value as any)}
+                    onClick={() => setPriceFilter(item.value)}
                     className={cn(
                       'rounded-xl py-2 text-[12px] font-bold border transition-all',
                       priceFilter === item.value
@@ -375,7 +375,7 @@ function ShopContent() {
       )}
 
       {/* Persistent Bottom Navigation Bar */}
-      <MobileBottomNav activeTab="categories" />
+      <MobileBottomNav />
     </div>
   )
 }

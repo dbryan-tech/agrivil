@@ -23,13 +23,24 @@ function TrackContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const orderId = searchParams.get('id') || 'AGR-88412'
-  const [order, setOrder] = useState<any>(null)
+  // Shape persisted in the `agrivil_orders` local order history.
+  type StoredOrder = {
+    id?: string
+    status?: string
+    from?: string
+    to?: string
+    title?: string
+    totalGHS?: number
+  }
+  const [order, setOrder] = useState<StoredOrder | null>(null)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       try {
-        const stored = JSON.parse(localStorage.getItem('agrivil_orders') || '[]')
-        const found = stored.find((o: any) => o.id === orderId)
+        const stored = JSON.parse(
+          localStorage.getItem('agrivil_orders') || '[]',
+        ) as StoredOrder[]
+        const found = stored.find((o) => o.id === orderId)
         if (found) {
           setOrder(found)
         }

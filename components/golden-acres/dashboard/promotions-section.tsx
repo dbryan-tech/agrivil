@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import {
   Tag,
@@ -38,6 +38,15 @@ export function PromotionsSection() {
   const [creating, setCreating] = useState(false)
   const [busy, setBusy] = useState<string | null>(null)
   const [formError, setFormError] = useState<string | null>(null)
+  // Wall-clock snapshot set post-mount: keeps expiry rendering deterministic
+  // during prerender/hydration (no Date.now() in the render body).
+  const [nowMs, setNowMs] = useState<number | null>(null)
+  useEffect(() => {
+    const tick = () => setNowMs(Date.now())
+    tick()
+    const t = setInterval(tick, 60_000)
+    return () => clearInterval(t)
+  }, [])
 
   async function submit() {
     setFormError(null)
@@ -248,9 +257,12 @@ export function PromotionsSection() {
           ) : data && data.length > 0 ? (
             <ul className="space-y-2.5">
               {data.map((p) => {
+                // Expiry is evaluated post-mount so the prerendered HTML and
+                // client render agree (React purity / hydration safety).
                 const expired =
                   p.expiresAt != null &&
-                  new Date(p.expiresAt).getTime() < Date.now()
+                  nowMs != null &&
+                  new Date(p.expiresAt).getTime() < nowMs
                 const exhausted =
                   p.usageLimit != null && p.usedCount >= p.usageLimit
                 return (
