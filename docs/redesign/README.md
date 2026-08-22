@@ -106,9 +106,9 @@ AgriVil's web presence should read like a **premium farm-to-table house**
 | 02 | Product detail page | SHIPPED to live `/shop/[slug]` | `a5664b8` |
 | 02 | Checkout reskin (tokens only, logic untouched) | SHIPPED to live `/checkout` | `9420874` |
 | 02 | Orders index | SHIPPED to live `/orders` | `666210a` |
-| 02 | Tracking detail reskin | QUEUED (next session) | — |
-| 02 | Account dashboard two-pane rebuild | QUEUED | — |
-| 03 | Auth shell + trust microcopy + web onboarding | QUEUED | — |
+| 02 | Tracking detail | **SHIPPED to live `/orders/[ref]`** | `487886a` |
+| 02 | Account two-pane dashboard rebuild | **SHIPPED to live `/account`** | `34d9c0e` |
+| 03 | Auth shell + trust microcopy + web onboarding | QUEUED (next) | — |
 | 04 | Farmer console restructure | QUEUED | — |
 | 05 | Staff console frame (admin/ops/support) | QUEUED | — |
 | 06 | Recipes index/detail, bundles, farmers directory, help center | QUEUED | — |
