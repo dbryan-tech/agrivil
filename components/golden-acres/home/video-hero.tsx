@@ -2,21 +2,17 @@
 
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
-import { ArrowRight, MapPin, Truck, Leaf, Check, ShoppingBasket } from 'lucide-react'
+import { ArrowRight, Leaf, Check, ShoppingBasket } from 'lucide-react'
 import { SmartImage } from '@/components/golden-acres/smart-image'
 import { useCart } from '@/components/golden-acres/cart-context'
 import { products } from '@/lib/golden-acres/data'
 import { formatGHS } from '@/lib/golden-acres/format'
 
 /**
- * VideoHero v2 — the old cinematic hero, sharpened.
- * Same rich language (video, gold accent headline, orange CTA, trust chips)
- * with three upgrades:
- *  1. Brand mark + "live market" pulse top-left; scroll cue bottom-right.
- *  2. Left-anchored composition on desktop (reads faster than centered),
- *     still centered on mobile.
- *  3. A shoppable "Fresh this morning" strip docked to the hero's bottom
- *     edge — real catalog products with one-tap add-to-basket.
+ * VideoHero v3 — cinematic, quiet, confident.
+ * Full-bleed video, one bold statement, one action. The headline is THE
+ * element: oversized (clamp to 88px), tight leading, white + one gold line.
+ * No badges, no eyebrows — the film and the words do all the talking.
  */
 
 /** Deterministic morning picks so SSR and client agree (no hydration drift). */
@@ -54,102 +50,64 @@ export function VideoHero() {
         >
           <source src="/golden-acres/video/farm-hero.mp4" type="video/mp4" />
         </video>
-        {/* Cinematic scrim — heavier left/bottom where content sits */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/55" />
+        {/* Cinematic scrim — weighted bottom-left so type sits on calm ground */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/15" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/40" />
       </div>
 
-      {/* Top-left brand moment */}
-      <div className="absolute left-5 top-5 z-10 flex items-center gap-2.5 sm:left-8 sm:top-6">
-        <span
-          aria-hidden
-          className="relative flex h-2 w-2"
-        >
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F0A81E]/70" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-[#F0A81E]" />
-        </span>
-        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-white/90 sm:text-xs">
-          Live market · Greater Accra
-        </p>
-      </div>
-
-      {/* Content — left-anchored on desktop, centered on mobile */}
-      <div className="relative z-[5] mx-auto flex min-h-[520px] max-w-7xl flex-col items-center justify-center px-4 py-14 text-center sm:px-6 lg:min-h-[600px] lg:items-start lg:px-10 lg:text-left">
-        {/* Soft radial backdrop for text pop */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-[1] flex items-center justify-center"
-        >
-          <div className="h-[420px] w-full max-w-2xl rounded-full bg-black/25 blur-3xl" />
-        </div>
-
+      {/* Statement block — bottom-anchored, generous breathing room */}
+      <div className="relative z-[5] mx-auto flex min-h-[78svh] max-w-7xl flex-col justify-end px-5 pb-24 pt-40 sm:px-8 sm:pb-28 lg:min-h-[86svh] lg:px-12 lg:pb-32">
         <h1
-          className="ga-headline ga-fade-up max-w-3xl text-balance text-4xl font-black leading-[1.05] text-white drop-shadow-[0_3px_18px_rgba(0,0,0,0.95)] sm:text-5xl lg:text-[64px]"
-          style={{ animationDelay: '0.08s' }}
+          className="ga-fade-up max-w-[13ch] text-balance font-black leading-[0.98] tracking-[-0.03em] text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] [font-size:clamp(44px,7.2vw,92px)]"
+          style={{ animationDelay: '0.06s' }}
         >
-          Ghana&apos;s freshest harvest,{' '}
-          <span className="whitespace-nowrap text-[#F0A81E] drop-shadow-[0_3px_18px_rgba(0,0,0,0.95)]">
-            delivered to your door
-          </span>
+          Ghana&apos;s freshest harvest.
         </h1>
+        <p
+          className="ga-fade-up mt-1 max-w-[20ch] text-balance font-black leading-[1.04] tracking-[-0.02em] text-[#F0A81E] drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] [font-size:clamp(44px,7.2vw,92px)]"
+          style={{ animationDelay: '0.14s' }}
+        >
+          Delivered to your door.
+        </p>
 
         <p
-          className="ga-fade-up mt-4 max-w-xl text-pretty text-base font-medium leading-relaxed text-white/95 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] sm:text-lg"
-          style={{ animationDelay: '0.16s' }}
+          className="ga-fade-up mt-6 max-w-md text-pretty text-base leading-relaxed text-white/90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] sm:text-lg"
+          style={{ animationDelay: '0.22s' }}
         >
-          Shop produce picked this morning by local farmers, compare offers
-          from growers nearest you, and pay with Mobile Money. Priced by
-          weight, delivered cold.
+          Picked this morning by Ghana&apos;s farmers. Compare real offers,
+          pay with Mobile Money, get it cold — tomorrow.
         </p>
 
-        {/* CTAs */}
         <div
-          className="ga-fade-up mt-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
-          style={{ animationDelay: '0.24s' }}
+          className="ga-fade-up mt-7 flex flex-wrap items-center gap-x-7 gap-y-3"
+          style={{ animationDelay: '0.3s' }}
         >
           <Link
             href="/shop"
-            className="ga-press ga-sheen group inline-flex items-center gap-2 rounded-full bg-[#DF8821] px-7 py-3.5 text-sm font-black text-white shadow-lg shadow-black/30 hover:bg-[#c97416] transition-all"
+            className="ga-press ga-sheen group inline-flex items-center gap-2 rounded-full bg-[#DF8821] px-8 py-4 text-[15px] font-black text-white shadow-lg shadow-black/40 hover:bg-[#c97416] transition-all"
           >
             Shop today&apos;s harvest
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
           <Link
             href="/farmers"
-            className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-black/50 px-7 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:border-white/70 hover:bg-black/70"
+            className="inline-flex items-center gap-2 border-b-2 border-white/50 pb-1 text-[15px] font-bold text-white transition-colors duration-300 hover:border-white"
           >
             Meet the farmers
           </Link>
         </div>
-
-        {/* Trust chips */}
-        <div
-          className="ga-fade-up mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] sm:text-sm lg:justify-start"
-          style={{ animationDelay: '0.32s' }}
-        >
-          <span className="inline-flex items-center gap-2">
-            <Leaf className="h-4 w-4 text-[#F0A81E]" /> Picked today
-          </span>
-          <span className="inline-flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-[#F0A81E]" /> GhanaPostGPS delivery
-          </span>
-          <span className="inline-flex items-center gap-2">
-            <Truck className="h-4 w-4 text-[#F0A81E]" /> Pay on delivery · MoMo
-          </span>
-        </div>
       </div>
 
-      {/* Shoppable strip docked to the hero's bottom edge */}
+      {/* Shoppable strip docked to the hero's bottom edge — solid, not glass */}
       <div className="relative z-10 border-t border-white/10 bg-[#15110C]">
-        <div className="mx-auto flex max-w-7xl items-stretch gap-3 overflow-x-auto px-4 py-3 sm:gap-4 sm:px-6 lg:px-10 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          {/* Strip label */}
-          <div className="hidden shrink-0 flex-col justify-center border-r border-white/15 pr-5 md:flex">
+        <div className="mx-auto flex max-w-7xl items-stretch gap-3 overflow-x-auto px-5 py-3 sm:gap-4 sm:px-8 lg:px-12 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="hidden shrink-0 flex-col justify-center border-r border-white/10 pr-5 md:flex">
             <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#F0A81E]">
               <Leaf className="h-3 w-3" /> Fresh this morning
             </p>
             <Link
               href="/shop"
-              className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-white/75 transition-colors hover:text-white"
+              className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-white/70 transition-colors hover:text-white"
             >
               See all produce
               <ArrowRight className="h-3 w-3" />
@@ -164,7 +122,6 @@ export function VideoHero() {
               className="group flex shrink-0 items-center gap-3 rounded-2xl border border-white/10 bg-[#221C13] p-2 pr-4 text-left transition-all duration-300 hover:border-[#DF8821]/60 hover:bg-[#2A2318] active:scale-[0.98] disabled:pointer-events-none"
               aria-label={`Add ${p.name} to basket`}
             >
-              {/* thumb */}
               <span className="relative block h-14 w-14 shrink-0 overflow-hidden rounded-xl">
                 <SmartImage src={p.image} alt="" fill className="object-cover" />
               </span>
